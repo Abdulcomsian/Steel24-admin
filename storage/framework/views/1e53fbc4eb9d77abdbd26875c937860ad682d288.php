@@ -1,0 +1,9 @@
+<div class="wrapper ">
+  <?php echo $__env->make('admin.layouts.navbars.sidebar', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+  <div class="main-panel">
+    <?php echo $__env->make('admin.layouts.navbars.navs.auth', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+      <?php echo $__env->yieldContent('content'); ?>
+    <?php echo $__env->make('admin.layouts.footers.auth', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+  </div>
+</div>
+<?php /**PATH C:\xampp\htdocs\steel24\resources\views/admin/layouts/page_templates/auth.blade.php ENDPATH**/ ?>

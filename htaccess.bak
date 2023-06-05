@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteCond %{HTTP_HOST} admin\.steel24\.in [NC]
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://admin.steel24.in/$1 [R,L]
