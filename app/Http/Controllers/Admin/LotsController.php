@@ -68,6 +68,8 @@ class LotsController extends Controller
         }
         return view('admin.lots.index')
             ->with('lots', $lots);
+
+            
     }
     public function analyzeUrl(Request $request)
     {
@@ -186,7 +188,7 @@ class LotsController extends Controller
         //     array_push($data, ["lotid" => $lots->id, "materialid" => $index, "materialdata" => json_encode($material), "image" => $imgName]);
         // }
         // newMaterial::insert($data); // Eloquent
-        return redirect('/admin/addlotsterms/' . $lots->id);
+        return redirect('/admin/lots/' . $lots->id);
     }
 
     public function updatematerialslots(lots $lots, Request $request)
@@ -251,10 +253,39 @@ class LotsController extends Controller
         return redirect('/admin/lots/' . $lots->id);
     }
 
-    public function createlotsterms(lots $lots)
-    {
-        return view('admin.lots.addLotsTerms', compact('lots'));
-    }
+    // public function createlotsterms(lots $lots)
+    // {
+    //     return view('admin.lots.addLotsTerms', compact('lots'));
+    // }
+
+    public function createLotTerms()
+        {
+            // $payment_plan = lots::
+            return view('admin.lots.addLotsTerms');
+        }
+        
+        public function payment_plan(Request $request)
+        {
+            $paymentTerms = lotTerms::all();
+
+            return view('admin.lots.payment_plan')->with(compact('paymentTerms'));
+        }
+        public function storepaymentplan(Request $request)
+        {
+
+            // Validate the form data
+            $data = $request->validate([
+                'Payment_Terms' => 'required',
+                'Price_Bases' => 'required',
+                'Texes_and_Duties' => 'required',
+                'Commercial_Terms' => 'required',
+                'Test_Certificate' => 'required',
+            ]);
+        
+        lotTerms::create($data);
+        return redirect('admin/payment_plan');
+        }
+        
 
     public function storelotsterms(lots $lots, Request $request)
     {

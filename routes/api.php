@@ -59,7 +59,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1\Admin'], functi
         Route::get('getlots', 'LotsContoller@getlots');
 
 
-        Route::get('getcategorys', 'LotsContoller@getcategorys');
+        
         Route::get('getsoledlots', 'LotsContoller@getsoledlots');
         Route::get('getsoledlots', 'LotsContoller@getsoledlots');
         Route::get('getexpiredlots', 'LotsContoller@getexpiredlots');
@@ -76,6 +76,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1\Admin'], functi
     //     Route::get('user', 'Auth\LoginController@getAuthUser');
     // });
 });
+Route::get('getcategorys', 'LotsContoller@getcategorys');
 // Route::group([
 
 //     'middleware' => 'api',
