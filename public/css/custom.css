@@ -1,0 +1,25 @@
+.form_customer {
+    display: block;
+    width: 100%;
+    padding: 0.775rem 1rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 1.5;
+    background-clip: padding-box;
+    border: 1px solid #5E6278;
+    appearance: none;
+    border-radius: 0.475rem;
+    background-color:#F9F9F9;
+    border-color: #F9F9F9;
+    color: black;
+    transition: color 0.2s ease;
+}
+
+.card .card-body+.card-footer, .card .card-footer {
+    justify-content: flex-end;
+}
+
+.Back_btn_customer {
+    color: #9c27b0 !important;
+    background-color: #F9F9F9 !important;
+}

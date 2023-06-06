@@ -7,75 +7,82 @@
                 <div class="col-md-12">
                     <form method="POST" action="{{ route('admin.customers.store') }}" class="form-horizontal">
                         @csrf
+                        <div class="container">
                         <div class="card ">
                             <!--Header-->
-                            <div class="card-header card-header-primary">
+                            <div class="card-header card-header-primary  m-0"><!-- remove class(card-header-primary) -->
                                 <h4 class="card-title">Customers</h4>
                             </div>
                             <!--End header-->
                             <!--Body-->
-                            <div class="card-body">
-                                <div class="form-row justify-content-center" >
-                                    <div class="col-md-4 mx-3 mb-3">
+                            <div class="card-body" style="margin-top:5%">
+                                <div class="form-row " >
+                                    <div class="col-md-4  mb-3">
                                     <!-- <label for="validationTooltip01">Name</label> -->
-                                    <input type="text" class="form-control" name="name" autocomplete="off" placeholder="Name"
+                                    <input type="text" class="form_customer" name="name" autocomplete="off" placeholder="Name"
                                                 autofocus>
                                     </div>
-                                    <div class="col-md-4 mx-3 mb-3">
+                                    <div class="col-md-4  mb-3">
                                     <!-- <label for="validationTooltip01">Email</label> -->
-                                    <input type="text" class="form-control" name="name" autocomplete="off" placeholder="Email"
+                                    <input type="text" class="form_customer" name="name" autocomplete="off" placeholder="Email"
                                                 autofocus>
                                     </div>
-                                    <div class="col-md-4 mx-3 mb-3">
+                                    <div class="col-md-4  mb-3">
                                     <!-- <label for="validationTooltip01">Password</label> -->
-                                    <input type="password" class="form-control" name="password" autocomplete="off" placeholder="Password"
+                                    <input type="password" class="form_customer" name="password" autocomplete="off" placeholder="Password"
                                             autofocus>
                                     </div>
-                                    <div class="col-md-4 mx-3 mb-3">
+                                    <div class="col-md-4  mb-3">
                                     <!-- <label for="validationTooltip01">Contact No</label> -->
-                                    <input type="number" class="form-control" name="contactNo" min="0" placeholder="Contact No"
+                                    <input type="number" class="form_customer" name="contactNo" min="0" placeholder="Contact No"
                                             autocomplete="off" autofocus>
                                     </div>
-                                    <div class="col-md-4 mx-3 mb-3">
+                                    <div class="col-md-4  mb-3">
                                     <!-- <label for="validationTooltip01">Adhar no.</label> -->
-                                    <input type="number" class="form-control" name="adharNo" min="0" placeholder="Adhar no."
+                                    <input type="number" class="form_customer" name="adharNo" min="0" placeholder="Adhar no."
                                             autocomplete="off" autofocus>
                                     </div>
-                                    <div class="col-md-4 mx-3 mb-3">
+                                    <div class="col-md-4  mb-3">
                                     <!-- <label for="validationTooltip01">GST no.</label> -->
-                                    <input type="number" class="form-control" name="GSTNo" min="0" placeholder="GST no."
+                                    <input type="number" class="form_customer" name="GSTNo" min="0" placeholder="GST no."
                                             autocomplete="off" autofocus>
                                     </div>
-                                    <div class="col-md-4 mx-3 mb-3">
+                                    <div class="col-md-4  mb-3">
                                     <!-- <label for="validationTooltip01">PAN no.</label> -->
-                                    <input type="text" class="form-control" name="PanNo" autocomplete="off" placeholder="PAN no."
+                                    <input type="text" class="form_customer" name="PanNo" autocomplete="off" placeholder="PAN no."
                                             autofocus>
                                     </div>
-                                    <div class="col-md-4 mx-3 mb-3">
+                                    <div class="col-md-4 mb-3">
                                     <!-- <label for="validationTooltip01">Address</label> -->
-                                    <input type="text" class="form-control" name="address" autocomplete="off" placeholder="Address"
+                                    <input type="text" class="form_customer" name="address" autocomplete="off" placeholder="Address"
                                             autofocus>
                                     </div>
-                                    <div class="col-md-4 mx-3 mb-3">
+                                    <div class="col-md-4  mb-3">
                                     <!-- <label for="validationTooltip01">City</label> -->
-                                    <input type="text" class="form-control" name="city" autocomplete="off" placeholder="City"
+                                    <input type="text" class="form_customer" name="city" autocomplete="off" placeholder="City"
                                             autofocus>
                                     </div>
-                                    <div class="col-md-4 mx-3 mb-3">
+                                    <div class="col-md-4  mb-3">
                                     <!-- <label for="validationTooltip01">State</label> -->
-                                    <input type="text" class="form-control" name="state" autocomplete="off" placeholder="State"
+                                    <input type="text" class="form_customer" name="state" autocomplete="off" placeholder="State"
                                             autofocus>
                                     </div>
-                                    <div class="col-md-4 mx-3 mb-3">
+                                    <div class="col-md-4  mb-3">
                                     <!-- <label for="validationTooltip01">Pincode</label> -->
-                                    <input type="number" class="form-control" name="pincode" min="0" placeholder="Pincode"
+                                    <input type="number" class="form_customer" name="pincode" min="0" placeholder="Pincode"
                                             autocomplete="off" autofocus>
                                     </div>
-                                    <div class="col-md-4 mx-3 mb-3">
+                                    <div class="col-md-4  mb-3">
                                     <!-- <label for="validationTooltip01">Compny Name</label> -->
-                                    <input type="text" class="form-control" name="compnyName" autocomplete="off" placeholder="Compny Name"
+                                    <input type="text" class="form_customer" name="compnyName" autocomplete="off" placeholder="Compny Name"
                                             autofocus>
                                     </div>
+                                     <!--Footer-->
+                            <div class="card-footer col-md-12" style="margin-bottom:5%; margin-left:0">
+                                <a href="{{ route('admin.customers.index') }}" class="btn btn-primary mr-3 Back_btn_customer">Back</a>
+                                <button type="submit" class="btn btn-primary">Add</button>
+                            </div>
+                            <!--End footer-->
                             </div>
                                 <!-- <div class="row">
                                     <label for="title" class="col-sm-2 col-form-label">Name</label>
@@ -166,12 +173,13 @@
                             <!--End body-->
 
                             <!--Footer-->
-                            <div class="card-footer ml-auto mr-auto">
+                            <!-- <div class="card-footer ml-auto mr-auto" style="margin-bottom:5%">
                                 <a href="{{ route('admin.customers.index') }}" class="btn btn-primary">Back</a>
                                 <button type="submit" class="btn btn-primary">Add</button>
-                            </div>
+                            </div> -->
                             <!--End footer-->
                         </div>
+</div>
                     </form>
                 </div>
             </div>
