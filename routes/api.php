@@ -76,7 +76,7 @@ $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1\Admin'], functi
     //     Route::get('user', 'Auth\LoginController@getAuthUser');
     // });
 });
-Route::get('getcategorys', 'LotsContoller@getcategorys');
+Route::get('getcategorys', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getcategorys');
 // Route::group([
 
 //     'middleware' => 'api',

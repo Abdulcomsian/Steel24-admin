@@ -87,7 +87,8 @@ class LotsController extends Controller
         // $materials = materials::all();
         $lots = false;
         $categorys =  categories::all();
-        return view('admin.lots.create', compact('addForm',  'lots', 'categorys'));
+        $paymentTerms = lotTerms::all();
+        return view('admin.lots.create', compact('addForm',  'lots', 'categorys', 'paymentTerms'));
     }
 
     public function store(Request $request)
@@ -106,6 +107,7 @@ class LotsController extends Controller
             "Price" => "required",
             'categoryId' => "required",
             "participate_fee" => "required"
+            // "Payment_terms" => "required"
         ]);
         $input = $request->only([
             'title',
@@ -120,6 +122,7 @@ class LotsController extends Controller
             "Price",
             "categoryId",
             "participate_fee"
+            // "Payment_terms"
         ]);
         $input['lot_status'] = 'upcoming';
         $input['uid'] = $userDetails->id;
@@ -365,7 +368,8 @@ class LotsController extends Controller
         //     $material_keys = array_keys((array) $materialilist[0][0]);
         // }
         $materialilist = new_maerials_2::where('lotid', $lots->id)->get();
-        return view('admin.lots.show', compact('lots', 'materialilist'));
+        $payment_term = lotTerms::where('id',$lots->Payment_terms)->get();
+        return view('admin.lots.show', compact('lots', 'materialilist', 'payment_term'));
     }
 
     public function edit(lots $lots)
