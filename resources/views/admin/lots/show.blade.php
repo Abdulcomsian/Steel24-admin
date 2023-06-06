@@ -206,7 +206,7 @@
                                                             </td>
                                                         </tr>
 
-                                                        <tr>
+                                                        {{-- <tr>
                                                             <td>
                                                                 <div class="d-flex px-2 py-1">
                                                                     <div class="d-flex flex-column justify-content-center">
@@ -219,12 +219,12 @@
                                                                     {{ $lots->Payment_terms }}
                                                                 </p>
                                                             </td>
-                                                        </tr>
+                                                        </tr> --}}
                                                     </tbody>
                                                 </table>
                                             </div>
                                             
-                                            {{-- @if ($payment_term)
+                                            @if ($payment_term)
                                                 <h4>Payment Terms</h4>
                                                 <div class="col-12">
                                                     <table class="table" >
@@ -276,7 +276,7 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                            @endif --}}
+                                            @endif
 
                                             @if ($materialilist)
                                                 <h4>Materials</h4>

@@ -51,7 +51,8 @@ class LiveLotsController extends Controller
     {
         $lot = lots::where('id', $id)->update(['lot_status' => 'live']);
         payments::where('lotId', $id)->delete();
-        $this->pushonfirbase();
+        // zeshan commenting this 
+        // $this->pushonfirbase();
 
         return redirect('/admin/live_lots_bids/' . $id);
     }
@@ -152,6 +153,7 @@ class LiveLotsController extends Controller
             ]))->withDatabaseUri('https://steel24-a898f-default-rtdb.firebaseio.com/');
         $database = $firebase->createDatabase();
         $database->getReference('TodaysLots/liveList/' . $id)->remove();
+        // zee commenting this
         // $this->pushonfirbase();
         return redirect('/admin/live_lots_bids/' . $id);
     }
@@ -161,7 +163,7 @@ class LiveLotsController extends Controller
     public function poseLots($id,)
     {
         $lot = lots::where('id', $id)->update(['lot_status' => 'pause']);
-        $this->pushonfirbase();
+        // $this->pushonfirbase();
         return redirect('/admin/live_lots_bids/' . $id);
     }
 
@@ -190,7 +192,8 @@ class LiveLotsController extends Controller
 
         );
         payments::where('lotId',  $requestData['lotid'])->delete();
-        $this->pushonfirbase();
+        // zee commenting this
+        // $this->pushonfirbase();
         return redirect('admin/live_lots_bids/' . $requestData['lotid']);
     }
 
@@ -201,7 +204,8 @@ class LiveLotsController extends Controller
         foreach ($livelots as $lot) {
             lots::where('id', $lot->id)->update(['LiveSequenceNumber' => $request[$lot->id]]);
         }
-        $this->pushonfirbase();
+        // zeshan commenting this because of firebase 
+        // $this->pushonfirbase();
 
         return redirect('/admin/live_lots');
     }
@@ -213,10 +217,13 @@ class LiveLotsController extends Controller
         WHERE (date( lots.StartDate) = CURDATE() or date(lots.EndDate) = CURDATE()) and lots.lot_status  IN ('live','ReStart');");
 
         $liveLotslist = [];
-        foreach ($liveLots as $lot) {
+        
+        foreach ($liveLots as $lot) 
+        {
+            
             $templot = $lot;
             $templot->ParticipateUsers = customerBalance::where([['lotId', $lot->id], ['status', '!=', '1'], ['action', '!=', 'Participate Fees Back']])->groupBy('customerId')->pluck('customerId')->toArray();
-
+         
             $lastBid =  DB::select('SELECT bids_of_lots.*, customers.id as customerId,customers.name as customerName       
         FROM bids_of_lots
         LEFT JOIN customers on customers.id = bids_of_lots.customerId
@@ -225,11 +232,13 @@ class LiveLotsController extends Controller
 
             $liveLotslist[$lot->id] = $templot;
         }
+
+        
         $upcoming = DB::select("SELECT lots.* ,categories.title as categoriesTitle FROM `lots` 
         LEFT JOIN categories on categories.id  = lots.categoryId
         WHERE  lot_status =  'upcoming';");
         $lotList = ['liveList' => $liveLotslist, 'upcoming' => $upcoming];
-
+       
         $firebase = (new Factory)
             ->withServiceAccount(json_encode([
                 "type" => "service_account",
@@ -246,7 +255,7 @@ class LiveLotsController extends Controller
             ]))->withDatabaseUri('https://steel24-a898f-default-rtdb.firebaseio.com/');
         $database = $firebase->createDatabase();
         $database->getReference('TodaysLots/')->set($lotList);
-
+      
         return back();
     }
 
