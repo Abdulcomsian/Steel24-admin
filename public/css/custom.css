@@ -23,3 +23,17 @@
     color: #9c27b0 !important;
     background-color: #F9F9F9 !important;
 }
+.dataTables_filter input {
+border: 2px solid gray;
+border-radius: 5px;
+}
+#DataTables_Table_0_filter input{
+    padding: 6px 15px;
+    border: 1px solid lightgrey;
+}
+#DataTables_Table_0_length select{
+    border: 1px solid #9229ad;
+    border-radius: 3px;
+    padding: 2px;
+    margin: 0 5px;
+}
