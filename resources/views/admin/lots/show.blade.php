@@ -205,11 +205,26 @@
                                                                 </p>
                                                             </td>
                                                         </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <div class="d-flex px-2 py-1">
+                                                                    <div class="d-flex flex-column justify-content-center">
+                                                                        <h6 class="mb-0 text-sm">Paymant Plans</h6>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <p class="text-xs text-secondary mb-0">
+                                                                    {{ $lots->Payment_terms }}
+                                                                </p>
+                                                            </td>
+                                                        </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
                                             
-                                            @if ($payment_term)
+                                            {{-- @if ($payment_term)
                                                 <h4>Payment Terms</h4>
                                                 <div class="col-12">
                                                     <table class="table" >
@@ -261,7 +276,7 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                            @endif
+                                            @endif --}}
 
                                             @if ($materialilist)
                                                 <h4>Materials</h4>
