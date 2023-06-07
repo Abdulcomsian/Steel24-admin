@@ -13,6 +13,7 @@
     border-color: #F9F9F9;
     color: black;
     transition: color 0.2s ease;
+    margin-top: 2%;
 }
 
 .card .card-body+.card-footer,
@@ -43,6 +44,25 @@
 }
 
 .add_New_Button {
+    display: inline-flex;
+    align-items: center;
+    font-size: 15px;
+    padding: 12px 20px;
+}
+.custom-select {
+    background-clip: padding-box;
+    border: 1px solid #5E6278;
+    appearance: none;
+    border-radius: 0.475rem;
+    background-color: #F9F9F9;
+    border-color: #F9F9F9;
+    color: black;
+    transition: color 0.2s ease;
+    padding: 0.775rem 1rem;
+    height: auto;
+    font-size: 1.1rem;
+}
+.send_mail_button {
     display: inline-flex;
     align-items: center;
     font-size: 15px;

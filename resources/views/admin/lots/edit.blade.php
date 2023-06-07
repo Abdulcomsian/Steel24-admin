@@ -47,34 +47,30 @@
                         @method('PATCH')
                         <div class="card">
                             <!--Header-->
-                            <div class="card-header card-header-primary">
+                            <div class="card-header card-header-primary m-0">
                                 <h4 class="card-title">Edit Lot</h4>
                             </div>
                             <!--End header-->
                             <!--Body-->
 
                             <div class="card-body">
-                                <div class="row">
-                                    <label for="title" class="col-sm-2 col-form-label">Title</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" id="title" name="title"
+                                <div class="form-row">
+                                    <!-- <label for="title" class="col-sm-2 col-form-label">Title</label> -->
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form_customer" id="title" name="title" placeholder="Title"
                                             value="{{ $lots ? $lots->title : '' }}" required>
                                     </div>
-                                </div>
                                 <input type="hidden" name="live" value="{{ $live }}">
                                 @isset($expire)
                                     <input type="hidden" name="expire" value="{{ $expire }}">
                                 @endisset
-                                <div class="row">
-                                    <label for="description" class="col-sm-2 col-form-label">Description</label>
-                                    <div class="col-sm-7">
-                                        <textarea class="form-control" id="description" name="description"> {{ $lots ? $lots->description : '' }} </textarea>
+                                    <!-- <label for="description" class="col-sm-2 col-form-label">Description</label> -->
+                                    <div class="col-sm-4">
+                                        <textarea class="form_customer" id="description" name="description" placeholder="Description"> {{ $lots ? $lots->description : '' }} </textarea>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <label for="categoryId" class="col-sm-2 col-form-label">Category</label>
-                                    <div class="col-sm-7">
-                                        <select class="form-select form-control" id="categoryId" name="categoryId">
+                                    <!-- <label for="categoryId" class="col-sm-2 col-form-label">Category</label> -->
+                                    <div class="col-sm-4">
+                                        <select class="form-select custom-select" id="categoryId" name="categoryId" placeholder="Category">
                                             @foreach ($categorys as $category)
                                                 <option value={{ $category->id }}
                                                     @if ($lots->categoryId == $category->id) selected @endif>
@@ -83,56 +79,43 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <label for="seller" class="col-sm-2 col-form-label">Seller</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" id="seller" name="Seller"
+                                    <!-- <label for="seller" class="col-sm-2 col-form-label">Seller</label> -->
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form_customer" id="seller" name="Seller" placeholder="Seller"
                                             value="{{ $lots->Seller }}" required>
                                     </div>
-                                </div>
 
-                                <div class="row">
-                                    <label for="plant" class="col-sm-2 col-form-label">Plant</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" id="plant" name="Plant"
+                                    <!-- <label for="plant" class="col-sm-2 col-form-label">Plant</label> -->
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form_customer" id="plant" name="Plant" placeholder="Plant"
                                             value="{{ $lots ? $lots->Plant : '' }}" required>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <label for="materialLocation" class="col-sm-2 col-form-label">Material Location</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" id="materialLocation"
-                                            name="materialLocation" value="{{ $lots ? $lots->materialLocation : '' }}"
+                                    <!-- <label for="materialLocation" class="col-sm-2 col-form-label">Material Location</label> -->
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form_customer" id="materialLocation"
+                                            name="materialLocation" value="{{ $lots ? $lots->materialLocation : '' }}" placeholder="Material Location"
                                             required>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <label for="quantity" class="col-sm-2 col-form-label">Quantity</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" id="quantity" name="Quantity"
+                                    <!-- <label for="quantity" class="col-sm-2 col-form-label">Quantity</label> -->
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form_customer" id="quantity" name="Quantity" placeholder="Quantity"
                                             value="{{ $lots ? $lots->Quantity : '' }}" required>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <label for="startDate" class="col-sm-2 col-form-label">Start Date</label>
-                                    <div class="col-sm-7">
-                                        <input type="datetime-local" class="form-control" id="startDate" name="StartDate"
+                                    <!-- <label for="startDate" class="col-sm-2 col-form-label">Start Date</label> -->
+                                    <div class="col-sm-4">
+                                        <input type="datetime-local" class="form_customer" id="startDate" name="StartDate" placeholder="Start Date"
                                             value="{{ $lots ? $lots->StartDate : '' }}" required>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <label for="endDate" class="col-sm-2 col-form-label">End Date</label>
-                                    <div class="col-sm-7">
-                                        <input type="datetime-local" class="form-control" id="endDate" name="EndDate"
+                                    <!-- <label for="endDate" class="col-sm-2 col-form-label">End Date</label> -->
+                                    <div class="col-sm-4">
+                                        <input type="datetime-local" class="form_customer" id="endDate" name="EndDate" placeholder="End Date"
                                             value="{{ $lots ? $lots->EndDate : '' }}" required>
                                     </div>
-                                </div>
 
-                                {{-- <div class="row">
-                                    <label for="material" class="col-sm-2 col-form-label">Materials</label>
-                                    <div class="col-sm-7">
-                                        <select id="material" name="material[]" class="selectpicker" multiple
+                                {{--
+                                    <!-- <label for="material" class="col-sm-2 col-form-label">Materials</label> -->
+                                    <div class="col-sm-4">
+                                        <select id="material" name="material[]" class="selectpicker" multiple placeholder="Materials"
                                             data-width="100%" title="Materials">
                                             <optgroup label="Meses de lactancia...">
 
@@ -145,36 +128,33 @@
                                                 @endforeach
                                             </optgroup>
                                         </select>
-                                    </div>
-                                </div> --}}
-                                <div class="row">
-                                    <label for="startPrice" class="col-sm-2 col-form-label">Start Price</label>
-                                    <div class="col-sm-7">
-                                        <input type="number" class="form-control" id="startPrice" name="Price"
-                                            value="{{ $lots ? $lots->Price : '' }}" min="0" autocomplete="off"
+                                    </div> --}}
+                                    <!-- <label for="startPrice" class="col-sm-2 col-form-label">Start Price</label> -->
+                                    <div class="col-sm-4">
+                                        <input type="number" class="form_customer" id="startPrice" name="Price"
+                                            value="{{ $lots ? $lots->Price : '' }}" min="0" autocomplete="off" placeholder="Start Price"
                                             autofocus>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <label for="participate_fee" class="col-sm-2 col-form-label">Participation Fee</label>
-                                    <div class="col-sm-7">
-                                        <input type="number" class="form-control" step="0.01" id="participate_fee"
+                                    <!-- <label for="participate_fee" class="col-sm-2 col-form-label">Participation Fee</label> -->
+                                    <div class="col-sm-4">
+                                        <input type="number" class="form_customer" step="0.01" id="participate_fee" placeholder="Participation Fee"
                                             min="0" name="participate_fee"
                                             value="{{ $lots ? $lots->participate_fee : '' }}" autocomplete="off"
                                             autofocus>
                                     </div>
+                                     <!--Footer-->
+                            <div class="card-footer ml-auto mr-auto col-sm-12">
+                                <a href="javascript:history.back()" class="btn btn-primary mr-3 Back_btn_customer">Back</a>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                            <!--End footer-->
                                 </div>
                             </div>
 
 
                             <!--End body-->
 
-                            <!--Footer-->
-                            <div class="card-footer ml-auto mr-auto">
-                                <a href="javascript:history.back()" class="btn btn-primary">Back</a>
-                                <button type="submit" class="btn btn-primary">Update</button>
-                            </div>
-                            <!--End footer-->
+                           
                         </div>
 
 

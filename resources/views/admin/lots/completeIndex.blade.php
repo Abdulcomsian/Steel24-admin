@@ -19,8 +19,8 @@
 
                                
 
-                                    <div class="table-responsive">
-                                        <table class="table data-table">
+                                    <div > <!-- remove class="table-responsive" -->
+                                        <table class="table data-table table-striped">
                                             <thead class="text-primary text-center">
                                                 <th>ID</th>
                                                 <th>Title</th>

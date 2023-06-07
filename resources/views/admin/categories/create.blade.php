@@ -27,7 +27,7 @@
                                 
                                     <!-- <label for="description" class="col-sm-2 col-form-label">Description</label> -->
                                     <div class="col-sm-7">
-                                        <textarea type="text" class="form_customer mt-2" name="description" autocomplete="off" autofocus placeholder="Description"></textarea>
+                                        <textarea type="text" class="form_customer" name="description" autocomplete="off" autofocus placeholder="Description"></textarea>
                                     </div>
                                
 
