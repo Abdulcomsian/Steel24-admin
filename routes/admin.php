@@ -71,7 +71,7 @@ Route::get('/categories/destroy/{categories}', [CategoriesController::class, 'de
 
 // Lots Routes
 Route::get('/lots', [LotsController::class, 'index'])->name('lots');
-// Route::get('/lots_payment', [LotsController::class, 'index'])->name('lotspayment');
+
 
 Route::get('/lots/create', [LotsController::class, 'create'])->name('create');
 Route::post('/newlots', [LotsController::class, 'store']);
@@ -87,10 +87,16 @@ Route::get('/materialslots/{lots}', [LotsController::class, 'materialslots']);
 Route::post('/addmaterialslots/{lots}', [LotsController::class, 'addmaterialslots']);
 Route::patch('/materialslots/{lots}', [LotsController::class, 'updatematerialslots']);
 
-Route::get('/addlotsterms/{lots}', [LotsController::class, 'createlotsterms']);
-Route::get('/lotsterms/{lots}', [LotsController::class, 'lotsterms']);
+// Route::get('/payment_plan', [LotsController::class, 'createlotsterms']);
+// Route::post('/addlotsterms', [LotsController::class, 'storelotsterms']);
+// Route::get('/addlotsterms/{lots}', [LotsController::class, 'createlotsterms']);
+Route::get('/payment_plan', [LotsController::class, 'payment_plan']);
+Route::get('/addpayment_plan', [LotsController::class, 'createLotTerms']);
+Route::post('/addpayment_plan', [LotsController::class, 'storepaymentplan']);
 
-Route::post('/addlotsterms/{lots}', [LotsController::class, 'storelotsterms']);
+
+
+Route::get('/lotsterms/{lots}', [LotsController::class, 'lotsterms']);
 Route::patch('/lotsterms/{lots}', [LotsController::class, 'updatelotsterms']);
 
 Route::get('/complete_lots', [LotsController::class, 'complete_index'])->name('expirelots');
@@ -122,6 +128,7 @@ Route::post('/analyze-url', [LotsController::class, 'analyzeUrl'])->name('analyz
 // Route::post('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
 Route::get("coupon/status/{id}/{type}", 'UserController@status');
 Route::get("customer/status/{id}/{type}", 'CustomerController@status');
+Route::get("activecustomers/{id}", 'CustomerController@activecustomers');
 Route::get("activecustomers/{id}", 'CustomerController@activecustomers');
 
 

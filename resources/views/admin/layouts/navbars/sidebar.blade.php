@@ -12,6 +12,7 @@
     <div class="sidebar-wrapper">
         <ul class="nav">
             <li class="nav-item{{ $activePage == 'dashboard' ? ' active' : '' }}">
+
                 <a class="nav-link" href="{{ url('admin') }}">
                     <i class="material-icons"></i>
                     <p>{{ __('Dashboard') }}</p>
@@ -29,6 +30,8 @@
                     <p>{{ __('Notification') }}</p>
                 </a>
             </li>
+            {{-- @dd($activePage ) --}}
+
             <li class="nav-item{{ $activePage == 'customers' ? ' active' : '' }}">
                 <a class="nav-link" href="{{ route('admin.customers.index') }}">
                     <i class="material-icons"></i>
@@ -47,12 +50,14 @@
                     <p>{{ __('Upload Images') }}</p>
                 </a>
             </li> --}}
+
             <li class="nav-item{{ $activePage == 'categories' ? ' active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/categories') }}">
                     <i class="material-icons"></i>
                     <p>{{ __('Lot Categories') }}</p>
                 </a>
             </li>
+            {{-- @dd($activePage ) --}}
 
             <li class="nav-item{{ $activePage == 'lots' ? ' active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/lots') }}">
@@ -61,13 +66,12 @@
                 </a>
             </li>
 
-
-            {{-- <li class="nav-item{{ $activePage == 'lots Payments' ? ' active' : '' }}">
-                <a class="nav-link" href="{{ url('admin/lots_payment') }}">
+            <li class="nav-item{{ $activePage == 'Payment Plan' ? ' active' : '' }}">
+                <a class="nav-link" href="{{ url('admin/payment_plan') }}">
                     <i class="material-icons"></i>
-                    <p>{{ __('lots Payments') }}</p>
+                    <p>{{ __('Payments Plan') }}</p>
                 </a>
-            </li> --}}
+            </li>
 
 
 

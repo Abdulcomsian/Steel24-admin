@@ -205,9 +205,78 @@
                                                                 </p>
                                                             </td>
                                                         </tr>
+
+                                                        {{-- <tr>
+                                                            <td>
+                                                                <div class="d-flex px-2 py-1">
+                                                                    <div class="d-flex flex-column justify-content-center">
+                                                                        <h6 class="mb-0 text-sm">Paymant Plans</h6>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <p class="text-xs text-secondary mb-0">
+                                                                    {{ $lots->Payment_terms }}
+                                                                </p>
+                                                            </td>
+                                                        </tr> --}}
                                                     </tbody>
                                                 </table>
                                             </div>
+                                            
+                                            @if ($payment_term)
+                                                <h4>Payment Terms</h4>
+                                                <div class="col-12">
+                                                    <table class="table" >
+                                                        <thead>
+                                                            <tr>
+                                                                <th> Id</th>
+                                                                <th> Payment Terms</th>
+                                                                <th> Price Basis</th>
+                                                                <th> Taxes and Duties</th>
+                                                                <th> Commercial Terms</th>
+                                                                <th> Test Ceriticates</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id='tablebody'>
+                                                            @foreach ($payment_term as $payment)
+                                                                <tr>
+                                                                    <td>
+                                                                        {{ $payment->id }}
+                                                                    </td>
+                                                                    <td>
+
+                                                                        {{ $payment->Payment_Terms }}
+                                                                    </td>
+
+                                                                    <td>
+
+                                                                        {{ $payment->Price_Bases }}
+                                                                    </td>
+
+                                                                    <td>
+                                                                        {{ $payment->Texes_and_Duties }}
+
+                                                                    </td>
+
+                                                                    <td>
+
+                                                                        {{ $payment->Commercial_Terms }}
+                                                                    </td>
+
+                                                                    <td>
+
+                                                                        {{ $payment->Test_Certificate }}
+                                                                    </td>
+
+                                                                   
+                                                                    
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            @endif
 
                                             @if ($materialilist)
                                                 <h4>Materials</h4>
@@ -290,9 +359,9 @@
                                                 <a href="{{ url("admin/materialslots/{$lots->id}") }}"
                                                     class="btn btn-success">Edit Materials</a>
 
-                                                <a href="{{ url("admin/lotsterms/{$lots->id}") }}"
+                                                {{-- <a href="{{ url("admin/lotsterms/{$lots->id}") }}"
                                                     class="btn btn-success">Edit Terms
-                                                </a>
+                                                </a> --}}
 
                                                 <a href="{{ url("admin/lots/remove/{$lots->id}") }}"
                                                     onclick="return confirm('Once deleted, you will not be able to recover this Lot!?')"

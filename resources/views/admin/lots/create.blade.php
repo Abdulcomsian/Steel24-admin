@@ -133,6 +133,19 @@
                                             min="0" name="participate_fee" autocomplete="off" autofocus>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <label for="paymentId" class="col-sm-2 col-form-label">Payment Terms</label>
+                                    <div class="col-sm-7">
+                                        <select class="custom-select" id="paymentId" name="paymentId"
+                                            style="margin-top: 10px;">
+                                            @foreach ($paymentTerms as $payment)
+                                                <option value={{ $payment->id }}>{{ $payment->Payment_Terms }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
                             </div>
 
                             <!--End body-->
