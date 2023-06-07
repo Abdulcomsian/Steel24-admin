@@ -201,4 +201,8 @@ class SignUpController extends Controller
 
         return response()->json($data, 201);
     }
+
+    // public function test(){
+    //     return "hello";
+    // }
 }
