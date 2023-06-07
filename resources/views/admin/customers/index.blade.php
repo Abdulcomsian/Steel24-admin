@@ -61,16 +61,7 @@ input:checked+.slider:before {
 .slider.round:before {
     border-radius: 50%;
 }
-#DataTables_Table_0_filter input{
-    padding: 6px 15px;
-    border: 1px solid lightgrey;
-}
-#DataTables_Table_0_length select{
-    border: 1px solid #9229ad;
-    border-radius: 3px;
-    padding: 2px;
-    margin: 0 5px;
-}
+
 </style>
 <div class="content">
     <div class="container-fluid">
@@ -90,8 +81,8 @@ input:checked+.slider:before {
                                 @endif
                                 <div class="row">
                                     <div class="col-12 text-right">
-                                        <a href="{{ route('admin.customers.create') }}" class="btn btn-primary"
-                                            style="    display: inline-flex; align-items: center; font-size:15px; padding:12px 20px;">
+                                        <a href="{{ route('admin.customers.create') }}" class="btn btn-primary add_New_Button"
+                                           >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="mr-2"
                                                 fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                                                 <path fill-rule="evenodd"

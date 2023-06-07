@@ -9,13 +9,14 @@
     border: 1px solid #5E6278;
     appearance: none;
     border-radius: 0.475rem;
-    background-color:#F9F9F9;
+    background-color: #F9F9F9;
     border-color: #F9F9F9;
     color: black;
     transition: color 0.2s ease;
 }
 
-.card .card-body+.card-footer, .card .card-footer {
+.card .card-body+.card-footer,
+.card .card-footer {
     justify-content: flex-end;
 }
 
@@ -23,17 +24,27 @@
     color: #9c27b0 !important;
     background-color: #F9F9F9 !important;
 }
+
 .dataTables_filter input {
-border: 2px solid gray;
-border-radius: 5px;
+    border: 2px solid gray;
+    border-radius: 5px;
 }
-#DataTables_Table_0_filter input{
+
+#DataTables_Table_0_filter input {
     padding: 6px 15px;
     border: 1px solid lightgrey;
 }
-#DataTables_Table_0_length select{
+
+#DataTables_Table_0_length select {
     border: 1px solid #9229ad;
     border-radius: 3px;
     padding: 2px;
     margin: 0 5px;
+}
+
+.add_New_Button {
+    display: inline-flex;
+    align-items: center;
+    font-size: 15px;
+    padding: 12px 20px;
 }
