@@ -1,6 +1,7 @@
 @extends('admin.layouts.main', ['activePage' => 'posts', 'titlePage' => 'New Category'])
 
 @section('content')
+<div class="container"
     <div class="content">
         <div class="container-fluid">
             <div class="row">
@@ -9,25 +10,26 @@
                         @csrf
                         <div class="card ">
                             <!--Header-->
-                            <div class="card-header card-header-primary">
+                            <div class="card-header card-header-primary m-0">
                                 <h4 class="card-title">Categories</h4>
                             </div>
                             <!--End header-->
                             <!--Body-->
                             <div class="card-body">
-                                <div class="row">
-                                    <label for="title" class="col-sm-2 col-form-label">Title</label>
+                                <div class="form-row justify-content-center">
+                              
+                                    <!-- <label for="title" class="col-sm-2 col-form-label">Title</label> -->
                                     <div class="col-sm-7">
-                                        <input type="text" class="form-control" name="title" autocomplete="off"
+                                        <input type="text" class="form_customer" name="title" autocomplete="off" placeholder="Title"
                                             autofocus>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <label for="description" class="col-sm-2 col-form-label">Description</label>
+                               
+                                
+                                    <!-- <label for="description" class="col-sm-2 col-form-label">Description</label> -->
                                     <div class="col-sm-7">
-                                        <textarea type="text" class="form-control" name="description" autocomplete="off" autofocus></textarea>
+                                        <textarea type="text" class="form_customer mt-2" name="description" autocomplete="off" autofocus placeholder="Description"></textarea>
                                     </div>
-                                </div>
+                               
 
                                 {{-- <div class="row">
                                     <label for="categoryId" class="col-sm-2 col-form-label">Category</label>
@@ -39,20 +41,23 @@
                                         </select>
                                     </div>
                                 </div> --}}
+                                <!--Footer-->
+                                <div class="card-footer col-sm-7" style="margin-bottom:5%; margin-left:0">
+                                <a href="{{ route('admin.categories') }}" class="btn btn-primary mr-3 Back_btn_customer">Back</a>
+                                <button type="submit" class="btn btn-primary">Add</button>
+                                </div>
+                            </div>
+                            <!--End footer-->
                             </div>
 
                             <!--End body-->
 
-                            <!--Footer-->
-                            <div class="card-footer ml-auto mr-auto">
-                                <a href="{{ route('admin.categories') }}" class="btn btn-primary">Back</a>
-                                <button type="submit" class="btn btn-primary">Add</button>
-                            </div>
-                            <!--End footer-->
+                            
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+                                </div>
 @endsection
