@@ -95,7 +95,7 @@
                 {
                     data: null,
                     render: function(data, type, row) {
-                        return (`<div><a href="{{ url('admin/completelotbids/${data.id}') }}"class="btn btn-info"><i class="material-icons">person</i></a>
+                        return (`<div><a href="{{ url('admin/completelotbids/${data.id}') }}"class="btn btn-info" style="padding-top:20px"><i class="material-icons">person</i></a>
                     `);
                     },
                 }

@@ -41,7 +41,7 @@
                         <!--End body-->
                         <!--Footer-->
                         <div class="card-footer ml-auto mr-auto">
-                            <a href="{{ route('admin.customers.index') }}" class="btn btn-primary">Back</a>
+                            <a href="{{ route('admin.customers.index') }}" class="btn btn-primary mr-3 Back_btn_customer">Back</a>
                         </div>
 
                     </div>

@@ -1,6 +1,7 @@
 @extends('admin.layouts.main', ['activePage' => 'Payment Plan', 'titlePage' => 'Payment Plan'])
 
 @section('content')
+<div class="container">
     <div class="content">
         <div class="container-fluid">
             <div class="row">
@@ -53,4 +54,5 @@
             </div>
         </div>
     </div>
+</div>
 @endsection
