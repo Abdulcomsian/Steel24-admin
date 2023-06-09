@@ -13,8 +13,8 @@
                         <!--Body-->
                         <div class="card-body">
 
-                            <table  class="table">
-                                <thead>
+                            <table  class="table data-table table-striped">
+                            <thead class="text-primary text-center">
                                     <tr>
                                         <th>Id</th>
                                         <th>Action</th>
@@ -23,7 +23,7 @@
                                         <th>Date</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="text-center">
                                     @foreach ($balanceHistory as $record)
                                         <tr>
                                             <td>{{ $record->id }}</td>
@@ -51,3 +51,13 @@
         </div>
     </div>
 @endsection
+
+<script>
+  $(document).ready(function() {
+    $(".data-table").DataTable({
+      paging: true, // Enable pagination
+      searching: true, // Enable search box
+      // Add more options as needed
+    });
+  });
+</script>
