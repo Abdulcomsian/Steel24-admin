@@ -146,7 +146,7 @@
                                     </table>
                                 </div>
                                 <div class="card-footer ml-auto mr-auto">
-                                    <a href="{{ url('admin/complete_lots') }}" class="btn btn-primary">Back</a>
+                                    <a href="{{ url('admin/complete_lots') }}" class="btn btn-primary mr-3 Back_btn_customer">Back</a>
                                 </div>
                             </div>
                         </div>
