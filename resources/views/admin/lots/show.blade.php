@@ -352,7 +352,7 @@
 
                                         <div class="card-footer">
                                             <div class="button-container">
-                                                <a href="{{ url('admin/lots') }}" class="btn btn-primary">Back</a>
+                                                <a href="{{ url('admin/lots') }}" class="btn btn-primary mr-3 Back_btn_customer">Back</a>
                                                 <a href="{{ url("admin/lots/edit/{$lots->id}") }}"
                                                     class="btn btn-success">Edit</a>
 

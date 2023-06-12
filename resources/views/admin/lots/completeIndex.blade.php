@@ -19,8 +19,8 @@
 
                                
 
-                                    <div class="table-responsive">
-                                        <table class="table data-table">
+                                    <div > <!-- remove class="table-responsive" -->
+                                        <table class="table data-table table-striped">
                                             <thead class="text-primary text-center">
                                                 <th>ID</th>
                                                 <th>Title</th>
@@ -95,7 +95,7 @@
                 {
                     data: null,
                     render: function(data, type, row) {
-                        return (`<div><a href="{{ url('admin/completelotbids/${data.id}') }}"class="btn btn-info"><i class="material-icons">person</i></a>
+                        return (`<div><a href="{{ url('admin/completelotbids/${data.id}') }}"class="btn btn-info" style="padding-top:20px"><i class="material-icons">person</i></a>
                     `);
                     },
                 }

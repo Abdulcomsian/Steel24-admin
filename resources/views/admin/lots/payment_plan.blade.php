@@ -1,4 +1,9 @@
 @extends('admin.layouts.main', ['activePage' => 'Payment Plan', 'titlePage' => 'Payment Plan'])
+<style>
+    .dataTable tbody tr td {
+        padding:14px !important
+    }
+    </style>
 @section('content')
     <div class="content">
         <div class="container-fluid">
@@ -16,16 +21,22 @@
                                             {{ session('success') }}
                                         </div>
                                     @endif
-                                    <div class="table-responsive">
-                                        <!--Footer-->
-                                    {{-- <div class="card-footer ml-auto mr-auto">
+                                     <!--Footer-->
+                                     <div class="row">
+                                        <div class="col-12 text-right">
+                                     {{-- <div class="card-footer ml-auto mr-auto">
                                         <a href="{{ url('admin/lots') }}" class="btn btn-primary">Back</a> --}}
-                                        <a href="{{ url('admin/addpayment_plan') }}" class="btn btn-sm btn-facebook">Add</a>
+                                        <a href="{{ url('admin/addpayment_plan') }}" class="btn btn-primary add_New_Button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="mr-2" fill="currentColor" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"></path>
+                                            </svg>New</a>
                                     </div>
+                                     </div>
                                     <!--End footer-->
+                                    <!-- <div class="table-responsive"> -->
+                                       
                                     <div class="table-responsive">
-                                        <table class="table data-table">
-                                            <thead class="text-primary text-center">                                            <thead>
+                                        <table class="table data-table table-striped">
+                                            <thead class="text-primary text-center">                                           
                                                 <tr>
                                                     <th>ID</th>
                                                     <th>Payment Terms</th>
@@ -35,18 +46,18 @@
                                                     <th>Test Certificate</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody class="text-center">
                                                 @php
                                                     $count =1;
                                                 @endphp
                                                 @foreach($paymentTerms as $paymentTerm)
                                                     <tr>
-                                                        <td>{{ $count }}</td>
-                                                        <td>{{ $paymentTerm->Payment_Terms }}</td>
-                                                        <td>{{ $paymentTerm->Price_Bases }}</td>
-                                                        <td>{{ $paymentTerm->Texes_and_Duties }}</td>
-                                                        <td>{{ $paymentTerm->Commercial_Terms }}</td>
-                                                        <td>{{ $paymentTerm->Test_Certificate }}</td>
+                                                        <td style="padding:14px !important">{{ $count }}</td>
+                                                        <td style="padding:14px !important">{{ $paymentTerm->Payment_Terms }}</td>
+                                                        <td style="padding:14px !important">{{ $paymentTerm->Price_Bases }}</td>
+                                                        <td style="padding:14px !important">{{ $paymentTerm->Texes_and_Duties }}</td>
+                                                        <td style="padding:14px !important">{{ $paymentTerm->Commercial_Terms }}</td>
+                                                        <td style="padding:14px !important">{{ $paymentTerm->Test_Certificate }}</td>
                                                     </tr>
                                                     @php
                                                         $count++;
@@ -96,4 +107,13 @@
         display: none !important;
     }
 </style>
+<script>
+  $(document).ready(function() {
+    $('.data-table').DataTable({
+    paging: true, // Enable pagination
+      searching: true, // Enable search box
+      // Add more options as needed
+    });
+  });
+</script>
 

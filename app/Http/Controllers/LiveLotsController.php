@@ -47,7 +47,7 @@ class LiveLotsController extends Controller
     }
 
     // Start Lot Make status Live
-    public function startLots($id,)
+    public function startLots($id)
     {
         $lot = lots::where('id', $id)->update(['lot_status' => 'live']);
         payments::where('lotId', $id)->delete();
@@ -160,7 +160,7 @@ class LiveLotsController extends Controller
 
 
     // Pause Lot Make status Pause
-    public function poseLots($id,)
+    public function poseLots($id)
     {
         $lot = lots::where('id', $id)->update(['lot_status' => 'pause']);
         // $this->pushonfirbase();

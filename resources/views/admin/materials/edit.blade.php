@@ -16,14 +16,14 @@
                                 @endforeach
                             </ul>
                             <!--Header-->
-                            <div class="card-header card-header-primary">
+                            <div class="card-header card-header-primary mx-0">
                                 <h4 class="card-title">Edit Materials</h4>
                             </div>
                             <!--End header-->
                             <!--Body-->
                             <div class="card-body">
 
-                                <input type="hidden" class="form-control" id="lotid" name="lotid"
+                                <input type="hidden" class="form_customer" id="lotid" name="lotid"
                                     value="{{ $lots->id }}" />
 
 
@@ -103,7 +103,7 @@
                             <!--End body-->
                             <!--Footer-->
                             <div class="card-footer ml-auto mr-auto">
-                                <a href="{{ url('admin/lots/'.$lots->id) }}" class="btn btn-primary">Back</a>
+                                <a href="{{ url('admin/lots/'.$lots->id) }}" class="btn btn-primary mr-3 Back_btn_customer">Back</a>
                                 <button type="submit" class="btn btn-primary">Update</button>
                             </div>
                         </div>

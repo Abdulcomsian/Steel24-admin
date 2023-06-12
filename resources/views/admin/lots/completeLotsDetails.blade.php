@@ -118,15 +118,15 @@
                                     </div>
                                 </div>
                                 <div class="table-responsive">
-                                    <table class="table">
-                                        <thead class="text-primary">
+                                <table class="table data-table table-striped">
+                                            <thead class="text-primary text-center">     
                                             <th>ID</th>
                                             <th>Last bid</th>
                                             <th>Bid amount </th>
                                             <th>Time</th>
                                             <th>Actions</th>
                                         </thead>
-                                        <tbody id="msg">
+                                        <tbody id="msg" class="text-center">
                                             @foreach ($lotbids as $key => $bid)
                                                 <tr>
                                                     <th scope="row">{{ $bid->id }}</th>
@@ -146,7 +146,7 @@
                                     </table>
                                 </div>
                                 <div class="card-footer ml-auto mr-auto">
-                                    <a href="{{ url('admin/complete_lots') }}" class="btn btn-primary">Back</a>
+                                    <a href="{{ url('admin/complete_lots') }}" class="btn btn-primary mr-3 Back_btn_customer">Back</a>
                                 </div>
                             </div>
                         </div>
@@ -157,3 +157,30 @@
     </div>
     </div>
 @endsection
+<link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<style>
+    .sorting:before,
+    .sorting_asc:before,
+    .sorting_desc:before,
+    .sorting:after,
+    .sorting_asc:after,
+    .sorting_desc:after,
+    .sorting::after {
+        display: none !important;
+    }
+</style>
+<script>
+  $(document).ready(function() {
+    $('.data-table').DataTable({
+    paging: true, // Enable pagination
+      searching: true, // Enable search box
+      // Add more options as needed
+    });
+  });
+</script>
