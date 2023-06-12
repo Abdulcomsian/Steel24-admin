@@ -89,18 +89,18 @@
                                                             <h3>Restart lot</h3>
                                                             <div class="row ">
                                                                 <label for="ReStartDate"
-                                                                    class="col-sm-2 col-form-label">Start
+                                                                    class="col-sm-2 col-form-label mt-3">Start
                                                                     time</label>
                                                                 <div class="col-sm-7">
-                                                                    <input type="datetime-local" class="form-control"
+                                                                    <input type="datetime-local" class="form_customer"
                                                                         id="ReStartDate" name="ReStartDate" required>
                                                                 </div>
                                                             </div>
                                                             <div class="row ">
-                                                                <label for="ReEndDate" class="col-sm-2 col-form-label">End
+                                                                <label for="ReEndDate" class="col-sm-2 col-form-label mt-3">End
                                                                     time</label>
                                                                 <div class="col-sm-7">
-                                                                    <input type="datetime-local" class="form-control"
+                                                                    <input type="datetime-local" class="form_customer"
                                                                         id="ReEndDate" name="ReEndDate" required>
                                                                 </div>
                                                             </div>

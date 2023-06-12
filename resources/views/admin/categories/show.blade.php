@@ -77,7 +77,7 @@
                                         <div class="card-footer">
                                             <div class="button-container">
                                                 <a href="{{ url('admin/categories/') }}"
-                                                    class="btn btn-sm btn-primary">Back</a>
+                                                    class="btn btn-sm btn-primary Back_btn_customer">Back</a>
                                                 <a href="{{ url('admin/categories/' . $categories->id . '/edit') }}"
                                                     class="btn btn-sm btn-success">Update</a>
                                                 <a href="javascript:void" id={{ $categories->id }}
