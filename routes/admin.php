@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\PaymentsController;
 use App\Http\Controllers\LiveLotsController;
 use App\Http\Controllers\Admin\AccountNotificationController;
+use App\Http\Controllers\CsvImportController;
 
 // Dashboard
 Route::get('/', 'HomeController@index')->name('home');
@@ -74,6 +75,14 @@ Route::get('/lots', [LotsController::class, 'index'])->name('lots');
 
 
 Route::get('/lots/create', [LotsController::class, 'create'])->name('create');
+// import lots
+Route::post('/lots/import-csv', [CsvImportController::class, 'import']);
+Route::get('/lots/import-csv', [CsvImportController::class, 'showForm'])->name('import.showForm');
+
+
+// Route::get('import-csv', [CsvImportController::class, 'showForm'])->name('import.showForm');
+// Route::post('/lots/import-csv', [CsvImportController::class, 'import'])->name('import.csv');
+
 Route::post('/newlots', [LotsController::class, 'store']);
 Route::get('/lots/{lots}', [LotsController::class, 'show']);
 Route::get('/lots/edit/{lots}', [LotsController::class, 'edit']);

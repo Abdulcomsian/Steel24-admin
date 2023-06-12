@@ -40,6 +40,7 @@
             color:
         }
     </style>
+    <div class="container">
     <div class="content">
         <div class="container-fluid">
             <div class="row">
@@ -48,29 +49,25 @@
                         @csrf
                         <div class="card ">
                             <!--Header-->
-                            <div class="card-header card-header-primary">
+                            <div class="card-header card-header-primary m-0">
                                 <h4 class="card-title">Lots</h4>
                             </div>
                             <!--End header-->
                             <!--Body-->
                             <div class="card-body">
-                                <div class="row">
-                                    <label for="title" class="col-sm-2 col-form-label">Title</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" id="title" name="title" required>
+                            <div class="form-row " >
+                                    <!-- <label for="title" class="col-sm-2 col-form-label">Title</label> -->
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form_customer" id="title" name="title" placeholder="Title" required>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <label for="description" class="col-sm-2 col-form-label">Description</label>
-                                    <div class="col-sm-7">
-                                        <textarea class="form-control" id="description" name="description"> {{ $lots ? $lots->description : '' }} </textarea>
+                                    <!-- <label for="description" class="col-sm-2 col-form-label">Description</label> -->
+                                    <div class="col-sm-4">
+                                        <textarea class="form_customer" placeholder="Description" id="description" name="description" >  {{ $lots ? $lots->description :'' }} </textarea>
                                     </div>
-                                </div>
 
-                                <div class="row">
-                                    <label for="categoryId" class="col-sm-2 col-form-label">Category</label>
-                                    <div class="col-sm-7">
-                                        <select class="custom-select" id="categoryId" name="categoryId"
+                                    <!-- <label for="categoryId" class="col-sm-2 col-form-label">Category</label> -->
+                                    <div class="col-sm-4">
+                                        <select class="custom-select" id="categoryId" name="categoryId" 
                                             style="margin-top: 10px;">
                                             @foreach ($categorys as $category)
                                                 <option value={{ $category->id }}>{{ $category->title }}
@@ -78,53 +75,41 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>
 
-                                <div class="row">
-                                    <label for="seller" class="col-sm-2 col-form-label">Seller</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" id="seller" name="Seller" required>
+                                    <!-- <label for="seller" class="col-sm-2 col-form-label">Seller</label> -->
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form_customer" id="seller" name="Seller" placeholder="Seller" required>
                                     </div>
-                                </div>
+                                    <!-- <label for="plant" class="col-sm-2 col-form-label">Plant</label> -->
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form_customer" id="plant" name="Plant" placeholder="Plant" required>
+                                    </div>
+                                    <!-- <label for="materialLocation" class="col-sm-2 col-form-label">Material Location</label> -->
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form_customer" id="materialLocation"
+                                            name="materialLocation" placeholder="Material Location" required>
+                                    </div>
+                                    <!-- <label for="quantity" class="col-sm-2 col-form-label">Quantity</label> -->
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form_customer" id="quantity" name="Quantity" placeholder="Quantity" required>
+                                    </div>
 
-                                <div class="row">
-                                    <label for="plant" class="col-sm-2 col-form-label">Plant</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" id="plant" name="Plant" required>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <label for="materialLocation" class="col-sm-2 col-form-label">Material Location</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" id="materialLocation"
-                                            name="materialLocation" required>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <label for="quantity" class="col-sm-2 col-form-label">Quantity</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control" id="quantity" name="Quantity" required>
-                                    </div>
-                                </div>
-
-                                <div class="row">
-                                    <label for="startDate" class="col-sm-2 col-form-label">Start Date</label>
-                                    <div class="col-sm-7">
-                                        <input type="datetime-local" class="form-control" id="startDate" name="StartDate"
+                                    <!-- <label for="startDate" class="col-sm-2 col-form-label">Start Date</label> -->
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form_customer" id="startDate" name="StartDate"  placeholder="Start Date"
+                    onfocus="(this.type='datetime-local')" onblur="(this.type='text')"
                                             required>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <label for="endDate" class="col-sm-2 col-form-label">End Date</label>
-                                    <div class="col-sm-7">
-                                        <input type="datetime-local" class="form-control" id="endDate" name="EndDate"
+                                    <!-- <label for="endDate" class="col-sm-2 col-form-label">End Date</label> -->
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form_customer" id="endDate" name="EndDate" placeholder="End Date"
+                    onfocus="(this.type='datetime-local')" onblur="(this.type='text')"
                                             required>
                                     </div>
-                                </div>
 
-                                {{-- <div class="row">
-                                    <label for="material" class="col-sm-2 col-form-label">Materials</label>
-                                    <div class="col-sm-7">
+                                {{-- 
+                                    <!-- <label for="material" class="col-sm-2 col-form-label">Materials</label> -->
+                                    <div class="col-sm-4">
                                         <select id="material" name="material[]" class="selectpicker" multiple
                                             data-width="100%" title="Materials">
                                             <optgroup label="Meses de lactancia...">
@@ -138,26 +123,22 @@
                                             </optgroup>
                                         </select> 
                                     </div>
-                                </div> --}}
+                                 --}}
 
-                                <div class="row">
-                                    <label for="startPrice" class="col-sm-2 col-form-label">Start Price</label>
-                                    <div class="col-sm-7">
-                                        <input type="number" class="form-control" id="startPrice" name="Price"
+                                    <!-- <label for="startPrice" class="col-sm-2 col-form-label">Start Price</label> -->
+                                    <div class="col-sm-4">
+                                        <input type="number" class="form_customer" id="startPrice" name="Price" placeholder="Start Price"
                                             min="0" autocomplete="off" autofocus>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <label for="participate_fee" class="col-sm-2 col-form-label">Participation Fee</label>
-                                    <div class="col-sm-7">
-                                        <input type="number" class="form-control" step="0.01" id="participate_fee"
+                                    <!-- <label for="participate_fee" class="col-sm-2 col-form-label">Participation Fee</label> -->
+                                    <div class="col-sm-4">
+                                        <input type="number" class="form_customer" step="0.01" id="participate_fee" placeholder="Participation Fee"
                                             min="0" name="participate_fee" autocomplete="off" autofocus>
                                     </div>
-                                </div>
+                                
 
-                                <div class="row">
-                                    <label for="paymentId" class="col-sm-2 col-form-label">Payment Terms</label>
-                                    <div class="col-sm-7">
+                                    <!-- <label for="paymentId" class="col-sm-2 col-form-label">Payment Terms</label> -->
+                                    <div class="col-sm-4">
                                         <select class="custom-select" id="paymentId" name="paymentId"
                                             style="margin-top: 10px;">
                                             @foreach ($paymentTerms as $payment)
@@ -166,24 +147,24 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                </div>
-
-                            </div>
-
-                            <!--End body-->
-
-                            <!--Footer-->
-                            <div class="card-footer ml-auto mr-auto">
-                                <a href="{{ url('admin/lots') }}" class="btn btn-primary">Back</a>
+                                     <!--Footer-->
+                            <div class="card-footer ml-auto mr-auto col-sm-12">
+                                <a href="{{ url('admin/lots') }}" class="btn btn-primary mr-3 Back_btn_customer">Back</a>
                                 <button type="submit" class="btn btn-primary">Save And Add Material</button>
                             </div>
                             <!--End footer-->
+                                    </div>
+                            </div>
+                            <!--End body-->
+
+                           
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+                                </div>
 @endsection
 
 <script>

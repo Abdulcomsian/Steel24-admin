@@ -19,11 +19,16 @@
                                     <div class="row">
                                         <div class="col-12 text-right">
                                             <a href="{{ url('admin/categories/create') }}"
-                                                class="btn btn-sm btn-facebook">Add</a>
+                                            class="btn btn-primary add_New_Button"
+                                           ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="mr-2"
+                                                fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd"
+                                                    d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                                            </svg>New</a>
                                         </div>
                                     </div>
-                                    <div class="table-responsive">
-                                        <table class="table data-table">
+                                    <div ><!-- remove class="table-responsive" -->
+                                        <table class="table data-table table-striped">
                                             <thead class="text-primary text-center">
                                                 <th>ID</th>
                                                 <th>Title</th>

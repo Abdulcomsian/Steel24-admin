@@ -22,8 +22,8 @@
                                                 class="btn btn-sm btn-facebook">Add</a>
                                         </div> --}}
                                     </div>
-                                    <div class="table-responsive">
-                                        <table class="table data-table">
+                                    <div ><!-- remove class="table-responsive"-->
+                                        <table class="table data-table table-striped">
                                             <thead class="text-primary text-center">
                                                 <th>Lot</th>
                                                 <th>Customer</th>

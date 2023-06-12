@@ -160,7 +160,7 @@ class LiveLotsController extends Controller
 
 
     // Pause Lot Make status Pause
-    public function poseLots($id,)
+    public function poseLots($id)
     {
         $lot = lots::where('id', $id)->update(['lot_status' => 'pause']);
         // $this->pushonfirbase();
