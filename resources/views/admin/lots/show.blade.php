@@ -6,7 +6,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <!--Header-->
-                        <div class="card-header card-header-primary">
+                        <div class="card-header card-header-primary m-0">
                             <h4 class="card-title">Lots</h4>
                         </div>
                         <!--End header-->
@@ -24,12 +24,79 @@
                                                 <div class="block block-three"></div>
                                                 <div class="block block-four"></div>
                                                 <a href="#">
-                                                    <h5 class="title mt-3">Lot Name : <small>{{ $lots->title }}</small>
+                                                    <h5 class="title mt-3 " style="text-align:center ; color:black !important">Lot Name : <small>{{ $lots->title }}</small>
                                                     </h5>
                                                 </a>
 
+                                                <div class="form-row justify-content-around mt-4">
+                                                    <div class="col-md-5">
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                            <h6 >Description</h6>
+                                                            <h6>
+                                                            {{ $lots->description }}</h6>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                        <h6>Category</h6>
+                                                            <h6>
+                                                            {{ $lots->categories->title }}</h6>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                        <h6>Material Location</h6>
+                                                            <h6>
+                                                            {{ $lots->materialLocation }}</h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                            <h6 >LOT QUANTITY</h6>
+                                                            <h6>
+                                                            {{ $lots->Quantity }}</h6>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                        <h6>START DATE</h6>
+                                                            <h6>
+                                                            {{ $lots->StartDate }}</h6>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                        <h6>END DATE</h6>
+                                                            <h6>
+                                                            {{ $lots->EndDate }}</h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                            <h6 >LOT PRICE</h6>
+                                                            <h6>
+                                                            {{ $lots->Price }}</h6>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                        <h6>LOT STATUS</h6>
+                                                            <h6>
+                                                            {{ $lots->lot_status }}</h6>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                        <h6>SELLER</h6>
+                                                            <h6>
+                                                            {{ $lots->Seller }}</h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                            <h6 >PLANT</h6>
+                                                            <h6>
+                                                            {{ $lots->Plant }}</h6>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                        <h6>PARTICIPATION FEES</h6>
+                                                            <h6>
+                                                            {{ $lots->participate_fee }}</h6>
+                                                        </div>
+                                                       
+                                                    </div>
+                                                </div>
+
                                                 <table class="table align-items-center mb-0">
-                                                    <thead>
+                                                    <!-- <thead>
                                                         <tr>
                                                             <th
                                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -204,7 +271,7 @@
                                                                     {{ $lots->participate_fee }}
                                                                 </p>
                                                             </td>
-                                                        </tr>
+                                                        </tr> -->
 
                                                         {{-- <tr>
                                                             <td>
@@ -225,7 +292,7 @@
                                             </div>
                                             
                                             @if ($payment_term)
-                                                <h4>Payment Terms</h4>
+                                                <h4 class="Payment_terms">Payment Terms</h4>
                                                 <div class="col-12">
                                                     <table class="table" >
                                                         <thead>
@@ -279,7 +346,7 @@
                                             @endif
 
                                             @if ($materialilist)
-                                                <h4>Materials</h4>
+                                                <h4 class="Payment_terms">Materials</h4>
                                                 <div class="col-12">
                                                     <table class="table" >
                                                         <thead>
@@ -352,7 +419,7 @@
 
                                         <div class="card-footer">
                                             <div class="button-container">
-                                                <a href="{{ url('admin/lots') }}" class="btn btn-primary mr-3 Back_btn_customer">Back</a>
+                                                <a href="{{ url('admin/lots') }}" class="btn btn-primary  Back_btn_customer">Back</a>
                                                 <a href="{{ url("admin/lots/edit/{$lots->id}") }}"
                                                     class="btn btn-success">Edit</a>
 

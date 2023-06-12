@@ -6,7 +6,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <!--Header-->
-                        <div class="card-header card-header-primary">
+                        <div class="card-header card-header-primary m-0">
                             <h4 class="card-title">Customers</h4>
                         </div>
                         <!--End header-->
@@ -24,8 +24,15 @@
                                                 <div class="block block-three"></div>
                                                 <div class="block block-four"></div>
                                                 <div class="d-flex justify-content-between">
-                                                    <img class="avatar" src="{{ asset('/img/default-avatar.png') }}"
+                                                    <div class="d-flex" style="margin-left:3%">
+                                                        <img class="avatar" src="{{ asset('/img/default-avatar.png') }}"
                                                         alt="">
+                                                        <div >
+                                                        <p class="text-xs text-secondary mb-0 ml-4 font-weight-Bold" style="color:black !important">{{ $customer->name }}</p>
+                                                        <p class="text-xs text-secondary mb-0 ml-4 ">
+                                                                    {{ $customer->email }}</p>
+</div>
+                                                    </div>
                                                     <h5 class="title mt-3">Registered at :
                                                         <small>{{ $customer->created_at }}</small>
                                                     </h5>
@@ -46,8 +53,85 @@
                                                         </a>
                                                     </div>
                                                 </div>
+                                                <div class="form-row justify-content-around mt-4">
+                                                    <div class="col-md-5">
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                            <h6 >Contact no.</h6>
+                                                            <h6>
+                                                                    {{ $customer->contactNo }}</h6>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                        <h6>Aadhaar no.</h6>
+                                                            <h6>
+                                                            {{ $customer->adharNo }}</h6>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                        <h6>GST no.</h6>
+                                                            <h6>
+                                                            {{ $customer->GSTNo }}</h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                        <h6>PAN no.</h6>
+                                                            <h6>
+                                                            {{ $customer->PanNo }}</h6>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                        <h6>Address</h6>
+                                                            <h6>
+                                                            {{ $customer->address }}</h6>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                        <h6>City</h6>
+                                                            <h6>
+                                                            {{ $customer->city }}</h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                        <h6>STATE</h6>
+                                                            <h6>
+                                                            {{ $customer->state }}</h6>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                        <h6>PINCODE</h6>
+                                                            <h6>
+                                                            {{ $customer->pincode }}</h6>
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                        <h6>BALANCE</h6>
+                                                            <h6>
+                                                            @if ($customerBalance)
+                                                                        {{ $customerBalance->finalAmount }}
+                                                                    @endif</h6>
+                                                        </div>
+                                                            <div >
+                                                            <div class="d-flex justify-content-between mt-3">
+                                                            <h6>GST Bill</h6>
+                                                            <img src="{{ url('files/' . $customer->gst_img) }}"
+                                                                        style="width:120px; height:120px; margin-top:10px;" />
+                                                            </div>
+                                                            <div>
+                                                       
+                                                    </div>
+                                                    </div>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="d-flex justify-content-between mt-3">
+                                                        <h6>Adhar Card</h6>
+                                                        <img src="{{ url('files/' . $customer->aadhar_img) }}"
+                                                                    style="width:120px; height:120px; margin-top:10px;" />
+                                                        </div>
+                                                        <div class="d-flex justify-content-between mt-3">
+                                                        <h6>PAN Card</h6>
+                                                        <img src="{{ url('files/' . $customer->pan_img) }}"
+                                                                    style="width:120px; height:120px; margin-top:10px;" />
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <table class="table align-items-center mb-0">
-                                                    <thead>
+                                                    <!-- <thead>
                                                         <tr>
                                                             <th
                                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -56,9 +140,9 @@
                                                                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
                                                                 Details</th>
                                                         </tr>
-                                                    </thead>
+                                                    </thead> -->
                                                     <tbody>
-                                                        <tr>
+                                                        <!-- <tr>
                                                             <td>
                                                                 <div class="d-flex px-2 py-1">
                                                                     <div class="d-flex flex-column justify-content-center">
@@ -83,8 +167,8 @@
                                                                 <p class="text-xs text-secondary mb-0">
                                                                     {{ $customer->email }}</p>
                                                             </td>
-                                                        </tr>
-                                                        <tr>
+                                                        </tr> -->
+                                                        <!-- <tr>
                                                             <td>
                                                                 <div class="d-flex px-2 py-1">
                                                                     <div class="d-flex flex-column justify-content-center">
@@ -204,8 +288,8 @@
                                                                     @endif
                                                                 </p>
                                                             </td>
-                                                        </tr>
-                                                        <tr>
+                                                        </tr> -->
+                                                        <!-- <tr>
                                                             <td>
                                                                 <div class="d-flex px-2 py-1">
                                                                     <div class="d-flex flex-column justify-content-center">
@@ -243,7 +327,7 @@
                                                                 <img src="{{ url('files/' . $customer->aadhar_img) }}"
                                                                     style="width:150px; height:150px;" />
                                                             </td>
-                                                        </tr>
+                                                        </tr> -->
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -253,7 +337,7 @@
                                         <div class="card-footer">
                                             <div class="button-container">
                                                 <a href="{{ route('admin.customers.index') }}"
-                                                    class="btn btn-primary btn-sm">Back</a>
+                                                    class="btn btn-primary btn-sm Back_btn_customer">Back</a>
                                                 <a href="{{ url("admin/customers/edit/{$customer->id}") }}"
                                                     class="btn btn-success btn-sm">Update</a>
                                                 <a href="{{ url("admin/customers/destroy/{$customer->id}") }}"

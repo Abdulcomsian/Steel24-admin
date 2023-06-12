@@ -68,3 +68,13 @@
     font-size: 15px;
     padding: 12px 20px;
 }
+
+.card .author .avatar {
+    width: 70px;
+    height: 70px;
+}
+.Payment_terms {
+    margin-top: 2%;
+    background: #f0f2fd;
+    padding: 15px;
+}
