@@ -23,6 +23,8 @@
                                             <a href="{{ url('admin/users-send-email') }}"
                                                 class="btn btn-info btn-sm send-email">Send Email</a>
                                             <a href="{{ url('admin/lots/create') }}" class="btn btn-sm btn-facebook">Add</a>
+
+                                            <a href="{{ url('admin/lots/import-csv') }}" class="btn btn-sm btn-facebook">Import Lots</a>
                                         </div>
                                         {{-- <select id='status' class="form-control" style="width: 200px">
                                             <option value="">--Select Status--</option>
