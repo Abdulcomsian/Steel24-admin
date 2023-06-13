@@ -177,6 +177,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class
 
     ],
 
@@ -239,6 +240,7 @@ return [
         'account_name' => env('ACCOUNT_NAME', null),
         'currency' => env('INR', null),
         'seceret_key' => env('SECRET_KEY', null),
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class
     ],
 
 ];
