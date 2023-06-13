@@ -14,7 +14,7 @@ class AddLotsIdInMaterialsTable extends Migration
     public function up()
     {
         Schema::table('materials', function (Blueprint $table) {
-            $table->foreignId('lots_id')->constrained();
+            $table->foreignId('lot_id')->constrained();
         });
     }
 

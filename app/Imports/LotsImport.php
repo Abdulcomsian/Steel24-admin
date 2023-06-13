@@ -22,9 +22,8 @@ class LotsImport implements WithHeadingRow, SkipsOnFailure, ToCollection
 
     public function collection(Collection $rows)
     {
-        foreach ($rows as $key=>$row) 
+        foreach ($rows as $row) 
         {
-            // dump($row);
             if(is_numeric($row['lot_no']))
             {
                 $lot = new lots();
@@ -35,55 +34,44 @@ class LotsImport implements WithHeadingRow, SkipsOnFailure, ToCollection
                 $lot->Quantity    = $row['quantity'];
                 $lot->StartDate    = (date('Y-m-d H:m:i', strtotime($row['start_date'])));
                 $lot->EndDate    = (date('Y-m-d H:m:i', strtotime($row['end_date'])));
-                // $lot->EndDate    = $row['end_date'];
                 $lot->save();
             }
-        }
-        
+            if($row['lot_no']=='Batch No')
+            {
+                continue;
+            }
+            if($row['lot_no'] == "Lot No")
+            {
+                continue;
+            }
+            if(is_numeric($row['lot_no']))
+            {
+                continue;
+                
+            }
+            if(is_null($row['lot_no']))
+            {
+                continue;
+            }
+            
+            $material = new materials();
+            $material->thick = $row['material_location'] ?? '';
+            $material->width = $row['product'] ?? '';
+            $material->plantNo = $row['16'] ?? '';
+            $material->qty = $row['end_date'] ?? '';
+            $material->grade = $row['quantity'] ?? '';
+            $material->JSWgrade = $row['description'] ?? '';
+            $material->coilLength = $row['category'] ?? '';
+            $material->tinTemper = $row['material'] ?? '';
+            $material->passivation = $row['14'] ?? '';
+            $material->coldTreatment = $row['15'] ?? '';
+            $material->storageLocation = $row['17'] ?? '';
+            $material->plantLotNo = $row['18'] ?? '';
+            $material->lot_id = $lot->id;
+            $material->save();
+        }        
     }
-    /**
-    * @param array $row
-    *
-    * @return \Illuminate\Database\Eloquent\Model|null
-    */
-    // public function model(array $row)
-    // {
-    //     if(!array_filter($row)) {
-    //         return null;
-    //     }  
-    //     dump($row);
-        // dump($row['lot_no'],is_numeric($row['lot_no']));  
-        // dd($row['start_date']);
-        // $dtime = strtotime("d-m-y m:i:h", $row['start_date']);
-        // $timestamp = $dtime->getTimestamp();
-        // dd($dtime);
-        // $date = date($row['start_date']);
-        // $newDate = Carbon::createFromFormat('Y-m-d H:i:s', $date)
-        //                             ->format('m/d/Y');
-        // dd($row['start_date']->format('d-m-Y'));
-        // if(is_numeric($row['lot_no']))
-        // {
-        //     $lot = new lots();
-        //     $lot->description = $row['description'] ?? '';
-        //     $lot->Seller = $row['seller'] ?? '';
-        //     $lot->Category = $row['category'] ?? '';
-        //     $lot->Plant    = $row['plant'];
-        //     $lot->Quantity    = $row['quantity'];
-        //     $lot->StartDate    = (date('Y-m-d H:m:i', strtotime($row['start_date'])));
-        //     $lot->EndDate    = (date('Y-m-d H:m:i', strtotime($row['end_date'])));
-        //     // $lot->EndDate    = $row['end_date'];
-        //     $lot->save();
-        // }
-        // $lots = new lots([
-        //     'seller'    => $row['seller'],
-        //     'plant'    => $row['plant'],
-        //     'material_location'    => $row['material_location'],
-        //     'quantity'    => $row['quantity'],
-        //     'start_date'    => $row['start_date'],
-        //     'end_date'    => $row['end_date'],
-        // ]);
-        // return $lots;
-    // }
+
 
     public function onFailure(Failure ...$failures)
     {
