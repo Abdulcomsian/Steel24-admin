@@ -24,9 +24,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
-});
-$api = app('Dingo\Api\Routing\Router');
-$api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1\Admin'], function ($api) {
+    });
+    $api = app('Dingo\Api\Routing\Router');
+    $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1\Admin'], function ($api) {
 
     $api->post('auth/loginWithGoolge', 'Auth\SignUpController@loginWithGoolge');
     $api->post('auth/signUp', 'Auth\SignUpController@signUp');

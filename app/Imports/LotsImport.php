@@ -27,15 +27,15 @@ class LotsImport implements WithHeadingRow, SkipsOnFailure, ToCollection
                 {
                     $lot = new lots();
 
-                    $lot->description   = $row['description'] ?? 'NULL';
-                    $lot->title           = $row['lot_no'] ?? 'NULL';
-                    $lot->Seller        = $row['seller'] ?? 'NULL';
+                    $lot->description = $row['description'] ?? 'NULL';
+                    $lot->title = $row['lot_no'] ?? 'NULL';
+                    $lot->Seller = $row['seller'] ?? 'NULL';
                     // $lot->Category      = $row['category'] ?? 'NULL';
-                    $lot->Plant         = $row['plant'] ?? 'NULL';
-                    $lot->Quantity      = $row['quantity'] ?? 'NULL';
-                    $lot->lot_status    = "Pending";
-                    $lot->StartDate     = (date('Y-m-d H:m:i', strtotime($row['start_date']))) ?? 'NULL';
-                    $lot->EndDate       = (date('Y-m-d H:m:i', strtotime($row['end_date']))) ?? 'NULL';
+                    $lot->Plant = $row['plant'] ?? 'NULL';
+                    $lot->Quantity = $row['quantity'] ?? 'NULL';
+                    $lot->lot_status = "Pending";
+                    $lot->StartDate = (date('Y-m-d H:m:i', strtotime($row['start_date']))) ?? 'NULL';
+                    $lot->EndDate = (date('Y-m-d H:m:i', strtotime($row['end_date']))) ?? 'NULL';
                     $lot->materialLocation = $row['material_location'] ?? '';
                     $lot->Price = $row['start_price'] ?? '';
                     // Check if the category exists
@@ -136,26 +136,26 @@ class LotsImport implements WithHeadingRow, SkipsOnFailure, ToCollection
                 // }
 
                 $material = new materials();
-                $material->title            = $row['seller'] ?? 'NULL';
-                $material->uid              = $row['lot_no'] ?? 'NULL';
-                $material->thick            = $row['material_location'] ?? 'NULL';
-                $material->width            = $row['product'] ?? 'NULL';
-                $material->plantNo          = $row['16'] ?? 'NULL';
-                $material->qty              = $row['end_date'] ?? 'NULL';
-                $material->grade            = $row['quantity'] ?? 'NULL';
-                $material->JSWgrade         = $row['description'] ?? 'NULL';
-                $material->coilLength       = $row['category'] ?? 'NULL';
-                $material->tinTemper        = $row['material'] ?? 'NULL';
-                $material->passivation      = $row['14'] ?? 'NULL';
-                $material->coldTreatment    = $row['15'] ?? 'NULL';
-                $material->storageLocation  = $row['17'] ?? 'NULL';
-                $material->plantLotNo       = $row['18'] ?? 'NULL';
-                $material->qualityRemark    = $row['24'] ?? 'NULL';
-                $material->heatNo           = $row['22'] ?? 'NULL';
-                $material->majorDefect      = $row['21'] ?? 'NULL';
-                $material->coating          = $row['start_price'] ?? 'NULL';
-                $material->eqSpeci          = $row['auction'] ?? 'NULL';
-                $material->lot_id           = $lot->id;
+                $material->title = $row['seller'] ?? 'NULL';
+                $material->uid = $row['lot_no'] ?? 'NULL';
+                $material->thick = $row['material_location'] ?? 'NULL';
+                $material->width = $row['product'] ?? 'NULL';
+                $material->plantNo = $row['16'] ?? 'NULL';
+                $material->qty = $row['start_date'] ?? 'NULL';
+                $material->grade = $row['quantity'] ?? 'NULL';
+                $material->JSWgrade = $row['description'] ?? 'NULL';
+                $material->coilLength = $row['category'] ?? 'NULL';
+                $material->tinTemper = $row['material'] ?? 'NULL';
+                $material->passivation = $row['14'] ?? 'NULL';
+                $material->coldTreatment = $row['15'] ?? 'NULL';
+                $material->storageLocation = $row['17'] ?? 'NULL';
+                $material->plantLotNo = $row['18'] ?? 'NULL';
+                $material->qualityRemark = $row['24'] ?? 'NULL';
+                $material->heatNo = $row['22'] ?? 'NULL';
+                $material->majorDefect = $row['21'] ?? 'NULL';
+                $material->coating = $row['start_price'] ?? 'NULL';
+                $material->eqSpeci = $row['auction'] ?? 'NULL';
+                $material->lot_id = $lot->id;
                 $material->save();
                     }
         }
