@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\LotsImport;
 use App\Models\lots;
+use Exception;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -19,7 +20,7 @@ class CsvImportController extends Controller
         try {
             Excel::import(new LotsImport(), $request->file('csv_file'));
     
-            // dd("done");
+            dd("done");
             // dd($excel_import);
             // if ($request->hasFile('csv_file')) {
             //     $path = $request->file('csv_file')->getRealPath();
@@ -59,11 +60,11 @@ class CsvImportController extends Controller
             //     return view('admin.lots.import-csv', compact('lotsData'));
             // }
     
-            return "CSV file is found.";
+            // return "CSV file is found.";
         } 
-        catch (\Throwable $e) 
+        catch (Exception $ex) 
         {
-            return "CSV file is not found.";
+            return "CSV file is not found.".$ex->getMessage();
         }
     }
 }
