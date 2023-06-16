@@ -157,7 +157,7 @@ class LotsImport implements WithHeadingRow, SkipsOnFailure, ToCollection
                 $material->eqSpeci = $row['auction'] ?? 'NULL';
                 $material->lot_id = $lot->id;
                 $material->save();
-                    }
+            }
         }
             
             // Handle other conditions and continue the loop...

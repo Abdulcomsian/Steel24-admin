@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\V1\Admin\AuctionContoller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\Admin\AuctionController;
+use App\Http\Controllers\Api\v1\Admin\LotsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,7 +77,17 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     //     Route::get('user', 'Auth\LoginController@getAuthUser');
     // });
 });
+
+// Get Categorys API
 Route::get('getcategorys', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getcategorys');
+
+// Favorites lots add and show API
+Route::post('addFavorites', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@addFavorites');
+Route::get('showFavorites/{user_id}', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showFavorites');
+
+
+
+
 // Route::group([
 
 //     'middleware' => 'api',

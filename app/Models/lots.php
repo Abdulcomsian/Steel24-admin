@@ -9,7 +9,7 @@ class lots extends Model
 {
     use HasFactory;
     protected $table = 'lots';
-    protected  $fillable =    [
+    protected  $fillable =  [
         'title', 'description', 'categoryId', 'uid', 'Seller', 'Plant', 'materialLocation', 'Quantity',
         'StartDate', 'EndDate', 'Price', 'auction_status', 'lot_status', 'customFields', 'participate_fee', 'ReStartDate', 'ReEndDate', 'LiveSequenceNumber'
     ];
@@ -22,5 +22,10 @@ class lots extends Model
     public function categories()
     {
         return $this->belongsTo(categories::class, 'categoryId', 'id');
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_lot')->withTimestamps();
     }
 }
