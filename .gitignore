@@ -4,7 +4,6 @@
 /public/storage
 /storage
 /vendor
-/.env
 .env
 /nbproject
 .phpunit.result.cache
