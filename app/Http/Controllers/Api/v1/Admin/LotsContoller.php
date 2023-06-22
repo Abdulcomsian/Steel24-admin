@@ -129,7 +129,47 @@ class LotsContoller extends Controller
         ]);
     }
 
+    // Upcoming Live Lots API
 
+    public function getUpcomingLots()
+    {
+        $lots = DB::table('lots')
+            ->where('lot_status', 'upcoming')
+            ->get();
+
+        if ($lots->isEmpty()) {
+            return response()->json([
+                'message' => 'No upcoming lots available',
+                'success' => false,
+            ]);
+        }
+
+        return response()->json([
+            'upcomingLots' => $lots,
+            'success' => true,
+        ]);
+    }
+
+    // Experied Lots API 
+
+    public function ExpiredLots()
+    {
+        $lots = DB::table('lots')
+            ->where('lot_status', 'Expired')
+            ->get();
+
+        if ($lots->isEmpty()) {
+            return response()->json([
+                'message' => 'No expired lots available',
+                'success' => false,
+            ]);
+        }
+
+        return response()->json([
+            'expiredLots' => $lots,
+            'success' => true,
+        ]);
+    }
 
     // add Favorites Lots in Lots 
     public function addFavorites(Request $request)
