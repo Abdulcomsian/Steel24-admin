@@ -82,7 +82,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // Route::get('getcategorys', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getcategorys');
 
 // Get Categorys API
-Route::get('getcategorys', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getcategorys');
+Route::get('getCategoriesAndLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getCategoriesAndLots');
+
+// live lots 
+Route::get('activeLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getActiveLots');
 
 // Favorites lots add and show API
 Route::post('addFavorites', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@addFavorites');

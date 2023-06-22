@@ -86,12 +86,12 @@ class LotsContoller extends Controller
     //     ]);
     // }
 
-    public function getcategorys()
+    public function getCategoriesAndLots()
     {
         $categories = DB::table('categories')
             ->leftJoin('lots', 'lots.categoryId', '=', 'categories.id')
-            ->select('categories.id', 'categories.title')
-            ->groupBy('categories.id')
+            ->select('categories.id', 'categories.title As category_title', 'lots.*', 'lots.title AS lotTitle')
+            ->groupBy('categories.id', 'lots.id')
             ->get();
 
         if ($categories->isEmpty()) {
@@ -102,10 +102,33 @@ class LotsContoller extends Controller
         }
 
         return response()->json([
-            'categoryList' => $categories,
+            'categoriesAndLots' => $categories,
             'success' => true,
         ]);
     }
+
+
+    // active lots api
+
+    public function getActiveLots()
+    {
+        $lots = DB::table('lots')
+            ->where('lot_status', 'active')
+            ->get();
+
+        if ($lots->isEmpty()) {
+            return response()->json([
+                'message' => 'No active lots available',
+                'success' => false,
+            ]);
+        }
+
+        return response()->json([
+            'activeLots' => $lots,
+            'success' => true,
+        ]);
+    }
+
 
 
     // add Favorites Lots in Lots 
