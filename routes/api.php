@@ -72,11 +72,14 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
     Route::get('getlivebid', 'App\Http\Controllers\Api\v1\Admin\AuctionContoller@getlivebid');
     Route::get('requestativateaccount/{uid}', [AccountNotificationController::class, 'requestativateaccount']);
-
+    
     // Route::group(['middleware' => 'jwt.auth'], function () {
     //     Route::get('user', 'Auth\LoginController@getAuthUser');
     // });
 });
+
+// // Get Categorys API
+// Route::get('getcategorys', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getcategorys');
 
 // Get Categorys API
 Route::get('getcategorys', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getcategorys');

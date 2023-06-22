@@ -70,17 +70,38 @@ class LotsContoller extends Controller
     //     ]);
     // }
 
+    // public function getcategorys()
+    // {
+    //     $categories = DB::select("SELECT categories.id, categories.title FROM categories LEFT JOIN lots on lots.categoryId = categories.id WHERE date(lots.ReStartDate) <= CURDATE() GROUP by categories.id;");
+    //     // $categories = DB::select("SELECT categories.id, categories.title FROM categories LEFT JOIN lots on lots.categoryId = categories.id WHERE date(lots.StartDate) = CURDATE() OR date(lots.ReStartDate) = CURDATE() GROUP by categories.id;");
+    //     if (empty($categories)) {
+    //         return json_encode([
+    //             'message' => 'No Live Lots Available',
+    //             'success' => false,
+    //         ]);
+    //     }
+    //     return json_encode([
+    //         'categoryList' => $categories,
+    //         'success' => true,
+    //     ]);
+    // }
+
     public function getcategorys()
     {
-        $categories = DB::select("SELECT categories.id, categories.title FROM categories LEFT JOIN lots on lots.categoryId = categories.id WHERE date(lots.ReStartDate) <= CURDATE() GROUP by categories.id;");
-        // $categories = DB::select("SELECT categories.id, categories.title FROM categories LEFT JOIN lots on lots.categoryId = categories.id WHERE date(lots.StartDate) = CURDATE() OR date(lots.ReStartDate) = CURDATE() GROUP by categories.id;");
-        if (empty($categories)) {
-            return json_encode([
-                'message' => 'No Live Lots Available',
+        $categories = DB::table('categories')
+            ->leftJoin('lots', 'lots.categoryId', '=', 'categories.id')
+            ->select('categories.id', 'categories.title')
+            ->groupBy('categories.id')
+            ->get();
+
+        if ($categories->isEmpty()) {
+            return response()->json([
+                'message' => 'No categories available',
                 'success' => false,
             ]);
         }
-        return json_encode([
+
+        return response()->json([
             'categoryList' => $categories,
             'success' => true,
         ]);

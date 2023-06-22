@@ -78,7 +78,6 @@ class AuctionContoller extends Controller
     public  function lotDetails(Request $request, $lotId)
     {
 
-
         $materialidata =  newMaterial::where("lotid", $lotId)->get();
 
         // dd($materialidata);
