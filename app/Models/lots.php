@@ -4,13 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\lotTerms;
 
 class lots extends Model
 {
     use HasFactory;
     protected $table = 'lots';
     protected  $fillable =  [
-        'title', 'description', 'categoryId', 'uid', 'Seller', 'Plant', 'materialLocation', 'Quantity',
+        'title', 'description', 'categoryId', 'uid', 'Seller', 'Plant', 'materialLocation', 'Quantity','Payment_terms',
         'StartDate', 'EndDate', 'Price', 'auction_status', 'lot_status', 'customFields', 'participate_fee', 'ReStartDate', 'ReEndDate', 'LiveSequenceNumber'
     ];
 
@@ -27,5 +28,15 @@ class lots extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'user_lot')->withTimestamps();
+    }
+
+    public function lotTerms()
+    {
+        return $this->hasOne(lotTerms::class, 'lotid');
+    }
+
+      public function new_maerials_2()
+    {
+        return $this->hasMany(new_maerials_2::class, 'lotid');
     }
 }

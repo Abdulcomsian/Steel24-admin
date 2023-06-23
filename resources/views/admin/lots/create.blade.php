@@ -62,9 +62,8 @@
                                     </div>
                                     <!-- <label for="description" class="col-sm-2 col-form-label">Description</label> -->
                                     <div class="col-sm-4">
-                                        <textarea class="form_customer" placeholder="Description" id="description" name="description" >  {{ $lots ? $lots->description :'' }} </textarea>
-                                    </div>
-
+                                            <textarea class="form_customer" id="description" name="description" placeholder="Description"></textarea>
+                                    </div>                                                                                                                                                                                                     
                                     <!-- <label for="categoryId" class="col-sm-2 col-form-label">Category</label> -->
                                     <div class="col-sm-4">
                                         <select class="custom-select" id="categoryId" name="categoryId" 
@@ -97,13 +96,13 @@
                                     <!-- <label for="startDate" class="col-sm-2 col-form-label">Start Date</label> -->
                                     <div class="col-sm-4">
                                         <input type="text" class="form_customer" id="startDate" name="StartDate"  placeholder="Start Date"
-                    onfocus="(this.type='datetime-local')" onblur="(this.type='text')"
+                                          onfocus="(this.type='datetime-local')" onblur="(this.type='text')"
                                             required>
                                     </div>
                                     <!-- <label for="endDate" class="col-sm-2 col-form-label">End Date</label> -->
                                     <div class="col-sm-4">
                                         <input type="text" class="form_customer" id="endDate" name="EndDate" placeholder="End Date"
-                    onfocus="(this.type='datetime-local')" onblur="(this.type='text')"
+                                           onfocus="(this.type='datetime-local')" onblur="(this.type='text')"
                                             required>
                                     </div>
 
@@ -135,15 +134,13 @@
                                         <input type="number" class="form_customer" step="0.01" id="participate_fee" placeholder="Participation Fee"
                                             min="0" name="participate_fee" autocomplete="off" autofocus>
                                     </div>
-                                
-
+                            
                                     <!-- <label for="paymentId" class="col-sm-2 col-form-label">Payment Terms</label> -->
                                     <div class="col-sm-4">
-                                        <select class="custom-select" id="paymentId" name="paymentId"
-                                            style="margin-top: 10px;">
+                                        <select class="custom-select" id="paymentId" name="paymentId" style="margin-top: 10px;">
+                                            <option value="">Select Payment Terms</option>
                                             @foreach ($paymentTerms as $payment)
-                                                <option value={{ $payment->id }}>{{ $payment->Payment_Terms }}
-                                                </option>
+                                                <option value="{{ $payment->id }}">{{ $payment->Payment_Terms }}</option>
                                             @endforeach
                                         </select>
                                     </div>

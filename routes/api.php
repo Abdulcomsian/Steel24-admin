@@ -96,6 +96,9 @@ Route::get('soldLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@SoldLots
 
 // details Lot
 
+Route::get('lotsdetails', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@lotsdetails');
+
+
 
 
 // Favorites lots add and show API

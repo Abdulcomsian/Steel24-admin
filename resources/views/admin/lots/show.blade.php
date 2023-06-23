@@ -35,10 +35,20 @@
                                                             <h6>
                                                             {{ $lots->description }}</h6>
                                                         </div>
-                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                        {{-- <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
                                                         <h6>Category</h6>
                                                             <h6>
                                                             {{ $lots->categories->title }}</h6>
+                                                        </div> --}}
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                            <h6>Category</h6>
+                                                            <h6>
+                                                                @if ($lots->categories)
+                                                                    {{ $lots->categories->title }}
+                                                                @else
+                                                                    No category available
+                                                                @endif
+                                                            </h6>
                                                         </div>
                                                         <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
                                                         <h6>Material Location</h6>
@@ -117,7 +127,7 @@
                                                             </td>
                                                             <td>
                                                                 <p class="text-xs text-secondary mb-0">
-                                                                    {{ $lots->description }}</p>
+                                                                    {{-- {{ $lots->description }}</p> --}}
                                                             </td>
                                                         </tr>
 
@@ -131,7 +141,7 @@
                                                             </td>
                                                             <td>
                                                                 <p class="text-xs text-secondary mb-0">
-                                                                    {{ $lots->categories->title }}
+                                                                    {{-- {{ $lots->categories->title }} --}}
                                                                 </p>
                                                             </td>
                                                         </tr>
@@ -145,7 +155,7 @@
                                                             </td>
                                                             <td>
                                                                 <p class="text-xs text-secondary mb-0">
-                                                                    {{ $lots->materialLocation }}
+                                                                    {{-- {{ $lots->materialLocation }} --}}
                                                                 </p>
                                                             </td>
                                                         </tr>
@@ -158,7 +168,8 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <p class="text-xs text-secondary mb-0">{{ $lots->Quantity }}
+                                                                <p class="text-xs text-secondary mb-0">
+                                                                    {{-- {{ $lots->Quantity }} --}}
                                                                 </p>
                                                             </td>
                                                         </tr>
@@ -172,7 +183,7 @@
                                                             </td>
                                                             <td>
                                                                 <p class="text-xs text-secondary mb-0">
-                                                                    {{ $lots->StartDate }}
+                                                                    {{-- {{ $lots->StartDate }} --}}
                                                                 </p>
                                                             </td>
                                                         </tr>
@@ -185,7 +196,8 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <p class="text-xs text-secondary mb-0">{{ $lots->EndDate }}
+                                                                <p class="text-xs text-secondary mb-0">
+                                                                    {{-- {{ $lots->EndDate }} --}}
                                                                 </p>
                                                             </td>
                                                         </tr>
@@ -198,7 +210,8 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <p class="text-xs text-secondary mb-0">{{ $lots->Price }}
+                                                                <p class="text-xs text-secondary mb-0">
+                                                                    {{-- {{ $lots->Price }} --}}
                                                                 </p>
                                                             </td>
                                                         </tr>
@@ -212,7 +225,7 @@
                                                             </td>
                                                             <td>
                                                                 <p class="text-xs text-secondary mb-0">
-                                                                    {{ $lots->lot_status }}
+                                                                    {{-- {{ $lots->lot_status }} --}}
                                                                 </p>
                                                             </td>
                                                         </tr>
@@ -225,7 +238,8 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <p class="text-xs text-secondary mb-0">{{ $lots->Seller }}
+                                                                <p class="text-xs text-secondary mb-0">
+                                                                    {{-- {{ $lots->Seller }} --}}
                                                                 </p>
                                                             </td>
                                                         </tr>
@@ -238,7 +252,8 @@
                                                                 </div>
                                                             </td>
                                                             <td>
-                                                                <p class="text-xs text-secondary mb-0">{{ $lots->Plant }}
+                                                                <p class="text-xs text-secondary mb-0">
+                                                                    {{-- {{ $lots->Plant }} --}}
                                                                 </p>
                                                             </td>
                                                         </tr>
@@ -268,7 +283,7 @@
                                                             </td>
                                                             <td>
                                                                 <p class="text-xs text-secondary mb-0">
-                                                                    {{ $lots->participate_fee }}
+                                                                    {{-- {{ $lots->participate_fee }} --}}
                                                                 </p>
                                                             </td>
                                                         </tr> -->
@@ -291,7 +306,7 @@
                                                 </table>
                                             </div>
                                             
-                                            @if ($payment_term)
+                                            {{-- @if ($payment_term)
                                                 <h4 class="Payment_terms">Payment Terms</h4>
                                                 <div class="col-12">
                                                     <table class="table" >
@@ -343,7 +358,38 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
+                                            @endif --}}
+
+                                            @if ($payment_terms)
+                                                <h4 class="Payment_terms">Payment Terms</h4>
+                                                <div class="col-12">
+                                                    <table class="table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Id</th>
+                                                                <th>Payment Terms</th>
+                                                                <th>Price Basis</th>
+                                                                <th>Taxes and Duties</th>
+                                                                <th>Commercial Terms</th>
+                                                                <th>Test Certificates</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="tablebody">
+                                                            @foreach ($payment_terms as $payment)
+                                                                <tr>
+                                                                    <td>{{ $payment->id }}</td>
+                                                                    <td>{{ $payment->Payment_Terms }}</td>
+                                                                    <td>{{ $payment->Price_Bases }}</td>
+                                                                    <td>{{ $payment->Texes_and_Duties }}</td>
+                                                                    <td>{{ $payment->Commercial_Terms }}</td>
+                                                                    <td>{{ $payment->Test_Certificate }}</td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             @endif
+
 
                                             @if ($materialilist)
                                                 <h4 class="Payment_terms">Materials</h4>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 use App\Models\BidsOfLots;
 use App\Models\categories;
 use App\Models\lot_materials;
@@ -190,6 +191,31 @@ class LotsContoller extends Controller
             'success' => true,
         ]);
     }
+
+    // Lots Details API
+
+    public function lotsdetails(Request $request)
+    {
+        $lots = lots::with('lotTerms', 'new_maerials_2')->get();
+
+        $data = [];
+        foreach ($lots as $lot) {
+            $paymentTerms = $lot->lotTerms;
+            $materials = $lot->new_maerials_2;
+
+            $data[] = [
+                'lot' => $lot,
+                // 'lotTerms' => $paymentTerms,
+                // 'materials' => $materials,
+            ];
+        }
+
+        return response()->json($data, Response::HTTP_OK);
+    }
+
+
+
+
 
     // add Favorites Lots in Lots 
     public function addFavorites(Request $request)
