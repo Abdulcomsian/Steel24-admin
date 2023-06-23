@@ -91,6 +91,10 @@ Route::get('activeLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getAct
 Route::get('upcomingLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getUpcomingLots');
 // Experied lots
 Route::get('expiredLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@ExpiredLots');
+//Sold lots
+Route::get('soldLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@SoldLots');
+
+// details Lot
 
 
 

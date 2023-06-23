@@ -171,6 +171,26 @@ class LotsContoller extends Controller
         ]);
     }
 
+    // Sold lots API
+    public function SoldLots()
+    {
+        $lots = DB::table('lots')
+            ->where('lot_status', 'Sold')
+            ->get();
+
+        if ($lots->isEmpty()) {
+            return response()->json([
+                'message' => 'No Sold lots available',
+                'success' => false,
+            ]);
+        }
+
+        return response()->json([
+            'soldLots' => $lots,
+            'success' => true,
+        ]);
+    }
+
     // add Favorites Lots in Lots 
     public function addFavorites(Request $request)
     {
