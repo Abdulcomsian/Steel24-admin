@@ -214,7 +214,28 @@ class LotsContoller extends Controller
     }
 
 
+    // Show specfic lot
 
+    public function specificlotshow(Request $request, $lotId)
+    {
+        $lot = lots::with('lotTerms', 'new_maerials_2')->find($lotId);
+    
+        if (!$lot) {
+            return response()->json(['message' => 'Lot not found'], Response::HTTP_NOT_FOUND);
+        }
+    
+        $paymentTerms = $lot->lotTerms;
+        $materials = $lot->new_maerials_2;
+    
+        $data = [
+            'lot' => $lot,
+            // 'lotTerms' => $paymentTerms,
+            // 'materials' => $materials,
+        ];
+    
+        return response()->json($data, Response::HTTP_OK);
+    }
+    
 
 
     // add Favorites Lots in Lots 

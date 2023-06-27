@@ -95,10 +95,10 @@ Route::get('expiredLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@Expir
 Route::get('soldLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@SoldLots');
 
 // details Lot
-
 Route::get('lotsdetails', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@lotsdetails');
 
-
+// show specific one lot
+Route::get('lotsdetails/{lotId}', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@specificlotshow');
 
 
 // Favorites lots add and show API
