@@ -111,26 +111,79 @@ class LotsContoller extends Controller
 
     // active lots api
 
+    // public function getActiveLots()
+    // {
+    //     $lots = DB::table('lots')
+    //         ->where('lot_status', 'active')
+    //         ->get();
+
+    //     if ($lots->isEmpty()) {
+    //         return response()->json([
+    //             'message' => 'No active lots available',
+    //             'success' => false,
+    //         ]);
+    //     }
+
+    //     return response()->json([
+    //         'activeLots' => $lots,
+    //         'success' => true,
+    //     ]);
+    // }
+
     public function getActiveLots()
     {
         $lots = DB::table('lots')
             ->where('lot_status', 'active')
             ->get();
-
+    
         if ($lots->isEmpty()) {
             return response()->json([
                 'message' => 'No active lots available',
                 'success' => false,
             ]);
         }
-
+    
+        $activeLots = [];
+        foreach ($lots as $lot) {
+            $category = DB::table('categories')
+                ->where('id', $lot->categoryId)
+                ->select('id', 'title', 'description', 'parentcategory')
+                ->get();
+    
+            $activeLots[] = [
+                'lot' => $lot,
+                'category' => $category,
+            ];
+        }
+    
         return response()->json([
-            'activeLots' => $lots,
+            'activeLots' => $activeLots,
             'success' => true,
         ]);
     }
+    
+    
 
     // Upcoming Live Lots API
+
+    // public function getUpcomingLots()
+    // {
+    //     $lots = DB::table('lots')
+    //         ->where('lot_status', 'upcoming')
+    //         ->get();
+
+    //     if ($lots->isEmpty()) {
+    //         return response()->json([
+    //             'message' => 'No upcoming lots available',
+    //             'success' => false,
+    //         ]);
+    //     }
+
+    //     return response()->json([
+    //         'upcomingLots' => $lots,
+    //         'success' => true,
+    //     ]);
+    // }
 
     public function getUpcomingLots()
     {
@@ -145,14 +198,46 @@ class LotsContoller extends Controller
             ]);
         }
 
+        $upcomingLots = [];
+        foreach ($lots as $lot) {
+            $categories = DB::table('categories')
+                ->where('id', $lot->categoryId)
+                ->select('id', 'title', 'description', 'parentcategory')
+                ->get();
+
+            $upcomingLots[] = [
+                'lot' => $lot,
+                'categories' => $categories,
+            ];
+        }
+
         return response()->json([
-            'upcomingLots' => $lots,
+            'upcomingLots' => $upcomingLots,
             'success' => true,
         ]);
     }
 
+
     // Experied Lots API 
 
+    // public function ExpiredLots()
+    // {
+    //     $lots = DB::table('lots')
+    //         ->where('lot_status', 'Expired')
+    //         ->get();
+
+    //     if ($lots->isEmpty()) {
+    //         return response()->json([
+    //             'message' => 'No expired lots available',
+    //             'success' => false,
+    //         ]);
+    //     }
+
+    //     return response()->json([
+    //         'expiredLots' => $lots,
+    //         'success' => true,
+    //     ]);
+    // }
     public function ExpiredLots()
     {
         $lots = DB::table('lots')
@@ -166,13 +251,45 @@ class LotsContoller extends Controller
             ]);
         }
 
+        $expiredLots = [];
+        foreach ($lots as $lot) {
+            $categories = DB::table('categories')
+                ->where('id', $lot->categoryId)
+                ->select('id', 'title', 'description', 'parentcategory')
+                ->get();
+
+            $expiredLots[] = [
+                'lot' => $lot,
+                'categories' => $categories,
+            ];
+        }
+
         return response()->json([
-            'expiredLots' => $lots,
+            'expiredLots' => $expiredLots,
             'success' => true,
         ]);
     }
 
+
     // Sold lots API
+    // public function SoldLots()
+    // {
+    //     $lots = DB::table('lots')
+    //         ->where('lot_status', 'Sold')
+    //         ->get();
+
+    //     if ($lots->isEmpty()) {
+    //         return response()->json([
+    //             'message' => 'No Sold lots available',
+    //             'success' => false,
+    //         ]);
+    //     }
+
+    //     return response()->json([
+    //         'soldLots' => $lots,
+    //         'success' => true,
+    //     ]);
+    // }
     public function SoldLots()
     {
         $lots = DB::table('lots')
@@ -186,27 +303,63 @@ class LotsContoller extends Controller
             ]);
         }
 
+        $soldLots = [];
+        foreach ($lots as $lot) {
+            $categories = DB::table('categories')
+                ->where('id', $lot->categoryId)
+                ->select('id', 'title', 'description', 'parentcategory')
+                ->get();
+
+            $soldLots[] = [
+                'lot' => $lot,
+                'categories' => $categories,
+            ];
+        }
+
         return response()->json([
-            'soldLots' => $lots,
+            'soldLots' => $soldLots,
             'success' => true,
         ]);
     }
 
     // Lots Details API
 
+    // public function lotsdetails(Request $request)
+    // {
+    //     $lots = lots::with('lotTerms', 'new_maerials_2')->get();
+
+    //     $data = [];
+    //     foreach ($lots as $lot) {
+    //         $paymentTerms = $lot->lotTerms;
+    //         $materials = $lot->new_maerials_2;
+
+    //         $data[] = [
+    //             'lot' => $lot,
+    //         ];
+    //     }
+
+    //     return response()->json($data, Response::HTTP_OK);
+    // }
+
     public function lotsdetails(Request $request)
     {
-        $lots = lots::with('lotTerms', 'new_maerials_2')->get();
+        $lots = lots::with('lotTerms', 'new_maerials_2', 'categories')->get();
 
         $data = [];
         foreach ($lots as $lot) {
             $paymentTerms = $lot->lotTerms;
             $materials = $lot->new_maerials_2;
+            $categories = $lot->categories;
+
+            $categoryData = $categories ? [
+                'id' => $categories->id,
+                'title' => $categories->title,
+                'description' => $categories->description,
+                'parentcategory' => $categories->parentcategory,
+            ] : null;
 
             $data[] = [
                 'lot' => $lot,
-                // 'lotTerms' => $paymentTerms,
-                // 'materials' => $materials,
             ];
         }
 
@@ -214,29 +367,52 @@ class LotsContoller extends Controller
     }
 
 
+
     // Show specfic lot
+
+    // public function specificlotshow(Request $request, $lotId)
+    // {
+    //     $lot = lots::with('lotTerms', 'new_maerials_2')->find($lotId);
+    
+    //     if (!$lot) {
+    //         return response()->json(['message' => 'Lot not found'], Response::HTTP_NOT_FOUND);
+    //     }
+    
+    //     $paymentTerms = $lot->lotTerms;
+    //     $materials = $lot->new_maerials_2;
+    
+    //     $data = [
+    //         'lot' => $lot,
+    //     ];
+    
+    //     return response()->json($data, Response::HTTP_OK);
+    // }
 
     public function specificlotshow(Request $request, $lotId)
     {
-        $lot = lots::with('lotTerms', 'new_maerials_2')->find($lotId);
-    
+        $lot = lots::with('lotTerms', 'new_maerials_2', 'categories')->find($lotId);
+
         if (!$lot) {
             return response()->json(['message' => 'Lot not found'], Response::HTTP_NOT_FOUND);
         }
-    
+
         $paymentTerms = $lot->lotTerms;
         $materials = $lot->new_maerials_2;
-    
+        $categories = $lot->categories;
+
+        $categoryData = $categories ? [
+            'id' => $categories->id,
+            'title' => $categories->title,
+            'description' => $categories->description,
+            'parentcategory' => $categories->parentcategory,
+        ] : [];
+
         $data = [
             'lot' => $lot,
-            // 'lotTerms' => $paymentTerms,
-            // 'materials' => $materials,
         ];
-    
+
         return response()->json($data, Response::HTTP_OK);
     }
-    
-
 
     // add Favorites Lots in Lots 
     public function addFavorites(Request $request)

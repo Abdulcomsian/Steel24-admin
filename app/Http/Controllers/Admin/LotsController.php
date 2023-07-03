@@ -25,8 +25,8 @@ use Faker\Provider\ar_EG\Payment;
 use Illuminate\Support\Carbon as SupportCarbon;
 use Illuminate\Support\Facades\DB;
 
-use Kreait\Firebase;
-use Kreait\Firebase\Factory;
+// use Kreait\Firebase;
+// use Kreait\Firebase\Factory;
 
 use function PHPSTORM_META\elementType;
 
@@ -417,15 +417,26 @@ class LotsController extends Controller
         ]);
 
 
-        $lots->materials()->sync(array_key_exists('material', $data) ? $data['material'] : []);
+        if ($lots !== null) {
+            $materials = $lots->materials();
+            
+            if ($materials !== null) {
+                $materials->sync(array_key_exists('material', $data) ? $data['material'] : []);
+            } else {
+                // Handle the case when $materials is null
+            }
+        } else {
+            // Handle the case when $lots is null
+        }
+        
 
         $data['uid'] = $userDetails->id;
         $lots->update($data);
 
-        $firebase = (new Factory)
-            ->withServiceAccount(__DIR__ . '/lotbids-7751a-firebase-adminsdk-2kxk6-5db00e2535.json')
-            ->withDatabaseUri('https://lotbids-7751a-default-rtdb.europe-west1.firebasedatabase.app/');
-        $database = $firebase->createDatabase();
+        // $firebase = (new Factory)
+        //     ->withServiceAccount(__DIR__ . '/lotbids-7751a-firebase-adminsdk-2kxk6-5db00e2535.json')
+        //     ->withDatabaseUri('https://lotbids-7751a-default-rtdb.europe-west1.firebasedatabase.app/');
+        // $database = $firebase->createDatabase();
         if ($lots->lot_status == 'live') {
             $lots->ParticipateUsers = customerBalance::where([['lotId', $lots->id], ['status', '!=', '1']])->groupBy('customerId')->pluck('customerId')->toArray();;
             $database->getReference('TodaysLots/liveList/' . $lots->id)->set($lots);
@@ -558,10 +569,11 @@ class LotsController extends Controller
             //         'date' => Carbon::today(),
             //     ]);
             // }
-            $firebase = (new Factory)
-                ->withServiceAccount(__DIR__ . '/lotbids-7751a-firebase-adminsdk-2kxk6-5db00e2535.json')
-                ->withDatabaseUri('https://lotbids-7751a-default-rtdb.europe-west1.firebasedatabase.app/');
-            $database = $firebase->createDatabase();
+
+            // $firebase = (new Factory)
+            //     ->withServiceAccount(__DIR__ . '/lotbids-7751a-firebase-adminsdk-2kxk6-5db00e2535.json')
+            //     ->withDatabaseUri('https://lotbids-7751a-default-rtdb.europe-west1.firebasedatabase.app/');
+            // $database = $firebase->createDatabase();
 
             $database->getReference('TodaysLots/liveList/' . $lotDetails->id)->remove();
         }
