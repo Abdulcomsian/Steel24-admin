@@ -161,7 +161,7 @@ class LotsContoller extends Controller
         $activeLots = DB::table('lots')
         ->join('categories' , 'lots.categoryId' , '=' , 'categories.id')
         ->leftJoin('user_lot','lots.id' , '=' , 'user_lot.lot_id')
-        ->selectRaw('categories.id as cat_id , categories.*, lots.id as lot_id , lots.* , user_lot.id as fav_id , user_lot.*')
+        ->selectRaw('categories.id as cat_id , categories.title as category_title , categories.*, lots.id as l_id , lots.title as lot_title , lots.* , user_lot.id as fav_id , user_lot.*')
         ->where('lots.lot_status' , '=' , 'active')
         ->get();
 
