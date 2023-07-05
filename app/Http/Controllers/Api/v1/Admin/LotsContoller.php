@@ -9,6 +9,7 @@ use App\Models\BidsOfLots;
 use App\Models\categories;
 use App\Models\lot_materials;
 use App\Models\lots;
+use App\Models\FavLots;
 use App\Models\lotTerms;
 use App\Models\MaterialFiles;
 use App\Models\materials;
@@ -108,61 +109,101 @@ class LotsContoller extends Controller
         ]);
     }
 
-
-    // active lots api
-
     // public function getActiveLots()
     // {
     //     $lots = DB::table('lots')
     //         ->where('lot_status', 'active')
     //         ->get();
-
+    
     //     if ($lots->isEmpty()) {
     //         return response()->json([
     //             'message' => 'No active lots available',
     //             'success' => false,
     //         ]);
     //     }
-
+    
+    //     $activeLots = [];
+    //     foreach ($lots as $lot) {
+    //         $category = DB::table('categories')
+    //             ->where('id', $lot->categoryId)
+    //             ->select('id', 'title', 'description', 'parentcategory')
+    //             ->get();
+    
+    //         $activeLots[] = [
+    //             'lot' => $lot,
+    //             'category' => $category,
+    //         ];
+    //     }
+    
     //     return response()->json([
-    //         'activeLots' => $lots,
+    //         'activeLots' => $activeLots,
     //         'success' => true,
     //     ]);
     // }
 
-    public function getActiveLots()
+    public function getActiveLots(Request $request)
     {
-        $lots = DB::table('lots')
-            ->where('lot_status', 'active')
-            ->get();
-    
-        if ($lots->isEmpty()) {
-            return response()->json([
-                'message' => 'No active lots available',
-                'success' => false,
-            ]);
-        }
-    
-        $activeLots = [];
-        foreach ($lots as $lot) {
-            $category = DB::table('categories')
-                ->where('id', $lot->categoryId)
-                ->select('id', 'title', 'description', 'parentcategory')
-                ->get();
-    
-            $activeLots[] = [
-                'lot' => $lot,
-                'category' => $category,
-            ];
-        }
-    
+        // $lots = DB::table('lots')
+        //     ->where('lot_status', 'active')
+        //     ->get();
+
+        // if ($lots->isEmpty()) {
+        //     return response()->json([
+        //         'message' => 'No active lots available',
+        //         'success' => false,
+        //     ]);
+        // }
+
+        // $activeLots = [];
+
+        //NEW CODE STARTS HERE 
+
+        $activeLots = DB::table('lots')
+        ->join('categories' , 'lots.categoryId' , '=' , 'categories.id')
+        ->leftJoin('user_lot','lots.id' , '=' , 'user_lot.lot_id')
+        ->selectRaw('categories.id as cat_id , categories.*, lots.id as lot_id , lots.* , user_lot.id as fav_id , user_lot.*')
+        ->where('lots.lot_status' , '=' , 'active')
+        ->get();
+
         return response()->json([
             'activeLots' => $activeLots,
             'success' => true,
         ]);
+
+        //NEW CODE ENDS HERE
+
+
+        // foreach ($lots as $lot) {
+        //     $category = DB::table('categories')
+        //         ->where('id', $lot->categoryId)
+        //         ->first();
+
+        //     if (!$category) {
+        //         continue; // Skip if category not found
+        //     }
+            
+        //     $userLot = DB::table('user_lot')
+        //         ->where('lot_id', $lot->id)
+        //         ->where('user_id', $request->user_id)
+        //         ->first();
+
+
+            
+
+        //     $lotData = [
+        //         'lot' => $lot,
+        //         'category' => $category,
+        //         'favourite' => $userLot ? true : false
+        //     ];
+
+        //     $activeLots[] = $lotData;
+        // }
+
+        // return response()->json([
+        //     'activeLots' => $activeLots,
+        //     'success' => true,
+        // ]);
     }
-    
-    
 
     // Upcoming Live Lots API
 
@@ -238,6 +279,7 @@ class LotsContoller extends Controller
     //         'success' => true,
     //     ]);
     // }
+    
     public function ExpiredLots()
     {
         $lots = DB::table('lots')
