@@ -22,6 +22,8 @@ use \Illuminate\Support\Carbon;
 use \Illuminate\Support\Facades\DB;
 
 
+
+
 class LotsContoller extends Controller
 {
     private $user, $defaultNumber;
@@ -508,7 +510,7 @@ class LotsContoller extends Controller
     {
         $customer_id = $request->input('customer_id');
         $lot_id = $request->input('lot_id');
-    
+
         // Save the customer_id and lot_id to the favorites table in the database
         DB::table('user_lot')->insert([
             'customer_id' => $customer_id,
@@ -522,7 +524,36 @@ class LotsContoller extends Controller
             'success' => true,
         ]);
     }
+
+        // delete favlot Api
+
+        public function deleteFavorite(Request $request)
+        {
+            $customer_id = $request->input('customer_id');
+            $lot_id = $request->input('lot_id');
+        
+            $deleted = DB::table('user_lot')
+                ->where('customer_id', $customer_id)
+                ->where('lot_id', $lot_id)
+                ->delete();
+        
+            if ($deleted) {
+                return response()->json([
+                    'message' => 'Lot deleted from Favorites Lots',
+                    'success' => true,
+                ]);
+            } else {
+                return response()->json([
+                    'message' => 'Failed to delete the lot from Favorites Lots',
+                    'success' => false,
+                ], Response::HTTP_INTERNAL_SERVER_ERROR);
+            }
+        }
+        
+
+
     
+
 
     // show Favorites Lots in Lots 
     // public function showFavorites($user_id)
