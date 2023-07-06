@@ -144,6 +144,7 @@
                                             @endforeach
                                         </select>
                                     </div>
+                                    
                                      <!--Footer-->
                             <div class="card-footer ml-auto mr-auto col-sm-12">
                                 <a href="{{ url('admin/lots') }}" class="btn btn-primary mr-3 Back_btn_customer">Back</a>

@@ -143,6 +143,16 @@
                                             value="{{ $lots ? $lots->participate_fee : '' }}" autocomplete="off"
                                             autofocus>
                                     </div>
+
+                                    <div class="col-sm-4">
+                                        <select class="custom-select" id="lotStatus" name="lot_status" style="margin-top: 10px;">
+                                            <option value="">Select Lot Status</option>
+                                            <option <?php #if($lotStatus=="active"){echo "selected";} ?> value="active">Active Lot</option>
+                                            <option <?php #if($lotStatus=="expired"){echo "selected";} ?> value="expired">Expired Lot</option>
+                                            <option <?php #if($lotStatus=="sold"){echo "selected";} ?> value="sold">Sold Lot</option>
+                                        </select>
+                                    </div>
+                
                                      <!--Footer-->
                             <div class="card-footer ml-auto mr-auto col-sm-12">
                                 <a href="javascript:history.back()" class="btn btn-primary mr-3 Back_btn_customer">Back</a>

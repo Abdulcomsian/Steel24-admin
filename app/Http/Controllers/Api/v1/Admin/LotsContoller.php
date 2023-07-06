@@ -29,39 +29,39 @@ class LotsContoller extends Controller
     private $user, $defaultNumber;
 
     // Get Soled Lots of Today.
-    public function getsoledlots()
-    {
-        $lotList = DB::select("
-        SELECT lots.*,payments.customerId,payments.customerVisible ,customers.name as customername,customers.compnyName as compnyName ,payments.total_amount as finalmount FROM `lots`
-        LEFT JOIN payments on payments.lotId = lots.id
-        LEFT JOIN customers on customers.id = payments.customerId 
-        WHERE lots.lot_status = 'sold' and date(lots.EndDate) = CURDATE() GROUP by lots.id ORDER by lots.id DESC;");
-        $newlotlist = [];
-        foreach ($lotList as $lot) {
+    // public function getsoledlots()
+    // {
+    //     $lotList = DB::select("
+    //     SELECT lots.*,payments.customerId,payments.customerVisible ,customers.name as customername,customers.compnyName as compnyName ,payments.total_amount as finalmount FROM `lots`
+    //     LEFT JOIN payments on payments.lotId = lots.id
+    //     LEFT JOIN customers on customers.id = payments.customerId 
+    //     WHERE lots.lot_status = 'sold' and date(lots.EndDate) = CURDATE() GROUP by lots.id ORDER by lots.id DESC;");
+    //     $newlotlist = [];
+    //     foreach ($lotList as $lot) {
 
-            array_push($newlotlist, [
-                'lot' => $lot, 'lotTerms' => lotTerms::where('lotid', $lot->id)->first(), "materialilist" =>   new_maerials_2::where('lotid', $lot->id)->get()
-            ]);
-        }
-        return json_encode([
-            'lotList' => $newlotlist,
-            'sucess' => true,
-        ]);
-    }
+    //         array_push($newlotlist, [
+    //             'lot' => $lot, 'lotTerms' => lotTerms::where('lotid', $lot->id)->first(), "materialilist" =>   new_maerials_2::where('lotid', $lot->id)->get()
+    //         ]);
+    //     }
+    //     return json_encode([
+    //         'lotList' => $newlotlist,
+    //         'sucess' => true,
+    //     ]);
+    // }
 
     // Get Expired Lots of Today.
-    public function getexpiredlots()
-    {
-        $lotList = DB::select("SELECT * FROM `lots` WHERE lot_status = 'expired' and date(EndDate) = CURDATE();");
-        $newlotlist = [];
-        foreach ($lotList as $lot) {
-            array_push($newlotlist, ['lot' => $lot, 'lotTerms' => lotTerms::where('lotid', $lot->id)->first(), "materialilist" =>   new_maerials_2::where('lotid', $lot->id)->get()]);
-        }
-        return json_encode([
-            'lotList' => $newlotlist,
-            'sucess' => true,
-        ]);
-    }
+    // public function getexpiredlots()
+    // {
+    //     $lotList = DB::select("SELECT * FROM `lots` WHERE lot_status = 'expired' and date(EndDate) = CURDATE();");
+    //     $newlotlist = [];
+    //     foreach ($lotList as $lot) {
+    //         array_push($newlotlist, ['lot' => $lot, 'lotTerms' => lotTerms::where('lotid', $lot->id)->first(), "materialilist" =>   new_maerials_2::where('lotid', $lot->id)->get()]);
+    //     }
+    //     return json_encode([
+    //         'lotList' => $newlotlist,
+    //         'sucess' => true,
+    //     ]);
+    // }
 
     // Get Categorys of Today.
     // public function getcategorys()
@@ -337,27 +337,22 @@ class LotsContoller extends Controller
     //     ]);
     // }
     
-    public function ExpiredLots()
+    public function getexpiredlots()
     {
+    
         $expiredLots = DB::table('lots')
-            ->join('categories', 'lots.categoryId', '=', 'categories.id')
-            ->leftJoin('user_lot', 'lots.id', '=', 'user_lot.lot_id')
-            ->selectRaw('categories.id as cat_id, categories.title as category_title, categories.*, lots.id as l_id, lots.title as lot_title, lots.*, user_lot.id as fav_id, user_lot.*')
-            ->where('lots.lot_status', 'Expired')
-            ->get();
-
-        if ($expiredLots->isEmpty()) {
-            return response()->json([
-                'message' => 'No expired lots available',
-                'success' => false,
-            ]);
-        }
+        ->join('categories' , 'lots.categoryId' , '=' , 'categories.id')
+        ->leftJoin('user_lot','lots.id' , '=' , 'user_lot.lot_id')
+        ->selectRaw('categories.id as cat_id , categories.title as category_title , categories.*, lots.id as l_id , lots.title as lot_title , lots.* , user_lot.id as fav_id , user_lot.*')
+        ->where('lots.lot_status' , '=' , 'Expired')
+        ->get();
 
         return response()->json([
             'expiredLots' => $expiredLots,
             'success' => true,
         ]);
     }
+    
 
 
 
@@ -382,34 +377,19 @@ class LotsContoller extends Controller
     // }
     public function SoldLots()
     {
-        $lots = DB::table('lots')
-            ->where('lot_status', 'Sold')
+        {
+            $soldLots = DB::table('lots')
+            ->join('categories' , 'lots.categoryId' , '=' , 'categories.id')
+            ->leftJoin('user_lot','lots.id' , '=' , 'user_lot.lot_id')
+            ->selectRaw('categories.id as cat_id , categories.title as category_title , categories.*, lots.id as l_id , lots.title as lot_title , lots.* , user_lot.id as fav_id , user_lot.*')
+            ->where('lots.lot_status' , '=' , 'Sold')
             ->get();
-
-        if ($lots->isEmpty()) {
+    
             return response()->json([
-                'message' => 'No Sold lots available',
-                'success' => false,
+                'soldLots' => $soldLots,
+                'success' => true,
             ]);
         }
-
-        $soldLots = [];
-        foreach ($lots as $lot) {
-            $categories = DB::table('categories')
-                ->where('id', $lot->categoryId)
-                ->select('id', 'title', 'description', 'parentcategory')
-                ->get();
-
-            $soldLots[] = [
-                'lot' => $lot,
-                'categories' => $categories,
-            ];
-        }
-
-        return response()->json([
-            'soldLots' => $soldLots,
-            'success' => true,
-        ]);
     }
 
     // Lots Details API

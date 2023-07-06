@@ -101,6 +101,12 @@
                                                             <h6>
                                                             {{ $lots->participate_fee }}</h6>
                                                         </div>
+
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                            <h6>Lot Status</h6>
+                                                                <h6>
+                                                                {{ $lots->lot_status }}</h6>
+                                                        </div>
                                                        
                                                     </div>
                                                 </div>

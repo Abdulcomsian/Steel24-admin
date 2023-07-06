@@ -71,6 +71,9 @@ class LotsController extends Controller
 
             
     }
+
+
+
     public function analyzeUrl(Request $request)
     {
         // dd($request->url);
@@ -413,7 +416,8 @@ class LotsController extends Controller
             "material" => "nullable",
             'categoryId' => "required",
             "Price" => "required",
-            "participate_fee" => 'required'
+            "participate_fee" => 'required',
+            'lot_status' =>'required',
         ]);
 
 
