@@ -226,30 +226,52 @@ class LotsContoller extends Controller
     //     ]);
     // }
 
+    // public function getUpcomingLots()
+    // {
+    //     $lots = DB::table('lots')
+    //         ->where('lot_status', 'upcoming')
+    //         ->get();
+
+    //     if ($lots->isEmpty()) {
+    //         return response()->json([
+    //             'message' => 'No upcoming lots available',
+    //             'success' => false,
+    //         ]);
+    //     }
+
+    //     $upcomingLots = [];
+    //     foreach ($lots as $lot) {
+    //         $categories = DB::table('categories')
+    //             ->where('id', $lot->categoryId)
+    //             ->select('id', 'title', 'description', 'parentcategory')
+    //             ->get();
+
+    //         $upcomingLots[] = [
+    //             'lot' => $lot,
+    //             'categories' => $categories,
+    //         ];
+    //     }
+
+    //     return response()->json([
+    //         'upcomingLots' => $upcomingLots,
+    //         'success' => true,
+    //     ]);
+    // }
+
     public function getUpcomingLots()
     {
-        $lots = DB::table('lots')
-            ->where('lot_status', 'upcoming')
+        $upcomingLots = DB::table('lots')
+            ->join('categories', 'lots.categoryId', '=', 'categories.id')
+            ->leftJoin('user_lot', 'lots.id', '=', 'user_lot.lot_id')
+            ->selectRaw('categories.id as cat_id, categories.title as category_title, categories.*, lots.id as l_id, lots.title as lot_title, lots.*, user_lot.id as fav_id, user_lot.*')
+            ->where('lots.lot_status', 'upcoming')
             ->get();
 
-        if ($lots->isEmpty()) {
+        if ($upcomingLots->isEmpty()) {
             return response()->json([
                 'message' => 'No upcoming lots available',
                 'success' => false,
             ]);
-        }
-
-        $upcomingLots = [];
-        foreach ($lots as $lot) {
-            $categories = DB::table('categories')
-                ->where('id', $lot->categoryId)
-                ->select('id', 'title', 'description', 'parentcategory')
-                ->get();
-
-            $upcomingLots[] = [
-                'lot' => $lot,
-                'categories' => $categories,
-            ];
         }
 
         return response()->json([
@@ -257,6 +279,7 @@ class LotsContoller extends Controller
             'success' => true,
         ]);
     }
+
 
 
     // Experied Lots API 
@@ -280,30 +303,52 @@ class LotsContoller extends Controller
     //     ]);
     // }
     
+    // public function ExpiredLots()
+    // {
+    //     $lots = DB::table('lots')
+    //         ->where('lot_status', 'Expired')
+    //         ->get();
+
+    //     if ($lots->isEmpty()) {
+    //         return response()->json([
+    //             'message' => 'No expired lots available',
+    //             'success' => false,
+    //         ]);
+    //     }
+
+    //     $expiredLots = [];
+    //     foreach ($lots as $lot) {
+    //         $categories = DB::table('categories')
+    //             ->where('id', $lot->categoryId)
+    //             ->select('id', 'title', 'description', 'parentcategory')
+    //             ->get();
+
+    //         $expiredLots[] = [
+    //             'lot' => $lot,
+    //             'categories' => $categories,
+    //         ];
+    //     }
+
+    //     return response()->json([
+    //         'expiredLots' => $expiredLots,
+    //         'success' => true,
+    //     ]);
+    // }
+    
     public function ExpiredLots()
     {
-        $lots = DB::table('lots')
-            ->where('lot_status', 'Expired')
+        $expiredLots = DB::table('lots')
+            ->join('categories', 'lots.categoryId', '=', 'categories.id')
+            ->leftJoin('user_lot', 'lots.id', '=', 'user_lot.lot_id')
+            ->selectRaw('categories.id as cat_id, categories.title as category_title, categories.*, lots.id as l_id, lots.title as lot_title, lots.*, user_lot.id as fav_id, user_lot.*')
+            ->where('lots.lot_status', 'Expired')
             ->get();
 
-        if ($lots->isEmpty()) {
+        if ($expiredLots->isEmpty()) {
             return response()->json([
                 'message' => 'No expired lots available',
                 'success' => false,
             ]);
-        }
-
-        $expiredLots = [];
-        foreach ($lots as $lot) {
-            $categories = DB::table('categories')
-                ->where('id', $lot->categoryId)
-                ->select('id', 'title', 'description', 'parentcategory')
-                ->get();
-
-            $expiredLots[] = [
-                'lot' => $lot,
-                'categories' => $categories,
-            ];
         }
 
         return response()->json([
@@ -311,6 +356,7 @@ class LotsContoller extends Controller
             'success' => true,
         ]);
     }
+
 
 
     // Sold lots API
@@ -455,41 +501,67 @@ class LotsContoller extends Controller
 
         return response()->json($data, Response::HTTP_OK);
     }
+    
 
     // add Favorites Lots in Lots 
     public function addFavorites(Request $request)
     {
-        $user_id = $request->input('user_id');
+        $customer_id = $request->input('customer_id');
         $lot_id = $request->input('lot_id');
-
-        // Save the user_id and lot_id to the favorites table in the database
+    
+        // Save the customer_id and lot_id to the favorites table in the database
         DB::table('user_lot')->insert([
-            'user_id' => $user_id,
+            'customer_id' => $customer_id,
             'lot_id' => $lot_id,
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-
+    
         return response()->json([
             'message' => 'Lot added to Favorites Lots',
             'success' => true,
         ]);
     }
+    
 
     // show Favorites Lots in Lots 
-    public function showFavorites($user_id)
+    // public function showFavorites($user_id)
+    // {
+    //     // Retrieve the favorite lots for the given user_id from the database
+    //     $favoritesLots = DB::table('user_lot')
+    //         ->where('user_id', $user_id)
+    //         ->join('lots', 'user_lot.lot_id', '=', 'lots.id')
+    //         ->select('lots.*')
+    //         ->get();
+
+    //     // Check if there are any favorite lots available for the user
+    //     if ($favoritesLots->isEmpty()) {
+    //         return response()->json([
+    //             'message' => 'Favorites lots not available for this user',
+    //             'success' => false,
+    //         ]);
+    //     }
+
+    //     // Return the favorite lots as a response
+    //     return response()->json([
+    //         'message' => 'Favorite lots retrieved',
+    //         'success' => true,
+    //         'lots' => $favoritesLots,
+    //     ]);
+    // }
+    public function showFavorites($customer_id)
     {
-        // Retrieve the favorite lots for the given user_id from the database
+        // Retrieve the favorite lots for the given customer_id from the database
         $favoritesLots = DB::table('user_lot')
-            ->where('user_id', $user_id)
+            ->where('customer_id', $customer_id)
             ->join('lots', 'user_lot.lot_id', '=', 'lots.id')
             ->select('lots.*')
             ->get();
 
-        // Check if there are any favorite lots available for the user
+        // Check if there are any favorite lots available for the customer
         if ($favoritesLots->isEmpty()) {
             return response()->json([
-                'message' => 'Favorites lots not available for this user',
+                'message' => 'Favorite lots not available for this customer',
                 'success' => false,
             ]);
         }
@@ -501,6 +573,7 @@ class LotsContoller extends Controller
             'lots' => $favoritesLots,
         ]);
     }
+
 
 
 

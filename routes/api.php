@@ -103,7 +103,7 @@ Route::get('lotsdetails/{lotId}', 'App\Http\Controllers\Api\v1\Admin\LotsContoll
 
 // Favorites lots add and show API
 Route::post('addFavorites', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@addFavorites');
-Route::get('showFavorites/{user_id}', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showFavorites');
+Route::get('showFavorites/{customer_id}', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showFavorites');
 
 
 

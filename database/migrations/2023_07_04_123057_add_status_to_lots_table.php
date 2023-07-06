@@ -15,7 +15,8 @@ class AddStatusToLotsTable extends Migration
 
     public function down()
     {
-        Schema::table('lots', function (Blueprint $table) {
+        Schema::table('lots', function (Blueprint $table) 
+        {
             $table->dropColumn('status');
         });
     }

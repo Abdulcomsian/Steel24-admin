@@ -10,19 +10,16 @@ class CreateUserLotTable extends Migration
     {
         Schema::create('user_lot', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('customer_id');
             $table->unsignedBigInteger('lot_id');
-            $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
             $table->foreign('lot_id')->references('id')->on('lots')->onDelete('cascade');
-
-            $table->unique(['user_id', 'lot_id']);
+            $table->timestamps();
         });
-    }
+    }    
 
     public function down()
     {
-        Schema::dropIfExists('user_lot');
+        // Schema::dropIfExists('user_lot');
     }
 }
