@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\lotTerms;
+use App\Models\categories;
+use App\Models\Customer;
+use App\Models\new_maerials_2;
 
 class lots extends Model
 {
@@ -25,9 +28,10 @@ class lots extends Model
         return $this->belongsTo(categories::class, 'categoryId', 'id');
     }
 
-    public function users()
+    public function customers()
     {
-        return $this->belongsToMany(User::class, 'user_lot')->withTimestamps();
+        return $this->belongsToMany(Customer::class, 'user_lot', 'lot_id', 'customer_id')
+            ->withTimestamps();
     }
 
     public function lotTerms()

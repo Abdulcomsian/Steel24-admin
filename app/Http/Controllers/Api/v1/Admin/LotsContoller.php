@@ -16,11 +16,11 @@ use App\Models\materials;
 use App\Models\new_maerials_2;
 use App\Models\newMaterial;
 use App\Models\payments;
+use App\Models\Customer;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use \Illuminate\Support\Carbon;
 use \Illuminate\Support\Facades\DB;
-
 
 
 
@@ -143,34 +143,83 @@ class LotsContoller extends Controller
     //     ]);
     // }
 
+    // public function getActiveLots(Request $request)
+    // {
+    //     //NEW CODE STARTS HERE 
+
+    //     $activeLots = DB::table('lots')
+
+        
+    //     ->join('categories' , 'lots.categoryId' , '=' , 'categories.id')
+    //     ->leftJoin('user_lot','lots.id' , '=' , 'user_lot.lot_id')
+    //     ->selectRaw('categories.id as cat_id , categories.title as category_title , categories.*, lots.id as l_id , lots.title as lot_title , lots.* , user_lot.id as fav_id , user_lot.* ')
+    //     ->where('lots.lot_status' , 'Like' , '%live%')
+    //     ->get();
+
+
+    //     return response()->json([
+    //         'activeLots' => $activeLots,
+    //         'success' => true,
+    //     ]);
+
     public function getActiveLots(Request $request)
     {
-        // $lots = DB::table('lots')
-        //     ->where('lot_status', 'active')
+
+        $customerId = $request->input('customer_id');
+
+        $userLots = Lots::with('categories')
+                        ->with(['customers' => function($query) use ($customerId){
+                             $query->where('customers.id' , $customerId);
+                        }])
+                        ->where('lot_status' , 'LIKE' , '%live%')
+                        ->get();
+
+                        // dd($userLots);
+
+                        if ($userLots->isEmpty()) {
+                            return response()->json([
+                                'message' => 'No active or favorite lots available for the customer',
+                                'success' => false,
+                            ], 404);
+                        }
+                    
+                        return response()->json([
+                            'userLots' => $userLots,
+                            'success' => true,
+                        ]);
+
+            
+        // dd($userLots);
+
+
+
+        // $customer_id = $request->input('customer_id');
+
+        // $activeLots = DB::table('lots')
+        //     ->join('categories', 'lots.categoryId', '=', 'categories.id')
+        //     ->leftJoin('user_lot', function ($join) use ($customer_id) {
+        //         $join->on('lots.id', '=', 'user_lot.lot_id')
+        //             ->where('user_lot.customer_id', $customer_id);
+        //     })
+        //     ->select('lots.*', 'categories.title as category_title', 'user_lot.id as fav_id')
+        //     ->where('lots.lot_status', 'like', '%live%')
+        //     ->orWhereNotNull('user_lot.id')
         //     ->get();
-
-        // if ($lots->isEmpty()) {
+    
+        // if ($activeLots->isEmpty()) {
         //     return response()->json([
-        //         'message' => 'No active lots available',
+        //         'message' => 'No active or favorite lots available for the customer',
         //         'success' => false,
-        //     ]);
+        //     ], 404);
         // }
+    
+        // return response()->json([
+        //     'activeLots' => $activeLots,
+        //     'success' => true,
+        // ]);
+    
+    }
 
-        // $activeLots = [];
-
-        //NEW CODE STARTS HERE 
-
-        $activeLots = DB::table('lots')
-        ->join('categories' , 'lots.categoryId' , '=' , 'categories.id')
-        ->leftJoin('user_lot','lots.id' , '=' , 'user_lot.lot_id')
-        ->selectRaw('categories.id as cat_id , categories.title as category_title , categories.*, lots.id as l_id , lots.title as lot_title , lots.* , user_lot.id as fav_id , user_lot.*')
-        ->where('lots.lot_status' , '=' , 'active')
-        ->get();
-
-        return response()->json([
-            'activeLots' => $activeLots,
-            'success' => true,
-        ]);
 
         //NEW CODE ENDS HERE
 
@@ -205,7 +254,7 @@ class LotsContoller extends Controller
         //     'activeLots' => $activeLots,
         //     'success' => true,
         // ]);
-    }
+    // }
 
     // Upcoming Live Lots API
 

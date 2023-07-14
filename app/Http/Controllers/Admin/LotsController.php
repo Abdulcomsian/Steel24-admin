@@ -441,7 +441,8 @@ class LotsController extends Controller
         //     ->withServiceAccount(__DIR__ . '/lotbids-7751a-firebase-adminsdk-2kxk6-5db00e2535.json')
         //     ->withDatabaseUri('https://lotbids-7751a-default-rtdb.europe-west1.firebasedatabase.app/');
         // $database = $firebase->createDatabase();
-        if ($lots->lot_status == 'live') {
+        if ($lots->lot_status == 'live') 
+        {
             $lots->ParticipateUsers = customerBalance::where([['lotId', $lots->id], ['status', '!=', '1']])->groupBy('customerId')->pluck('customerId')->toArray();;
             $database->getReference('TodaysLots/liveList/' . $lots->id)->set($lots);
         } else if ($lots->lot_status == 'upcoming') {
