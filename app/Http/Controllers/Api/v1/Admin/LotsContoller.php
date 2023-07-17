@@ -589,10 +589,43 @@ class LotsContoller extends Controller
     
 
     // add Favorites Lots in Lots 
+    // public function addFavorites(Request $request)
+    // {
+    //     $customer_id = $request->input('customer_id');
+    //     $lot_id = $request->input('lot_id');
+
+    //     // Save the customer_id and lot_id to the favorites table in the database
+    //     DB::table('user_lot')->insert([
+    //         'customer_id' => $customer_id,
+    //         'lot_id' => $lot_id,
+    //         'created_at' => now(),
+    //         'updated_at' => now(),
+    //     ]);
+    
+    //     return response()->json([
+    //         'message' => 'Lot added to Favorites Lots',
+    //         'success' => true,
+    //     ]);
+    // }
+
     public function addFavorites(Request $request)
     {
         $customer_id = $request->input('customer_id');
         $lot_id = $request->input('lot_id');
+
+        // Check if the favorite lot already exists for the given customer
+        $existingFavorite = DB::table('user_lot')
+            ->where('customer_id', $customer_id)
+            ->where('lot_id', $lot_id)
+            ->first();
+
+        // If the favorite lot already exists, return a response
+        if ($existingFavorite) {
+            return response()->json([
+                'message' => 'Favorite lot already exists for this customer',
+                'success' => false,
+            ]);
+        }
 
         // Save the customer_id and lot_id to the favorites table in the database
         DB::table('user_lot')->insert([
@@ -601,12 +634,13 @@ class LotsContoller extends Controller
             'created_at' => now(),
             'updated_at' => now(),
         ]);
-    
+
         return response()->json([
             'message' => 'Lot added to Favorites Lots',
             'success' => true,
         ]);
     }
+
 
         // delete favlot Api
 
