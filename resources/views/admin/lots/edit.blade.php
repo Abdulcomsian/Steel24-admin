@@ -147,7 +147,7 @@
                                     <div class="col-sm-4">
                                         <select class="custom-select" id="lotStatus" name="lot_status" style="margin-top: 10px;">
                                             <option value="">Select Lot Status</option>
-                                            <option <?php #if($lotStatus=="active"){echo "selected";} ?> value="active">Active Lot</option>
+                                            <option <?php #if($lotStatus=="active"){echo "selected";} ?> value="live">Live Lot</option>
                                             <option <?php #if($lotStatus=="expired"){echo "selected";} ?> value="expired">Expired Lot</option>
                                             <option <?php #if($lotStatus=="sold"){echo "selected";} ?> value="sold">Sold Lot</option>
                                         </select>
