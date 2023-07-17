@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use Faker\Provider\ar_EG\Payment;
 use Illuminate\Support\Carbon as SupportCarbon;
 use Illuminate\Support\Facades\DB;
+// use App\Http\Controllers\Admin\Factory;
 
 // use Kreait\Firebase;
 // use Kreait\Firebase\Factory;
@@ -441,12 +442,15 @@ class LotsController extends Controller
         //     ->withServiceAccount(__DIR__ . '/lotbids-7751a-firebase-adminsdk-2kxk6-5db00e2535.json')
         //     ->withDatabaseUri('https://lotbids-7751a-default-rtdb.europe-west1.firebasedatabase.app/');
         // $database = $firebase->createDatabase();
+
+
         if ($lots->lot_status == 'live') 
         {
             $lots->ParticipateUsers = customerBalance::where([['lotId', $lots->id], ['status', '!=', '1']])->groupBy('customerId')->pluck('customerId')->toArray();;
-            $database->getReference('TodaysLots/liveList/' . $lots->id)->set($lots);
-        } else if ($lots->lot_status == 'upcoming') {
-            $database->getReference('TodaysLots/upcoming/' . $lots->id)->set($lots);
+            // $database->getReference('TodaysLots/liveList/' . $lots->id)->set($lots);
+        } else if ($lots->lot_status == 'upcoming') 
+        {
+            // $database->getReference('TodaysLots/upcoming/' . $lots->id)->set($lots);
         }
 
         $liveLots = DB::select("SELECT lots.* ,categories.title as categoriesTitle FROM `lots` 
@@ -475,7 +479,6 @@ class LotsController extends Controller
 
     public function complete_index(Request $request)
     {
-
         $livelots = DB::select("SELECT * FROM `lots` WHERE lot_status != 'live' ORDER by EndDate DESC;");
 
         if ($request->ajax()) {
@@ -580,7 +583,7 @@ class LotsController extends Controller
             //     ->withDatabaseUri('https://lotbids-7751a-default-rtdb.europe-west1.firebasedatabase.app/');
             // $database = $firebase->createDatabase();
 
-            $database->getReference('TodaysLots/liveList/' . $lotDetails->id)->remove();
+            // $database->getReference('TodaysLots/liveList/' . $lotDetails->id)->remove();
         }
         return back();
     }
