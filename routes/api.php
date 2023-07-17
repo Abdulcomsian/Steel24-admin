@@ -44,6 +44,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
         Route::get('user', 'Auth\SignUpController@getAuthenticatedUser');
         Route::get('closed', 'Auth\DemoController@closed');
         Route::get('lots', 'LotsContoller@getLots');
+
+
         Route::get('requestAction', 'AuctionContoller@auction');
         Route::post('/newbidonlot',  'AuctionContoller@newbidonlot');
         Route::get('/lotdetails/{lotid}', 'AuctionContoller@lotDetails');

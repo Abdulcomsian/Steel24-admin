@@ -183,7 +183,7 @@ class LotsContoller extends Controller
                             return response()->json([
                                 'message' => 'No active or favorite lots available for the customer',
                                 'success' => false,
-                            ], 404);
+                            ], 200);
                         }
                     
                         return response()->json([
@@ -420,7 +420,7 @@ class LotsContoller extends Controller
                             return response()->json([
                                 'message' => 'No Expired lots available for the customer',
                                 'success' => false,
-                            ], 404);
+                            ], 200);
                         }
                     
                         return response()->json([
@@ -484,7 +484,7 @@ class LotsContoller extends Controller
                             return response()->json([
                                 'message' => 'No Sold lots available for the customer',
                                 'success' => false,
-                            ], 404);
+                            ],200);
                         }
                     
                         return response()->json([
