@@ -45,7 +45,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
         Route::get('closed', 'Auth\DemoController@closed');
         Route::get('lots', 'LotsContoller@getLots');
 
-
         Route::get('requestAction', 'AuctionContoller@auction');
         Route::post('/newbidonlot',  'AuctionContoller@newbidonlot');
         Route::get('/lotdetails/{lotid}', 'AuctionContoller@lotDetails');
@@ -60,9 +59,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
         // Route::post('lotpayment', 'AuctionContoller@orderIdGenerate');
 
         Route::get('getlots', 'LotsContoller@getlots');
-
-
-        
         Route::get('getsoledlots', 'LotsContoller@getsoledlots');
         Route::get('getsoledlots', 'LotsContoller@getsoledlots');
         Route::get('getexpiredlots', 'LotsContoller@getexpiredlots');

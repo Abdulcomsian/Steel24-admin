@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\lots;
+use App\Models\FavLots;
 
 class Customer extends Authenticatable  implements JWTSubject
 {
@@ -47,10 +48,17 @@ class Customer extends Authenticatable  implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
+    // public function lots()
+    // {
+    //     return $this->belongsToMany(lots::class, 'user_lot', 'customer_id', 'lot_id')
+    //         ->withTimestamps();
+    // }
     public function lots()
     {
         return $this->belongsToMany(lots::class, 'user_lot', 'customer_id', 'lot_id')
+            ->using(FavLots::class)
             ->withTimestamps();
     }
+
 
 }

@@ -34,6 +34,7 @@ class AuctionContoller extends Controller
             'customerId' => 'nullable',
         ]);
 
+
         $lotList = null;
         if ($request['requestActionType'] == 'current' && $request['customerId']) {
             $live = DB::select("SELECT * FROM `lots` WHERE (date(StartDate) = CURDATE() or date(EndDate) = CURDATE() OR date(ReStartDate) = CURDATE() OR date(ReEndDate) = CURDATE()) and lot_status  IN ('live','Restart','pause') ORDER BY LiveSequenceNumber;");
@@ -78,29 +79,48 @@ class AuctionContoller extends Controller
     public  function lotDetails(Request $request, $lotId)
     {
 
-        $materialidata =  newMaterial::where("lotid", $lotId)->get();
+        // $materialidata =  newMaterial::where("lotid", $lotId)->get();
 
-        // dd($materialidata);
-        // if (count($materialidata)) {
-        //     $newMaterial = [];
-        //     foreach ($materialidata as $materiali) {
-        //         array_push($newMaterial, ['data' => (array) json_decode($materiali->materialdata), "image" => 'https://admin.steel24.in/files/' . $materiali->image, "materialid" => $materiali->materialid]);
-        //     }
-        // }
+        // // dd($materialidata);
+        // // if (count($materialidata)) {
+        // //     $newMaterial = [];
+        // //     foreach ($materialidata as $materiali) {
+        // //         array_push($newMaterial, ['data' => (array) json_decode($materiali->materialdata), "image" => 'https://admin.steel24.in/files/' . $materiali->image, "materialid" => $materiali->materialid]);
+        // //     }
+        // // }
+        // $materialilist = new_maerials_2::where('lotid', $lotId)->get();
+        // $lotTerms = lotTerms::where('lotid', $lotId)->first();
+
+        // $lotDetails = DB::select('SELECT lots.* ,bids_of_lots.amount as lastBidAmount from bids_of_lots RIGHT JOIN lots ON  lots.id = bids_of_lots.lotId 
+        // WHERE lots.id  = ' . $lotId . ' 
+        // ORDER by bids_of_lots.amount DESC LIMIT 1;');
+        // return json_encode([
+        //     'lotDetails' => $lotDetails,
+        //     'materialList' => $materialilist,
+        //     'lotTerms' => $lotTerms,
+        //     'sucess' => true,
+        // ]);
+
+        $materialidata = newMaterial::where("lotid", $lotId)->get();
+
         $materialilist = new_maerials_2::where('lotid', $lotId)->get();
         $lotTerms = lotTerms::where('lotid', $lotId)->first();
-
+    
         $lotDetails = DB::select('SELECT lots.* ,bids_of_lots.amount as lastBidAmount from bids_of_lots RIGHT JOIN lots ON  lots.id = bids_of_lots.lotId 
-        WHERE lots.id  = ' . $lotId . ' 
-        ORDER by bids_of_lots.amount DESC LIMIT 1;');
-        return json_encode([
+            WHERE lots.id  = ' . $lotId . ' 
+            ORDER by bids_of_lots.amount DESC LIMIT 1;');
+    
+        // Return the response in JSON format using response()->json()
+        return response()->json([
             'lotDetails' => $lotDetails,
             'materialList' => $materialilist,
             'lotTerms' => $lotTerms,
-            'sucess' => true,
+            'success' => true,
         ]);
     }
 
+
+    // Payment API
     public function getLotPaymentId(Request $request)
     {
         $request =  $request->validate([
@@ -139,6 +159,8 @@ class AuctionContoller extends Controller
         }
     }
 
+
+    // Complete Payment
     public function completelotpayment(Request $request)
     {
         $lastPaymentDetails = payments::where('lotId', $request->lotId)->orderBy('id', 'desc')->first();
@@ -157,6 +179,8 @@ class AuctionContoller extends Controller
         ]);
     }
 
+
+    // customer balance
     public function getCustomerBalance($custoemrId)
     {
         $lastBalance =  customerBalance::where('customerId', $custoemrId)->orderBy('id', 'desc')->first();
@@ -227,6 +251,9 @@ class AuctionContoller extends Controller
         ]);
     }
 
+
+
+    // Participate On Lot
     public  function participateOnLot(Request $request)
     {
         $custoemrDetais =  Customer::find($request->customerId);
@@ -286,7 +313,7 @@ class AuctionContoller extends Controller
     }
 
 
-    // HAVE TO DO
+    // Participant on Expired Lot
     public function participeteOnExpireLot(Request $request)
     {
         $requestData = $request->validate([
@@ -386,6 +413,8 @@ class AuctionContoller extends Controller
         return json_encode($response);
     }
 
+
+    // New bid on lot
     public static function newbidonlot(Request $request)
     {
         $newBid = $request->validate([
@@ -425,7 +454,8 @@ class AuctionContoller extends Controller
                 $database->getReference('TodaysLots/liveList/' . $newBid['lotId'] . '/lastBid')->set($lastBid[0]);
 
                 $response = ["sucess" => true, 'LattestBid' => $lastBid, "userDetails" => $customer[0]];
-            } elseif (!$lastBid && $lotDtails->Price < $newBid['amount']) {
+            } elseif (!$lastBid && $lotDtails->Price < $newBid['amount']) 
+            {
                 $lastBid = BidsOfLots::create($newBid);
                 // Have to Brodcast with
 
@@ -481,7 +511,8 @@ class AuctionContoller extends Controller
         if ($customer && $customer->isApproved == 1) {
             $lastBid =  BidsOfLots::where('lotId', $newBid['lotId'])->orderBy('id', 'DESC')->first();
 
-            if ($lastBid && $lastBid['amount'] < $newBid['amount'] && $lastBid['lotId'] == $newBid['lotId']) {
+            if ($lastBid && $lastBid['amount'] < $newBid['amount'] && $lastBid['lotId'] == $newBid['lotId']) 
+            {
                 $lastBid = BidsOfLots::create($newBid);
                 $this->liveChangeOnfirbase($newBid['lotId'], $lotDtails['EndDate']);
                 $response = ["sucess" => true, 'LattestBid' => $lastBid, "userDetails" => $customer[0]];
@@ -557,7 +588,8 @@ class AuctionContoller extends Controller
         $response = ['sucess' => false];
         $response['EndDate'] = lots::where('id', $request->lotid)->pluck('EndDate')->first();
         $result = DB::select('SELECT lots.EndDate as lotEnd, bids_of_lots.*,customers.id as customerId,customers.name as customerName FROM `bids_of_lots` left JOIN lots on lots.id = bids_of_lots.lotId left JOIN customers on customers.id = bids_of_lots.customerId WHERE   bids_of_lots.lotId = ' . $request->lotid . ' and bids_of_lots.id >' . $request->lastBid . ' ORDER BY id  DESC LIMIT 1');
-        if (count($result)) {
+        if (count($result))
+        {
             $response['sucess'] = true;
             $response['newbid'] = $result;
         }

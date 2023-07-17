@@ -589,37 +589,19 @@ class LotsContoller extends Controller
     
 
     // add Favorites Lots in Lots 
-    // public function addFavorites(Request $request)
-    // {
-    //     $customer_id = $request->input('customer_id');
-    //     $lot_id = $request->input('lot_id');
-
-    //     // Save the customer_id and lot_id to the favorites table in the database
-    //     DB::table('user_lot')->insert([
-    //         'customer_id' => $customer_id,
-    //         'lot_id' => $lot_id,
-    //         'created_at' => now(),
-    //         'updated_at' => now(),
-    //     ]);
-    
-    //     return response()->json([
-    //         'message' => 'Lot added to Favorites Lots',
-    //         'success' => true,
-    //     ]);
-    // }
 
     public function addFavorites(Request $request)
     {
         $customer_id = $request->input('customer_id');
         $lot_id = $request->input('lot_id');
 
-        // Check if the favorite lot already exists for the given customer
+        // Check if the favorite lot already exists for the given customer and lot_id
         $existingFavorite = DB::table('user_lot')
             ->where('customer_id', $customer_id)
             ->where('lot_id', $lot_id)
             ->first();
 
-        // If the favorite lot already exists, return a response
+        // If the favorite lot already exists, return an error response
         if ($existingFavorite) {
             return response()->json([
                 'message' => 'Favorite lot already exists for this customer',
@@ -640,6 +622,7 @@ class LotsContoller extends Controller
             'success' => true,
         ]);
     }
+
 
 
         // delete favlot Api
@@ -672,31 +655,8 @@ class LotsContoller extends Controller
     
 
 
-    // show Favorites Lots in Lots 
-    // public function showFavorites($user_id)
-    // {
-    //     // Retrieve the favorite lots for the given user_id from the database
-    //     $favoritesLots = DB::table('user_lot')
-    //         ->where('user_id', $user_id)
-    //         ->join('lots', 'user_lot.lot_id', '=', 'lots.id')
-    //         ->select('lots.*')
-    //         ->get();
+     // show Favorites Lots in Lots 
 
-    //     // Check if there are any favorite lots available for the user
-    //     if ($favoritesLots->isEmpty()) {
-    //         return response()->json([
-    //             'message' => 'Favorites lots not available for this user',
-    //             'success' => false,
-    //         ]);
-    //     }
-
-    //     // Return the favorite lots as a response
-    //     return response()->json([
-    //         'message' => 'Favorite lots retrieved',
-    //         'success' => true,
-    //         'lots' => $favoritesLots,
-    //     ]);
-    // }
     public function showFavorites($customer_id)
     {
         // Retrieve the favorite lots for the given customer_id from the database
@@ -721,7 +681,6 @@ class LotsContoller extends Controller
             'lots' => $favoritesLots,
         ]);
     }
-
 
 
 
