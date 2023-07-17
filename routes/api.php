@@ -78,21 +78,18 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     // });
 });
 
-// // Get Categorys API
-// Route::get('getcategorys', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getcategorys');
-
 // Get Categorys API
 Route::get('getCategoriesAndLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getCategoriesAndLots');
 
 
 // live lots 
-Route::get('activeLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getActiveLots');
+Route::post('activeLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getActiveLots');
 // Upcoming lots 
 Route::get('upcomingLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getUpcomingLots');
 // Experied lots
-Route::get('expiredLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getexpiredlots');
+Route::post('expiredLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getexpiredlots');
 //Sold lots
-Route::get('soldLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@SoldLots');
+Route::post('soldLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@SoldLots');
 
 // details Lot
 Route::get('lotsdetails', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@lotsdetails');

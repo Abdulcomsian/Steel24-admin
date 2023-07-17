@@ -167,6 +167,8 @@ class LotsContoller extends Controller
 
         $customerId = $request->input('customer_id');
 
+        // dd($customerId);
+
         $userLots = Lots::with('categories')
                         ->with(['customers' => function($query) use ($customerId){
                              $query->where('customers.id' , $customerId);
@@ -176,7 +178,8 @@ class LotsContoller extends Controller
 
                         // dd($userLots);
 
-                        if ($userLots->isEmpty()) {
+                        if ($userLots->isEmpty()) 
+                        {
                             return response()->json([
                                 'message' => 'No active or favorite lots available for the customer',
                                 'success' => false,
