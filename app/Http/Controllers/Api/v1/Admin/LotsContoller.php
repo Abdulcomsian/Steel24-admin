@@ -386,20 +386,44 @@ class LotsContoller extends Controller
     //     ]);
     // }
     
-    public function getexpiredlots()
+    public function getexpiredlots(Request $request)
     {
     
-        $expiredLots = DB::table('lots')
-        ->join('categories' , 'lots.categoryId' , '=' , 'categories.id')
-        ->leftJoin('user_lot','lots.id' , '=' , 'user_lot.lot_id')
-        ->selectRaw('categories.id as cat_id , categories.title as category_title , categories.*, lots.id as l_id , lots.title as lot_title , lots.* , user_lot.id as fav_id , user_lot.*')
-        ->where('lots.lot_status' , '=' , 'Expired')
-        ->get();
+        // $expiredLots = DB::table('lots')
+        // ->join('categories' , 'lots.categoryId' , '=' , 'categories.id')
+        // ->leftJoin('user_lot','lots.id' , '=' , 'user_lot.lot_id')
+        // ->selectRaw('categories.id as cat_id , categories.title as category_title , categories.*, lots.id as l_id , lots.title as lot_title , lots.* , user_lot.id as fav_id , user_lot.*')
+        // ->where('lots.lot_status' , '=' , 'Expired')
+        // ->get();
 
-        return response()->json([
-            'expiredLots' => $expiredLots,
-            'success' => true,
-        ]);
+        // return response()->json([
+        //     'expiredLots' => $expiredLots,
+        //     'success' => true,
+        // ]);
+        
+
+        $customerId = $request->input('customer_id');
+
+        $expiredLots = Lots::with('categories')
+                        ->with(['customers' => function($query) use ($customerId){
+                             $query->where('customers.id' , $customerId);
+                        }])
+                        ->where('lot_status' , 'LIKE' , '%Expired%')
+                        ->get();
+
+                        // dd($userLots);
+
+                        if ($expiredLots->isEmpty()) {
+                            return response()->json([
+                                'message' => 'No Expired lots available for the customer',
+                                'success' => false,
+                            ], 404);
+                        }
+                    
+                        return response()->json([
+                            'expiredLots' => $expiredLots,
+                            'success' => true,
+                        ]);
     }
     
 
@@ -424,21 +448,48 @@ class LotsContoller extends Controller
     //         'success' => true,
     //     ]);
     // }
-    public function SoldLots()
+    public function SoldLots(Request $request)
     {
-        {
-            $soldLots = DB::table('lots')
-            ->join('categories' , 'lots.categoryId' , '=' , 'categories.id')
-            ->leftJoin('user_lot','lots.id' , '=' , 'user_lot.lot_id')
-            ->selectRaw('categories.id as cat_id , categories.title as category_title , categories.*, lots.id as l_id , lots.title as lot_title , lots.* , user_lot.id as fav_id , user_lot.*')
-            ->where('lots.lot_status' , '=' , 'Sold')
-            ->get();
+        // {
+        //     $soldLots = DB::table('lots')
+        //     ->join('categories' , 'lots.categoryId' , '=' , 'categories.id')
+        //     ->leftJoin('user_lot','lots.id' , '=' , 'user_lot.lot_id')
+        //     ->selectRaw('categories.id as cat_id , categories.title as category_title , categories.*, lots.id as l_id , lots.title as lot_title , lots.* , user_lot.id as fav_id , user_lot.*')
+        //     ->where('lots.lot_status' , '=' , 'Sold')
+        //     ->get();
     
-            return response()->json([
-                'soldLots' => $soldLots,
-                'success' => true,
-            ]);
-        }
+        //     return response()->json([
+        //         'soldLots' => $soldLots,
+        //         'success' => true,
+        //     ]);
+        // }
+
+
+        $customerId = $request->input('customer_id');
+
+        $soldLots = Lots::with('categories')
+                        ->with(['customers' => function($query) use ($customerId)
+                        {
+                             $query->where('customers.id' , $customerId);
+                        }])
+                        ->where('lot_status' , 'LIKE' , '%Sold%')
+                        ->get();
+
+                        // dd($userLots);
+
+                        if ($soldLots->isEmpty()) {
+                            return response()->json([
+                                'message' => 'No Sold lots available for the customer',
+                                'success' => false,
+                            ], 404);
+                        }
+                    
+                        return response()->json([
+                            'soldLots' => $soldLots,
+                            'success' => true,
+                        ]);
+
+
     }
 
     // Lots Details API
