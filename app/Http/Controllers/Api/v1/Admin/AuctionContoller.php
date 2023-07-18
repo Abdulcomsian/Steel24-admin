@@ -101,22 +101,42 @@ class AuctionContoller extends Controller
         //     'sucess' => true,
         // ]);
 
-        $materialidata = newMaterial::where("lotid", $lotId)->get();
 
+
+
+        // $materialidata = newMaterial::where("lotid", $lotId)->get();
+
+        // $materialilist = new_maerials_2::where('lotid', $lotId)->get();
+        // $lotTerms = lotTerms::where('lotid', $lotId)->first();
+    
+        // $lotDetails = DB::select('SELECT lots.* ,bids_of_lots.amount as lastBidAmount from bids_of_lots RIGHT JOIN lots ON  lots.id = bids_of_lots.lotId 
+        //     WHERE lots.id  = ' . $lotId . ' 
+        //     ORDER by bids_of_lots.amount DESC LIMIT 1;');
+    
+        // // Return the response in JSON format using response()->json()
+        // return response()->json([
+        //     'lotDetails' => $lotDetails,
+        //     'materialList' => $materialilist,
+        //     'lotTerms' => $lotTerms,
+        //     'success' => true,
+        // ]);
+
+        $materialidata = newMaterial::where("lotid", $lotId)->get();
         $materialilist = new_maerials_2::where('lotid', $lotId)->get();
         $lotTerms = lotTerms::where('lotid', $lotId)->first();
-    
+        
         $lotDetails = DB::select('SELECT lots.* ,bids_of_lots.amount as lastBidAmount from bids_of_lots RIGHT JOIN lots ON  lots.id = bids_of_lots.lotId 
             WHERE lots.id  = ' . $lotId . ' 
             ORDER by bids_of_lots.amount DESC LIMIT 1;');
-    
+        
         // Return the response in JSON format using response()->json()
         return response()->json([
-            'lotDetails' => $lotDetails,
+            'lotDetails' => $lotDetails[0], // Assuming $lotDetails is not empty, get the first element
             'materialList' => $materialilist,
             'lotTerms' => $lotTerms,
             'success' => true,
         ]);
+
     }
 
 
@@ -429,7 +449,8 @@ class AuctionContoller extends Controller
 
         if ($customer && $customer->isApproved == 1) {
             $lastBid =  BidsOfLots::where('lotId', $newBid['lotId'])->orderBy('id', 'DESC')->first();
-            if ($lastBid && $lastBid['amount'] < $newBid['amount'] && $lastBid['lotId'] == $newBid['lotId']) {
+            if ($lastBid && $lastBid['amount'] < $newBid['amount'] && $lastBid['lotId'] == $newBid['lotId']) 
+            {
                 $lastBid = BidsOfLots::create($newBid);
 
                 $lastBid =  DB::select('SELECT bids_of_lots.*, customers.id as customerId,customers.name as customerName       
