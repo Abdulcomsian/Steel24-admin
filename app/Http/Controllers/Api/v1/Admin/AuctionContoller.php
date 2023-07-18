@@ -421,14 +421,15 @@ class AuctionContoller extends Controller
     
             if ($existingParticipation) {
                 return response()->json([
-                    'message' => 'You already paid the participation fee for this lot',
-                    'success' => false,
+                    'message' => 'User already paid the participation fee for this lot.',
+                    'success' => true,
                 ]);
             }
     
             $lastBalance = customerBalance::where('customerId', $request->customerId)->orderBy('id', 'desc')->first();
     
-            if ($lastBalance && ($lotDetails->participate_fee <= $lastBalance->finalAmount)) {
+            if ($lastBalance && ($lotDetails->participate_fee <= $lastBalance->finalAmount)) 
+            {
                 customerBalance::create([
                     'customerId' => $request->customerId,
                     'balanceAmount' => $lastBalance->finalAmount,
@@ -444,12 +445,12 @@ class AuctionContoller extends Controller
                 $lotDetails['ParticipateUsers'] = $participatedCustomers;
     
                 $response = [
-                    'message' => 'User can participate on lot.',
+                    'message' => 'User can pay the participation fee successfully.',
                     'success' => true,
                 ];
             } else {
                 $response = [
-                    'message' => 'User don\'t have enough balance for participation',
+                    'message' => 'User don\'t have enough balance for this participation.',
                     'success' => false,
                 ];
             }
