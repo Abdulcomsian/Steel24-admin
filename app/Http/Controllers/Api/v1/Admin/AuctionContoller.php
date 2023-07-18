@@ -342,26 +342,93 @@ class AuctionContoller extends Controller
     //     return response()->json($response);
     // }
 
+
+    // Previous code 
+    // public function participateOnLot(Request $request)
+    // {
+    //     $customerDetails = Customer::find($request->customerId);
+    //     $response = null;
+
+    //     if (isset($customerDetails->isApproved)) 
+    //     {
+    //         $lotDetails = lots::find($request->lotid);
+
+    //         if (!$lotDetails) {
+    //             return response()->json([
+    //                 'message' => 'Lot not found',
+    //                 'success' => false,
+    //             ], Response::HTTP_NOT_FOUND);
+    //         }
+
+    //         $lastBalance = customerBalance::where('customerId', $request->customerId)->orderBy('id', 'desc')->first();
+
+    //         if ($lastBalance && ($lotDetails->participate_fee <= $lastBalance->finalAmount)) 
+    //         {
+    //             customerBalance::create([
+    //                 'customerId' => $request->customerId,
+    //                 'balanceAmount' => $lastBalance->finalAmount,
+    //                 'action' => 'Participate Fees',
+    //                 'actionAmount' => $lotDetails->participate_fee,
+    //                 'finalAmount' => $lastBalance->finalAmount - $lotDetails->participate_fee,
+    //                 'lotid' => $request->lotid,
+    //                 'status' => 0,
+    //                 'date' => Carbon::now(),
+    //             ]);
+
+    //             $participatedCustomers = customerBalance::where([['lotid', $request->lotid], ['status', '!=', '1']])->groupBy('customerId')->pluck('customerId')->toArray();
+    //             $lotDetails['ParticipateUsers'] = $participatedCustomers;
+
+    //             $response = [
+    //                 'message' => 'User can participate on lot.',
+    //                 'success' => true,
+    //             ];
+    //         } else {
+    //             $response = [
+    //                 'message' => 'User don\'t have enough balance for participation',
+    //                 'success' => false,
+    //             ];
+    //         }
+    //     } else {
+    //         $response = [
+    //             'message' => 'User Is Not Active.',
+    //             'success' => false,
+    //         ];
+    //     }
+
+    //     return response()->json($response);
+    // }
+
     public function participateOnLot(Request $request)
     {
         $customerDetails = Customer::find($request->customerId);
         $response = null;
-
-        if (isset($customerDetails->isApproved)) 
-        {
+    
+        if (isset($customerDetails->isApproved)) {
             $lotDetails = lots::find($request->lotid);
-
+    
             if (!$lotDetails) {
                 return response()->json([
                     'message' => 'Lot not found',
                     'success' => false,
                 ], Response::HTTP_NOT_FOUND);
             }
-
+    
+            // Check if the user has already participated in the same lot
+            $existingParticipation = customerBalance::where('customerId', $request->customerId)
+                ->where('lotid', $request->lotid)
+                ->where('status', '!=', '1')
+                ->first();
+    
+            if ($existingParticipation) {
+                return response()->json([
+                    'message' => 'You already paid the participation fee for this lot',
+                    'success' => false,
+                ]);
+            }
+    
             $lastBalance = customerBalance::where('customerId', $request->customerId)->orderBy('id', 'desc')->first();
-
-            if ($lastBalance && ($lotDetails->participate_fee <= $lastBalance->finalAmount)) 
-            {
+    
+            if ($lastBalance && ($lotDetails->participate_fee <= $lastBalance->finalAmount)) {
                 customerBalance::create([
                     'customerId' => $request->customerId,
                     'balanceAmount' => $lastBalance->finalAmount,
@@ -372,10 +439,10 @@ class AuctionContoller extends Controller
                     'status' => 0,
                     'date' => Carbon::now(),
                 ]);
-
+    
                 $participatedCustomers = customerBalance::where([['lotid', $request->lotid], ['status', '!=', '1']])->groupBy('customerId')->pluck('customerId')->toArray();
                 $lotDetails['ParticipateUsers'] = $participatedCustomers;
-
+    
                 $response = [
                     'message' => 'User can participate on lot.',
                     'success' => true,
@@ -392,11 +459,10 @@ class AuctionContoller extends Controller
                 'success' => false,
             ];
         }
-
+    
         return response()->json($response);
     }
-
-
+    
 
     // Participant on Expired Lot
     public function participeteOnExpireLot(Request $request)
