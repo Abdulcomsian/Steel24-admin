@@ -541,6 +541,9 @@ class AuctionContoller extends Controller
                 // $database->getReference('TodaysLots/liveList/' . $newBid['lotId'] . '/lastBid')->set($lastBid[0]);
 
                 $response = ["sucess" => true, 'LattestBid' => $lastBid, "userDetails" => $customer[0]];
+
+                
+
             } elseif (!$lastBid && $lotDtails->Price < $newBid['amount']) 
             {
                 $lastBid = BidsOfLots::create($newBid);
@@ -571,7 +574,7 @@ class AuctionContoller extends Controller
 
                 $response = ["sucess" => true, 'LattestBid' => $lastBid, "userDetails" => $customer[0]];
             } else {
-                $response = ["message" => 'Bid Aount is small then last bid.', 'sucess' => false];
+                $response = ["message" => 'Bid Amount is small then last bid.', 'sucess' => false];
             }
             // $bids = BidsOfLots::get()->toArray();
             // info($bids);
@@ -603,7 +606,10 @@ class AuctionContoller extends Controller
             {
                 $lastBid = BidsOfLots::create($newBid);
                 $this->liveChangeOnfirbase($newBid['lotId'], $lotDtails['EndDate']);
-                $response = ["sucess" => true, 'LattestBid' => $lastBid, "userDetails" => $customer[0]];
+
+                $response = ["sucess" => true, 'LattestBid' => $lastBid];
+
+                
             } elseif (!$lastBid && $lotDtails->Price < $newBid['amount']) {
                 $lastBid = BidsOfLots::create($newBid);
                 // Have to Brodcast with
@@ -611,9 +617,9 @@ class AuctionContoller extends Controller
                 $this->liveChangeOnfirbase($newBid['lotId'], $lotDtails['EndDate']);
 
 
-                $response = ["sucess" => true, 'LattestBid' => $lastBid, "userDetails" => $customer[0]];
+                // $response = ["sucess" => true, 'LattestBid' => $lastBid, "userDetails" => $customer[0]];
             } else {
-                $response = ["message" => 'Bid Aount is small then last bid.', 'sucess' => false];
+                $response = ["message" => 'Bid Amount is small then last bid.', 'sucess' => false];
             }
         } else {
             $response = ["message" => 'User is not Availabel Or User is Blocked.', 'sucess' => false];
