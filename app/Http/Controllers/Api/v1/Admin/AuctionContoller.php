@@ -246,7 +246,8 @@ class AuctionContoller extends Controller
     {
         $lastBalance =  customerBalance::where('customerId', $request->customerId)->orderBy('id', 'desc')->first();
         $finalBalance = null;
-        if ($lastBalance) {
+        if ($lastBalance) 
+        {
             $finalBalance = customerBalance::create([
                 'customerId' => $request->customerId,
                 'balanceAmount' => $lastBalance->finalAmount,
@@ -273,7 +274,8 @@ class AuctionContoller extends Controller
 
 
 
-    // Participate On Lot
+    // Participate On Lot update by Z.R
+
     // public  function participateOnLot(Request $request)
     // {
     //     $custoemrDetais =  Customer::find($request->customerId);
@@ -380,7 +382,7 @@ class AuctionContoller extends Controller
                 ];
             } else {
                 $response = [
-                    'message' => 'User don\'t have enough balance.',
+                    'message' => 'User don\'t have enough balance for participation',
                     'success' => false,
                 ];
             }
@@ -499,7 +501,6 @@ class AuctionContoller extends Controller
     }
 
 
-    // New bid on lot
     public static function newbidonlot(Request $request)
     {
         $newBid = $request->validate([
@@ -582,6 +583,7 @@ class AuctionContoller extends Controller
     }
 
 
+    // Add new bid to lot Updated by Z.R
     public function addnewbidtolot(Request $request)
     {
         $newBid = $request->validate([
@@ -618,6 +620,7 @@ class AuctionContoller extends Controller
         }
         return $response;
     }
+
 
     public function liveChangeOnfirbase($lotid, $endDate = null)
     {
