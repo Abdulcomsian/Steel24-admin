@@ -55,7 +55,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
         Route::post('/addcustomerbalance', 'AuctionContoller@addcustomerbalance');
         Route::post('/getlotpaymentid', 'AuctionContoller@getLotPaymentId');
         Route::post('/completelotpayment', 'AuctionContoller@completelotpayment');
-        
+
         Route::post('/addnewbidtolot', 'AuctionContoller@addnewbidtolot');
 
         // Route::get('materials', 'MaterialController@getMaterials');
@@ -65,7 +65,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
         Route::get('getsoledlots', 'LotsContoller@getsoledlots');
         Route::get('getsoledlots', 'LotsContoller@getsoledlots');
         Route::get('getexpiredlots', 'LotsContoller@getexpiredlots');
-        Route::get('getcustimerwinlots/{customerId}', 'LotsContoller@getcustimerwinlots');
+
+        Route::get('getcustomerwinlots/{customerId}', 'LotsContoller@getcustomerwinlots');
 
         Route::get('getcustimerparticipatelots/{customerId}', 'LotsContoller@getcustimerparticipatelots');
 

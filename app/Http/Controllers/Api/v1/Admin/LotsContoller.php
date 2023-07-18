@@ -697,8 +697,8 @@ class LotsContoller extends Controller
         return response()->json(["lots" => $customerLots, "sucess" => true]);
     }
 
-    // Get Custimer Win Lots.
-    public function getcustimerwinlots($customerId)
+    // Previous code -> Get Custimer Win Lots.
+    public function getcustomerwinlots($customerId)
     {
         // $winLots = payments::where('customerId', $customerId)->with('lotDetails')->orderBy('id', 'desc')->get();
         $winLots = DB::select('SELECT payments.* ,lots.*  from payments
@@ -707,9 +707,37 @@ class LotsContoller extends Controller
         AND payments.customerId = ' . $customerId . ' ORDER By payments.id DESC;');
         foreach ($winLots as $lot) {
             // dd($lot->lotId);
-            $lot->material =  new_maerials_2::where('lotid', $lot->lotId)->get()->toArray();;
+            $lot->material =  new_maerials_2::where('lotid', $lot->lotId)->get()->toArray();
         }
 
         return response()->json(["lots" => $winLots, "sucess" => true]);
     }
+
+    //  public function getcustomerwinlots($customerId)
+    // {
+    //     // Subquery to get the maximum bid amount for each lot
+    //     $subquery = DB::table('bids_of_lots')
+    //         ->select('lotId', DB::raw('MAX(amount) as maxBidAmount'))
+    //         ->groupBy('lotId');
+
+    //     // Get the winLots with the highest bid amount
+    //     $winLots = DB::table('lots')
+    //         ->join('payments', 'lots.id', '=', 'payments.lotId')
+    //         ->joinSub($subquery, 'max_bids', function ($join) {
+    //             $join->on('lots.id', '=', 'max_bids.lotId');
+    //         })
+    //         ->where('payments.customerId', $customerId)
+    //         ->orderBy('payments.id', 'desc')
+    //         ->get();
+
+    //     // Fetch the associated material for each lot
+    //     foreach ($winLots as $lot) {
+    //         $lot->material = new_maerials_2::where('lotid', $lot->lotId)->get()->toArray();
+    //     }
+
+    //     return response()->json(["lots" => $winLots, "success" => true]);
+    // }
+
+
+    
 }
