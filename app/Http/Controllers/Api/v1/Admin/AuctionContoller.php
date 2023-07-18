@@ -20,7 +20,7 @@ use \Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Razorpay\Api\Api;
 use Tymon\JWTAuth\Payload;
-use Kreait\Firebase\Factory;
+// use Kreait\Firebase\Factory;
 
 class AuctionContoller extends Controller
 {
@@ -465,22 +465,23 @@ class AuctionContoller extends Controller
                     $liveLotslist[$lot->id] = $templot;
                 }
 
-                $firebase = (new Factory)
-                    ->withServiceAccount(json_encode([
-                        "type" => "service_account",
-                        "project_id" => "steel24-a898f",
-                        "private_key_id" => "154e3c7d3ecb2b8fc1245ce9955d87ba8084ce77",
-                        "private_key" => "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCJOy/8yIPhlpv2\nwGNffZVU8vTSNYwEqUDy6aHF/TLcJsHnoLfAcMdXvts0Cq4vIOw3FRRQrVq70bIa\n7dIQcyXkHvb8z/lsvvb/cI4VMpW3EgWQ+bo8m4DYY4kWDqGxs5stD119G14/q9iX\nCDhSiRbetygKGH5zxXJllsa5MFKAXNj9QD7mksJllEZV4Q/d+2z4HkfxggTK/KZy\nlEU1scb4P/U1mWukY4C/LgugJicQhIMtGDt6PaFHm5ZssQ2vZ2lumuMhnRIzQ/e9\nWkPbTJESeUoprZHJxPfSPbtRika9NYp3/YntHh1Y3aszGpzLx/VOeBmKo5SWIjOs\nSUj2gY3fAgMBAAECggEABsJfjrfhpw7gB7taKa3p2RFOdbwldWVQyaYwTaw3ARj3\nnA0Sf+wOJYhFC78q7S9V8zCam46uVWnyt9jW6/CAAUh1KeakhnKxf8tvdCPVs/qz\nQ3zJa4rNQdtFOUznMfWCwylqlWrvrXstY+MHwyj1c2raEgU61UD4bYCLsTtsFN5r\naXTa9NLEaExb+5PIaubtE9uJHESn/XJhTBXEhT8dt6YFr6jPBil7Ak4wJqsr+82l\nMILMSbPGl9F3Hd/LP+WRxPvjrHSU6U46vocZhEHCohMx08srMsl4NO6vt57Ty19h\nCaakYiM4PciJTwVl24yqrP4oszexdggIRzkT+0wJAQKBgQDACgw3LLMID+AP8tHZ\nnQwmxJ1YiWbhUliORGzCsontc9hz9N57BBE2GwqGAEmD+RaNFllbt1aGg+v3dFMl\nycKIc83Q4c+J85X2tNwXh94niQLF5Wl2lHgdioTSh8WNSZVh/0cekN7wh8zJBRKY\nkT59J7HM92gDrABYuGUDaofD/wKBgQC28AKCrQxb4EUpYsLC42fSMY066+5js3Tt\neguLyj4jNhIQ0nSe3TBBdWlvCJl+Drw8qKt1xM0RmNsqSLYBTK1PzkITLG6S4nvg\n7vf713Q116wipE5WX8FakMWL+cjlDdy3JAoBWHi4og4ZuqoMZr+JyM9dR2KH5UFl\nARuIIla2IQKBgQCC8BbmI98qNxDSLwEwfGlFobebH4x7Q5dH4ZW6pttugRdr8OEl\nRV+q4YMqXNXDWzoqFrv00iv36ckhXzo2QLwYJ8WEkALfD6wHm8eZb7VkhYHThxmC\nlbbUhZcMqTBkpnBpchJ+385yeFWEFqZYSmguE7uigmp0XnmaBJgzXRaW5wKBgBdf\nQKLbYwnV9GAeOw3VKe2D4SxW+kUIp3azsgfxFdE/1j0J9lZZohGq44aJDbs6PLhv\nQECynRSTd+TGF2LBHh9lFbIHajUf9H2/ajVlyHYckOR4I34Li9N7TZHdntoM1Fcd\npp2XZQ0Jv01wOMuO0QfUfRHIzgDYvGsgIhlZccShAoGAdctj7iBKhoTC3KecFUxy\nNHS1D+x/1VuZgUN1mKRhWjhQV1CyR8ao7O7om1at6IRJ8a3O7u2CZMdIB21pgBE2\n4lsMScCSl5Fr5UEMNuEELK3tMfuEVSt709HrtVrnzKU+LABQMJYrACWA3n6kUTRx\nFGWSMAzCBURToznCQEl88yc=\n-----END PRIVATE KEY-----\n",
-                        "client_email" => "firebase-adminsdk-1jmgy@steel24-a898f.iam.gserviceaccount.com",
-                        "client_id" => "106107898058399972491",
-                        "auth_uri" => "https://accounts.google.com/o/oauth2/auth",
-                        "token_uri" => "https://oauth2.googleapis.com/token",
-                        "auth_provider_x509_cert_url" => "https://www.googleapis.com/oauth2/v1/certs",
-                        "client_x509_cert_url" => "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-1jmgy%40steel24-a898f.iam.gserviceaccount.com"
+                // $firebase = (new Factory)
+                //     ->withServiceAccount(json_encode([
+                //         "type" => "service_account",
+                //         "project_id" => "steel24-a898f",
+                //         "private_key_id" => "154e3c7d3ecb2b8fc1245ce9955d87ba8084ce77",
+                //         "private_key" => "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCJOy/8yIPhlpv2\nwGNffZVU8vTSNYwEqUDy6aHF/TLcJsHnoLfAcMdXvts0Cq4vIOw3FRRQrVq70bIa\n7dIQcyXkHvb8z/lsvvb/cI4VMpW3EgWQ+bo8m4DYY4kWDqGxs5stD119G14/q9iX\nCDhSiRbetygKGH5zxXJllsa5MFKAXNj9QD7mksJllEZV4Q/d+2z4HkfxggTK/KZy\nlEU1scb4P/U1mWukY4C/LgugJicQhIMtGDt6PaFHm5ZssQ2vZ2lumuMhnRIzQ/e9\nWkPbTJESeUoprZHJxPfSPbtRika9NYp3/YntHh1Y3aszGpzLx/VOeBmKo5SWIjOs\nSUj2gY3fAgMBAAECggEABsJfjrfhpw7gB7taKa3p2RFOdbwldWVQyaYwTaw3ARj3\nnA0Sf+wOJYhFC78q7S9V8zCam46uVWnyt9jW6/CAAUh1KeakhnKxf8tvdCPVs/qz\nQ3zJa4rNQdtFOUznMfWCwylqlWrvrXstY+MHwyj1c2raEgU61UD4bYCLsTtsFN5r\naXTa9NLEaExb+5PIaubtE9uJHESn/XJhTBXEhT8dt6YFr6jPBil7Ak4wJqsr+82l\nMILMSbPGl9F3Hd/LP+WRxPvjrHSU6U46vocZhEHCohMx08srMsl4NO6vt57Ty19h\nCaakYiM4PciJTwVl24yqrP4oszexdggIRzkT+0wJAQKBgQDACgw3LLMID+AP8tHZ\nnQwmxJ1YiWbhUliORGzCsontc9hz9N57BBE2GwqGAEmD+RaNFllbt1aGg+v3dFMl\nycKIc83Q4c+J85X2tNwXh94niQLF5Wl2lHgdioTSh8WNSZVh/0cekN7wh8zJBRKY\nkT59J7HM92gDrABYuGUDaofD/wKBgQC28AKCrQxb4EUpYsLC42fSMY066+5js3Tt\neguLyj4jNhIQ0nSe3TBBdWlvCJl+Drw8qKt1xM0RmNsqSLYBTK1PzkITLG6S4nvg\n7vf713Q116wipE5WX8FakMWL+cjlDdy3JAoBWHi4og4ZuqoMZr+JyM9dR2KH5UFl\nARuIIla2IQKBgQCC8BbmI98qNxDSLwEwfGlFobebH4x7Q5dH4ZW6pttugRdr8OEl\nRV+q4YMqXNXDWzoqFrv00iv36ckhXzo2QLwYJ8WEkALfD6wHm8eZb7VkhYHThxmC\nlbbUhZcMqTBkpnBpchJ+385yeFWEFqZYSmguE7uigmp0XnmaBJgzXRaW5wKBgBdf\nQKLbYwnV9GAeOw3VKe2D4SxW+kUIp3azsgfxFdE/1j0J9lZZohGq44aJDbs6PLhv\nQECynRSTd+TGF2LBHh9lFbIHajUf9H2/ajVlyHYckOR4I34Li9N7TZHdntoM1Fcd\npp2XZQ0Jv01wOMuO0QfUfRHIzgDYvGsgIhlZccShAoGAdctj7iBKhoTC3KecFUxy\nNHS1D+x/1VuZgUN1mKRhWjhQV1CyR8ao7O7om1at6IRJ8a3O7u2CZMdIB21pgBE2\n4lsMScCSl5Fr5UEMNuEELK3tMfuEVSt709HrtVrnzKU+LABQMJYrACWA3n6kUTRx\nFGWSMAzCBURToznCQEl88yc=\n-----END PRIVATE KEY-----\n",
+                //         "client_email" => "firebase-adminsdk-1jmgy@steel24-a898f.iam.gserviceaccount.com",
+                //         "client_id" => "106107898058399972491",
+                //         "auth_uri" => "https://accounts.google.com/o/oauth2/auth",
+                //         "token_uri" => "https://oauth2.googleapis.com/token",
+                //         "auth_provider_x509_cert_url" => "https://www.googleapis.com/oauth2/v1/certs",
+                //         "client_x509_cert_url" => "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-1jmgy%40steel24-a898f.iam.gserviceaccount.com"
 
-                    ]))->withDatabaseUri('https://steel24-a898f-default-rtdb.firebaseio.com/');
-                $database = $firebase->createDatabase();
-                $database->getReference('TodaysLots/liveList/')->set($liveLotslist);
+                //     ]))->withDatabaseUri('https://steel24-a898f-default-rtdb.firebaseio.com/');
+                // $database = $firebase->createDatabase();
+                // $database->getReference('TodaysLots/liveList/')->set($liveLotslist);
+
                 $response = [
                     'message' => 'Lot Restart.',
                     'sucess' => true
@@ -522,21 +523,21 @@ class AuctionContoller extends Controller
                 LEFT JOIN customers on customers.id = bids_of_lots.customerId
                 WHERE lotId =' . $newBid['lotId'] . ' and bids_of_lots.id =  (SELECT max(id) from bids_of_lots WHERE lotid = ' . $newBid['lotId'] . ') ORDER BY bids_of_lots.amount DESC;');
 
-                $firebase = (new Factory)
-                ->withServiceAccount(json_encode([
-                    "type"=> "service_account",
-                    "project_id"=> "steel24-a898f",
-                    "private_key_id"=> "154e3c7d3ecb2b8fc1245ce9955d87ba8084ce77",
-                    "private_key"=> "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCJOy/8yIPhlpv2\nwGNffZVU8vTSNYwEqUDy6aHF/TLcJsHnoLfAcMdXvts0Cq4vIOw3FRRQrVq70bIa\n7dIQcyXkHvb8z/lsvvb/cI4VMpW3EgWQ+bo8m4DYY4kWDqGxs5stD119G14/q9iX\nCDhSiRbetygKGH5zxXJllsa5MFKAXNj9QD7mksJllEZV4Q/d+2z4HkfxggTK/KZy\nlEU1scb4P/U1mWukY4C/LgugJicQhIMtGDt6PaFHm5ZssQ2vZ2lumuMhnRIzQ/e9\nWkPbTJESeUoprZHJxPfSPbtRika9NYp3/YntHh1Y3aszGpzLx/VOeBmKo5SWIjOs\nSUj2gY3fAgMBAAECggEABsJfjrfhpw7gB7taKa3p2RFOdbwldWVQyaYwTaw3ARj3\nnA0Sf+wOJYhFC78q7S9V8zCam46uVWnyt9jW6/CAAUh1KeakhnKxf8tvdCPVs/qz\nQ3zJa4rNQdtFOUznMfWCwylqlWrvrXstY+MHwyj1c2raEgU61UD4bYCLsTtsFN5r\naXTa9NLEaExb+5PIaubtE9uJHESn/XJhTBXEhT8dt6YFr6jPBil7Ak4wJqsr+82l\nMILMSbPGl9F3Hd/LP+WRxPvjrHSU6U46vocZhEHCohMx08srMsl4NO6vt57Ty19h\nCaakYiM4PciJTwVl24yqrP4oszexdggIRzkT+0wJAQKBgQDACgw3LLMID+AP8tHZ\nnQwmxJ1YiWbhUliORGzCsontc9hz9N57BBE2GwqGAEmD+RaNFllbt1aGg+v3dFMl\nycKIc83Q4c+J85X2tNwXh94niQLF5Wl2lHgdioTSh8WNSZVh/0cekN7wh8zJBRKY\nkT59J7HM92gDrABYuGUDaofD/wKBgQC28AKCrQxb4EUpYsLC42fSMY066+5js3Tt\neguLyj4jNhIQ0nSe3TBBdWlvCJl+Drw8qKt1xM0RmNsqSLYBTK1PzkITLG6S4nvg\n7vf713Q116wipE5WX8FakMWL+cjlDdy3JAoBWHi4og4ZuqoMZr+JyM9dR2KH5UFl\nARuIIla2IQKBgQCC8BbmI98qNxDSLwEwfGlFobebH4x7Q5dH4ZW6pttugRdr8OEl\nRV+q4YMqXNXDWzoqFrv00iv36ckhXzo2QLwYJ8WEkALfD6wHm8eZb7VkhYHThxmC\nlbbUhZcMqTBkpnBpchJ+385yeFWEFqZYSmguE7uigmp0XnmaBJgzXRaW5wKBgBdf\nQKLbYwnV9GAeOw3VKe2D4SxW+kUIp3azsgfxFdE/1j0J9lZZohGq44aJDbs6PLhv\nQECynRSTd+TGF2LBHh9lFbIHajUf9H2/ajVlyHYckOR4I34Li9N7TZHdntoM1Fcd\npp2XZQ0Jv01wOMuO0QfUfRHIzgDYvGsgIhlZccShAoGAdctj7iBKhoTC3KecFUxy\nNHS1D+x/1VuZgUN1mKRhWjhQV1CyR8ao7O7om1at6IRJ8a3O7u2CZMdIB21pgBE2\n4lsMScCSl5Fr5UEMNuEELK3tMfuEVSt709HrtVrnzKU+LABQMJYrACWA3n6kUTRx\nFGWSMAzCBURToznCQEl88yc=\n-----END PRIVATE KEY-----\n",
-                    "client_email"=> "firebase-adminsdk-1jmgy@steel24-a898f.iam.gserviceaccount.com",
-                    "client_id"=> "106107898058399972491",
-                    "auth_uri"=> "https://accounts.google.com/o/oauth2/auth",
-                    "token_uri"=> "https://oauth2.googleapis.com/token",
-                    "auth_provider_x509_cert_url"=> "https://www.googleapis.com/oauth2/v1/certs",
-                    "client_x509_cert_url"=> "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-1jmgy%40steel24-a898f.iam.gserviceaccount.com"
+                // $firebase = (new Factory)
+                // ->withServiceAccount(json_encode([
+                //     "type"=> "service_account",
+                //     "project_id"=> "steel24-a898f",
+                //     "private_key_id"=> "154e3c7d3ecb2b8fc1245ce9955d87ba8084ce77",
+                //     "private_key"=> "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCJOy/8yIPhlpv2\nwGNffZVU8vTSNYwEqUDy6aHF/TLcJsHnoLfAcMdXvts0Cq4vIOw3FRRQrVq70bIa\n7dIQcyXkHvb8z/lsvvb/cI4VMpW3EgWQ+bo8m4DYY4kWDqGxs5stD119G14/q9iX\nCDhSiRbetygKGH5zxXJllsa5MFKAXNj9QD7mksJllEZV4Q/d+2z4HkfxggTK/KZy\nlEU1scb4P/U1mWukY4C/LgugJicQhIMtGDt6PaFHm5ZssQ2vZ2lumuMhnRIzQ/e9\nWkPbTJESeUoprZHJxPfSPbtRika9NYp3/YntHh1Y3aszGpzLx/VOeBmKo5SWIjOs\nSUj2gY3fAgMBAAECggEABsJfjrfhpw7gB7taKa3p2RFOdbwldWVQyaYwTaw3ARj3\nnA0Sf+wOJYhFC78q7S9V8zCam46uVWnyt9jW6/CAAUh1KeakhnKxf8tvdCPVs/qz\nQ3zJa4rNQdtFOUznMfWCwylqlWrvrXstY+MHwyj1c2raEgU61UD4bYCLsTtsFN5r\naXTa9NLEaExb+5PIaubtE9uJHESn/XJhTBXEhT8dt6YFr6jPBil7Ak4wJqsr+82l\nMILMSbPGl9F3Hd/LP+WRxPvjrHSU6U46vocZhEHCohMx08srMsl4NO6vt57Ty19h\nCaakYiM4PciJTwVl24yqrP4oszexdggIRzkT+0wJAQKBgQDACgw3LLMID+AP8tHZ\nnQwmxJ1YiWbhUliORGzCsontc9hz9N57BBE2GwqGAEmD+RaNFllbt1aGg+v3dFMl\nycKIc83Q4c+J85X2tNwXh94niQLF5Wl2lHgdioTSh8WNSZVh/0cekN7wh8zJBRKY\nkT59J7HM92gDrABYuGUDaofD/wKBgQC28AKCrQxb4EUpYsLC42fSMY066+5js3Tt\neguLyj4jNhIQ0nSe3TBBdWlvCJl+Drw8qKt1xM0RmNsqSLYBTK1PzkITLG6S4nvg\n7vf713Q116wipE5WX8FakMWL+cjlDdy3JAoBWHi4og4ZuqoMZr+JyM9dR2KH5UFl\nARuIIla2IQKBgQCC8BbmI98qNxDSLwEwfGlFobebH4x7Q5dH4ZW6pttugRdr8OEl\nRV+q4YMqXNXDWzoqFrv00iv36ckhXzo2QLwYJ8WEkALfD6wHm8eZb7VkhYHThxmC\nlbbUhZcMqTBkpnBpchJ+385yeFWEFqZYSmguE7uigmp0XnmaBJgzXRaW5wKBgBdf\nQKLbYwnV9GAeOw3VKe2D4SxW+kUIp3azsgfxFdE/1j0J9lZZohGq44aJDbs6PLhv\nQECynRSTd+TGF2LBHh9lFbIHajUf9H2/ajVlyHYckOR4I34Li9N7TZHdntoM1Fcd\npp2XZQ0Jv01wOMuO0QfUfRHIzgDYvGsgIhlZccShAoGAdctj7iBKhoTC3KecFUxy\nNHS1D+x/1VuZgUN1mKRhWjhQV1CyR8ao7O7om1at6IRJ8a3O7u2CZMdIB21pgBE2\n4lsMScCSl5Fr5UEMNuEELK3tMfuEVSt709HrtVrnzKU+LABQMJYrACWA3n6kUTRx\nFGWSMAzCBURToznCQEl88yc=\n-----END PRIVATE KEY-----\n",
+                //     "client_email"=> "firebase-adminsdk-1jmgy@steel24-a898f.iam.gserviceaccount.com",
+                //     "client_id"=> "106107898058399972491",
+                //     "auth_uri"=> "https://accounts.google.com/o/oauth2/auth",
+                //     "token_uri"=> "https://oauth2.googleapis.com/token",
+                //     "auth_provider_x509_cert_url"=> "https://www.googleapis.com/oauth2/v1/certs",
+                //     "client_x509_cert_url"=> "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-1jmgy%40steel24-a898f.iam.gserviceaccount.com"
                     
-                ]))->withDatabaseUri('https://steel24-a898f-default-rtdb.firebaseio.com/');        $database = $firebase->createDatabase();
-                $database->getReference('TodaysLots/liveList/' . $newBid['lotId'] . '/lastBid')->set($lastBid[0]);
+                // ]))->withDatabaseUri('https://steel24-a898f-default-rtdb.firebaseio.com/');        $database = $firebase->createDatabase();
+                // $database->getReference('TodaysLots/liveList/' . $newBid['lotId'] . '/lastBid')->set($lastBid[0]);
 
                 $response = ["sucess" => true, 'LattestBid' => $lastBid, "userDetails" => $customer[0]];
             } elseif (!$lastBid && $lotDtails->Price < $newBid['amount']) 
@@ -550,21 +551,21 @@ class AuctionContoller extends Controller
                 WHERE lotId =' . $newBid['lotId'] . ' and bids_of_lots.id =  (SELECT max(id) from bids_of_lots WHERE lotid = ' . $newBid['lotId'] . ') ORDER BY bids_of_lots.amount DESC;');
 
                 // dd($lastBid);
-                $firebase = (new Factory)
-                ->withServiceAccount(json_encode([
-                    "type"=> "service_account",
-                    "project_id"=> "steel24-a898f",
-                    "private_key_id"=> "154e3c7d3ecb2b8fc1245ce9955d87ba8084ce77",
-                    "private_key"=> "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCJOy/8yIPhlpv2\nwGNffZVU8vTSNYwEqUDy6aHF/TLcJsHnoLfAcMdXvts0Cq4vIOw3FRRQrVq70bIa\n7dIQcyXkHvb8z/lsvvb/cI4VMpW3EgWQ+bo8m4DYY4kWDqGxs5stD119G14/q9iX\nCDhSiRbetygKGH5zxXJllsa5MFKAXNj9QD7mksJllEZV4Q/d+2z4HkfxggTK/KZy\nlEU1scb4P/U1mWukY4C/LgugJicQhIMtGDt6PaFHm5ZssQ2vZ2lumuMhnRIzQ/e9\nWkPbTJESeUoprZHJxPfSPbtRika9NYp3/YntHh1Y3aszGpzLx/VOeBmKo5SWIjOs\nSUj2gY3fAgMBAAECggEABsJfjrfhpw7gB7taKa3p2RFOdbwldWVQyaYwTaw3ARj3\nnA0Sf+wOJYhFC78q7S9V8zCam46uVWnyt9jW6/CAAUh1KeakhnKxf8tvdCPVs/qz\nQ3zJa4rNQdtFOUznMfWCwylqlWrvrXstY+MHwyj1c2raEgU61UD4bYCLsTtsFN5r\naXTa9NLEaExb+5PIaubtE9uJHESn/XJhTBXEhT8dt6YFr6jPBil7Ak4wJqsr+82l\nMILMSbPGl9F3Hd/LP+WRxPvjrHSU6U46vocZhEHCohMx08srMsl4NO6vt57Ty19h\nCaakYiM4PciJTwVl24yqrP4oszexdggIRzkT+0wJAQKBgQDACgw3LLMID+AP8tHZ\nnQwmxJ1YiWbhUliORGzCsontc9hz9N57BBE2GwqGAEmD+RaNFllbt1aGg+v3dFMl\nycKIc83Q4c+J85X2tNwXh94niQLF5Wl2lHgdioTSh8WNSZVh/0cekN7wh8zJBRKY\nkT59J7HM92gDrABYuGUDaofD/wKBgQC28AKCrQxb4EUpYsLC42fSMY066+5js3Tt\neguLyj4jNhIQ0nSe3TBBdWlvCJl+Drw8qKt1xM0RmNsqSLYBTK1PzkITLG6S4nvg\n7vf713Q116wipE5WX8FakMWL+cjlDdy3JAoBWHi4og4ZuqoMZr+JyM9dR2KH5UFl\nARuIIla2IQKBgQCC8BbmI98qNxDSLwEwfGlFobebH4x7Q5dH4ZW6pttugRdr8OEl\nRV+q4YMqXNXDWzoqFrv00iv36ckhXzo2QLwYJ8WEkALfD6wHm8eZb7VkhYHThxmC\nlbbUhZcMqTBkpnBpchJ+385yeFWEFqZYSmguE7uigmp0XnmaBJgzXRaW5wKBgBdf\nQKLbYwnV9GAeOw3VKe2D4SxW+kUIp3azsgfxFdE/1j0J9lZZohGq44aJDbs6PLhv\nQECynRSTd+TGF2LBHh9lFbIHajUf9H2/ajVlyHYckOR4I34Li9N7TZHdntoM1Fcd\npp2XZQ0Jv01wOMuO0QfUfRHIzgDYvGsgIhlZccShAoGAdctj7iBKhoTC3KecFUxy\nNHS1D+x/1VuZgUN1mKRhWjhQV1CyR8ao7O7om1at6IRJ8a3O7u2CZMdIB21pgBE2\n4lsMScCSl5Fr5UEMNuEELK3tMfuEVSt709HrtVrnzKU+LABQMJYrACWA3n6kUTRx\nFGWSMAzCBURToznCQEl88yc=\n-----END PRIVATE KEY-----\n",
-                    "client_email"=> "firebase-adminsdk-1jmgy@steel24-a898f.iam.gserviceaccount.com",
-                    "client_id"=> "106107898058399972491",
-                    "auth_uri"=> "https://accounts.google.com/o/oauth2/auth",
-                    "token_uri"=> "https://oauth2.googleapis.com/token",
-                    "auth_provider_x509_cert_url"=> "https://www.googleapis.com/oauth2/v1/certs",
-                    "client_x509_cert_url"=> "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-1jmgy%40steel24-a898f.iam.gserviceaccount.com"
+                // $firebase = (new Factory)
+                // ->withServiceAccount(json_encode([
+                //     "type"=> "service_account",
+                //     "project_id"=> "steel24-a898f",
+                //     "private_key_id"=> "154e3c7d3ecb2b8fc1245ce9955d87ba8084ce77",
+                //     "private_key"=> "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCJOy/8yIPhlpv2\nwGNffZVU8vTSNYwEqUDy6aHF/TLcJsHnoLfAcMdXvts0Cq4vIOw3FRRQrVq70bIa\n7dIQcyXkHvb8z/lsvvb/cI4VMpW3EgWQ+bo8m4DYY4kWDqGxs5stD119G14/q9iX\nCDhSiRbetygKGH5zxXJllsa5MFKAXNj9QD7mksJllEZV4Q/d+2z4HkfxggTK/KZy\nlEU1scb4P/U1mWukY4C/LgugJicQhIMtGDt6PaFHm5ZssQ2vZ2lumuMhnRIzQ/e9\nWkPbTJESeUoprZHJxPfSPbtRika9NYp3/YntHh1Y3aszGpzLx/VOeBmKo5SWIjOs\nSUj2gY3fAgMBAAECggEABsJfjrfhpw7gB7taKa3p2RFOdbwldWVQyaYwTaw3ARj3\nnA0Sf+wOJYhFC78q7S9V8zCam46uVWnyt9jW6/CAAUh1KeakhnKxf8tvdCPVs/qz\nQ3zJa4rNQdtFOUznMfWCwylqlWrvrXstY+MHwyj1c2raEgU61UD4bYCLsTtsFN5r\naXTa9NLEaExb+5PIaubtE9uJHESn/XJhTBXEhT8dt6YFr6jPBil7Ak4wJqsr+82l\nMILMSbPGl9F3Hd/LP+WRxPvjrHSU6U46vocZhEHCohMx08srMsl4NO6vt57Ty19h\nCaakYiM4PciJTwVl24yqrP4oszexdggIRzkT+0wJAQKBgQDACgw3LLMID+AP8tHZ\nnQwmxJ1YiWbhUliORGzCsontc9hz9N57BBE2GwqGAEmD+RaNFllbt1aGg+v3dFMl\nycKIc83Q4c+J85X2tNwXh94niQLF5Wl2lHgdioTSh8WNSZVh/0cekN7wh8zJBRKY\nkT59J7HM92gDrABYuGUDaofD/wKBgQC28AKCrQxb4EUpYsLC42fSMY066+5js3Tt\neguLyj4jNhIQ0nSe3TBBdWlvCJl+Drw8qKt1xM0RmNsqSLYBTK1PzkITLG6S4nvg\n7vf713Q116wipE5WX8FakMWL+cjlDdy3JAoBWHi4og4ZuqoMZr+JyM9dR2KH5UFl\nARuIIla2IQKBgQCC8BbmI98qNxDSLwEwfGlFobebH4x7Q5dH4ZW6pttugRdr8OEl\nRV+q4YMqXNXDWzoqFrv00iv36ckhXzo2QLwYJ8WEkALfD6wHm8eZb7VkhYHThxmC\nlbbUhZcMqTBkpnBpchJ+385yeFWEFqZYSmguE7uigmp0XnmaBJgzXRaW5wKBgBdf\nQKLbYwnV9GAeOw3VKe2D4SxW+kUIp3azsgfxFdE/1j0J9lZZohGq44aJDbs6PLhv\nQECynRSTd+TGF2LBHh9lFbIHajUf9H2/ajVlyHYckOR4I34Li9N7TZHdntoM1Fcd\npp2XZQ0Jv01wOMuO0QfUfRHIzgDYvGsgIhlZccShAoGAdctj7iBKhoTC3KecFUxy\nNHS1D+x/1VuZgUN1mKRhWjhQV1CyR8ao7O7om1at6IRJ8a3O7u2CZMdIB21pgBE2\n4lsMScCSl5Fr5UEMNuEELK3tMfuEVSt709HrtVrnzKU+LABQMJYrACWA3n6kUTRx\nFGWSMAzCBURToznCQEl88yc=\n-----END PRIVATE KEY-----\n",
+                //     "client_email"=> "firebase-adminsdk-1jmgy@steel24-a898f.iam.gserviceaccount.com",
+                //     "client_id"=> "106107898058399972491",
+                //     "auth_uri"=> "https://accounts.google.com/o/oauth2/auth",
+                //     "token_uri"=> "https://oauth2.googleapis.com/token",
+                //     "auth_provider_x509_cert_url"=> "https://www.googleapis.com/oauth2/v1/certs",
+                //     "client_x509_cert_url"=> "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-1jmgy%40steel24-a898f.iam.gserviceaccount.com"
                     
-                ]))->withDatabaseUri('https://steel24-a898f-default-rtdb.firebaseio.com/');   $database = $firebase->createDatabase();
-                $database->getReference('TodaysLots/liveList/' . $newBid['lotId'] . '/lastBid')->set($lastBid[0]);
+                // ]))->withDatabaseUri('https://steel24-a898f-default-rtdb.firebaseio.com/');   $database = $firebase->createDatabase();
+                // $database->getReference('TodaysLots/liveList/' . $newBid['lotId'] . '/lastBid')->set($lastBid[0]);
 
 
                 $response = ["sucess" => true, 'LattestBid' => $lastBid, "userDetails" => $customer[0]];
@@ -649,22 +650,22 @@ class AuctionContoller extends Controller
             $liveLotslist[$lot->id] = $templot;
         }
 
-        $firebase = (new Factory)
-        ->withServiceAccount(json_encode([
-            "type"=> "service_account",
-            "project_id"=> "steel24-a898f",
-            "private_key_id"=> "154e3c7d3ecb2b8fc1245ce9955d87ba8084ce77",
-            "private_key"=> "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCJOy/8yIPhlpv2\nwGNffZVU8vTSNYwEqUDy6aHF/TLcJsHnoLfAcMdXvts0Cq4vIOw3FRRQrVq70bIa\n7dIQcyXkHvb8z/lsvvb/cI4VMpW3EgWQ+bo8m4DYY4kWDqGxs5stD119G14/q9iX\nCDhSiRbetygKGH5zxXJllsa5MFKAXNj9QD7mksJllEZV4Q/d+2z4HkfxggTK/KZy\nlEU1scb4P/U1mWukY4C/LgugJicQhIMtGDt6PaFHm5ZssQ2vZ2lumuMhnRIzQ/e9\nWkPbTJESeUoprZHJxPfSPbtRika9NYp3/YntHh1Y3aszGpzLx/VOeBmKo5SWIjOs\nSUj2gY3fAgMBAAECggEABsJfjrfhpw7gB7taKa3p2RFOdbwldWVQyaYwTaw3ARj3\nnA0Sf+wOJYhFC78q7S9V8zCam46uVWnyt9jW6/CAAUh1KeakhnKxf8tvdCPVs/qz\nQ3zJa4rNQdtFOUznMfWCwylqlWrvrXstY+MHwyj1c2raEgU61UD4bYCLsTtsFN5r\naXTa9NLEaExb+5PIaubtE9uJHESn/XJhTBXEhT8dt6YFr6jPBil7Ak4wJqsr+82l\nMILMSbPGl9F3Hd/LP+WRxPvjrHSU6U46vocZhEHCohMx08srMsl4NO6vt57Ty19h\nCaakYiM4PciJTwVl24yqrP4oszexdggIRzkT+0wJAQKBgQDACgw3LLMID+AP8tHZ\nnQwmxJ1YiWbhUliORGzCsontc9hz9N57BBE2GwqGAEmD+RaNFllbt1aGg+v3dFMl\nycKIc83Q4c+J85X2tNwXh94niQLF5Wl2lHgdioTSh8WNSZVh/0cekN7wh8zJBRKY\nkT59J7HM92gDrABYuGUDaofD/wKBgQC28AKCrQxb4EUpYsLC42fSMY066+5js3Tt\neguLyj4jNhIQ0nSe3TBBdWlvCJl+Drw8qKt1xM0RmNsqSLYBTK1PzkITLG6S4nvg\n7vf713Q116wipE5WX8FakMWL+cjlDdy3JAoBWHi4og4ZuqoMZr+JyM9dR2KH5UFl\nARuIIla2IQKBgQCC8BbmI98qNxDSLwEwfGlFobebH4x7Q5dH4ZW6pttugRdr8OEl\nRV+q4YMqXNXDWzoqFrv00iv36ckhXzo2QLwYJ8WEkALfD6wHm8eZb7VkhYHThxmC\nlbbUhZcMqTBkpnBpchJ+385yeFWEFqZYSmguE7uigmp0XnmaBJgzXRaW5wKBgBdf\nQKLbYwnV9GAeOw3VKe2D4SxW+kUIp3azsgfxFdE/1j0J9lZZohGq44aJDbs6PLhv\nQECynRSTd+TGF2LBHh9lFbIHajUf9H2/ajVlyHYckOR4I34Li9N7TZHdntoM1Fcd\npp2XZQ0Jv01wOMuO0QfUfRHIzgDYvGsgIhlZccShAoGAdctj7iBKhoTC3KecFUxy\nNHS1D+x/1VuZgUN1mKRhWjhQV1CyR8ao7O7om1at6IRJ8a3O7u2CZMdIB21pgBE2\n4lsMScCSl5Fr5UEMNuEELK3tMfuEVSt709HrtVrnzKU+LABQMJYrACWA3n6kUTRx\nFGWSMAzCBURToznCQEl88yc=\n-----END PRIVATE KEY-----\n",
-            "client_email"=> "firebase-adminsdk-1jmgy@steel24-a898f.iam.gserviceaccount.com",
-            "client_id"=> "106107898058399972491",
-            "auth_uri"=> "https://accounts.google.com/o/oauth2/auth",
-            "token_uri"=> "https://oauth2.googleapis.com/token",
-            "auth_provider_x509_cert_url"=> "https://www.googleapis.com/oauth2/v1/certs",
-            "client_x509_cert_url"=> "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-1jmgy%40steel24-a898f.iam.gserviceaccount.com"
+        // $firebase = (new Factory)
+        // ->withServiceAccount(json_encode([
+        //     "type"=> "service_account",
+        //     "project_id"=> "steel24-a898f",
+        //     "private_key_id"=> "154e3c7d3ecb2b8fc1245ce9955d87ba8084ce77",
+        //     "private_key"=> "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCJOy/8yIPhlpv2\nwGNffZVU8vTSNYwEqUDy6aHF/TLcJsHnoLfAcMdXvts0Cq4vIOw3FRRQrVq70bIa\n7dIQcyXkHvb8z/lsvvb/cI4VMpW3EgWQ+bo8m4DYY4kWDqGxs5stD119G14/q9iX\nCDhSiRbetygKGH5zxXJllsa5MFKAXNj9QD7mksJllEZV4Q/d+2z4HkfxggTK/KZy\nlEU1scb4P/U1mWukY4C/LgugJicQhIMtGDt6PaFHm5ZssQ2vZ2lumuMhnRIzQ/e9\nWkPbTJESeUoprZHJxPfSPbtRika9NYp3/YntHh1Y3aszGpzLx/VOeBmKo5SWIjOs\nSUj2gY3fAgMBAAECggEABsJfjrfhpw7gB7taKa3p2RFOdbwldWVQyaYwTaw3ARj3\nnA0Sf+wOJYhFC78q7S9V8zCam46uVWnyt9jW6/CAAUh1KeakhnKxf8tvdCPVs/qz\nQ3zJa4rNQdtFOUznMfWCwylqlWrvrXstY+MHwyj1c2raEgU61UD4bYCLsTtsFN5r\naXTa9NLEaExb+5PIaubtE9uJHESn/XJhTBXEhT8dt6YFr6jPBil7Ak4wJqsr+82l\nMILMSbPGl9F3Hd/LP+WRxPvjrHSU6U46vocZhEHCohMx08srMsl4NO6vt57Ty19h\nCaakYiM4PciJTwVl24yqrP4oszexdggIRzkT+0wJAQKBgQDACgw3LLMID+AP8tHZ\nnQwmxJ1YiWbhUliORGzCsontc9hz9N57BBE2GwqGAEmD+RaNFllbt1aGg+v3dFMl\nycKIc83Q4c+J85X2tNwXh94niQLF5Wl2lHgdioTSh8WNSZVh/0cekN7wh8zJBRKY\nkT59J7HM92gDrABYuGUDaofD/wKBgQC28AKCrQxb4EUpYsLC42fSMY066+5js3Tt\neguLyj4jNhIQ0nSe3TBBdWlvCJl+Drw8qKt1xM0RmNsqSLYBTK1PzkITLG6S4nvg\n7vf713Q116wipE5WX8FakMWL+cjlDdy3JAoBWHi4og4ZuqoMZr+JyM9dR2KH5UFl\nARuIIla2IQKBgQCC8BbmI98qNxDSLwEwfGlFobebH4x7Q5dH4ZW6pttugRdr8OEl\nRV+q4YMqXNXDWzoqFrv00iv36ckhXzo2QLwYJ8WEkALfD6wHm8eZb7VkhYHThxmC\nlbbUhZcMqTBkpnBpchJ+385yeFWEFqZYSmguE7uigmp0XnmaBJgzXRaW5wKBgBdf\nQKLbYwnV9GAeOw3VKe2D4SxW+kUIp3azsgfxFdE/1j0J9lZZohGq44aJDbs6PLhv\nQECynRSTd+TGF2LBHh9lFbIHajUf9H2/ajVlyHYckOR4I34Li9N7TZHdntoM1Fcd\npp2XZQ0Jv01wOMuO0QfUfRHIzgDYvGsgIhlZccShAoGAdctj7iBKhoTC3KecFUxy\nNHS1D+x/1VuZgUN1mKRhWjhQV1CyR8ao7O7om1at6IRJ8a3O7u2CZMdIB21pgBE2\n4lsMScCSl5Fr5UEMNuEELK3tMfuEVSt709HrtVrnzKU+LABQMJYrACWA3n6kUTRx\nFGWSMAzCBURToznCQEl88yc=\n-----END PRIVATE KEY-----\n",
+        //     "client_email"=> "firebase-adminsdk-1jmgy@steel24-a898f.iam.gserviceaccount.com",
+        //     "client_id"=> "106107898058399972491",
+        //     "auth_uri"=> "https://accounts.google.com/o/oauth2/auth",
+        //     "token_uri"=> "https://oauth2.googleapis.com/token",
+        //     "auth_provider_x509_cert_url"=> "https://www.googleapis.com/oauth2/v1/certs",
+        //     "client_x509_cert_url"=> "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-1jmgy%40steel24-a898f.iam.gserviceaccount.com"
             
-        ]))->withDatabaseUri('https://steel24-a898f-default-rtdb.firebaseio.com/'); $database = $firebase->createDatabase();
-        // foreach ($liveLotslist as $lot) {
-        $database->getReference('TodaysLots/liveList/')->set($liveLotslist);
+        // ]))->withDatabaseUri('https://steel24-a898f-default-rtdb.firebaseio.com/'); $database = $firebase->createDatabase();
+        // // foreach ($liveLotslist as $lot) {
+        // $database->getReference('TodaysLots/liveList/')->set($liveLotslist);
         // }
     }
 
