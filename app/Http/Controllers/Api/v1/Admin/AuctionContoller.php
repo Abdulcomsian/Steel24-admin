@@ -16,7 +16,8 @@ use App\Models\newMaterial;
 use App\Models\payments;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use \Illuminate\Support\Carbon;
+// use \Illuminate\Support\Carbon;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Razorpay\Api\Api;
 use Tymon\JWTAuth\Payload;
@@ -694,6 +695,65 @@ class AuctionContoller extends Controller
     //     return $response;
     // }
 
+
+
+
+    // previous code working
+
+    // public function addnewbidtolot(Request $request)
+    // {
+    //     $newBid = $request->validate([
+    //         'customerId' => 'required',
+    //         'amount' => 'required',
+    //         'lotId' => 'required',
+    //     ]);
+    
+    //     $response = [];
+    //     $customer = Customer::where('id', $newBid['customerId'])->first();
+    //     $lotDtails = lots::where('id', $newBid['lotId'])->first();
+    
+    //     if ($customer && $customer->isApproved == 1) 
+    //     {
+    //         $lastBid = BidsOfLots::where('lotId', $newBid['lotId'])->orderBy('id', 'DESC')->first();
+    
+    //         // Calculate the next bid amount with an increment of 100
+    //         $nextBidAmount = ceil($newBid['amount'] / 100) * 100;
+    
+    //         if ($newBid['amount'] % 100 !== 0) {
+    //             $response = ["message" => 'Please Enter a multiple of 100', 'success' => false];
+    //         } elseif ($lastBid && $lastBid['amount'] < $nextBidAmount && $lastBid['lotId'] == $newBid['lotId']) {
+    //             $lastBid = BidsOfLots::create([
+    //                 'customerId' => $newBid['customerId'],
+    //                 'amount' => $nextBidAmount,
+    //                 'lotId' => $newBid['lotId'],
+    //             ]);
+    //             $this->liveChangeOnfirbase($newBid['lotId'], $lotDtails['EndDate']);
+    
+    //             $response = ["success" => true, 'LatestBid' => $lastBid];
+    //         } elseif (!$lastBid && $lotDtails->Price < $nextBidAmount) {
+    //             $lastBid = BidsOfLots::create([
+    //                 'customerId' => $newBid['customerId'],
+    //                 'amount' => $nextBidAmount,
+    //                 'lotId' => $newBid['lotId'],
+    //             ]);
+    
+    //             $this->liveChangeOnfirbase($newBid['lotId'], $lotDtails['EndDate']);
+    
+    //             $response = ["success" => true, 'LatestBid' => $lastBid];
+    //         } else {
+    //             $response = ["message" => 'Bid Amount is small than the last bid or not in the allowed increment.', 'success' => false];
+    //         }
+    //     } else {
+    //         $response = ["message" => 'User is not available or User is blocked.', 'success' => false];
+    //     }
+    //     return $response;
+    // }
+
+    // end the previous code 
+
+
+
+
     public function addnewbidtolot(Request $request)
     {
         $newBid = $request->validate([
@@ -704,44 +764,67 @@ class AuctionContoller extends Controller
     
         $response = [];
         $customer = Customer::where('id', $newBid['customerId'])->first();
-        $lotDtails = lots::where('id', $newBid['lotId'])->first();
+        $lotDetails = lots::where('id', $newBid['lotId'])->first();
     
         if ($customer && $customer->isApproved == 1) 
         {
-            $lastBid = BidsOfLots::where('lotId', $newBid['lotId'])->orderBy('id', 'DESC')->first();
-    
             // Calculate the next bid amount with an increment of 100
             $nextBidAmount = ceil($newBid['amount'] / 100) * 100;
     
             if ($newBid['amount'] % 100 !== 0) {
                 $response = ["message" => 'Please Enter a multiple of 100', 'success' => false];
-            } elseif ($lastBid && $lastBid['amount'] < $nextBidAmount && $lastBid['lotId'] == $newBid['lotId']) {
-                $lastBid = BidsOfLots::create([
-                    'customerId' => $newBid['customerId'],
-                    'amount' => $nextBidAmount,
-                    'lotId' => $newBid['lotId'],
-                ]);
-                $this->liveChangeOnfirbase($newBid['lotId'], $lotDtails['EndDate']);
-    
-                $response = ["success" => true, 'LatestBid' => $lastBid];
-            } elseif (!$lastBid && $lotDtails->Price < $nextBidAmount) {
-                $lastBid = BidsOfLots::create([
-                    'customerId' => $newBid['customerId'],
-                    'amount' => $nextBidAmount,
-                    'lotId' => $newBid['lotId'],
-                ]);
-    
-                $this->liveChangeOnfirbase($newBid['lotId'], $lotDtails['EndDate']);
-    
-                $response = ["success" => true, 'LatestBid' => $lastBid];
             } else {
-                $response = ["message" => 'Bid Amount is small than the last bid or not in the allowed increment.', 'success' => false];
+                $lastBid = BidsOfLots::where('lotId', $newBid['lotId'])->orderBy('id', 'DESC')->first();
+    
+                if ($lastBid && $lastBid['amount'] < $nextBidAmount && $lastBid['lotId'] == $newBid['lotId']) 
+                {
+                    // Check if the last bid was made within the last two minutes
+                    $currentTime = Carbon::now();
+                    $twoMinutesAgo = $currentTime->subMinutes(2);
+                    $lastBidTime = Carbon::createFromFormat('Y-m-d H:i:s', $lastBid->created_at);
+    
+                    if ($lastBidTime->greaterThan($twoMinutesAgo)) 
+                    {
+                        // Another bid was made within two minutes, so the current bid is late
+                        $response = ["message" => 'Congratulations! You won this lot.', 'success' => true];
+                    }
+                     else {
+                        // No other bid within two minutes, the lot is won by the last bid
+                        // Mark the lot as closed or do any necessary actions here
+
+                        $response = ["message" => 'You are late! Sorry, another person won this lot.', 'success' => false];
+
+                        
+                    }
+                } 
+    
+                // elseif (!$lastBid && $lotDetails->Price < $nextBidAmount) 
+                // {
+                //     $lastBid = BidsOfLots::create([
+                //         'customerId' => $newBid['customerId'],
+                //         'amount' => $nextBidAmount,
+                //         'lotId' => $newBid['lotId'],
+                //     ]);
+                //     $this->liveChangeOnfirbase($newBid['lotId'], $lotDetails['EndDate']);
+    
+                //     $response = ["success" => true, 'LatestBid' => $lastBid];
+                // } 
+                else {
+                    $response = ["message" => 'Bid Amount is smaller than the last bid or not in the allowed increment.', 'success' => false];
+                }
             }
         } else {
             $response = ["message" => 'User is not available or User is blocked.', 'success' => false];
         }
+    
         return $response;
     }
+    
+    
+
+
+    
+
     
 
     public function liveChangeOnfirbase($lotid, $endDate = null)
@@ -756,7 +839,8 @@ class AuctionContoller extends Controller
             LEFT JOIN categories on categories.id  = lots.categoryId
             WHERE (date(lots.EndDate) = CURDATE()) and lots.id  >= $lotid");
 
-            foreach ($liveLots as $lot) {
+            foreach ($liveLots as $lot) 
+            {
                 $lot = lots::where('id', $lot->id)->update(['EndDate' => Carbon::parse($lot->EndDate)->addMinutes(1)]);
             }
         }

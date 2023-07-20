@@ -20,7 +20,8 @@ use App\Models\Customer;
 use App\Models\customerBalance;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use \Illuminate\Support\Carbon;
+// use \Illuminate\Support\Carbon;
+use Carbon\Carbon;
 use \Illuminate\Support\Facades\DB;
 
 
@@ -758,6 +759,8 @@ class LotsContoller extends Controller
     // }
 
 
+
+
     public function getcustomerwinlots($customerId)
     {
         $maxBid = BidsOfLots::where('customerId', $customerId)->max('amount');
@@ -777,6 +780,44 @@ class LotsContoller extends Controller
 
         return response()->json(["message" => "No win lot found for the customer", "success" => false]);
     }
+
+   
+
+    // public function getcustomerwinlots($customerId)
+    // {
+    //     $maxBid = BidsOfLots::where('customerId', $customerId)->max('amount');
+    
+    //     if ($maxBid !== null) {
+    //         $winLot = BidsOfLots::where('customerId', $customerId)
+    //             ->where('amount', $maxBid)
+    //             ->with('lotDetails')
+    //             ->orderBy('id', 'desc')
+    //             ->first();
+    
+    //         if ($winLot) {
+    //             // Check if another bid was made against the same lot within the last two minutes
+    //             $lastBidTime = Carbon::parse($winLot->created_at);
+    //             $lotId = $winLot->lotId;
+    
+    //             $isLastBidWinner = BidsOfLots::where('lotId', $lotId)
+    //                 ->where('created_at', '>', $lastBidTime)
+    //                 ->where('created_at', '<=', $lastBidTime->addMinutes(2))
+    //                 ->where('id', '<>', $winLot->id)
+    //                 ->exists();
+    
+    //             if (!$isLastBidWinner) {
+    //                 $winLot->material = new_maerials_2::where('lotid', $winLot->lotId)->get()->toArray();
+    //                 return response()->json(["lots" => [$winLot], "success" => true]);
+    //             } else {
+    //                 // If someone bid after the two-minute window, show the message
+    //                 return response()->json(["message" => "You are late! Sorry, another person won this lot.", "success" => false]);
+    //             }
+    //         }
+    //     }
+    
+    //     return response()->json(["message" => "No win lot found for the customer", "success" => false]);
+    // }
+    
 
 
     
