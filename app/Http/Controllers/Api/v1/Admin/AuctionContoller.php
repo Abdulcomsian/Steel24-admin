@@ -654,6 +654,46 @@ class AuctionContoller extends Controller
 
 
     // Add new bid to lot Updated by Z.R
+    // public function addnewbidtolot(Request $request)
+    // {
+    //     $newBid = $request->validate([
+    //         'customerId' => 'required',
+    //         'amount' => 'required',
+    //         'lotId' => 'required',
+    //     ]);
+
+    //     $response = [];
+    //     $customer = Customer::where('id', $newBid['customerId'])->first();
+    //     $lotDtails = lots::where('id', $newBid['lotId'])->first();
+
+    //     if ($customer && $customer->isApproved == 1) {
+    //         $lastBid =  BidsOfLots::where('lotId', $newBid['lotId'])->orderBy('id', 'DESC')->first();
+
+    //         if ($lastBid && $lastBid['amount'] < $newBid['amount'] && $lastBid['lotId'] == $newBid['lotId']) 
+    //         {
+    //             $lastBid = BidsOfLots::create($newBid);
+    //             $this->liveChangeOnfirbase($newBid['lotId'], $lotDtails['EndDate']);
+
+    //             $response = ["sucess" => true, 'LattestBid' => $lastBid];
+
+                
+    //         } elseif (!$lastBid && $lotDtails->Price < $newBid['amount']) {
+    //             $lastBid = BidsOfLots::create($newBid);
+    //             // Have to Brodcast with
+
+    //             $this->liveChangeOnfirbase($newBid['lotId'], $lotDtails['EndDate']);
+
+
+    //             // $response = ["sucess" => true, 'LattestBid' => $lastBid, "userDetails" => $customer[0]];
+    //         } else {
+    //             $response = ["message" => 'Bid Amount is small then last bid.', 'sucess' => false];
+    //         }
+    //     } else {
+    //         $response = ["message" => 'User is not Availabel Or User is Blocked.', 'sucess' => false];
+    //     }
+    //     return $response;
+    // }
+
     public function addnewbidtolot(Request $request)
     {
         $newBid = $request->validate([
@@ -661,39 +701,48 @@ class AuctionContoller extends Controller
             'amount' => 'required',
             'lotId' => 'required',
         ]);
-
+    
         $response = [];
         $customer = Customer::where('id', $newBid['customerId'])->first();
         $lotDtails = lots::where('id', $newBid['lotId'])->first();
-
-        if ($customer && $customer->isApproved == 1) {
-            $lastBid =  BidsOfLots::where('lotId', $newBid['lotId'])->orderBy('id', 'DESC')->first();
-
-            if ($lastBid && $lastBid['amount'] < $newBid['amount'] && $lastBid['lotId'] == $newBid['lotId']) 
-            {
-                $lastBid = BidsOfLots::create($newBid);
+    
+        if ($customer && $customer->isApproved == 1) 
+        {
+            $lastBid = BidsOfLots::where('lotId', $newBid['lotId'])->orderBy('id', 'DESC')->first();
+    
+            // Calculate the next bid amount with an increment of 100
+            $nextBidAmount = ceil($newBid['amount'] / 100) * 100;
+    
+            if ($newBid['amount'] % 100 !== 0) {
+                $response = ["message" => 'Please Enter a multiple of 100', 'success' => false];
+            } elseif ($lastBid && $lastBid['amount'] < $nextBidAmount && $lastBid['lotId'] == $newBid['lotId']) {
+                $lastBid = BidsOfLots::create([
+                    'customerId' => $newBid['customerId'],
+                    'amount' => $nextBidAmount,
+                    'lotId' => $newBid['lotId'],
+                ]);
                 $this->liveChangeOnfirbase($newBid['lotId'], $lotDtails['EndDate']);
-
-                $response = ["sucess" => true, 'LattestBid' => $lastBid];
-
-                
-            } elseif (!$lastBid && $lotDtails->Price < $newBid['amount']) {
-                $lastBid = BidsOfLots::create($newBid);
-                // Have to Brodcast with
-
+    
+                $response = ["success" => true, 'LatestBid' => $lastBid];
+            } elseif (!$lastBid && $lotDtails->Price < $nextBidAmount) {
+                $lastBid = BidsOfLots::create([
+                    'customerId' => $newBid['customerId'],
+                    'amount' => $nextBidAmount,
+                    'lotId' => $newBid['lotId'],
+                ]);
+    
                 $this->liveChangeOnfirbase($newBid['lotId'], $lotDtails['EndDate']);
-
-
-                // $response = ["sucess" => true, 'LattestBid' => $lastBid, "userDetails" => $customer[0]];
+    
+                $response = ["success" => true, 'LatestBid' => $lastBid];
             } else {
-                $response = ["message" => 'Bid Amount is small then last bid.', 'sucess' => false];
+                $response = ["message" => 'Bid Amount is small than the last bid or not in the allowed increment.', 'success' => false];
             }
         } else {
-            $response = ["message" => 'User is not Availabel Or User is Blocked.', 'sucess' => false];
+            $response = ["message" => 'User is not available or User is blocked.', 'success' => false];
         }
         return $response;
     }
-
+    
 
     public function liveChangeOnfirbase($lotid, $endDate = null)
     {

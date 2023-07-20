@@ -742,45 +742,41 @@ class LotsContoller extends Controller
     }
 
     // Previous code -> Get Custimer Win Lots.
-    public function getcustomerwinlots($customerId)
-    {
-        // $winLots = payments::where('customerId', $customerId)->with('lotDetails')->orderBy('id', 'desc')->get();
-        $winLots = DB::select('SELECT payments.* ,lots.*  from payments
-        LEFT JOIN lots on  lots.id =  payments.lotId WHERE
-        payments.id IN (SELECT MAX(payments.id) from payments GROUP BY payments.lotId)
-        AND payments.customerId = ' . $customerId . ' ORDER By payments.id DESC;');
-        foreach ($winLots as $lot) {
-            // dd($lot->lotId);
-            $lot->material =  new_maerials_2::where('lotid', $lot->lotId)->get()->toArray();
-        }
-
-        return response()->json(["lots" => $winLots, "sucess" => true]);
-    }
-
-    //  public function getcustomerwinlots($customerId)
+    // public function getcustomerwinlots($customerId)
     // {
-    //     // Subquery to get the maximum bid amount for each lot
-    //     $subquery = DB::table('bids_of_lots')
-    //         ->select('lotId', DB::raw('MAX(amount) as maxBidAmount'))
-    //         ->groupBy('lotId');
-
-    //     // Get the winLots with the highest bid amount
-    //     $winLots = DB::table('lots')
-    //         ->join('payments', 'lots.id', '=', 'payments.lotId')
-    //         ->joinSub($subquery, 'max_bids', function ($join) {
-    //             $join->on('lots.id', '=', 'max_bids.lotId');
-    //         })
-    //         ->where('payments.customerId', $customerId)
-    //         ->orderBy('payments.id', 'desc')
-    //         ->get();
-
-    //     // Fetch the associated material for each lot
+    //     // $winLots = payments::where('customerId', $customerId)->with('lotDetails')->orderBy('id', 'desc')->get();
+    //     $winLots = DB::select('SELECT payments.* ,lots.*  from payments
+    //     LEFT JOIN lots on  lots.id =  payments.lotId WHERE
+    //     payments.id IN (SELECT MAX(payments.id) from payments GROUP BY payments.lotId)
+    //     AND payments.customerId = ' . $customerId . ' ORDER By payments.id DESC;');
     //     foreach ($winLots as $lot) {
-    //         $lot->material = new_maerials_2::where('lotid', $lot->lotId)->get()->toArray();
+    //         // dd($lot->lotId);
+    //         $lot->material =  new_maerials_2::where('lotid', $lot->lotId)->get()->toArray();
     //     }
 
-    //     return response()->json(["lots" => $winLots, "success" => true]);
+    //     return response()->json(["lots" => $winLots, "sucess" => true]);
     // }
+
+
+    public function getcustomerwinlots($customerId)
+    {
+        $maxBid = BidsOfLots::where('customerId', $customerId)->max('amount');
+
+        if ($maxBid !== null) {
+            $winLot = BidsOfLots::where('customerId', $customerId)
+                ->where('amount', $maxBid)
+                ->with('lotDetails')
+                ->orderBy('id', 'desc')
+                ->first();
+
+            if ($winLot) {
+                $winLot->material = new_maerials_2::where('lotid', $winLot->lotId)->get()->toArray();
+                return response()->json(["lots" => [$winLot], "success" => true]);
+            }
+        }
+
+        return response()->json(["message" => "No win lot found for the customer", "success" => false]);
+    }
 
 
     
