@@ -17,6 +17,7 @@ use App\Models\new_maerials_2;
 use App\Models\newMaterial;
 use App\Models\payments;
 use App\Models\Customer;
+use App\Models\customerBalance;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use \Illuminate\Support\Carbon;
@@ -162,34 +163,75 @@ class LotsContoller extends Controller
     //         'success' => true,
     //     ]);
 
+    // here start previous code backup
+
+    // public function getActiveLots(Request $request)
+    // {
+
+    //     $customerId = $request->input('customer_id');
+
+    //     // dd($customerId);
+
+    //     $userLots = Lots::with('categories')
+    //                     ->with(['customers' => function($query) use ($customerId)
+    //                     {
+    //                          $query->where('customers.id' , $customerId);
+    //                     }])
+    //                     ->where('lot_status' , 'LIKE' , '%live%')
+    //                     ->get();
+
+    //                     // dd($userLots);
+
+    //                     if ($userLots->isEmpty()) 
+    //                     {
+    //                         return response()->json([
+    //                             'message' => 'No active or favorite lots available for the customer',
+    //                             'success' => false,
+    //                         ], 200);
+    //                     }
+                    
+    //                     return response()->json([
+    //                         'userLots' => $userLots,
+    //                         'success' => true,
+    //                     ]);
+
+    // }
+
+
     public function getActiveLots(Request $request)
     {
-
         $customerId = $request->input('customer_id');
 
-        // dd($customerId);
+        $userLots = lots::with('categories')
+            ->with(['customers' => function ($query) use ($customerId) {
+                $query->where('customers.id', $customerId);
+            }])
+            ->where('lot_status', 'LIKE', '%live%')
+            ->get();
 
-        $userLots = Lots::with('categories')
-                        ->with(['customers' => function($query) use ($customerId){
-                             $query->where('customers.id' , $customerId);
-                        }])
-                        ->where('lot_status' , 'LIKE' , '%live%')
-                        ->get();
+        // Fetch the customer balance details
+        $customerBalance = customerBalance::where('customerId', $customerId)->first();
 
-                        // dd($userLots);
+        if ($userLots->isEmpty()) {
+            return response()->json([
+                'message' => 'No active or favorite lots available for the customer',
+                'success' => false,
+            ], 200);
+        }
 
-                        if ($userLots->isEmpty()) 
-                        {
-                            return response()->json([
-                                'message' => 'No active or favorite lots available for the customer',
-                                'success' => false,
-                            ], 200);
-                        }
-                    
-                        return response()->json([
-                            'userLots' => $userLots,
-                            'success' => true,
-                        ]);
+        // Check if participate fee has been paid for each lot
+        foreach ($userLots as $lot) {
+            // Assuming 'participate_fee' is the column name for the participate fee in the 'lots' table
+            $lot->isParticipated = ($customerBalance && $customerBalance->finalAmount >= $lot->participate_fee);
+        }
+
+        return response()->json([
+            'userLots' => $userLots,
+            'success' => true,
+        ]);
+    }
+
+
 
             
         // dd($userLots);
@@ -221,7 +263,9 @@ class LotsContoller extends Controller
         //     'success' => true,
         // ]);
     
-    }
+    // }
+
+    // previous code backup
 
 
         //NEW CODE ENDS HERE
