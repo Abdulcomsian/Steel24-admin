@@ -23,6 +23,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 // use \Illuminate\Support\Carbon;
 use Carbon\Carbon;
 use \Illuminate\Support\Facades\DB;
+use App\Events\winLotsEvent;
+use Pusher\Pusher;
 
 
 
@@ -759,7 +761,7 @@ class LotsContoller extends Controller
     // }
 
 
-
+    // Previous CODE
 
     public function getcustomerwinlots($customerId)
     {
@@ -781,44 +783,67 @@ class LotsContoller extends Controller
         return response()->json(["message" => "No win lot found for the customer", "success" => false]);
     }
 
-   
+    // ENDED PREVOUS CODE
+
 
     // public function getcustomerwinlots($customerId)
     // {
     //     $maxBid = BidsOfLots::where('customerId', $customerId)->max('amount');
     
-    //     if ($maxBid !== null) {
+    //     if ($maxBid !== null) 
+    //     {
     //         $winLot = BidsOfLots::where('customerId', $customerId)
     //             ->where('amount', $maxBid)
     //             ->with('lotDetails')
     //             ->orderBy('id', 'desc')
     //             ->first();
     
-    //         if ($winLot) {
-    //             // Check if another bid was made against the same lot within the last two minutes
-    //             $lastBidTime = Carbon::parse($winLot->created_at);
-    //             $lotId = $winLot->lotId;
+    //         if ($winLot) 
+    //         {
+    //             $winLot->material = new_maerials_2::where('lotid', $winLot->lotId)->get()->toArray();
     
-    //             $isLastBidWinner = BidsOfLots::where('lotId', $lotId)
-    //                 ->where('created_at', '>', $lastBidTime)
-    //                 ->where('created_at', '<=', $lastBidTime->addMinutes(2))
-    //                 ->where('id', '<>', $winLot->id)
-    //                 ->exists();
+    //             // Send notification to the winner
+    //             $winnerMessage = 'Congratulations! You won this lot.';
+    //             event(new winLotsEvent($winLot->customerId, $winnerMessage));
     
-    //             if (!$isLastBidWinner) {
-    //                 $winLot->material = new_maerials_2::where('lotid', $winLot->lotId)->get()->toArray();
-    //                 return response()->json(["lots" => [$winLot], "success" => true]);
-    //             } else {
-    //                 // If someone bid after the two-minute window, show the message
-    //                 return response()->json(["message" => "You are late! Sorry, another person won this lot.", "success" => false]);
+    //             // Send notification to other participants (losers)
+    //             $losers = BidsOfLots::where('lotId', $winLot->lotId)->where('customerId', '!=', $customerId)->get();
+    //             foreach ($losers as $loser) 
+    //             {
+    //                 $loserMessage = 'You lose this bid. Another person won this lot.';
+    //                 event(new winLotsEvent($loser->customerId, $loserMessage));
+    
+    //                 // Return participation fee to the losers
+    //                 $this->returnParticipationFee($loser);
     //             }
+    
+    //             return response()->json(["lots" => [$winLot], "success" => true]);
     //         }
     //     }
     
     //     return response()->json(["message" => "No win lot found for the customer", "success" => false]);
     // }
+
+    // private function returnParticipationFee($bid)
+    // {
+    //     $customer = Customer::find($bid->customerId);
+    //     if ($customer) {
+    //         $lastBalance = customerBalance::where('customerId', $customer->id)->orderBy('id', 'desc')->first();
+    //         if ($lastBalance) {
+    //             $newFinalAmount = $lastBalance->finalAmount + $bid->amount;
+    //             customerBalance::create([
+    //                 'customerId' => $customer->id,
+    //                 'balanceAmount' => $lastBalance->finalAmount,
+    //                 'action' => 'Return Participation Fee',
+    //                 'actionAmount' => $bid->amount,
+    //                 'finalAmount' => $newFinalAmount,
+    //                 'lotid' => $bid->lotId,
+    //                 'status' => 1, // Status 1 for returned participation fee
+    //                 'date' => Carbon::now(),
+    //             ]);
+    //         }
+    //     }
+    // }
     
-
-
     
 }

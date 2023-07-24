@@ -8,11 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class BidsOfLots extends Model
 {
     use HasFactory;
-    public $fillable =  ["customerId", "amount", "lotId"];
+    public $fillable =  ['customerId', 'amount', 'lotId'];
 
 
     public function lotDetails()
     {
         return $this->belongsTo(lots::class, 'lotId');
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customerId');
     }
 }

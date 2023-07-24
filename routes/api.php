@@ -73,6 +73,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
         Route::post('participateonlot', 'AuctionContoller@participateOnLot');
 
         Route::post('participeteonexpirelot', 'AuctionContoller@participeteOnExpireLot');
+
+
+        // Define the route to manually process the return of the participation fee
+       Route::post('returnParticipationFee/{bidId}', 'AuctionContoller@returnParticipationFee');
     });
 
     Route::get('getlivebid', 'App\Http\Controllers\Api\v1\Admin\AuctionContoller@getlivebid');

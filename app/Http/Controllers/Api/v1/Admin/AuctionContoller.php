@@ -21,7 +21,15 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Razorpay\Api\Api;
 use Tymon\JWTAuth\Payload;
+use Illuminate\Support\Facades\Validator;
 // use Kreait\Firebase\Factory;
+use Symfony\Component\HttpFoundation\Response;
+use App\Events\winLotsEvent;
+use Pusher\Pusher;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\LotWinnerNotification;
+use App\Mail\LotLoserNotification;
+
 
 class AuctionContoller extends Controller
 {
@@ -464,6 +472,90 @@ class AuctionContoller extends Controller
     
         return response()->json($response);
     }
+
+    
+
+    // public function participateOnLot(Request $request)
+    // {
+    //     $newBid = $request->validate([
+    //         'customerId' => 'required',
+    //         'lotid' => 'required',
+    //     ]);
+
+    //     $response = [];
+    //     $customer = Customer::where('id', $newBid['customerId'])->first();
+    //     $lotDetails = lots::find($newBid['lotid']);
+
+    //     if (!$lotDetails) {
+    //         return response()->json([
+    //             'message' => 'Lot not found',
+    //             'success' => false,
+    //         ], Response::HTTP_NOT_FOUND);
+    //     }
+
+    //     if ($customer && $customer->isApproved == 1) 
+    //     {
+    //         // Check if the user has already participated in the same lot
+    //         $existingParticipation = customerBalance::where('customerId', $newBid['customerId'])
+    //             ->where('lotid', $newBid['lotid'])
+    //             ->where('status', '!=', '1')
+    //             ->first();
+
+    //         if ($existingParticipation) {
+    //             return response()->json([
+    //                 'message' => 'User already paid the participation fee for this lot.',
+    //                 'success' => true,
+    //             ]);
+    //         }
+
+    //         $participateFee = $lotDetails->participate_fee;
+
+    //         // Get the last balance of the customer
+    //         $lastBalance = customerBalance::where('customerId', $newBid['customerId'])->orderBy('id', 'desc')->first();
+
+    //         if ($lastBalance) {
+    //             // Calculate the new final amount after deducting the participation fee
+    //             $newFinalAmount = $lastBalance->finalAmount - $participateFee;
+
+    //             if ($newFinalAmount >= 0) 
+    //             {
+    //                 // Create a new entry for the participation fee in customerBalance table
+    //                 customerBalance::create([
+    //                     'customerId' => $newBid['customerId'],
+    //                     'balanceAmount' => $lastBalance->finalAmount,
+    //                     'action' => 'Participate Fees',
+    //                     'actionAmount' => $participateFee,
+    //                     'finalAmount' => $newFinalAmount,
+    //                     'lotid' => $newBid['lotid'],
+    //                     'status' => 0,
+    //                     'date' => Carbon::now(),
+    //                 ]);
+
+    //                 // Broadcast the message to all participants (including the new one)
+    //                 broadcast(new winLotsEvent("Congratulations! You placed a new bid."))->toOthers();
+
+    //                 // Prepare the response
+    //                 $response = [
+    //                     'message' => 'User can pay the participation fee successfully.',
+    //                     'success' => true,
+    //                 ];
+    //             } else {
+    //                 $response = [
+    //                     'message' => 'User doesn\'t have enough balance for this participation.',
+    //                     'success' => false,
+    //                 ];
+    //             }
+    //         }
+    //     } else {
+    //         $response = [
+    //             'message' => 'User is not available or User is blocked.',
+    //             'success' => false,
+    //         ];
+    //     }
+
+    //     return response()->json($response);
+    // }
+
     
 
     // Participant on Expired Lot
@@ -754,6 +846,183 @@ class AuctionContoller extends Controller
 
 
 
+
+    // public function addnewbidtolot(Request $request)
+    // {
+    //     $newBid = $request->validate([
+    //         'customerId' => 'required',
+    //         'amount' => 'required',
+    //         'lotId' => 'required',
+    //     ]);
+
+    //     $response = [];
+    //     $customer = Customer::where('id', $newBid['customerId'])->first();
+    //     $lotDetails = lots::where('id', $newBid['lotId'])->first();
+
+    //     if ($customer && $customer->isApproved == 1) 
+    //     {
+    //         // Calculate the next bid amount with an increment of 100
+    //         $nextBidAmount = ceil($newBid['amount'] / 100) * 100;
+
+    //         if ($newBid['amount'] % 100 !== 0) {
+    //             $response = ["message" => 'Please Enter a multiple of 100', 'success' => false];
+    //         } 
+    //         else{
+    //             $lastBid = BidsOfLots::where('lotId', $newBid['lotId'])->orderBy('id', 'DESC')->first();
+
+    //             if ($lastBid && $lastBid['amount'] < $nextBidAmount && $lastBid['lotId'] == $newBid['lotId']) 
+    //             {
+    //                 // Check if the last bid was made within the last two minutes
+    //                 $currentTime = Carbon::now();
+    //                 $twoMinutesAgo = $currentTime->subMinutes(2);
+    //                 $lastBidTime = Carbon::createFromFormat('Y-m-d H:i:s', $lastBid->created_at);
+
+    //                 if ($lastBidTime->greaterThan($twoMinutesAgo)) 
+    //                 {
+    //                     // Another bid was made within two minutes, create a new bid
+    //                     $newBid = BidsOfLots::create([
+    //                         'customerId' => $newBid['customerId'],
+    //                         'amount' => $nextBidAmount,
+    //                         'lotId' => $newBid['lotId'],
+    //                     ]);
+
+    //                     $response = ["message" => 'Congratulations! You placed a new bid.', 'success' => true, 'LatestBid' => $newBid];
+    //                 }
+    //                 else {
+    //                     // No other bid within two minutes, the lot is won by the last bid
+    //                     // Mark the lot as closed or do any necessary actions here
+
+    //                     $response = ["message" => 'You are late! Sorry, another person won this lot.', 'success' => false];
+    //                 }
+    //             } 
+    //             else {
+    //                 $response = ["message" => 'Bid Amount is smaller than the last bid or not in the allowed increment.', 'success' => false];
+    //             }
+    //         }
+    //     } else {
+    //         $response = ["message" => 'User is not available or User is blocked.', 'success' => false];
+    //     }
+
+    //     return $response;
+    // }
+
+     // end the previous code 
+      
+     
+
+    // public function addnewbidtolot(Request $request)
+    // {
+    //     $newBid = $request->validate([
+    //         'customerId' => 'required',
+    //         'amount' => 'required',
+    //         'lotId' => 'required',
+    //     ]);
+
+    //     $response = [];
+    //     $customer = Customer::where('id', $newBid['customerId'])->first();
+    //     $lotDetails = lots::where('id', $newBid['lotId'])->first();
+
+    //     if ($customer && $customer->isApproved == 1) 
+    //     {
+    //         // Calculate the next bid amount with an increment of 100
+    //         $nextBidAmount = ceil($newBid['amount'] / 100) * 100;
+
+    //         if ($newBid['amount'] % 100 !== 0) 
+    //         {
+    //             $response = ["message" => 'Please Enter a multiple of 100', 'success' => false];
+    //         } else {
+    //             $lastBid = BidsOfLots::where('lotId', $newBid['lotId'])->orderBy('id', 'DESC')->first();
+
+    //             if ($lastBid && $lastBid['amount'] < $nextBidAmount && $lastBid['lotId'] == $newBid['lotId']) {
+    //                 // Check if the last bid was made within the last two minutes
+    //                 $currentTime = Carbon::now();
+    //                 $twoMinutesAgo = $currentTime->subMinutes(2);
+    //                 $lastBidTime = Carbon::createFromFormat('Y-m-d H:i:s', $lastBid->created_at);
+
+    //                 if ($lastBidTime->greaterThan($twoMinutesAgo)) {
+    //                     // Another bid was made within two minutes, create a new bid
+    //                     $newBid = BidsOfLots::create([
+    //                         'customerId' => $newBid['customerId'],
+    //                         'amount' => $nextBidAmount,
+    //                         'lotId' => $newBid['lotId'],
+    //                     ]);
+
+    //                     // Dispatch event to notify participants about the new bid
+    //                     event(new winLotsEvent('Congratulations! You placed a new bid.'));
+
+    //                     // Pusher code to send notification to front-end
+    //                     $pusher = new \Pusher\Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
+    //                         'cluster' => env('PUSHER_APP_CLUSTER'),
+    //                         'useTLS' => true,
+    //                     ]);
+
+    //                     $pusher->trigger('my-channel', 'my-event', [
+    //                         'message' => 'Congratulations! You placed a new bid.',
+    //                     ]);
+
+    //                     $response = ["message" => 'Congratulations! You placed a new bid.', 'success' => true, 'LatestBid' => $newBid];
+    //                 } else {
+    //                     // No other bid within two minutes, the lot is won by the last bid
+    //                     // Mark the lot as closed or do any necessary actions here
+
+    //                     // Dispatch event to notify participants about the winner
+    //                     event(new winLotsEvent('You are late! Sorry, another person won this lot.'));
+
+    //                     // Return participation fee to the loser
+    //                     $this->returnParticipationFee($lastBid);
+
+    //                     // Send email notification to the winner
+    //                     Mail::to($lastBid->customer->email)->send(new LotWinnerNotification($lastBid->customer->name));
+
+    //                     // Send email notification to the loser
+    //                     Mail::to($customer->email)->send(new LotLoserNotification($lotDetails->id, $customer->name));
+
+    //                     // Pusher code to send notification to front-end
+    //                     $pusher = new \Pusher\Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
+    //                         'cluster' => env('PUSHER_APP_CLUSTER'),
+    //                         'useTLS' => true,
+    //                     ]);
+
+    //                     $pusher->trigger('my-channel', 'my-event', [
+    //                         'message' => 'You are late! Sorry, another person won this lot.',
+    //                     ]);
+
+    //                     $response = ["message" => 'You are late! Sorry, another person won this lot.', 'success' => false];
+    //                 }
+    //             } else {
+    //                 $response = ["message" => 'Bid Amount is smaller than the last bid or not in the allowed increment.', 'success' => false];
+    //             }
+    //         }
+    //     } else {
+    //         $response = ["message" => 'User is not available or User is blocked.', 'success' => false];
+    //     }
+
+    //     return $response;
+    // }
+
+     
+    //  private function returnParticipationFee($bid)
+    //  {
+    //      $customer = Customer::find($bid->customerId);
+    //      if ($customer) {
+    //          $lastBalance = customerBalance::where('customerId', $customer->id)->orderBy('id', 'desc')->first();
+    //          if ($lastBalance) {
+    //              $newFinalAmount = $lastBalance->finalAmount + $bid->amount;
+    //              customerBalance::create([
+    //                  'customerId' => $customer->id,
+    //                  'balanceAmount' => $lastBalance->finalAmount,
+    //                  'action' => 'Return Participation Fee',
+    //                  'actionAmount' => $bid->amount,
+    //                  'finalAmount' => $newFinalAmount,
+    //                  'lotid' => $bid->lotId,
+    //                  'status' => 1, // Status 1 for returned participation fee
+    //                  'date' => Carbon::now(),
+    //              ]);
+    //          }
+    //      }
+    //  }
+
+    
     public function addnewbidtolot(Request $request)
     {
         $newBid = $request->validate([
@@ -764,10 +1033,9 @@ class AuctionContoller extends Controller
     
         $response = [];
         $customer = Customer::where('id', $newBid['customerId'])->first();
-        $lotDetails = lots::where('id', $newBid['lotId'])->first();
+        $lotDetails = Lots::where('id', $newBid['lotId'])->first();
     
-        if ($customer && $customer->isApproved == 1) 
-        {
+        if ($customer && $customer->isApproved == 1) {
             // Calculate the next bid amount with an increment of 100
             $nextBidAmount = ceil($newBid['amount'] / 100) * 100;
     
@@ -776,40 +1044,63 @@ class AuctionContoller extends Controller
             } else {
                 $lastBid = BidsOfLots::where('lotId', $newBid['lotId'])->orderBy('id', 'DESC')->first();
     
-                if ($lastBid && $lastBid['amount'] < $nextBidAmount && $lastBid['lotId'] == $newBid['lotId']) 
-                {
+                if ($lastBid && $lastBid['amount'] < $nextBidAmount && $lastBid['lotId'] == $newBid['lotId']) {
                     // Check if the last bid was made within the last two minutes
                     $currentTime = Carbon::now();
                     $twoMinutesAgo = $currentTime->subMinutes(2);
                     $lastBidTime = Carbon::createFromFormat('Y-m-d H:i:s', $lastBid->created_at);
     
-                    if ($lastBidTime->greaterThan($twoMinutesAgo)) 
-                    {
-                        // Another bid was made within two minutes, so the current bid is late
-                        $response = ["message" => 'Congratulations! You won this lot.', 'success' => true];
-                    }
-                     else {
+                    if ($lastBidTime->greaterThan($twoMinutesAgo)) {
+                        // Another bid was made within two minutes, create a new bid
+                        $newBid = BidsOfLots::create([
+                            'customerId' => $newBid['customerId'],
+                            'amount' => $nextBidAmount,
+                            'lotId' => $newBid['lotId'],
+                        ]);
+    
+                        // Dispatch event to notify participants about the new bid
+                        event(new winLotsEvent('Congratulations! You placed a new bid.'));
+    
+                        // Pusher code to send notification to front-end
+                        $pusher = new \Pusher\Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
+                            'cluster' => env('PUSHER_APP_CLUSTER'),
+                            'useTLS' => true,
+                        ]);
+    
+                        $pusher->trigger('steel24', 'win-lots checking', [
+                            'message' => 'Congratulations! You placed a new bid.',
+                        ]);
+    
+                        $response = ["message" => 'Congratulations! You placed a new bid.', 'success' => true, 'LatestBid' => $newBid];
+                    } else {
                         // No other bid within two minutes, the lot is won by the last bid
                         // Mark the lot as closed or do any necessary actions here
-
+    
+                        // Dispatch event to notify participants about the winner
+                        event(new winLotsEvent('You are late! Sorry, another person won this lot.'));
+    
+                        // Return participation fee to the loser
+                        $this->returnParticipationFee($lastBid);
+    
+                        // Send email notification to the winner
+                        Mail::to($lastBid->customer->email)->send(new LotWinnerNotification($lastBid->customer->name));
+    
+                        // Send email notification to the loser
+                        Mail::to($customer->email)->send(new LotLoserNotification($lotDetails->id, $customer->name));
+    
+                        // Pusher code to send notification to front-end
+                        $pusher = new \Pusher\Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
+                            'cluster' => env('PUSHER_APP_CLUSTER'),
+                            'useTLS' => true,
+                        ]);
+    
+                        $pusher->trigger('steel24', 'win-lots checking', [
+                            'message' => 'You are late! Sorry, another person won this lot.',
+                        ]);
+    
                         $response = ["message" => 'You are late! Sorry, another person won this lot.', 'success' => false];
-
-                        
                     }
-                } 
-    
-                // elseif (!$lastBid && $lotDetails->Price < $nextBidAmount) 
-                // {
-                //     $lastBid = BidsOfLots::create([
-                //         'customerId' => $newBid['customerId'],
-                //         'amount' => $nextBidAmount,
-                //         'lotId' => $newBid['lotId'],
-                //     ]);
-                //     $this->liveChangeOnfirbase($newBid['lotId'], $lotDetails['EndDate']);
-    
-                //     $response = ["success" => true, 'LatestBid' => $lastBid];
-                // } 
-                else {
+                } else {
                     $response = ["message" => 'Bid Amount is smaller than the last bid or not in the allowed increment.', 'success' => false];
                 }
             }
@@ -820,12 +1111,28 @@ class AuctionContoller extends Controller
         return $response;
     }
     
+    private function returnParticipationFee($bid)
+    {
+        $customer = Customer::find($bid->customerId);
+        if ($customer) {
+            $lastBalance = CustomerBalance::where('customerId', $customer->id)->orderBy('id', 'desc')->first();
+            if ($lastBalance) {
+                $newFinalAmount = $lastBalance->finalAmount + $bid->amount;
+                CustomerBalance::create([
+                    'customerId' => $customer->id,
+                    'balanceAmount' => $lastBalance->finalAmount,
+                    'action' => 'Return Participation Fee',
+                    'actionAmount' => $bid->amount,
+                    'finalAmount' => $newFinalAmount,
+                    'lotid' => $bid->lotId,
+                    'status' => 1, // Status 1 for returned participation fee
+                    'date' => Carbon::now(),
+                ]);
+            }
+        }
+    }
     
-
-
-    
-
-    
+     
 
     public function liveChangeOnfirbase($lotid, $endDate = null)
     {
