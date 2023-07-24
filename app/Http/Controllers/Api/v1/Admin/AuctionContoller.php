@@ -1040,13 +1040,15 @@ class AuctionContoller extends Controller
 
             $lastBid = BidsOfLots::where('lotId', $newBid['lotId'])->orderBy('id', 'DESC')->first();
 
-            if ($lastBid && $lastBid['amount'] < $nextBidAmount && $lastBid['lotId'] == $newBid['lotId']) {
+            if ($lastBid && $lastBid['amount'] < $nextBidAmount && $lastBid['lotId'] == $newBid['lotId']) 
+            {
                 // Check if the last bid was made within the last two minutes
                 $currentTime = Carbon::now();
                 $twoMinutesAgo = $currentTime->subMinutes(2);
                 $lastBidTime = Carbon::createFromFormat('Y-m-d H:i:s', $lastBid->created_at);
 
-                if ($lastBidTime->greaterThan($twoMinutesAgo)) {
+                if ($lastBidTime->greaterThan($twoMinutesAgo)) 
+                {
                     // Another bid was made within two minutes, create a new bid
                     $newBid = BidsOfLots::create([
                         'customerId' => $newBid['customerId'],
@@ -1067,7 +1069,7 @@ class AuctionContoller extends Controller
                         'message' => 'Good Luck! You placed a new bid.',
                     ]);
 
-                    $response = ["message" => 'Good Luck! You placed a new bid.', 'success' => true, 'LatestBid' => $newBid];
+                    $response = ["message" => 'Good Luck! You placed a new bid!', 'success' => true, 'LatestBid' => $newBid];
                 } else {
                     // No other bid within two minutes, the lot is won by the last bid
                     // Mark the lot as closed or do any necessary actions here

@@ -454,8 +454,11 @@ class LotsContoller extends Controller
 
         $customerId = $request->input('customer_id');
 
+
+
         $expiredLots = Lots::with('categories')
-                        ->with(['customers' => function($query) use ($customerId){
+                        ->with(['customers' => function($query) use ($customerId)
+                        {
                              $query->where('customers.id' , $customerId);
                         }])
                         ->where('lot_status' , 'LIKE' , '%Expired%')
