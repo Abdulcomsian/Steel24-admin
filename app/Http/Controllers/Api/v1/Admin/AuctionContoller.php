@@ -1094,7 +1094,7 @@ class AuctionContoller extends Controller
                         'message' => 'You are late! Sorry, another person won this lot.',
                     ]);
 
-                    $response = ["message" => 'You are late! Sorry, another person won this lot.', 'success' => false];
+                    $response = ["message" => 'You are late! Sorry, another person won this lot.', 'success' => true];
                 }
             } else {
                 $response = ["message" => 'Bid Amount is smaller than the last bid or not in the allowed increment.', 'success' => false];
