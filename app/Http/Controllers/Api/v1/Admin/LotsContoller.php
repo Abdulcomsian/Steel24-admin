@@ -24,7 +24,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Carbon\Carbon;
 use \Illuminate\Support\Facades\DB;
 use App\Events\winLotsEvent;
-use Pusher\Pusher;
+// use Pusher\Pusher;
 
 
 

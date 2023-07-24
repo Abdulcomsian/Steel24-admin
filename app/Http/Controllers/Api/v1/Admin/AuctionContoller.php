@@ -25,7 +25,7 @@ use Illuminate\Support\Facades\Validator;
 // use Kreait\Firebase\Factory;
 use Symfony\Component\HttpFoundation\Response;
 use App\Events\winLotsEvent;
-use Pusher\Pusher;
+// use Pusher\Pusher;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\LotWinnerNotification;
 use App\Mail\LotLoserNotification;
@@ -1058,10 +1058,10 @@ class AuctionContoller extends Controller
                     event(new winLotsEvent('Good Luck! You placed a new bid.'));
 
                     // Pusher code to send notification to front-end
-                    $pusher = new \Pusher\Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
-                        'cluster' => env('PUSHER_APP_CLUSTER'),
-                        'useTLS' => true,
-                    ]);
+                    // $pusher = new \Pusher\Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
+                    //     'cluster' => env('PUSHER_APP_CLUSTER'),
+                    //     'useTLS' => true,
+                    // ]);
 
                     $pusher->trigger('steel24', 'Good Luck', [
                         'message' => 'Good Luck! You placed a new bid.',
@@ -1085,10 +1085,10 @@ class AuctionContoller extends Controller
                     Mail::to($customer->email)->send(new LotLoserNotification($lotDetails->id, $customer->name));
 
                     // Pusher code to send notification to front-end
-                    $pusher = new \Pusher\Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
-                        'cluster' => env('PUSHER_APP_CLUSTER'),
-                        'useTLS' => true,
-                    ]);
+                    // $pusher = new \Pusher\Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
+                    //     'cluster' => env('PUSHER_APP_CLUSTER'),
+                    //     'useTLS' => true,
+                    // ]);
 
                     $pusher->trigger('steel24', 'Sorry you are Late', [
                         'message' => 'You are late! Sorry, another person won this lot.',
