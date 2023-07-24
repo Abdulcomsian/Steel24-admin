@@ -1033,7 +1033,7 @@ class AuctionContoller extends Controller
 
         $response = [];
         $customer = Customer::where('id', $newBid['customerId'])->first();
-        $lotDetails = Lots::where('id', $newBid['lotId'])->first();
+        $lotDetails = lots::where('id', $newBid['lotId'])->first();
 
         if ($customer && $customer->isApproved == 1) {
             $nextBidAmount = $newBid['amount'];
