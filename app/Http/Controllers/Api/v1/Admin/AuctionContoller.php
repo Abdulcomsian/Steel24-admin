@@ -1059,7 +1059,7 @@ class AuctionContoller extends Controller
                         ]);
     
                         // Dispatch event to notify participants about the new bid
-                        event(new winLotsEvent('Congratulations! You placed a new bid.'));
+                        event(new winLotsEvent('Good Luck! You placed a new bid.'));
     
                         // Pusher code to send notification to front-end
                         $pusher = new \Pusher\Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
@@ -1067,11 +1067,11 @@ class AuctionContoller extends Controller
                             'useTLS' => true,
                         ]);
     
-                        $pusher->trigger('steel24', 'win-lots checking', [
-                            'message' => 'Congratulations! You placed a new bid.',
+                        $pusher->trigger('steel24', 'Good Luck', [
+                            'message' => 'Good Luck! You placed a new bid.',
                         ]);
     
-                        $response = ["message" => 'Congratulations! You placed a new bid.', 'success' => true, 'LatestBid' => $newBid];
+                        $response = ["message" => 'Good Luck! You placed a new bid.', 'success' => true, 'LatestBid' => $newBid];
                     } else {
                         // No other bid within two minutes, the lot is won by the last bid
                         // Mark the lot as closed or do any necessary actions here
@@ -1094,7 +1094,7 @@ class AuctionContoller extends Controller
                             'useTLS' => true,
                         ]);
     
-                        $pusher->trigger('steel24', 'win-lots checking', [
+                        $pusher->trigger('steel24', 'Sorry you are Late', [
                             'message' => 'You are late! Sorry, another person won this lot.',
                         ]);
     

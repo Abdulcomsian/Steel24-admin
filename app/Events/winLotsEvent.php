@@ -11,7 +11,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
 
-class winLotsEvent
+class winLotsEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -24,7 +24,7 @@ class winLotsEvent
 
   public function broadcastOn()
   {
-      return ['steel24'];
+      return new Channel('steel24');
   }
 
   public function broadcastAs()
