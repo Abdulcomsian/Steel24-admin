@@ -1054,18 +1054,18 @@ class AuctionContoller extends Controller
                         'lotId' => $newBid['lotId'],
                     ]);
 
-                    // // Dispatch event to notify participants about the new bid
-                    // event(new winLotsEvent('Good Luck! You placed a new bid.'));
+                    // Dispatch event to notify participants about the new bid
+                    event(new winLotsEvent('Good Luck! You placed a new bid.'));
 
-                    // // Pusher code to send notification to front-end
-                    // $pusher = new \Pusher\Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
-                    //     'cluster' => env('PUSHER_APP_CLUSTER'),
-                    //     'useTLS' => true,
-                    // ]);
+                    // Pusher code to send notification to front-end
+                    $pusher = new \Pusher\Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
+                        'cluster' => env('PUSHER_APP_CLUSTER'),
+                        'useTLS' => true,
+                    ]);
 
-                    // $pusher->trigger('steel24', 'Good Luck', [
-                    //     'message' => 'Good Luck! You placed a new bid.',
-                    // ]);
+                    $pusher->trigger('steel24', 'Good Luck', [
+                        'message' => 'Good Luck! You placed a new bid.',
+                    ]);
 
                     $response = ["message" => 'Good Luck! You placed a new bid.', 'success' => true, 'LatestBid' => $newBid];
                 } else {
@@ -1094,7 +1094,7 @@ class AuctionContoller extends Controller
                         'message' => 'You are late! Sorry, another person won this lot.',
                     ]);
 
-                    $response = ["message" => 'You are late! Sorry, another person won this lot.', 'success' => true];
+                    $response = ["message" => 'You are late! Sorry, another person won this lot.', 'success' => false];
                 }
             } else {
                 $response = ["message" => 'Bid Amount is smaller than the last bid or not in the allowed increment.', 'success' => false];
