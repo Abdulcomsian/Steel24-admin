@@ -50,4 +50,9 @@ class lots extends Model
         return $this->hasMany(customerBalance::class , 'lotid' , 'id');
     }
 
+    // public function favoriteLots($customerId)
+    // {
+    //     return $this->hasMany(CustomerBalance::class, 'lot_id', 'id')
+    //         ->where('customerId', $customerId);
+    // }
 }
