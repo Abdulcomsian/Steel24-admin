@@ -199,24 +199,28 @@ class LotsContoller extends Controller
 
     // }
 
-
+    
     public function getActiveLots(Request $request)
     {
-        // new code start here 
         $customerId = $request->customer_id;
+    
         $lots = lots::with(['customerBalance' => function($query) use ($customerId) 
-                            {
-                                $query->where('customerId', $customerId);
-                            }])
-                            ->with(['customers' => function($query) use ($customerId){
-                                $query->where('customer_id' , $customerId);
-                            }])
-                            ->where('lot_status', 'LIKE', '%live%')->get();
+        {
+                $query->where('customerId', $customerId);
+            }])
+            ->with(['customers' => function($query) use ($customerId) 
+            {
+                $query->where('customer_id', $customerId);
+            }])
+            ->with('categories')
 
-
-                            // dd($lots);
-        
-        return response()->json(['userLots' => $lots , 'success' => true]);
+            ->where('lot_status', 'LIKE', '%live%')
+            
+            ->get();
+    
+        return response()->json(['userLots' => $lots, 'success' => true]);
+    
+    
 
 
 

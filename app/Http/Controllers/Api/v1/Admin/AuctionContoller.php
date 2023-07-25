@@ -1022,95 +1022,151 @@ class AuctionContoller extends Controller
     //      }
     //  }
 
-    
-        public function addnewbidtolot(Request $request)
+
+    public function addnewbidtolot(Request $request)
     {
         $newBid = $request->validate([
             'customerId' => 'required',
             'amount' => 'required',
             'lotId' => 'required',
         ]);
-
+    
         $response = [];
         $customer = Customer::where('id', $newBid['customerId'])->first();
         $lotDetails = lots::where('id', $newBid['lotId'])->first();
-
-        if ($customer && $customer->isApproved == 1) 
-        {
+    
+        if ($customer && $customer->isApproved == 1) {
             $nextBidAmount = $newBid['amount'];
-
+    
             $lastBid = BidsOfLots::where('lotId', $newBid['lotId'])->orderBy('id', 'DESC')->first();
-
-            if ($lastBid && $lastBid['amount'] < $nextBidAmount && $lastBid['lotId'] == $newBid['lotId']) 
-            {
+    
+            if ($lastBid && $lastBid['amount'] < $nextBidAmount && $lastBid['lotId'] == $newBid['lotId']) {
                 // Check if the last bid was made within the last two minutes
                 $currentTime = Carbon::now();
                 $twoMinutesAgo = $currentTime->subMinutes(2);
                 $lastBidTime = Carbon::createFromFormat('Y-m-d H:i:s', $lastBid->created_at);
-
-                if ($lastBidTime->greaterThan($twoMinutesAgo)) 
-                {
+    
+                if ($lastBidTime->greaterThan($twoMinutesAgo)) {
                     // Another bid was made within two minutes, create a new bid
                     $newBid = BidsOfLots::create([
                         'customerId' => $newBid['customerId'],
                         'amount' => $nextBidAmount,
                         'lotId' => $newBid['lotId'],
                     ]);
-
-                    // // Dispatch event to notify participants about the new bid
-                    // event(new winLotsEvent('Good Luck! You placed a new bid.'));
-
-                    // // Pusher code to send notification to front-end
-                    // $pusher = new \Pusher\Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
-                    //     'cluster' => env('PUSHER_APP_CLUSTER'),
-                    //     'useTLS' => true,
-                    // ]);
-
-                    // $pusher->trigger('steel24', 'Good Luck', [
-                    //     'message' => 'Good Luck! You placed a new bid.',
-                    // ]);
-
+    
+                    // Dispatch event to notify participants about the new bid
+                    event(new winLotsEvent('Good Luck! You placed a new bid.', $newBid['customerId'], $newBid['lotId']));
+    
                     $response = ["message" => 'Good Luck! You placed a new bid!', 'success' => true, 'LatestBid' => $newBid];
-                } 
-                else 
-                {
+                } else {
                     // No other bid within two minutes, the lot is won by the last bid
                     // Mark the lot as closed or do any necessary actions here
-
+    
                     // Dispatch event to notify participants about the winner
-                    event(new winLotsEvent('You are late! Sorry, another person won this lot.'));
-
-                    // Return participation fee to the loser
-                    $this->returnParticipationFee($lastBid);
-
-                    // Send email notification to the winner
-                    Mail::to($lastBid->customer->email)->send(new LotWinnerNotification($lastBid->customer->name));
-
-                    // Send email notification to the loser
-                    Mail::to($customer->email)->send(new LotLoserNotification($lotDetails->id, $customer->name));
-
-                    // // Pusher code to send notification to front-end
-                    // $pusher = new \Pusher\Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
-                    //     'cluster' => env('PUSHER_APP_CLUSTER'),
-                    //     'useTLS' => true,
-                    // ]);
-
-                    // $pusher->trigger('steel24', 'Sorry you are Late', [
-                    //     'message' => 'You are late! Sorry, another person won this lot.',
-                    // ]);
-
+                    event(new winLotsEvent('You are late! Sorry, another person won this lot.', $lastBid->customerId, $lastBid->lotId));
+    
                     $response = ["message" => 'You are late! Sorry, another person won this lot.', 'success' => false];
                 }
             } else {
                 $response = ["message" => 'Bid Amount is smaller than the last bid or not in the allowed increment.', 'success' => false];
             }
-        } 
-        else {
+        } else {
             $response = ["message" => 'User is not available or User is blocked.', 'success' => false];
         }
-
+    
         return $response;
     }
+    
+
+    
+    //     public function addnewbidtolot(Request $request)
+    // {
+    //     $newBid = $request->validate([
+    //         'customerId' => 'required',
+    //         'amount' => 'required',
+    //         'lotId' => 'required',
+    //     ]);
+
+    //     $response = [];
+    //     $customer = Customer::where('id', $newBid['customerId'])->first();
+    //     $lotDetails = lots::where('id', $newBid['lotId'])->first();
+
+    //     if ($customer && $customer->isApproved == 1) 
+    //     {
+    //         $nextBidAmount = $newBid['amount'];
+
+    //         $lastBid = BidsOfLots::where('lotId', $newBid['lotId'])->orderBy('id', 'DESC')->first();
+
+    //         if ($lastBid && $lastBid['amount'] < $nextBidAmount && $lastBid['lotId'] == $newBid['lotId']) 
+    //         {
+    //             // Check if the last bid was made within the last two minutes
+    //             $currentTime = Carbon::now();
+    //             $twoMinutesAgo = $currentTime->subMinutes(2);
+    //             $lastBidTime = Carbon::createFromFormat('Y-m-d H:i:s', $lastBid->created_at);
+
+    //             if ($lastBidTime->greaterThan($twoMinutesAgo)) 
+    //             {
+    //                 // Another bid was made within two minutes, create a new bid
+    //                 $newBid = BidsOfLots::create([
+    //                     'customerId' => $newBid['customerId'],
+    //                     'amount' => $nextBidAmount,
+    //                     'lotId' => $newBid['lotId'],
+    //                 ]);
+
+    //                 // // Dispatch event to notify participants about the new bid
+    //                 // event(new winLotsEvent('Good Luck! You placed a new bid.'));
+
+    //                 // // Pusher code to send notification to front-end
+    //                 // $pusher = new \Pusher\Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
+    //                 //     'cluster' => env('PUSHER_APP_CLUSTER'),
+    //                 //     'useTLS' => true,
+    //                 // ]);
+
+    //                 // $pusher->trigger('steel24', 'Good Luck', [
+    //                 //     'message' => 'Good Luck! You placed a new bid.',
+    //                 // ]);
+
+    //                 $response = ["message" => 'Good Luck! You placed a new bid!', 'success' => true, 'LatestBid' => $newBid];
+    //             } 
+    //             else 
+    //             {
+    //                 // No other bid within two minutes, the lot is won by the last bid
+    //                 // Mark the lot as closed or do any necessary actions here
+
+    //                 // Dispatch event to notify participants about the winner
+    //                 event(new winLotsEvent('You are late! Sorry, another person won this lot.'));
+
+    //                 // Return participation fee to the loser
+    //                 $this->returnParticipationFee($lastBid);
+
+    //                 // Send email notification to the winner
+    //                 Mail::to($lastBid->customer->email)->send(new LotWinnerNotification($lastBid->customer->name));
+
+    //                 // Send email notification to the loser
+    //                 Mail::to($customer->email)->send(new LotLoserNotification($lotDetails->id, $customer->name));
+
+    //                 // // Pusher code to send notification to front-end
+    //                 // $pusher = new \Pusher\Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
+    //                 //     'cluster' => env('PUSHER_APP_CLUSTER'),
+    //                 //     'useTLS' => true,
+    //                 // ]);
+
+    //                 // $pusher->trigger('steel24', 'Sorry you are Late', [
+    //                 //     'message' => 'You are late! Sorry, another person won this lot.',
+    //                 // ]);
+
+    //                 $response = ["message" => 'You are late! Sorry, another person won this lot.', 'success' => false];
+    //             }
+    //         } else {
+    //             $response = ["message" => 'Bid Amount is smaller than the last bid or not in the allowed increment.', 'success' => false];
+    //         }
+    //     } 
+    //     else {
+    //         $response = ["message" => 'User is not available or User is blocked.', 'success' => false];
+    //     }
+
+    //     return $response;
+    // }
 
     
     private function returnParticipationFee($bid)

@@ -10,26 +10,28 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-
 class winLotsEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $message;
+    public $customerId;
+    public $lotId;
 
-  public function __construct($message)
-  {
-      $this->message = $message;
-  }
+    public function __construct($message, $customerId, $lotId)
+    {
+        $this->message = $message;
+        $this->customerId = $customerId;
+        $this->lotId = $lotId;
+    }
 
-  public function broadcastOn()
-  {
-      return new Channel('steel24');
-  }
+    public function broadcastOn()
+    {
+        return new Channel('steel24');
+    }
 
-  public function broadcastAs()
-  {
-      return 'win-lots checking';
-  }
-
+    public function broadcastAs()
+    {
+        return 'win-lots checking';
+    }
 }
