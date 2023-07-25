@@ -51,6 +51,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
         Route::get('/lotdetails/{lotid}', 'AuctionContoller@lotDetails');
 
         Route::get('/getcustomerbalance/{id}', 'AuctionContoller@getCustomerBalance');
+        
         Route::post('/getidforbalance', 'AuctionContoller@addBalanceOrderIdGenerate');
         Route::post('/addcustomerbalance', 'AuctionContoller@addcustomerbalance');
         Route::post('/getlotpaymentid', 'AuctionContoller@getLotPaymentId');

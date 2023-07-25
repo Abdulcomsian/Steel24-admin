@@ -203,36 +203,51 @@ class LotsContoller extends Controller
 
     public function getActiveLots(Request $request)
     {
-        $customerId = $request->input('customer_id');
+        //new code start here 
+        $customerId = $request->customer_id;
+        $lots = lots::with(['customerBalance' => function($query) use ($customerId) 
+        {
+            $query->where('customerId', $customerId);
+        }])->where('lot_status', 'LIKE', '%live%')->get();
+        
+        return response()->json(['userLots' => $lots , 'success' => true]);
 
-        $userLots = lots::with('categories')
-            ->with(['customers' => function ($query) use ($customerId) {
-                $query->where('customers.id', $customerId);
-            }])
-            ->where('lot_status', 'LIKE', '%live%')
-            ->get();
+                
+        
+        //new code ends here
+        // $customerId = $request->input('customer_id');
 
-        // Fetch the customer balance details
-        $customerBalance = customerBalance::where('customerId', $customerId)->first();
+        // $userLots = lots::with('categories')
+        //     ->with(['customers' => function ($query) use ($customerId) 
+        //     {
+        //         $query->where('customers.id', $customerId);
+        //     }])
+        //     ->where('lot_status', 'LIKE', '%live%')
+        //     ->get();
 
-        if ($userLots->isEmpty()) {
-            return response()->json([
-                'message' => 'No active or favorite lots available for the customer',
-                'success' => false,
-            ], 200);
-        }
+        // // Fetch the customer balance details
+        // $customerBalance = customerBalance::where('customerId', $customerId)->first();
 
-        // Check if participate fee has been paid for each lot
-        foreach ($userLots as $lot) {
-            // Assuming 'participate_fee' is the column name for the participate fee in the 'lots' table
-            $lot->isParticipated = ($customerBalance && $customerBalance->finalAmount >= $lot->participate_fee);
-        }
+        // if ($userLots->isEmpty()) {
+        //     return response()->json([
+        //         'message' => 'No active or favorite lots available for the customer',
+        //         'success' => false,
+        //     ], 200);
+        // }
 
-        return response()->json([
-            'userLots' => $userLots,
-            'success' => true,
-        ]);
+        // // Check if participate fee has been paid for each lot
+        // foreach ($userLots as $lot) 
+        // {
+        //     // Assuming 'participate_fee' is the column name for the participate fee in the 'lots' table
+        //     $lot->isParticipated = ($customerBalance && $customerBalance->finalAmount >= $lot->participate_fee);
+        // }
+
+        // return response()->json([
+        //     'userLots' => $userLots,
+        //     'success' => true,
+        // ]);
     }
+    
 
 
 

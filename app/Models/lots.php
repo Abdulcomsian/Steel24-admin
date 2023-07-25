@@ -8,6 +8,7 @@ use App\Models\lotTerms;
 use App\Models\categories;
 use App\Models\Customer;
 use App\Models\new_maerials_2;
+use App\Models\customerBalance;
 
 class lots extends Model
 {
@@ -43,4 +44,10 @@ class lots extends Model
     {
         return $this->hasMany(new_maerials_2::class, 'lotid');
     }
+
+    public function customerBalance()
+    {
+        return $this->hasMany(customerBalance::class , 'lotid' , 'id');
+    }
+
 }
