@@ -1057,7 +1057,7 @@ class AuctionContoller extends Controller
                     ]);
     
                     // Dispatch event to notify participants about the new bid
-                    event(new winLotsEvent('Good Luck! You placed a new bid.', $newBid,$customer));
+                    event(new winLotsEvent('Good Luck! You placed a new bid.', $newBid,$customer,true));
     
                     $response = ["message" => 'Good Luck! You placed a new bid!', 'success' => true, 'LatestBid' => $newBid];
                 } else {
@@ -1065,7 +1065,7 @@ class AuctionContoller extends Controller
                     // Mark the lot as closed or do any necessary actions here
     
                     // Dispatch event to notify participants about the winner
-                    event(new winLotsEvent('You are late! Sorry, another person won this lot.', $lastBid,$customer));
+                    event(new winLotsEvent('You are late! Sorry, another person won this lot.', $lastBid,$customer,false));
     
                     $response = ["message" => 'You are late! Sorry, another person won this lot.', 'success' => false];
                 }
@@ -1076,7 +1076,7 @@ class AuctionContoller extends Controller
                     'amount' => $nextBidAmount,
                     'lotId' => $newBid['lotId'],
                 ]);
-                event(new winLotsEvent('Good Luck! You placed a new bid.', $newBid,$customer));
+                event(new winLotsEvent('Good Luck! You placed a new bid.', $newBid,$customer,true));
                 $response = ['LatestBid' => $newBid, 'success' => true];
             }
         } else {
