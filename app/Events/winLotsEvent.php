@@ -15,14 +15,16 @@ class winLotsEvent implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $message;
-    public $customerId;
-    public $lotId;
+    // public $customerId;
+    // public $lotId;
+    public $detail;
+    public $customer;
 
-    public function __construct($message, $customerId, $lotId)
+    public function __construct($message, $detail,$customer)
     {
         $this->message = $message;
-        $this->customerId = $customerId;
-        $this->lotId = $lotId;
+        $this->detail = $detail;
+        $this->customer=$customer;
     }
 
     public function broadcastOn()

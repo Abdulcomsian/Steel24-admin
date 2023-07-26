@@ -1039,14 +1039,16 @@ class AuctionContoller extends Controller
             $nextBidAmount = $newBid['amount'];
     
             $lastBid = BidsOfLots::where('lotId', $newBid['lotId'])->orderBy('id', 'DESC')->first();
-    
-            if ($lastBid && $lastBid['amount'] < $nextBidAmount && $lastBid['lotId'] == $newBid['lotId']) {
+            if ($lastBid!=null) 
+            {
+                
                 // Check if the last bid was made within the last two minutes
                 $currentTime = Carbon::now();
                 $twoMinutesAgo = $currentTime->subMinutes(2);
                 $lastBidTime = Carbon::createFromFormat('Y-m-d H:i:s', $lastBid->created_at);
     
-                if ($lastBidTime->greaterThan($twoMinutesAgo)) {
+                if ($lastBidTime->greaterThan($twoMinutesAgo)) 
+                {
                     // Another bid was made within two minutes, create a new bid
                     $newBid = BidsOfLots::create([
                         'customerId' => $newBid['customerId'],
@@ -1055,7 +1057,7 @@ class AuctionContoller extends Controller
                     ]);
     
                     // Dispatch event to notify participants about the new bid
-                    event(new winLotsEvent('Good Luck! You placed a new bid.', $newBid['customerId'], $newBid['lotId']));
+                    event(new winLotsEvent('Good Luck! You placed a new bid.', $newBid,$customer));
     
                     $response = ["message" => 'Good Luck! You placed a new bid!', 'success' => true, 'LatestBid' => $newBid];
                 } else {
@@ -1063,12 +1065,19 @@ class AuctionContoller extends Controller
                     // Mark the lot as closed or do any necessary actions here
     
                     // Dispatch event to notify participants about the winner
-                    event(new winLotsEvent('You are late! Sorry, another person won this lot.', $lastBid->customerId, $lastBid->lotId));
+                    event(new winLotsEvent('You are late! Sorry, another person won this lot.', $newBid,$customer));
     
                     $response = ["message" => 'You are late! Sorry, another person won this lot.', 'success' => false];
                 }
-            } else {
-                $response = ["message" => 'Bid Amount is smaller than the last bid or not in the allowed increment.', 'success' => false];
+            }
+             else {
+                $newBid = BidsOfLots::create([
+                    'customerId' => $newBid['customerId'],
+                    'amount' => $nextBidAmount,
+                    'lotId' => $newBid['lotId'],
+                ]);
+                event(new winLotsEvent('Good Luck! You placed a new bid.', $newBid,$customer));
+                $response = ['LatestBid' => $newBid, 'success' => true];
             }
         } else {
             $response = ["message" => 'User is not available or User is blocked.', 'success' => false];
