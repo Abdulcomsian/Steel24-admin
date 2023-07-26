@@ -19,12 +19,14 @@ class winLotsEvent implements ShouldBroadcast
     // public $lotId;
     public $detail;
     public $customer;
+    public $success;
 
-    public function __construct($message, $detail,$customer)
+    public function __construct($message, $detail,$customer,$success)
     {
         $this->message = $message;
         $this->detail = $detail;
         $this->customer=$customer;
+        $this->success=$success;
     }
 
     public function broadcastOn()
