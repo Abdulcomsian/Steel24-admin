@@ -9,6 +9,7 @@ use App\Models\categories;
 use App\Models\Customer;
 use App\Models\new_maerials_2;
 use App\Models\customerBalance;
+use Illuminate\Support\Facades\DB;
 
 class lots extends Model
 {
@@ -50,9 +51,17 @@ class lots extends Model
         return $this->hasMany(customerBalance::class , 'lotid' , 'id');
     }
 
-    // public function favoriteLots($customerId)
-    // {
-    //     return $this->hasMany(CustomerBalance::class, 'lot_id', 'id')
-    //         ->where('customerId', $customerId);
-    // }
+    public function bids()
+    {
+        return $this->hasMany(BidsOfLots::class, 'lotId', 'id');
+    }
+
+    public function maxBid()
+    {
+        return DB::table('bids_of_lots')
+            ->select('customerId', 'amount', 'lotId', 'created_at')
+            ->where('lotId', $this->id)
+            ->orderBy('amount', 'DESC')
+            ->first();
+    }
 }
