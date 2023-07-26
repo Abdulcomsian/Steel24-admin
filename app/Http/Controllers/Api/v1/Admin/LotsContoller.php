@@ -713,9 +713,10 @@ class LotsContoller extends Controller
 
     public function specificlotshow(Request $request, $lotId)
     {
-        $lot = Lots::with('lotTerms', 'new_maerials_2', 'categories')->find($lotId);
+        $lot = lots::with('lotTerms', 'new_maerials_2', 'categories')->find($lotId);
 
-        if (!$lot) {
+        if (!$lot) 
+        {
             return response()->json(['message' => 'Lot not found'], Response::HTTP_NOT_FOUND);
         }
 

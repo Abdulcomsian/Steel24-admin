@@ -58,6 +58,7 @@ class lots extends Model
 
     public function maxBid()
     {
+        
         return DB::table('bids_of_lots')
             ->select('customerId', 'amount', 'lotId', 'created_at')
             ->where('lotId', $this->id)
