@@ -683,13 +683,44 @@ class LotsContoller extends Controller
     //     return response()->json($data, Response::HTTP_OK);
     // }
 
+    // public function specificlotshow(Request $request, $lotId)
+    // {
+    //     $lot = lots::with('lotTerms', 'new_maerials_2', 'categories')->find($lotId);
+
+    //     if (!$lot) 
+    //     {
+    //         return response()->json(['message' => 'Lot not found'], Response::HTTP_NOT_FOUND);
+    //     }
+
+    //     $paymentTerms = $lot->lotTerms;
+    //     $materials = $lot->new_maerials_2;
+    //     $categories = $lot->categories;
+
+    //     $categoryData = $categories ? [
+    //         'id' => $categories->id,
+    //         'title' => $categories->title,
+    //         'description' => $categories->description,
+    //         'parentcategory' => $categories->parentcategory,
+    //     ] : [];
+
+    //     $data = [
+    //         'lot' => $lot,
+    //     ];
+
+    //     return response()->json($data, Response::HTTP_OK);
+    // }
+
+
     public function specificlotshow(Request $request, $lotId)
     {
-        $lot = lots::with('lotTerms', 'new_maerials_2', 'categories')->find($lotId);
+        $lot = Lots::with('lotTerms', 'new_maerials_2', 'categories')->find($lotId);
 
         if (!$lot) {
             return response()->json(['message' => 'Lot not found'], Response::HTTP_NOT_FOUND);
         }
+
+        // Get the maximum bid for the lot
+        $maxBid = $lot->maxBid();
 
         $paymentTerms = $lot->lotTerms;
         $materials = $lot->new_maerials_2;
@@ -704,12 +735,14 @@ class LotsContoller extends Controller
 
         $data = [
             'lot' => $lot,
+            'maxBid' => $maxBid, // Add the maximum bid object to the response data
         ];
 
         return response()->json($data, Response::HTTP_OK);
     }
-    
 
+    
+    
     // add Favorites Lots in Lots 
 
     public function addFavorites(Request $request)
