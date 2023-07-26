@@ -1065,7 +1065,7 @@ class AuctionContoller extends Controller
                     // Mark the lot as closed or do any necessary actions here
     
                     // Dispatch event to notify participants about the winner
-                    event(new winLotsEvent('You are late! Sorry, another person won this lot.', $newBid,$customer));
+                    event(new winLotsEvent('You are late! Sorry, another person won this lot.', $lastBid,$customer));
     
                     $response = ["message" => 'You are late! Sorry, another person won this lot.', 'success' => false];
                 }
