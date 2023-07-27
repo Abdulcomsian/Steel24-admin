@@ -132,3 +132,52 @@ Route::get('showFavorites/{customer_id}', 'App\Http\Controllers\Api\v1\Admin\Lot
 //     Route::post('me', 'AuthController@me');
 
 // });
+
+
+// Route::get('test' , function()
+// {
+//    $currentTime = Carbon\Carbon::now();
+//    $twoMinutesAgo = $currentTime->subMinutes(2);
+//    $workingLots = App\Models\lots::where('lot_status' , 'live')
+//               ->whereHas('bids' , function($query) use ($twoMinutesAgo) 
+//               {
+//                     $query->latest('created_at')->where('created_at' , '<=' , $twoMinutesAgo);
+//                     ->update([
+//                         'lot_status' => 'Sold'
+//                     ]);
+//               })->get();
+
+//             //   dd($workingLots);
+//             // $workingLots->update(['lot_status' => 'Sold']);
+// });
+
+
+// crone job on testing
+    // Route::get('test', function () 
+    // {
+
+    //     $currentTime = Carbon\Carbon::now();
+    //     $twoMinutesAgo = $currentTime->subMinutes(2);
+
+    //     // Update the lot_status to 'Sold' and get the number of lots updated
+    //     $numUpdatedLots = App\Models\lots::where('lot_status', 'live')
+    //         ->whereHas('bids', function ($query) use ($twoMinutesAgo) 
+    //         {
+    //             $query->latest('created_at')->where('created_at', '<=', $twoMinutesAgo);
+    //         })
+    //         ->update(['lot_status' => 'Sold']);
+
+    //     // Fetch the lots that were updated
+    //     $updatedLots = App\Models\lots::where('lot_status', 'Sold')
+    //         ->whereHas('bids', function ($query) use ($twoMinutesAgo) 
+    //         {
+    //             $query->latest('created_at')->where('created_at', '<=', $twoMinutesAgo);
+    //         })
+    //         ->get();
+
+    //     // dd($updatedLots);
+    // });
+
+
+
+

@@ -1041,7 +1041,12 @@ class AuctionContoller extends Controller
         $response = [];
         $customer = Customer::where('id', $newBid['customerId'])->first();
         $lotDetails = lots::where('id', $newBid['lotId'])->first();
-    
+
+        if (!$lotDetails) {
+            // Lot with the provided ID does not exist
+            return response()->json(['message' => 'Sorry, you entered an invalid lot ID.', 'success' => true], 200);
+        }
+        
         if ($customer && $customer->isApproved == 1) 
         {
             $nextBidAmount = $newBid['amount'];
@@ -1054,14 +1059,30 @@ class AuctionContoller extends Controller
                 $currentTime = Carbon::now();
                 $twoMinutesAgo = $currentTime->subMinutes(2);
                 $lastBidTime = Carbon::createFromFormat('Y-m-d H:i:s', $lastBid->created_at);
-    
-                if ($lastBidTime->greaterThan($twoMinutesAgo)) 
+            
+
+                //new code starts here
+                // dd( $lastBidTime , $currentTime , $twoMinutesAgo);
+                 // date: 2023-07-27 12:33:50.
+                // dd(date("Y-m-d H:i:s"));
+
+                // current time : 12:30:00
+
+                $lastBidTime = $lastBidTime->addMinutes(2);
+                // dd($currentTime);
+                // dd($lastBidTime->greaterThan($currentTime) , $lastBidTime , $currentTime);
+                //new code ends here
+                
+                // if ($lastBidTime->greaterThan($twoMinutesAgo)) 
+                if ($lastBidTime->greaterThan($currentTime)) 
                 {
                     // Another bid was made within two minutes, create a new bid
                     $newBid = BidsOfLots::create([
                         'customerId' => $newBid['customerId'],
                         'amount' => $nextBidAmount,
                         'lotId' => $newBid['lotId'],
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
                     ]);
     
                     // Dispatch event to notify participants about the new bid
