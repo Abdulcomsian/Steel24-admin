@@ -133,7 +133,12 @@ class AuctionContoller extends Controller
         $materialidata = newMaterial::where("lotid", $lotId)->get();
         $materialilist = new_maerials_2::where('lotid', $lotId)->get();
         $lotTerms = lotTerms::where('lotid', $lotId)->first();
-        
+        $maxbid = DB::table('bids_of_lots')
+        ->select('customerId', 'amount', 'lotId', 'created_at')
+        ->where('lotId',$lotId )
+        ->orderBy('amount', 'DESC')
+        ->first();
+
         $lotDetails = DB::select('SELECT lots.* ,bids_of_lots.amount as lastBidAmount from bids_of_lots RIGHT JOIN lots ON  lots.id = bids_of_lots.lotId 
             WHERE lots.id  = ' . $lotId . ' 
             ORDER by bids_of_lots.amount DESC LIMIT 1;');
@@ -143,6 +148,7 @@ class AuctionContoller extends Controller
             'lotDetails' => $lotDetails[0], // Assuming $lotDetails is not empty, get the first element
             'materialList' => $materialilist,
             'lotTerms' => $lotTerms,
+            'maxbid' => $maxbid,
             'success' => true,
         ]);
 
@@ -1022,6 +1028,7 @@ class AuctionContoller extends Controller
     //      }
     //  }
 
+// *********** PREVIOUS CODE WORKING *************
 
     public function addnewbidtolot(Request $request)
     {
@@ -1035,7 +1042,8 @@ class AuctionContoller extends Controller
         $customer = Customer::where('id', $newBid['customerId'])->first();
         $lotDetails = lots::where('id', $newBid['lotId'])->first();
     
-        if ($customer && $customer->isApproved == 1) {
+        if ($customer && $customer->isApproved == 1) 
+        {
             $nextBidAmount = $newBid['amount'];
     
             $lastBid = BidsOfLots::where('lotId', $newBid['lotId'])->orderBy('id', 'DESC')->first();
@@ -1061,12 +1069,22 @@ class AuctionContoller extends Controller
                     
                     
                     $response = ["message" => 'Good Luck! You placed a new bid!', 'success' => true, 'LatestBid' => $newBid];
-                } else {
+                } else 
+                {
                     // No other bid within two minutes, the lot is won by the last bid
                     // Mark the lot as closed or do any necessary actions here
     
                     // Dispatch event to notify participants about the winner
                     event(new winLotsEvent('You are late! Sorry, another person won this lot.', $lastBid,$customer,false));
+
+                     // Return participation fee to the loser
+                     $this->returnParticipationFee($lastBid);
+
+                     // Send email notification to the winner
+                     Mail::to($lastBid->customer->email)->send(new LotWinnerNotification($lastBid->customer->name));
+ 
+                     // Send email notification to the loser
+                     Mail::to($customer->email)->send(new LotLoserNotification($lotDetails->id, $customer->name));
     
                     $response = ["message" => 'You are late! Sorry, another person won this lot.', 'success' => false];
                 }
@@ -1088,6 +1106,7 @@ class AuctionContoller extends Controller
         return $response;
     }
     
+    // *********** END PREVIOUS CODE WORKING *************
 
     
     //     public function addnewbidtolot(Request $request)
@@ -1147,14 +1166,14 @@ class AuctionContoller extends Controller
     //                 // Dispatch event to notify participants about the winner
     //                 event(new winLotsEvent('You are late! Sorry, another person won this lot.'));
 
-    //                 // Return participation fee to the loser
-    //                 $this->returnParticipationFee($lastBid);
+                    // // Return participation fee to the loser
+                    // $this->returnParticipationFee($lastBid);
 
-    //                 // Send email notification to the winner
-    //                 Mail::to($lastBid->customer->email)->send(new LotWinnerNotification($lastBid->customer->name));
+                    // // Send email notification to the winner
+                    // Mail::to($lastBid->customer->email)->send(new LotWinnerNotification($lastBid->customer->name));
 
-    //                 // Send email notification to the loser
-    //                 Mail::to($customer->email)->send(new LotLoserNotification($lotDetails->id, $customer->name));
+                    // // Send email notification to the loser
+                    // Mail::to($customer->email)->send(new LotLoserNotification($lotDetails->id, $customer->name));
 
     //                 // // Pusher code to send notification to front-end
     //                 // $pusher = new \Pusher\Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
