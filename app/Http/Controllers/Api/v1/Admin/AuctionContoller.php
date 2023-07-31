@@ -32,7 +32,7 @@ use App\Mail\LotLoserNotification;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
-
+use Illuminate\Support\Facades\Artisan;
 
 
 class AuctionContoller extends Controller
@@ -1103,15 +1103,6 @@ class AuctionContoller extends Controller
                     // Dispatch event to notify participants about the winner
                     event(new winLotsEvent('You are late! Sorry, another person won this lot.', $lastBid,$customer,false));
 
-                    // Call the UpdateLotStatus command
-                    $command = 'lots:update-status';
-                    $input = new ArrayInput([]);
-                    $output = new BufferedOutput();
-                    $this->call($command, [], $output);
-                    $outputData = $output->fetch();
-
-                    // Output the response or handle it as needed
-                    return response()->json(['status' => 'success', 'message' => $outputData]);
 
                      // Return participation fee to the loser
                      $this->returnParticipationFee($lastBid);
