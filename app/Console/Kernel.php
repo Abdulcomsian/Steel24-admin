@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // Add the task to update lot status to Sold for lots without new bids after 2 minutes
-        $schedule->command('lots:update-status')->everyTwoMinutes();
+        $schedule->command('lots:update-status')->everyMinute();
     }
     
 
