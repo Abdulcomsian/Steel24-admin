@@ -160,23 +160,18 @@ class UpdateLotStatus extends Command
             // Update the lot status to Sold
             $lot->update(['lot_status' => 'Sold']);
 
-            // // Send the Pusher event to notify that the lot is sold with the last bid data and customer details
-            // $pusher->trigger('steel24', 'Sold Lots', [
-            //     'message' => 'You are late! Sorry, another person won this lot.',
-            //     'detail' => array_merge($latestBid->toArray(), ['customer' => $latestBid->customer ?? null]),
-            //     'success' => true,
-            // ]);
+            // Send the Pusher event to notify that the lot is sold with the last bid data and customer details
+            $pusher->trigger('steel24', 'Sold Lots', [
+                'message' => 'You are late! Sorry, another person won this lot.',
+                'detail' => array_merge($latestBid->toArray(), ['customer' => $latestBid->customer ?? null]),
+                'success' => true,
+
+            ]);
             
 
-            event(new winLotsEvent('You are late! Sorry, another person won this lot.', $latestBid, $latestBid->customer ?? null, true));
-
-            // Perform any other necessary actions here
-
-            // Log that the lot status has been updated
-            $this->info("Lot {$lot->id} has been updated to 'Sold' status.");
+            // // Log that the lot status has been updated
+            // $this->info("Lot {$lot->id} has been updated to 'Sold' status.");
         }
-
-        // Dispatch the command to execute lots:update-status after 1 minute
-        Artisan::call('execute:update-status');
+       
     }
 }
