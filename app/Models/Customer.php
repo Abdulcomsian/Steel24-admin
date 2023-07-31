@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\lots;
 use App\Models\FavLots;
 
+
 class Customer extends Authenticatable  implements JWTSubject
 {
     use HasFactory;
@@ -58,6 +59,11 @@ class Customer extends Authenticatable  implements JWTSubject
         return $this->belongsToMany(lots::class, 'user_lot', 'customer_id', 'lot_id')
             ->using(FavLots::class)
             ->withTimestamps();
+    }
+
+    public function autoBids()
+    {
+        return $this->hasMany(AutoBid::class, 'customerId');
     }
 
 

@@ -64,4 +64,9 @@ class lots extends Model
             ->orderBy('amount', 'DESC')
             ->first();
     }
+
+    public function autoBids()
+    {
+        return $this->hasMany(AutoBid::class, 'lotId');
+    }
 }

@@ -33,6 +33,7 @@ use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Illuminate\Support\Facades\Artisan;
+use App\Models\AutoBid;
 
 
 class AuctionContoller extends Controller
@@ -1246,6 +1247,46 @@ class AuctionContoller extends Controller
             }
         }
     }
+
+    // auto bid api
+    public function createautobid(Request $request)
+    {
+        // Validate the incoming request data
+        $request->validate([
+            'customerId' => 'required|exists:customers,id',
+            'lotId' => 'required|exists:lots,id',
+            'amount' => 'required|numeric|min:0',
+            'autobid' => 'required|boolean',
+        ]);
+
+        // Retrieve the customer and lot based on the provided IDs
+        $customer = Customer::findOrFail($request->customerId);
+        $lot = lots::findOrFail($request->lotId);
+
+        // Check if the customer has already placed an auto bid for the lot
+        $autoBid = AutoBid::where('customerId', $customer->id)
+            ->where('lotId', $lot->id)
+            ->first();
+
+        if ($autoBid) {
+            // If the auto bid record exists, update the autobid status and amount
+            $autoBid->update([
+                'amount' => $request->amount,
+                'autobid' => $request->autobid,
+            ]);
+        } else {
+            // If the auto bid record does not exist, create a new one
+            AutoBid::create([
+                'customerId' => $customer->id,
+                'lotId' => $lot->id,
+                'amount' => $request->amount,
+                'autobid' => $request->autobid,
+            ]);
+        }
+
+        return response()->json(['message' => 'Auto bid status updated successfully']);
+    }
+    
     
      
 

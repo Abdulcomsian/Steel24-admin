@@ -59,6 +59,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
         Route::post('/addnewbidtolot', 'AuctionContoller@addnewbidtolot');
 
+        //create auto lot
+        Route::post('/createautobid', 'AuctionContoller@createautobid');
+
         // Route::get('materials', 'MaterialController@getMaterials');
         // Route::post('lotpayment', 'AuctionContoller@orderIdGenerate');
 
@@ -114,6 +117,7 @@ Route::post('addFavorites', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@add
 Route::post('deleteFavorite', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@deleteFavorite');
 // show fav lot
 Route::get('showFavorites/{customer_id}', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showFavorites');
+
 
 
 
