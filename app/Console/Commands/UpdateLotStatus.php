@@ -5,6 +5,10 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Carbon\Carbon;
 use App\Models\lots;
+use Symfony\Component\HttpFoundation\Response;
+use App\Events\winLotsEvent;
+use Pusher\Pusher;
+
 
 class UpdateLotStatus extends Command
 {
@@ -70,25 +74,79 @@ class UpdateLotStatus extends Command
     //     $this->info("{$numUpdatedLots} lots have been updated to 'Sold' status.");
     // }
 
-        // Get the current time and two minutes ago
+
+
+
+
+
+
+
+        // // Get the current time and two minutes ago
+        // $currentTime = Carbon::now();
+        // $twoMinutesAgo = $currentTime->subMinutes(2);
+
+        // // Find lots with live status and no new bids in the last two minutes
+        // $lotsToUpdate = lots::where('lot_status', 'live')
+        //     ->whereDoesntHave('bids', function ($query) use ($twoMinutesAgo) 
+        //     {
+        //         $query->where('created_at', '>', $twoMinutesAgo);
+        //     })
+        //     ->get();
+
+        // foreach ($lotsToUpdate as $lot)
+        // {
+        //     // Check if the latest bid time is greater than two minutes ago
+        //     $latestBid = $lot->bids()->latest('created_at')->first();
+
+        //     if ($latestBid) 
+        //     {
+        //         $latestBidTime = Carbon::createFromFormat('Y-m-d H:i:s', $latestBid->created_at);
+        //         if ($latestBidTime->greaterThan($twoMinutesAgo)) {
+        //             // The lot is still involved in the bidding process, do not update its status
+        //             continue;
+        //         }
+        //     } else {
+        //         // The lot has no bids, do not update its status
+        //         continue;
+        //     }
+
+        //     // Update the lot status to Sold
+        //     $lot->update(['lot_status' => 'Sold']);
+
+        //     event(new winLotsEvent('You are late! Sorry, another person won this lot.', $lastBid,$customer,false));
+
+        //     // Perform any other necessary actions here
+
+        //     // Log that the lot status has been updated
+        //     $this->info("Lot {$lot->id} has been updated to 'Sold' status.");
+        // }
+
+
+
+
+
+
+          // Get the current time and two minutes ago
         $currentTime = Carbon::now();
         $twoMinutesAgo = $currentTime->subMinutes(2);
 
         // Find lots with live status and no new bids in the last two minutes
         $lotsToUpdate = lots::where('lot_status', 'live')
-            ->whereDoesntHave('bids', function ($query) use ($twoMinutesAgo) 
-            {
+            ->whereDoesntHave('bids', function ($query) use ($twoMinutesAgo) {
                 $query->where('created_at', '>', $twoMinutesAgo);
             })
             ->get();
 
-        foreach ($lotsToUpdate as $lot)
-        {
+        $pusher = new Pusher(env('PUSHER_APP_KEY'), env('PUSHER_APP_SECRET'), env('PUSHER_APP_ID'), [
+            'cluster' => env('PUSHER_APP_CLUSTER'),
+            'useTLS' => true,
+        ]);
+
+        foreach ($lotsToUpdate as $lot) {
             // Check if the latest bid time is greater than two minutes ago
             $latestBid = $lot->bids()->latest('created_at')->first();
 
-            if ($latestBid) 
-            {
+            if ($latestBid) {
                 $latestBidTime = Carbon::createFromFormat('Y-m-d H:i:s', $latestBid->created_at);
                 if ($latestBidTime->greaterThan($twoMinutesAgo)) {
                     // The lot is still involved in the bidding process, do not update its status
@@ -101,6 +159,13 @@ class UpdateLotStatus extends Command
 
             // Update the lot status to Sold
             $lot->update(['lot_status' => 'Sold']);
+
+            // Send the Pusher event to notify that the lot is sold with the last bid data and customer details
+            $pusher->trigger('steel24', 'win-lots-checking', [
+                'message' => 'You are late! Sorry, another person won this lot.',
+                'detail' => array_merge($latestBid->toArray(), ['customer' => $latestBid->customer ?? null]),
+                'success' => false,
+            ]);
 
             // Perform any other necessary actions here
 
