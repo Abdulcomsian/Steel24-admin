@@ -161,10 +161,10 @@ class UpdateLotStatus extends Command
             $lot->update(['lot_status' => 'Sold']);
 
             // Send the Pusher event to notify that the lot is sold with the last bid data and customer details
-            $pusher->trigger('steel24', 'win-lots-checking', [
+            $pusher->trigger('steel24', 'Sold Lots', [
                 'message' => 'You are late! Sorry, another person won this lot.',
                 'detail' => array_merge($latestBid->toArray(), ['customer' => $latestBid->customer ?? null]),
-                'success' => false,
+                'success' => true,
             ]);
 
             // Perform any other necessary actions here
