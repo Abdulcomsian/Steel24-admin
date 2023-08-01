@@ -10,7 +10,7 @@ class AutoBid extends Model
     use HasFactory;
 
     protected $table = 'autobidlots';
-    protected $fillable = ['customerId', 'lotId', 'amount', 'autobid'];
+    protected $fillable = ['customerId', 'lotId', 'autobid'];
 
     // Relationship with Customer model
     public function customer()

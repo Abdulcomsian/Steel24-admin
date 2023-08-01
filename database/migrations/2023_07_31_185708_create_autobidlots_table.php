@@ -12,12 +12,11 @@ class CreateAutobidlotsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('customerId');
             $table->unsignedBigInteger('lotId');
-            $table->integer('amount'); // Add the amount column
-            $table->boolean('autobid')->default(false);
+            $table->boolean('autobid')->default(0); // Changed the default value to 0 (disabled) for clarity
             $table->timestamps();
 
-            $table->foreign('customerId')->references('id')->on('customers');
-            $table->foreign('lotId')->references('id')->on('lots');
+            $table->foreign('customerId')->references('id')->on('customers')->onDelete('cascade');
+            $table->foreign('lotId')->references('id')->on('lots')->onDelete('cascade');
         });
     }
 
