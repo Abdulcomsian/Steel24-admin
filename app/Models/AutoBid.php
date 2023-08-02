@@ -23,5 +23,12 @@ class AutoBid extends Model
     {
         return $this->belongsTo(lots::class, 'lotId');
     }
+
+    // Relationship with Lot model
+    public function lot()
+    {
+        return $this->belongsTo(Lots::class, 'lotId');
+    }
 }
+
 
