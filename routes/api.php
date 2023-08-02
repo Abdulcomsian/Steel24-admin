@@ -65,6 +65,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
         // check auto bid
         Route::post('/autobidchecking', 'AuctionContoller@checkAutoBid');
 
+        // auto bid delete
+
+        Route::delete('/deleteautobid/{customerId}/{lotId}', 'AuctionContoller@deleteautobid');
+
+
         // Route::get('materials', 'MaterialController@getMaterials');
         // Route::post('lotpayment', 'AuctionContoller@orderIdGenerate');
 

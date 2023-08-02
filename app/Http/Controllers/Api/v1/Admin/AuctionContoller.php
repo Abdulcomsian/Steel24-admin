@@ -1620,7 +1620,7 @@ class AuctionContoller extends Controller
     
         return response()->json($response);
     }
-    
+
     
     
 
@@ -1652,6 +1652,30 @@ class AuctionContoller extends Controller
             ];
     
             return response()->json($response);
+        }
+
+        // delete ApI AUTO BID 
+
+        public function deleteautobid(Request $request, $customerId, $lotId)
+        {
+            $customer = Customer::findOrFail($customerId);
+            $lot = Lots::findOrFail($lotId);
+
+            // Find the auto bid record for the given customer and lot
+            $autoBid = AutoBid::where('customerId', $customer->id)
+                ->where('lotId', $lot->id)
+                ->first();
+
+            if ($autoBid) {
+                // If the auto bid record exists for the customer and lot, delete it
+                $autoBid->delete();
+
+                // Return a success response indicating the auto bid was deleted
+                return response()->json(['message' => 'Auto bid deleted successfully', 'success' => true]);
+            } else {
+                // If the auto bid record does not exist, return a not found response
+                return response()->json(['message' => 'Auto bid not found', 'success' => false], 404);
+            }
         }
 
 
