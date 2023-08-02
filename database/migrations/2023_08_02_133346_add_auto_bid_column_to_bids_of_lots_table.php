@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBidsOfLotsTable extends Migration
+class AddAutoBidColumnToBidsOfLotsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,8 @@ class CreateBidsOfLotsTable extends Migration
      */
     public function up()
     {
-        Schema::create('bids_of_lots', function (Blueprint $table) 
-        {
-            $table->id();
-            $table->integer('customerId');
-            $table->integer('amount');
-            $table->integer('lotId');
-            $table->timestamps();
+        Schema::table('bids_of_lots', function (Blueprint $table) {
+            $table->boolean('autoBid')->default(0);
         });
     }
 
@@ -30,6 +25,8 @@ class CreateBidsOfLotsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bids_of_lots');
+        Schema::table('bids_of_lots', function (Blueprint $table) {
+            $table->dropColumn('autoBid');
+        });
     }
 }
