@@ -13,12 +13,22 @@ class CreateBidsOfLotsTable extends Migration
      */
     public function up()
     {
-        Schema::create('bids_of_lots', function (Blueprint $table) {
+        Schema::create('bids_of_lots', function (Blueprint $table) 
+        {
+            // $table->id();
+            // $table->integer('customerId');
+            // $table->integer('amount');
+            // $table->integer('lotId');
+            // $table->timestamps();
             $table->id();
-            $table->integer('customerId');
+            $table->unsignedBigInteger('customerId');
             $table->integer('amount');
-            $table->integer('lotId');
+            $table->unsignedBigInteger('lotId');
+            $table->boolean('autoBid')->default(0);
             $table->timestamps();
+
+            $table->foreign('customerId')->references('id')->on('customers')->onDelete('cascade');
+            $table->foreign('lotId')->references('id')->on('lots')->onDelete('cascade');
         });
     }
 

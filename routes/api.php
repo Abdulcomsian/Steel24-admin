@@ -62,6 +62,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
         //create auto lot
         Route::post('/createautobid', 'AuctionContoller@createautobid');
 
+        // check auto bid
+        Route::post('/autobidchecking', 'AuctionContoller@checkAutoBid');
+
         // Route::get('materials', 'MaterialController@getMaterials');
         // Route::post('lotpayment', 'AuctionContoller@orderIdGenerate');
 

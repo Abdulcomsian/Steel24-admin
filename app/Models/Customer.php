@@ -66,5 +66,10 @@ class Customer extends Authenticatable  implements JWTSubject
         return $this->hasMany(AutoBid::class, 'customerId');
     }
 
+    public function bids()
+    {
+        return $this->hasMany(BidsOfLots::class, 'customerId');
+    }
+
 
 }
