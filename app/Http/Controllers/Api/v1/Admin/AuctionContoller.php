@@ -1137,78 +1137,48 @@ class AuctionContoller extends Controller
     
     //     return $response;
     // }
-
-    
-    // *********** END PREVIOUS CODE WORKING *************
-
+      
 
     public function addnewbidtolot(Request $request)
-    {
-        $newBid = $request->validate([
-            'customerId' => 'required',
-            'amount' => 'required',
-            'lotId' => 'required',
-        ]);
-    
-        $response = [];
-        $customer = Customer::where('id', $newBid['customerId'])->first();
-        $lotDetails = lots::where('id', $newBid['lotId'])->first();
-    
-        if (!$lotDetails) {
-            // Lot with the provided ID does not exist
-            return response()->json(['message' => 'Sorry, you entered an invalid lot ID.', 'success' => true], 200);
+{
+    $newBid = $request->validate([
+        'customerId' => 'required',
+        'amount' => 'required',
+        'lotId' => 'required',
+    ]);
+
+    $response = [];
+    $customer = Customer::where('id', $newBid['customerId'])->first();
+    $lotDetails = lots::where('id', $newBid['lotId'])->first();
+
+    if (!$lotDetails) {
+        // Lot with the provided ID does not exist
+        return response()->json(['message' => 'Sorry, you entered an invalid lot ID.', 'success' => true], 200);
+    }
+
+    if ($customer && $customer->isApproved == 1) {
+        $nextBidAmount = $newBid['amount'];
+
+        // Check if the customer has an auto-bid enabled
+        $autoBid = AutoBid::where('customerId', $newBid['customerId'])
+            ->where('lotId', $newBid['lotId'])
+            ->first();
+
+        if ($autoBid) {
+            // If auto-bid is enabled, increase the bid amount by 100
+            $nextBidAmount = $autoBid->amount + 100;
         }
-    
-        if ($customer && $customer->isApproved == 1) 
-        {
-            $nextBidAmount = $newBid['amount'];
-    
-            $lastBid = BidsOfLots::where('lotId', $newBid['lotId'])->orderBy('id', 'DESC')->first();
-            if ($lastBid != null) {
-    
-                // Check if the last bid was made within the last two minutes
-                $currentTime = Carbon::now();
-                $twoMinutesAgo = $currentTime->subMinutes(2);
-                $lastBidTime = Carbon::createFromFormat('Y-m-d H:i:s', $lastBid->created_at);
-    
-                //new code starts here
-                $lastBidTime = $lastBidTime->addMinutes(2);
-                //new code ends here
-    
-                if ($lastBidTime->greaterThan($currentTime)) {
-                    // Another bid was made within two minutes, create a new bid
-                    $newBid = BidsOfLots::create([
-                        'customerId' => $newBid['customerId'],
-                        'amount' => $nextBidAmount,
-                        'lotId' => $newBid['lotId'],
-                        'created_at' => date('Y-m-d H:i:s'),
-                        'updated_at' => date('Y-m-d H:i:s')
-                    ]);
-    
-                    // Dispatch event to notify participants about the new bid
-                    event(new winLotsEvent('Good Luck! You placed a new bid.', $newBid, $customer, true, null));
-    
-                    $response = ["message" => 'Good Luck! You placed a new bid!', 'success' => true, 'LatestBid' => $newBid];
-                } else {
-                    // No other bid within two minutes, the lot is won by the last bid
-                    // Mark the lot as closed or do any necessary actions here
-    
-                    // Dispatch event to notify participants about the winner
-                    event(new winLotsEvent('You are late! Sorry, another person won this lot.', $lastBid, $customer, false, null));
-    
-                    // Return participation fee to the loser
-                    $this->returnParticipationFee($lastBid);
-    
-                    // Send email notification to the winner
-                    Mail::to($lastBid->customer->email)->send(new LotWinnerNotification($lastBid->customer->name));
-    
-                    // Send email notification to the loser
-                    Mail::to($customer->email)->send(new LotLoserNotification($lotDetails->id, $customer->name));
-    
-                    $response = ["message" => 'You are late! Sorry, another person won this lot.', 'success' => false];
-                }
-            } else {
-                // First bid on the lot, create a new bid with the given amount
+
+        // Check if the last bid was made within the last two minutes
+        $currentTime = Carbon::now();
+        $lastBid = BidsOfLots::where('lotId', $newBid['lotId'])->orderBy('id', 'DESC')->first();
+
+        if ($lastBid != null) {
+            $lastBidTime = Carbon::createFromFormat('Y-m-d H:i:s', $lastBid->created_at);
+            $timeDifferenceInSeconds = $lastBidTime->diffInSeconds($currentTime);
+
+            if ($timeDifferenceInSeconds <= 120) {
+                // Another bid was made within two minutes, create a new bid
                 $newBid = BidsOfLots::create([
                     'customerId' => $newBid['customerId'],
                     'amount' => $nextBidAmount,
@@ -1216,21 +1186,146 @@ class AuctionContoller extends Controller
                     'created_at' => date('Y-m-d H:i:s'),
                     'updated_at' => date('Y-m-d H:i:s')
                 ]);
-    
+
                 // Dispatch event to notify participants about the new bid
-                event(new winLotsEvent('Good Luck! You placed a new bid.', $newBid, $customer, true, null));
-                $response = ['LatestBid' => $newBid, 'success' => true];
+                event(new winLotsEvent('Good Luck! You placed a new bid.', $newBid, $customer, true));
+
+                $response = ["message" => 'Good Luck! You placed a new bid!', 'success' => true, 'LatestBid' => $newBid];
+            } else {
+                // No other bid within two minutes, the lot is won by the last bid
+                // Mark the lot as closed or do any necessary actions here
+
+                // Dispatch event to notify participants about the winner
+                event(new winLotsEvent('You are late! Sorry, another person won this lot.', $lastBid, $customer, false));
+
+                // Return participation fee to the loser
+                $this->returnParticipationFee($lastBid);
+
+                // Send email notification to the winner
+                Mail::to($lastBid->customer->email)->send(new LotWinnerNotification($lastBid->customer->name));
+
+                // Send email notification to the loser
+                Mail::to($customer->email)->send(new LotLoserNotification($lotDetails->id, $customer->name));
+
+                $response = ["message" => 'You are late! Sorry, another person won this lot.', 'success' => false];
             }
         } else {
-            $response = ["message" => 'User is not available or User is blocked.', 'success' => false];
+            // First bid on the lot
+            $newBid = BidsOfLots::create([
+                'customerId' => $newBid['customerId'],
+                'amount' => $nextBidAmount,
+                'lotId' => $newBid['lotId'],
+            ]);
+            event(new winLotsEvent('Good Luck! You placed a new bid.', $newBid, $customer, true));
+            $response = ['LatestBid' => $newBid, 'success' => true];
         }
-    
-        return $response;
+    } else {
+        $response = ["message" => 'User is not available or User is blocked.', 'success' => false];
     }
 
+    return $response;
+}
+
+    
+
+    
+
+    
+    // *********** END PREVIOUS CODE WORKING *************
 
 
-      
+    // public function addnewbidtolot(Request $request)
+    // {
+    //     $newBid = $request->validate([
+    //         'customerId' => 'required',
+    //         'amount' => 'required',
+    //         'lotId' => 'required',
+    //     ]);
+    
+    //     $response = [];
+    //     $customer = Customer::where('id', $newBid['customerId'])->first();
+    //     $lotDetails = lots::where('id', $newBid['lotId'])->first();
+    
+    //     if (!$lotDetails) {
+    //         // Lot with the provided ID does not exist
+    //         return response()->json(['message' => 'Sorry, you entered an invalid lot ID.', 'success' => true], 200);
+    //     }
+    
+    //     if ($customer && $customer->isApproved == 1) 
+    //     {
+    //         $nextBidAmount = $newBid['amount'];
+    
+    //         $lastBid = BidsOfLots::where('lotId', $newBid['lotId'])->orderBy('id', 'DESC')->first();
+    //         if ($lastBid != null) {
+    
+    //             // Check if the last bid was made within the last two minutes
+    //             $currentTime = Carbon::now();
+    //             $twoMinutesAgo = $currentTime->subMinutes(2);
+    //             $lastBidTime = Carbon::createFromFormat('Y-m-d H:i:s', $lastBid->created_at);
+    
+    //             //new code starts here
+    //             $lastBidTime = $lastBidTime->addMinutes(2);
+    //             //new code ends here
+    
+    //             if ($lastBidTime->greaterThan($currentTime)) {
+    //                 // Another bid was made within two minutes, create a new bid
+    //                 $newBid = BidsOfLots::create([
+    //                     'customerId' => $newBid['customerId'],
+    //                     'amount' => $nextBidAmount,
+    //                     'lotId' => $newBid['lotId'],
+    //                     'created_at' => date('Y-m-d H:i:s'),
+    //                     'updated_at' => date('Y-m-d H:i:s')
+    //                 ]);
+    
+    //                 // Dispatch event to notify participants about the new bid
+    //                 event(new winLotsEvent('Good Luck! You placed a new bid.', $newBid, $customer, true, null));
+    
+    //                 $response = ["message" => 'Good Luck! You placed a new bid!', 'success' => true, 'LatestBid' => $newBid];
+    //             } else {
+    //                 // No other bid within two minutes, the lot is won by the last bid
+    //                 // Mark the lot as closed or do any necessary actions here
+    
+    //                 // Dispatch event to notify participants about the winner
+    //                 event(new winLotsEvent('You are late! Sorry, another person won this lot.', $lastBid, $customer, false, null));
+    
+    //                 // Return participation fee to the loser
+    //                 $this->returnParticipationFee($lastBid);
+    
+    //                 // Send email notification to the winner
+    //                 Mail::to($lastBid->customer->email)->send(new LotWinnerNotification($lastBid->customer->name));
+    
+    //                 // Send email notification to the loser
+    //                 Mail::to($customer->email)->send(new LotLoserNotification($lotDetails->id, $customer->name));
+    
+    //                 $response = ["message" => 'You are late! Sorry, another person won this lot.', 'success' => false];
+    //             }
+    //         } else {
+    //             // First bid on the lot, create a new bid with the given amount
+    //             $newBid = BidsOfLots::create([
+    //                 'customerId' => $newBid['customerId'],
+    //                 'amount' => $nextBidAmount,
+    //                 'lotId' => $newBid['lotId'],
+    //                 'created_at' => date('Y-m-d H:i:s'),
+    //                 'updated_at' => date('Y-m-d H:i:s')
+    //             ]);
+    
+    //             // Dispatch event to notify participants about the new bid
+    //             event(new winLotsEvent('Good Luck! You placed a new bid.', $newBid, $customer, true, null));
+    //             $response = ['LatestBid' => $newBid, 'success' => true];
+    //         }
+    //     } else {
+    //         $response = ["message" => 'User is not available or User is blocked.', 'success' => false];
+    //     }
+    
+    //     return $response;
+    // }
+
+
+
+
+
+
+
 
 //     public function addnewbidtolot(Request $request)
 // {
@@ -1406,6 +1501,67 @@ class AuctionContoller extends Controller
 
     //     return response()->json($response);
     // }
+      
+
+    // public function createautobid(Request $request)
+    // {
+    //     $request->validate([
+    //         'customerId' => 'required|exists:customers,id',
+    //         'lotId' => 'required|exists:lots,id',
+    //         'autobid' => 'required|boolean',
+    //     ]);
+    
+    //     $customer = Customer::findOrFail($request->customerId);
+    //     $lot = lots::findOrFail($request->lotId);
+    
+    //     // Fetch the latest bid amount for the specified lot
+    //     $latestBidAmount = BidsOfLots::where('lotId', $request->lotId)
+    //         ->max('amount');
+    
+    //     // Calculate the new auto bid amount by adding 100 to the latest bid amount (if available) or use the starting price of the lot
+    //     $autoBidAmount = $latestBidAmount ? $latestBidAmount + 100 : $lot->Price;
+    
+    //     // Check if the customer has already placed an auto bid for the lot
+    //     $autoBid = AutoBid::where('customerId', $customer->id)
+    //         ->where('lotId', $lot->id)
+    //         ->first();
+    
+    //     if ($request->autobid === false) {
+    //         // If the customer wants to disable auto bid (autobid = 0), we will remove the auto bid record if it exists.
+    //         if ($autoBid) {
+    //             $autoBid->delete();
+    //         }
+    //     } else {
+    //         // If the customer wants to enable auto bid (autobid = 1), we will update the existing auto bid record or create a new one.
+    
+    //         if ($autoBid) {
+    //             // If the auto bid record exists for the customer and lot, update the autobid status and amount
+    //             $autoBid->update([
+    //                 'autobid' => 1,
+    //                 'amount' => $autoBidAmount,
+    //             ]);
+    //         } else {
+    //             // If the auto bid record does not exist, create a new one for the customer and lot
+    //             AutoBid::create([
+    //                 'customerId' => $customer->id,
+    //                 'lotId' => $lot->id,
+    //                 'autobid' => 1,
+    //                 'amount' => $autoBidAmount,
+    //             ]);
+    //         }
+    //     }
+    
+    //     $response = [
+    //         'message' => 'Auto bid status updated successfully',
+    //         'previousLatestBidAmount' => $latestBidAmount,
+    //     ];
+    
+    //     return response()->json($response);
+    // }
+    
+
+    
+    
 
     // *********** end previous code auto bid*********
 
@@ -1476,6 +1632,150 @@ class AuctionContoller extends Controller
     
     //     return response()->json($response);
     // }    
+
+
+
+
+
+
+
+    //     public function createautobid(Request $request)
+    // {
+    //     // Validate the incoming request data
+    //     $request->validate([
+    //         'customerId' => 'required|exists:customers,id',
+    //         'lotId' => 'required|exists:lots,id',
+    //         'autobid' => 'required|boolean',
+    //     ]);
+
+    //     // Retrieve the customer and lot based on the provided IDs
+    //     $customer = Customer::findOrFail($request->customerId);
+    //     $lot = lots::findOrFail($request->lotId);
+
+    //     // Fetch the latest bid amount for the specified lot
+    //     $latestBidAmount = BidsOfLots::where('lotId', $request->lotId)
+    //         ->max('amount');
+
+    //     // Calculate the new auto bid amount by adding 100 to the latest bid amount (if available) or use the starting price of the lot
+    //     $autoBidAmount = $latestBidAmount ? $latestBidAmount + 100 : $lot->Price;
+
+    //     // Check if the customer has already placed an auto bid for the lot
+    //     $autoBid = BidsOfLots::where('customerId', $customer->id)
+    //         ->where('lotId', $lot->id)
+    //         ->where('autoBid', true)
+    //         ->first();
+
+
+    //     if ($request->autobid === false) {
+    //         // If the customer wants to disable auto bid (autobid = 0), we will remove the auto bid record if it exists.
+    //         if ($autoBid) {
+    //             $autoBid->delete();
+    //         }
+    //     } else {
+    //         // If the customer wants to enable auto bid (autobid = 1), we will update the existing auto bid record or create a new one.
+
+    //         if ($autoBid) {
+    //             // If the auto bid record exists for the customer and lot, update the autobid status and amount
+    //             $autoBid->update([
+    //                 'amount' => $autoBidAmount,
+    //             ]);
+    //         } else {
+    //             // If the auto bid record does not exist, create a new one for the customer and lot
+    //             BidsOfLots::create([
+    //                 'customerId' => $customer->id,
+    //                 'amount' => $autoBidAmount,
+    //                 'lotId' => $lot->id,
+    //                 'autobid' => true,
+    //                 'created_at' => now(),
+    //                 'updated_at' => now(),
+    //             ]);
+    //         }
+
+    //         // Trigger Pusher event for auto bid
+    //         event(new winLotsEvent('New Auto Bid Placed', $autoBid, $customer, true, $autoBidAmount));
+    //     }
+
+    //     // Include the customer details and auto bid amounts in the response
+    //     $response = [
+    //         'message' => 'Auto bid status updated successfully',
+    //         'previousLatestBidAmount' => $latestBidAmount,
+    //         'autoBidAmount' => $autoBidAmount,
+    //         'customer' => $customer,
+    //     ];
+
+    //     return response()->json($response);
+    // }
+
+
+            public function createautobid(Request $request)
+        {
+            // Validate the incoming request data
+            $request->validate([
+                'customerId' => 'required|exists:customers,id',
+                'lotId' => 'required|exists:lots,id',
+                'autobid' => 'required|boolean',
+            ]);
+
+            // Retrieve the customer and lot based on the provided IDs
+            $customer = Customer::findOrFail($request->customerId);
+            $lot = lots::findOrFail($request->lotId);
+
+            // Fetch the latest bid amount for the specified lot
+            $latestBidAmount = BidsOfLots::where('lotId', $request->lotId)
+                ->max('amount');
+
+            // If there are no manual bids, set the previousLatestBidAmount to the starting price of the lot (lot price)
+            $previousLatestBidAmount = $latestBidAmount ?: $lot->Price;
+
+            // Calculate the new auto bid amount by adding 100 to the latest bid amount (if available) or use the starting price of the lot
+            $autoBidAmount = $previousLatestBidAmount + 100;
+
+            // Check if the customer has already placed an auto bid for the lot
+            $autoBid = BidsOfLots::where('customerId', $customer->id)
+                ->where('lotId', $lot->id)
+                ->where('autoBid', true)
+                ->first();
+
+            if ($request->autobid === false) {
+                // If the customer wants to disable auto bid (autobid = 0), we will remove the auto bid record if it exists.
+                if ($autoBid) {
+                    $autoBid->delete();
+                }
+            } else {
+                // If the customer wants to enable auto bid (autobid = 1), we will update the existing auto bid record or create a new one.
+
+                if ($autoBid) {
+                    // If the auto bid record exists for the customer and lot, update the autobid status and amount
+                    $autoBid->update([
+                        'amount' => $autoBidAmount,
+                    ]);
+                } else {
+                    // If the auto bid record does not exist, create a new one for the customer and lot
+                    BidsOfLots::create([
+                        'customerId' => $customer->id,
+                        'amount' => $autoBidAmount,
+                        'lotId' => $lot->id,
+                        'autobid' => true,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ]);
+                }
+
+                // Trigger Pusher event for auto bid
+                event(new winLotsEvent('New Auto Bid Placed', $autoBid, $customer, true, $autoBidAmount));
+            }
+
+            // Include the customer details and auto bid amounts in the response
+            $response = [
+                'message' => 'Auto bid status updated successfully',
+                'previousLatestBidAmount' => $previousLatestBidAmount,
+                'autoBidAmount' => $autoBidAmount,
+                'customer' => $customer,
+            ];
+
+            return response()->json($response);
+        }
+
 
 
 
@@ -1560,123 +1860,189 @@ class AuctionContoller extends Controller
 
 
 
-    public function createautobid(Request $request)
-    {
-        $request->validate([
-            'customerId' => 'required|exists:customers,id',
-            'lotId' => 'required|exists:lots,id',
-            'autobid' => 'required|boolean',
-        ]);
+    // code working 
+    // public function createautobid(Request $request)
+    // {
+    //     $request->validate([
+    //         'customerId' => 'required|exists:customers,id',
+    //         'lotId' => 'required|exists:lots,id',
+    //         'autobid' => 'required|boolean',
+    //     ]);
     
-        $customer = Customer::findOrFail($request->customerId);
-        $lot = lots::findOrFail($request->lotId);
+    //     $customer = Customer::findOrFail($request->customerId);
+    //     $lot = lots::findOrFail($request->lotId);
     
-        // Fetch the latest bid amount for the specified lot
-        $latestBidAmount = BidsOfLots::where('lotId', $request->lotId)->max('amount');
+    //     // Fetch the latest bid amount for the specified lot
+    //     $latestBidAmount = BidsOfLots::where('lotId', $request->lotId)->max('amount');
     
-        // Calculate the new auto bid amount by adding 100 to the latest bid amount (if available) or use the starting price of the lot
-        $autoBidAmount = $latestBidAmount ? $latestBidAmount + 100 : $lot->Price;
+    //     // Calculate the new auto bid amount by adding 100 to the latest bid amount (if available) or use the starting price of the lot
+    //     $autoBidAmount = $latestBidAmount ? $latestBidAmount + 100 : $lot->Price;
     
-        // Check if the customer has already placed an auto bid for the lot
-        $autoBid = AutoBid::where('customerId', $customer->id)
-            ->where('lotId', $lot->id)
-            // ->where('autoBid', true)
-            ->first();
+    //     // Check if the customer has already placed an auto bid for the lot
+    //     $autoBid = AutoBid::where('customerId', $customer->id)
+    //         ->where('lotId', $lot->id)
+    //         // ->where('autoBid', true)
+    //         ->first();
     
-        if ($request->autobid === false) 
+    //     if ($request->autobid === false) 
+    //     {
+    //         // If the customer wants to disable auto bid (autobid = 0), we will remove the auto bid record if it exists.
+    //         if ($autoBid) {
+    //             $autoBid->delete();
+    //         }
+    //     } else {
+    //         // If the customer wants to enable auto bid (autobid = 1), we will update the existing auto bid record or create a new one.
+    //         if ($autoBid) {
+    //             // If the auto bid record exists for the customer and lot, update the autobid status and amount
+    //             $autoBid->update([
+    //                 'autoBid' => true,
+    //             ]);
+    //         } else 
+    //         {
+    //             // If the auto bid record does not exist, create a new one for the customer and lot
+    //             AutoBid::create([
+    //                 'customerId' => $customer->id,
+    //                 'lotId' => $lot->id,
+    //                 'autobid' => true,
+    //             ]);
+    //         }
+    
+    //         // Trigger Pusher event for auto bid
+    //         event(new winLotsEvent('New Auto Bid Placed', $autoBid, $customer, true, $autoBidAmount));
+    //     }
+    
+    //     // Include the customer details and auto bid amounts in the response
+    //     $response = [
+    //         'message' => 'Auto bid status updated successfully',
+    //         'previousLatestBidAmount' => $latestBidAmount,
+    //         'autoBidAmount' => $autoBidAmount,
+    //         'customer' => $customer,
+    //     ];
+    
+    //     return response()->json($response);
+    // }
+
+    // end code working
+
+    // public function createautobid(Request $request)
+    // {
+    //     $request->validate([
+    //         'customerId' => 'required|exists:customers,id',
+    //         'lotId' => 'required|exists:lots,id',
+    //         'autobid' => 'required|boolean',
+    //     ]);
+    
+    //     $customer = Customer::findOrFail($request->customerId);
+    //     $lot = lots::findOrFail($request->lotId);
+    
+    //     // Fetch the latest bid amount for the specified lot
+    //     $latestBidAmount = BidsOfLots::where('lotId', $request->lotId)->max('amount');
+    
+    //     // Calculate the new auto bid amount by adding 100 to the latest bid amount (if available) or use the starting price of the lot
+    //     $autoBidAmount = $latestBidAmount ? $latestBidAmount + 100 : $lot->Price;
+    
+    //     // Check if the customer has already placed an auto bid for the lot
+    //     $autoBid = AutoBid::where('customerId', $customer->id)
+    //         ->where('lotId', $lot->id)
+    //         ->first();
+    
+    //     if ($request->autobid === false) {
+    //         // If the customer wants to disable auto bid (autobid = 0), we will remove the auto bid record if it exists.
+    //         if ($autoBid) {
+    //             $autoBid->delete();
+    //         }
+    //     } else {
+    //         // If the customer wants to enable auto bid (autobid = 1), we will update the existing auto bid record or create a new one.
+    //         if ($autoBid) {
+    //             // If the auto bid record exists for the customer and lot, update the autobid status and amount
+    //             $autoBid->update([
+    //                 'autobid' => true,
+    //                 'amount' => $autoBidAmount, // Update the auto bid amount
+    //             ]);
+    //         } else {
+    //             // If the auto bid record does not exist, create a new one for the customer and lot
+    //             AutoBid::create([
+    //                 'customerId' => $customer->id,
+    //                 'lotId' => $lot->id,
+    //                 'autobid' => true,
+    //                 'amount' => $autoBidAmount, // Set the auto bid amount for the new auto bid
+    //             ]);
+    //         }
+    
+    //         // Trigger Pusher event for auto bid
+    //         event(new winLotsEvent('New Auto Bid Placed', $autoBid, $customer, true, $autoBidAmount));
+    //     }
+    
+    //     // Include the customer details and auto bid amounts in the response
+    //     $response = [
+    //         'message' => 'Auto bid status updated successfully',
+    //         'previousLatestBidAmount' => $latestBidAmount,
+    //         'autoBidAmount' => $autoBidAmount,
+    //         'customer' => $customer,
+    //     ];
+    
+    //     return response()->json($response);
+    // }
+    
+
+    
+    
+    
+
+           // checking auto bid api 
+
+            public function checkAutoBid(Request $request)
         {
-            // If the customer wants to disable auto bid (autobid = 0), we will remove the auto bid record if it exists.
-            if ($autoBid) {
-                $autoBid->delete();
-            }
-        } else {
-            // If the customer wants to enable auto bid (autobid = 1), we will update the existing auto bid record or create a new one.
-            if ($autoBid) {
-                // If the auto bid record exists for the customer and lot, update the autobid status and amount
-                $autoBid->update([
-                    'autoBid' => true,
-                ]);
-            } else 
-            {
-                // If the auto bid record does not exist, create a new one for the customer and lot
-                AutoBid::create([
-                    'customerId' => $customer->id,
-                    'lotId' => $lot->id,
-                    'autobid' => true,
-                ]);
-            }
-    
-            // Trigger Pusher event for auto bid
-            event(new winLotsEvent('New Auto Bid Placed', $autoBid, $customer, true, $autoBidAmount));
-        }
-    
-        // Include the customer details and auto bid amounts in the response
-        $response = [
-            'message' => 'Auto bid status updated successfully',
-            'previousLatestBidAmount' => $latestBidAmount,
-            'autoBidAmount' => $autoBidAmount,
-            'customer' => $customer,
-        ];
-    
-        return response()->json($response);
-    }
-
-    
-    
-
-    // checking auto bid api 
-
-    public function checkAutoBid(Request $request)
-    {
-        
             // Validate the incoming request data
             $request->validate([
                 'customerId' => 'required|exists:customers,id',
                 'lotId' => 'required|exists:lots,id',
             ]);
-    
+
             $customerId = $request->input('customerId');
             $lotId = $request->input('lotId');
-    
-            // Check if the customer has placed an auto bid for the lot
-            $autoBid = AutoBid::where('customerId', $customerId)
+
+            // Check if the customer has placed an auto bid for the lot with autoBid value of 1
+            $hasAutoBid = BidsOfLots::where('customerId', $customerId)
                 ->where('lotId', $lotId)
-                ->where('autobid', true)
-                ->first();
-    
+                ->where('autoBid', 1)
+                ->exists();
+
             // Prepare the response
             $response = [
                 'customerId' => $customerId,
                 'lotId' => $lotId,
-                'hasAutoBid' => $autoBid ? true : false,
+                'hasAutoBid' => $hasAutoBid,
             ];
-    
+
             return response()->json($response);
         }
+
 
         // delete ApI AUTO BID 
 
         public function deleteautobid(Request $request, $customerId, $lotId)
         {
-            $customer = Customer::findOrFail($customerId);
-            $lot = Lots::findOrFail($lotId);
-
-            // Find the auto bid record for the given customer and lot
-            $autoBid = AutoBid::where('customerId', $customer->id)
-                ->where('lotId', $lot->id)
-                ->first();
-
-            if ($autoBid) {
-                // If the auto bid record exists for the customer and lot, delete it
-                $autoBid->delete();
-
-                // Return a success response indicating the auto bid was deleted
-                return response()->json(['message' => 'Auto bid deleted successfully', 'success' => true]);
-            } else {
-                // If the auto bid record does not exist, return a not found response
-                return response()->json(['message' => 'Auto bid not found', 'success' => false], 404);
+            // Find the auto bids for the given customer and lot with autoBid value of 1
+            $autoBids = BidsOfLots::where('customerId', $customerId)
+                ->where('lotId', $lotId)
+                ->where('autoBid', 1)
+                ->get();
+        
+            if ($autoBids->isEmpty()) {
+                // If no auto bids with autoBid value of 1 are found, return a not found response
+                return response()->json(['message' => 'Auto bids not found', 'success' => false], 404);
             }
+        
+            // Delete all the auto bids found
+            foreach ($autoBids as $autoBid) {
+                $autoBid->delete();
+            }
+        
+            // Return a success response indicating the auto bids were deleted
+            return response()->json(['message' => 'Auto bids deleted successfully', 'success' => true]);
         }
+        
 
 
 

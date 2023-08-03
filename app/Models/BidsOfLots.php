@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class BidsOfLots extends Model
 {
     use HasFactory;
-    protected $fillable = ['customerId', 'amount', 'lotId'];
+    protected $fillable = ['customerId', 'amount', 'lotId','autobid', 'created_at', 'updated_at'];
 
 
     // , 'autoBid', 'created_at', 'updated_at'
