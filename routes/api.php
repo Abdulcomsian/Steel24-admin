@@ -89,6 +89,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
         // Define the route to manually process the return of the participation fee
        Route::post('returnParticipationFee/{bidId}', 'AuctionContoller@returnParticipationFee');
+
+        //nouman route starts here
+        Route::post('customer-bid' ,  'AuctionContoller@customerBidding' );
+        //nouman route ends here
+
+
     });
 
     Route::get('getlivebid', 'App\Http\Controllers\Api\v1\Admin\AuctionContoller@getlivebid');

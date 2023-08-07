@@ -15,6 +15,7 @@ class lots extends Model
 {
     use HasFactory;
     protected $table = 'lots';
+    protected $primaryKey = 'id';
     protected  $fillable =  [
         'title', 'description', 'categoryId', 'uid', 'Seller', 'Plant', 'materialLocation', 'Quantity','Payment_terms',
         'StartDate', 'EndDate', 'Price', 'auction_status', 'lot_status', 'customFields', 'participate_fee', 'ReStartDate', 'ReEndDate', 'LiveSequenceNumber','status'
