@@ -2209,28 +2209,34 @@ class AuctionContoller extends Controller
 
        event(new winLotsEvent('Good Luck! You placed a new bid.', $manualBid, $customer, true));
        
-       return response()->json(['success' => true ,  'msg' =>'Your Bid Added Successfully']);
+       
        //checking wheather lot has auto bidders
-        // foreach($lot->autoBids as $autoBidder)
-        // {
-        //         $newPricing = $newPricing + 100;
-        //         $autoBid = BidsOfLots::create([
-        //             "customerId" => $autoBidder->customerId,
-        //             "amount" => $newPricing,
-        //             "lotId" => $lot->id,
-        //             "autoBid" => 1,
-        //             'created_at' => date('Y-m-d H:i:s'),
-        //             'updated_at' => date('Y-m-d H:i:s')
-        //         ]);
+        foreach($lot->autoBids as $autoBidder)
+        {
+                $newPricing = $newPricing + 100;
+                $autoBid = BidsOfLots::create([
+                    "customerId" => $autoBidder->customerId,
+                    "amount" => $newPricing,
+                    "lotId" => $lot->id,
+                    "autoBid" => 1,
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]);
 
-        //         event(new winLotsEvent('Good Luck! You placed a new bid.', $autoBid, $customer, true));
-        // }
+        $autoCustomer = Customer::where('id' , $autoBidder)->first();
+
+        event(new winLotsEvent('Good Luck! You placed a new bid.', $autoBid, $autoCustomer, true));
+
+        }
+
+        return response()->json(['success' => true ,  'msg' =>'Your Bid Added Successfully' , 'bid' => $manualBid]);
     }
 
     public function assignLastBidder($lot)
     {
         // dd("assigning bidd");
-        $latestBidCustomer = $lot->bids()->latest()->first()->customer;
+        $lastBid = $lot->bids()->latest()->first();
+        $latestBidCustomer = $lastBid->customer;
         
         $customerLot = CustomerLot::updateOrCreate(
             ['lot_id' => $lot->id],
@@ -2238,12 +2244,14 @@ class AuctionContoller extends Controller
         );
         if( $customerLot ){
             $lot->lot_status = "Sold";
-            $lot->save();
+            // $lot->save();
             
             dispatch(new LotJob($lot , $latestBidCustomer));
             //sending winner bidders email  
 
-            return response()->json(['success' => false ,  'msg' =>'Another Bidder Has Won Bidding You Are Too Late!']);
+            event(new winLotsEvent('You are late! Sorry, another person won this lot.', $lastBid, $latestBidCustomer, false));
+
+            return response()->json(['success' => false ,  'msg' =>'Another Bidder Has Won Bidding You Are Too Late!' , 'bid' => $lastBid]);
 
         }
 
