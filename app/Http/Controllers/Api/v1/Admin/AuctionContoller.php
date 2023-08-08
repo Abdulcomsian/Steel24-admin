@@ -2210,7 +2210,7 @@ class AuctionContoller extends Controller
 
        event(new winLotsEvent('Good Luck! You placed a new bid.', $manualBid, $customer, true));
        
-       dd($lot->autoBids);
+       return response()->json(["data" => $lot->autoBids]);
        
        //checking wheather lot has auto bidders
         foreach($lot->autoBids as $autoBidder)
