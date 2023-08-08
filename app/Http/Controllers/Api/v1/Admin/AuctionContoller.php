@@ -2195,8 +2195,9 @@ class AuctionContoller extends Controller
         // dd("add new bidding");
         $currentPricing =  $lot->bids->count() > 0 ? $lot->bids->max('amount') : $lot->price;
 
-        $newPricing = $currentPricing + $amount;
-
+        // $newPricing = $currentPricing + $amount;
+        $newPricing = $amount;
+        
         $manualBid = BidsOfLots::create([
             "customerId" => $customer->id,
             "amount" => $newPricing,
