@@ -2197,7 +2197,7 @@ class AuctionContoller extends Controller
 
         // $newPricing = $currentPricing + $amount;
         $newPricing = $amount;
-        
+
         $manualBid = BidsOfLots::create([
             "customerId" => $customer->id,
             "amount" => $newPricing,
@@ -2249,8 +2249,11 @@ class AuctionContoller extends Controller
             
             dispatch(new LotJob($lot , $latestBidCustomer));
             //sending winner bidders email  
-
             event(new winLotsEvent('You are late! Sorry, another person won this lot.', $lastBid, $latestBidCustomer, false));
+
+            $lastBid = BidsOfLots::where('lotId' , $lot->id)->latest()->first();
+
+            $this->returnParticipationFee($lastBid);
 
             return response()->json(['success' => false ,  'msg' =>'Another Bidder Has Won Bidding You Are Too Late!' , 'bid' => $lastBid]);
 
