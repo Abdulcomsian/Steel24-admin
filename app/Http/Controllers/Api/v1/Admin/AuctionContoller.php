@@ -2380,12 +2380,13 @@ class AuctionContoller extends Controller
 
         $autoBid =AutoBid::where(['lotId' => $lotId , 'customerId' => $customerId])->get();
 
-        dd($autoBid);
-
+        
         if(AutoBid::where(['lotId' => $lotId , 'customerId' => $customerId])->count())
         {
+            dd("inside if" , AutoBid::where(['lotId' => $lotId , 'customerId' => $customerId])->count() );
             return response()->json(['success' => true , 'msg' => 'An autobid has been placed against this customer' , 'autobid' => 1]);
         }else{
+            dd("inside else" , AutoBid::where(['lotId' => $lotId , 'customerId' => $customerId])->count());
             return response()->json(['success' => false , 'msg' => 'There is no auto bid related to this customer' , 'autobid' => 0]);
         }
 
