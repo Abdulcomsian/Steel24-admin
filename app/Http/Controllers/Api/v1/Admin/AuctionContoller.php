@@ -2380,6 +2380,8 @@ class AuctionContoller extends Controller
 
         $autoBid =AutoBid::where(['lotId' => $lotId , 'customerId' => $customerId])->get();
 
+
+        
         
         if(AutoBid::where(['lotId' => $lotId , 'customerId' => $customerId])->count())
         {
