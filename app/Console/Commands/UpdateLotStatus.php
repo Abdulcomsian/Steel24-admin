@@ -84,8 +84,8 @@ class UpdateLotStatus extends Command
                             info("else");
                             foreach($lot->autoBids as $bidder)
                             {
-                                info("Pricing $newPricing");
                                 $newPricing = $newPricing + 100;
+                                info("Pricing $newPricing");
                                 $customer = $bidder->customer;
                                 $autoBid = BidsOfLots::create([
                                     "customerId" => $bidder->customerId,
