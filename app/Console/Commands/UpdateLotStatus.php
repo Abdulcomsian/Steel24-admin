@@ -45,7 +45,7 @@ class UpdateLotStatus extends Command
                 if(!$lot->bids->isEmpty())
                 {
     
-                    $lastBid = $lot->bids()->latest()->first();
+                    $lastBid = $lot->bids()->orderBy('id','desc')->first();
     
                     $lastBidTime = Carbon::createFromFormat("Y-m-d H:i:s" ,$lastBid->created_at);
     
