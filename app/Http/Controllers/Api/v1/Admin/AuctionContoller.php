@@ -2159,7 +2159,7 @@ class AuctionContoller extends Controller
             if ($timeDifferenceInSeconds <= 120)
             {
                 //when time is still remaingin add new bidding
-                return $this->addNewBidding($customer , $amount , $lot , $bidType);
+                return $this->addNewBidding($customer , $amount , $lot , 0);
             }else{
                 //when time is finished assigned lot to last bidder
                 return $this->assignLastBidder($lot);
@@ -2167,7 +2167,7 @@ class AuctionContoller extends Controller
 
         }else{
             //if no one has bid against the lot
-            return $this->addNewBidding($customer , $amount , $lot , $bidType);
+            return $this->addNewBidding($customer , $amount , $lot , 0);
         }
     
 
@@ -2381,7 +2381,7 @@ class AuctionContoller extends Controller
         $autoBid =AutoBid::where(['lotId' => $lotId , 'customerId' => $customerId])->get();
 
         dd($autoBid);
-        
+
         if(AutoBid::where(['lotId' => $lotId , 'customerId' => $customerId])->count())
         {
             return response()->json(['success' => true , 'msg' => 'An autobid has been placed against this customer' , 'autobid' => 1]);
