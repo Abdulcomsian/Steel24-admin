@@ -2378,6 +2378,10 @@ class AuctionContoller extends Controller
         $customerId = auth()->user()->id;
         $lotId = $request->lotId;
 
+        $autoBid =AutoBid::where(['lotId' => $lotId , 'customerId' => $customerId])->get();
+
+        dd($autoBid);
+        
         if(AutoBid::where(['lotId' => $lotId , 'customerId' => $customerId])->count())
         {
             return response()->json(['success' => true , 'msg' => 'An autobid has been placed against this customer' , 'autobid' => 1]);
