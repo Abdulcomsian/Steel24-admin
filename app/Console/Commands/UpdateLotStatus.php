@@ -51,6 +51,8 @@ class UpdateLotStatus extends Command
                     $lastBidTime = Carbon::createFromFormat("Y-m-d H:i:s" ,$lastBid->created_at);
     
                     $timeDifferenceInSeconds = $lastBidTime->diffInSeconds($currentTime);
+
+                    info(`time difference $timeDifferenceInSeconds`);
     
                     if($timeDifferenceInSeconds <= 120)
                     {

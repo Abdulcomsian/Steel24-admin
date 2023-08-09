@@ -2245,7 +2245,7 @@ class AuctionContoller extends Controller
         );
         if( $customerLot ){
             $lot->lot_status = "Sold";
-            // $lot->save();
+            $lot->save();
             
             dispatch(new LotJob($lot , $latestBidCustomer));
             //sending winner bidders email  
