@@ -2285,7 +2285,7 @@ class AuctionContoller extends Controller
 
         if(!$lot->bids->isEmpty())
         {
-            $lastBid = $lot->bids->latest()->first();
+            $lastBid = $lot->bids()->latest()->first();
 
             $lastBidTime = Carbon::createFromFormat( "Y-m-d H:i:s" , $lastBid->created_at);
 
