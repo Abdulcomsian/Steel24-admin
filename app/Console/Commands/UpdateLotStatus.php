@@ -59,25 +59,50 @@ class UpdateLotStatus extends Command
     
                         $newPricing = $lastBid->amount;
     
-                        foreach($lot->autoBids as $bidder)
+                        if($lot->autobids->count() == 1)
                         {
                             //if previous bid done by same customer then return
-                            if($lastBid->customerId == $bidder->customerId ) return;
-                            
-                            $newPricing = $newPricing + 100;
-                            $customer = $bidder->customer;
-                            $autoBid = BidsOfLots::create([
-                                "customerId" => $bidder->customerId,
-                                "amount" => $newPricing,
-                                "lotId" => $lot->id,
-                                "autoBid" => 1,
-                                'created_at' => date('Y-m-d H:i:s'),
-                                'updated_at' => date('Y-m-d H:i:s')
-                            ]);
-    
-                            event(new winLotsEvent('Good Luck! You placed a new bid.', $autoBid, $customer, true));
-    
+                            $autoBidder = $lot->autobids->first();
+                            $customer = $autoBidder->customer;
+                            if($autoBidder->customerId == $lastBid->customerId)
+                            {
+                                return;
+                            }else{
+                                $autoBid = BidsOfLots::create([
+                                    "customerId" => $autoBidder->customerId,
+                                    "amount" => $newPricing+100,
+                                    "lotId" => $lot->id,
+                                    "autoBid" => 1,
+                                    'created_at' => date('Y-m-d H:i:s'),
+                                    'updated_at' => date('Y-m-d H:i:s')
+                                ]);
+        
+                                event(new winLotsEvent('Good Luck! You placed a new bid.', $autoBid, $customer, true));
+        
+                            }
+
+
+                        }else{
+
+                            foreach($lot->autoBids as $bidder)
+                            {
+                                $newPricing = $newPricing + 100;
+                                $customer = $bidder->customer;
+                                $autoBid = BidsOfLots::create([
+                                    "customerId" => $bidder->customerId,
+                                    "amount" => $newPricing,
+                                    "lotId" => $lot->id,
+                                    "autoBid" => 1,
+                                    'created_at' => date('Y-m-d H:i:s'),
+                                    'updated_at' => date('Y-m-d H:i:s')
+                                ]);
+        
+                                event(new winLotsEvent('Good Luck! You placed a new bid.', $autoBid, $customer, true));
+        
+                            }
+
                         }
+
                     }else{
     
                         info("else");
