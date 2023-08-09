@@ -61,7 +61,9 @@ class UpdateLotStatus extends Command
     
                         foreach($lot->autoBids as $bidder)
                         {
-    
+                            //if previous bid done by same customer then return
+                            if($lastBid->customerId == $bidder->customerId ) return;
+                            
                             $newPricing = $newPricing + 100;
                             $customer = $bidder->customer;
                             $autoBid = BidsOfLots::create([
