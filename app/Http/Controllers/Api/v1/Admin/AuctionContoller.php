@@ -2191,7 +2191,7 @@ class AuctionContoller extends Controller
 
     }
 
-    function addNewBidding($customer , $amount , $lot ){
+    function addNewBidding($customer , $amount , $lot , $bidType ){
         // dd("add new bidding");
         $currentPricing =  $lot->bids->count() > 0 ? $lot->bids->max('amount') : $lot->price;
 
@@ -2377,11 +2377,6 @@ class AuctionContoller extends Controller
     {
         $customerId = auth()->user()->id;
         $lotId = $request->lotId;
-
-        $autoBid =AutoBid::where(['lotId' => $lotId , 'customerId' => $customerId])->get();
-
-
-
         
         if(AutoBid::where(['lotId' => $lotId , 'customerId' => $customerId])->count())
         {
