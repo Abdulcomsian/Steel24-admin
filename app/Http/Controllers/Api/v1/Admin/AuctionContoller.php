@@ -2224,7 +2224,7 @@ class AuctionContoller extends Controller
                     'updated_at' => date('Y-m-d H:i:s')
                 ]);
 
-        $autoCustomer = Customer::where('id' , $autoBidder)->first();
+        $autoCustomer = Customer::where('id' , $autoBidder->customerId)->first();
 
         event(new winLotsEvent('Good Luck! You placed a new bid.', $autoBid, $autoCustomer, true));
 
