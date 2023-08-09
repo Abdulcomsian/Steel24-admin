@@ -103,8 +103,8 @@ class UpdateLotStatus extends Command
                         }
 
                     }else{
-    
-                        $lastBid = $lot->bids()->latest()->first();
+                        info("last else 2 minute gone");
+                        $lastBid = $lot->bids()->orderBy('id' , 'desc')->first();
                         $latestBidCustomer = $lastBid->customer;
                         
                         $customerLot = CustomerLot::updateOrCreate(
