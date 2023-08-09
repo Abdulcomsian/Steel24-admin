@@ -44,15 +44,12 @@ class UpdateLotStatus extends Command
 
                 if(!$lot->bids->isEmpty())
                 {
-                    info("if live");
     
                     $lastBid = $lot->bids()->latest()->first();
     
                     $lastBidTime = Carbon::createFromFormat("Y-m-d H:i:s" ,$lastBid->created_at);
     
                     $timeDifferenceInSeconds = $lastBidTime->diffInSeconds($currentTime);
-
-                    info(`time difference $timeDifferenceInSeconds`);
     
                     if($timeDifferenceInSeconds <= 120)
                     {
@@ -61,6 +58,7 @@ class UpdateLotStatus extends Command
     
                         if($lot->autobids->count() == 1)
                         {
+                            info("if");
                             //if previous bid done by same customer then return
                             $autoBidder = $lot->autobids->first();
                             $customer = $autoBidder->customer;
@@ -83,10 +81,10 @@ class UpdateLotStatus extends Command
 
 
                         }else{
-
-                            info("else foreach");
+                            info("else");
                             foreach($lot->autoBids as $bidder)
                             {
+                                info("Pricing $newPricing");
                                 $newPricing = $newPricing + 100;
                                 $customer = $bidder->customer;
                                 $autoBid = BidsOfLots::create([
@@ -106,7 +104,6 @@ class UpdateLotStatus extends Command
 
                     }else{
     
-                        info("else");
                         $lastBid = $lot->bids()->latest()->first();
                         $latestBidCustomer = $lastBid->customer;
                         
@@ -125,14 +122,11 @@ class UpdateLotStatus extends Command
     
                         }
     
-                        info("Bidding Assign To User");
-    
                     }
                     
                 }
                 else
                 {
-                    info("empty bid");
 
                     $newPricing = $lot->price;
 
