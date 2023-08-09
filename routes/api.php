@@ -97,7 +97,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
         Route::post('check-customer-autobid' , 'AuctionContoller@checkCustomerAutobid');
 
-        Route::post('stocp-customer-autobid' , 'AuctionContoller@stopAutoBid');
+        Route::post('stop-customer-autobid' , 'AuctionContoller@stopAutoBid');
         //nouman route ends here
 
 
