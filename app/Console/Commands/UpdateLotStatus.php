@@ -88,7 +88,7 @@ class UpdateLotStatus extends Command
                         );
                         if( $customerLot ){
                             $lot->lot_status = "Sold";
-                            // $lot->save();
+                            $lot->save();
                             
                             dispatch(new LotMail($lot , $latestBidCustomer));
                             //sending winner bidders email  
