@@ -118,7 +118,7 @@ class UpdateLotStatus extends Command
                             dispatch(new LotMail($lot , $latestBidCustomer));
                             //sending winner bidders email  
     
-                            event(new winLotsEvent('Bidding Has Been Won By The Customer', $lastBid, $latestBidCustomer, true));
+                            event(new winLotsEvent('Bidding Has Been Won By The Customer', $lastBid, $latestBidCustomer, false));
     
                         }
     
