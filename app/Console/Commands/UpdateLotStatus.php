@@ -84,6 +84,7 @@ class UpdateLotStatus extends Command
 
                         }else{
 
+                            info("else foreach");
                             foreach($lot->autoBids as $bidder)
                             {
                                 $newPricing = $newPricing + 100;
