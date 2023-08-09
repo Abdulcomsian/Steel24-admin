@@ -93,11 +93,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
         //nouman route starts here
         Route::post('customer-bid' ,  'AuctionContoller@customerBidding' );
 
-        Route::post('set-customer-autobid' , 'AuctionController@setCustomerAutobid');
+        Route::post('set-customer-autobid' , 'AuctionContoller@setCustomerAutobid');
 
-        Route::post('check-customer-autobid' , 'AuctionController@checkCustomerAutobid');
+        Route::post('check-customer-autobid' , 'AuctionContoller@checkCustomerAutobid');
 
-        Route::post('stock-customer-autobid' , 'AuctionController@stopAutoBid');
+        Route::post('stock-customer-autobid' , 'AuctionContoller@stopAutoBid');
         //nouman route ends here
 
 
