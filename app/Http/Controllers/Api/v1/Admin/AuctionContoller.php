@@ -2159,7 +2159,7 @@ class AuctionContoller extends Controller
             if ($timeDifferenceInSeconds <= 120)
             {
                 //when time is still remaingin add new bidding
-                return $this->addNewBidding($customer , $amount , $lot);
+                return $this->addNewBidding($customer , $amount , $lot , $bidType);
             }else{
                 //when time is finished assigned lot to last bidder
                 return $this->assignLastBidder($lot);
@@ -2167,7 +2167,7 @@ class AuctionContoller extends Controller
 
         }else{
             //if no one has bid against the lot
-            return $this->addNewBidding($customer , $amount , $lot);
+            return $this->addNewBidding($customer , $amount , $lot , $bidType);
         }
     
 
@@ -2202,15 +2202,14 @@ class AuctionContoller extends Controller
             "customerId" => $customer->id,
             "amount" => $newPricing,
             "lotId" => $lot->id,
-            "autoBid" => 0,
+            "autoBid" => $bidType,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
             
        ]);
 
        event(new winLotsEvent('Good Luck! You placed a new bid.', $manualBid, $customer, true));
-       
-       return response()->json(["data" => $lot->autoBids]);
+
        
        //checking wheather lot has auto bidders
         foreach($lot->autoBids as $autoBidder)
@@ -2262,7 +2261,130 @@ class AuctionContoller extends Controller
 
     }
 
+
+
+    public function setCustomerAutobid(Request $request)
+    {
+        $lotId = $request->lotId;
+        $customerId = auth()->user()->id;
+
+        $lot = lots::with('bids.customer')->where('id' , $lotId)->first();
+        $customer = Customer::find($customerId);
+
+        $status = $lot->lot_status;
+
+        if(in_array($status , ['Sold' , 'Expired']))
+        {
+             $msg =   $status == 'Sold' ? "Lot Has Already Been Sold" : "Lot Has Been Expired"; 
+             return response()->json(["success" => false , "msg" => $msg ]);
+        }
+
+        $amount = $lot->bids->isEmpty() ? $lot->price : $lot->bids->max('amount');
+
+        $amount += 100;
+
+        if(!$lot->bids->isEmpty())
+        {
+            $lastBid = $lot->bid->latest()->first();
+
+            $lastBidTime = Carbon::createFromFormat( "Y-m-d H:i:s" , $lastBid->created_at);
+
+            $currentTime = Carbon::now();
+
+            $timeDifferenceInSeconds = $lastBidTime->diffInSeconds($currentTime);
+
+            if($timeDifferenceInSeconds <= 120)
+            {
+                $createBid = BidsOfLots::create([
+                                'customerId' => $customerId,
+                                'amount' => $amount,
+                                'lotId' => $lotId,
+                                'autoBid' => 1
+                            ]);
+
+                if($createBid){
+                    AutoBid::create([
+                        'customerId' => $customerId,
+                        'lotId' => $lotId,
+                        'autoBid' => 1
+                    ]);
+
+                    event(new winLotsEvent('Another Bid Has Been Placed.', $createBid, $customer, true));
+
+                    return response()->json(['success' => true , 'msg' => 'Autobid has been placed successfully']);
+
+                }else{
+                    return response()->json(['succes' => false , "msg" => "Something Went Wrong"]);
+                }
+
+
+                
+            }else{
+                return $this->assignLastBidder($lot);
+            }
+
+        }else{
+
+            $createBid = BidsOfLots::create([
+                'customerId' => $customerId,
+                'amount' => $amount,
+                'lotId' => $lotId,
+                'autoBid' => 1
+            ]);
+
+            if($createBid){
+                AutoBid::create([
+                    'customerId' => $customerId,
+                    'lotId' => $lotId,
+                    'autoBid' => 1
+                ]);
+
+                event(new winLotsEvent('Bid Has Been Placed.', $createBid, $customer, true));
+
+                return response()->json(['success' => true , 'msg' => 'Autobid has been placed successfully']);
+
+            }
+
+        }
+
+    }
+
     //new code ends here
 
+    public function stopAutoBid(Request $request)
+    {
+        try{
+            $customerId = auth()->user()->id;
+            $lotId = $request->lotId;
+            
+            AutoBid::where([
+                'customerId' => $customerId,
+                'lotId' => $lotId,
+            ])->delete();
+
+            return response()->json(['success' => true , 'msg' => 'Autobid Has Been Removed']);
+
+        }catch(\Exception $e){
+
+            return response()->json(['success' => false , 'msg' => 'Something Went Wrong' , 'error' => $e->getMessage()]);
+        
+        }
+
+    }
+
+
+    public function checkCustomerAutobid(Request $request)
+    {
+        $customerId = auth()->user()->id;
+        $lotId = $request->lotId;
+
+        if(AutoBid::where(['lotId' => $lotId , 'customerId' => $customerId])->count())
+        {
+            return response()->json(['success' => true , 'msg' => 'An autobid has been placed against this customer' , 'autobid' => 1]);
+        }else{
+            return response()->json(['success' => false , 'msg' => 'There is no auto bid related to this customer' , 'autobid' => 0]);
+        }
+
+    }
 
 }
