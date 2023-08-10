@@ -2147,7 +2147,7 @@ class AuctionContoller extends Controller
         //if someone has bid against the lot
         if(!$lot->bids->isEmpty())
         {
-            $lastRecordTime = $lot->bids()->latest()->first()->created_at;
+            $lastRecordTime = $lot->bids()->latest()->orderBy('id','desc')->first()->created_at;
 
 
             $currentTime = Carbon::now();
@@ -2236,7 +2236,7 @@ class AuctionContoller extends Controller
     public function assignLastBidder($lot)
     {
         // dd("assigning bidd");
-        $lastBid = $lot->bids()->latest()->first();
+        $lastBid = $lot->bids()->latest()->orderBy('id','desc')->first();
         $latestBidCustomer = $lastBid->customer;
         
         $customerLot = CustomerLot::updateOrCreate(
@@ -2251,7 +2251,7 @@ class AuctionContoller extends Controller
             //sending winner bidders email  
             event(new winLotsEvent('You are late! Sorry, another person won this lot.', $lastBid, $latestBidCustomer, false));
 
-            $lastBid = BidsOfLots::where('lotId' , $lot->id)->latest()->first();
+            $lastBid = BidsOfLots::where('lotId' , $lot->id)->latest()->orderBy('id','desc')->first();
 
             $this->returnParticipationFee($lastBid);
 
@@ -2285,7 +2285,7 @@ class AuctionContoller extends Controller
 
         if(!$lot->bids->isEmpty())
         {
-            $lastBid = $lot->bids()->latest()->first();
+            $lastBid = $lot->bids()->latest()->orderBy('id','desc')->first();
 
             $lastBidTime = Carbon::createFromFormat( "Y-m-d H:i:s" , $lastBid->created_at);
 

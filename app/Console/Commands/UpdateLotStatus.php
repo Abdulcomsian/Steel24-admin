@@ -45,7 +45,7 @@ class UpdateLotStatus extends Command
                 if(!$lot->bids->isEmpty())
                 {
     
-                    $lastBid = $lot->bids()->orderBy('id','desc')->first();
+                    $lastBid = $lot->bids()->latest()->orderBy('id','desc')->first();
     
                     $lastBidTime = Carbon::createFromFormat("Y-m-d H:i:s" ,$lastBid->created_at);
     
@@ -104,7 +104,7 @@ class UpdateLotStatus extends Command
 
                     }else{
                         info("last else 2 minute gone");
-                        $lastBid = $lot->bids()->orderBy('id' , 'desc')->first();
+                        $lastBid = $lot->bids()->latest()->orderBy('id' , 'desc')->first();
                         $latestBidCustomer = $lastBid->customer;
                         
                         $customerLot = CustomerLot::updateOrCreate(
