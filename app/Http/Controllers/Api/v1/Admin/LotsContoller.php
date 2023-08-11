@@ -275,11 +275,12 @@ class LotsContoller extends Controller
                 $query->orderBy('created_at', 'desc')->take(1);
             }])
             ->where('lot_status', 'LIKE', '%live%')
-            ->orderBy('created_at', 'asc')
+            ->orderBy('StartDate', 'asc') 
             ->get();
     
         return response()->json(['userLots' => $lots, 'success' => true]);
     }
+    
     
     
     
