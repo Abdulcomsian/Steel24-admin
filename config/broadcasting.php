@@ -30,16 +30,18 @@ return [
 
     'connections' => [
 
-        'pusher' => [
-            'driver' => 'pusher',
-            'key' => env('PUSHER_APP_KEY'),
-            'secret' => env('PUSHER_APP_SECRET'),
-            'app_id' => env('PUSHER_APP_ID'),
-            'options' => [
-                'cluster' => env('PUSHER_APP_CLUSTER'),
-                'useTLS' => true,
-            ],
+        
+
+    'pusher' => [
+        'driver' => 'pusher',
+        'key' => 'bacf91fa7936ec16edb7',
+        'secret' => '85cde5bd8090bba5709b',
+        'app_id' => '1638523',
+        'options' => [
+            'cluster' => 'ap2',
+            'useTLS' => true,
         ],
+    ],
 
         'ably' => [
             'driver' => 'ably',
