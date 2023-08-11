@@ -454,16 +454,29 @@ class AuctionContoller extends Controller
     
             if ($lastBalance && ($lotDetails->participate_fee <= $lastBalance->finalAmount)) 
             {
-                customerBalance::create([
-                    'customerId' => $request->customerId,
-                    'balanceAmount' => $lastBalance->finalAmount,
-                    'action' => 'Participate Fees',
-                    'actionAmount' => $lotDetails->participate_fee,
-                    'finalAmount' => $lastBalance->finalAmount - $lotDetails->participate_fee,
-                    'lotid' => $request->lotid,
-                    'status' => 0,
-                    'date' => Carbon::now(),
-                ]);
+                // customerBalance::create([
+                //     'customerId' => $request->customerId,
+                //     'balanceAmount' => $lastBalance->finalAmount,
+                //     'action' => 'Participate Fees',
+                //     'actionAmount' => $lotDetails->participate_fee,
+                //     'finalAmount' => $lastBalance->finalAmount - $lotDetails->participate_fee,
+                //     'lotid' => $request->lotid,
+                //     'status' => 0,
+                //     'date' => Carbon::now(),
+                // ]);
+
+                  // After creating the customer balance entry for participation fee
+                    $participationFeeBalance = customerBalance::create([
+                        'customerId' => $request->customerId,
+                        'balanceAmount' => $lastBalance->finalAmount - $lotDetails->participate_fee, // Deduct participation fee
+                        'action' => 'Participate Fees',
+                        'actionAmount' => $lotDetails->participate_fee, // Store participation fee amount
+                        'finalAmount' => $lastBalance->finalAmount - $lotDetails->participate_fee,
+                        'lotid' => $request->lotid,
+                        'status' => 0,
+                        'date' => Carbon::now(),
+                    ]);
+
     
                 $participatedCustomers = customerBalance::where([['lotid', $request->lotid], ['status', '!=', '1']])->groupBy('customerId')->pluck('customerId')->toArray();
                 $lotDetails['ParticipateUsers'] = $participatedCustomers;
@@ -1418,28 +1431,64 @@ class AuctionContoller extends Controller
 // }
     
 
-    
-    private function returnParticipationFee($bid)
-    {
-        $customer = Customer::find($bid->customerId);
-        if ($customer) 
+//     ****** Participation code************
+
+    // private function returnParticipationFee($bid)
+    // {
+    //     $customer = Customer::find($bid->customerId);
+    //     if ($customer) 
+    //     {
+    //         $lastBalance = CustomerBalance::where('customerId', $customer->id)->orderBy('id', 'desc')->first();
+    //         if ($lastBalance) {
+    //             $newFinalAmount = $lastBalance->finalAmount + $bid->amount;
+    //             CustomerBalance::create([
+    //                 'customerId' => $customer->id,
+    //                 'balanceAmount' => $lastBalance->finalAmount,
+    //                 'action' => 'Return Participation Fee',
+    //                 'actionAmount' => $bid->amount,
+    //                 'finalAmount' => $newFinalAmount,
+    //                 'lotid' => $bid->lotId,
+    //                 'status' => 1,
+    //                 'date' => Carbon::now(),
+    //             ]);
+    //         }
+    //     }
+    // }
+
+        private function returnParticipationFee($bid)
         {
-            $lastBalance = CustomerBalance::where('customerId', $customer->id)->orderBy('id', 'desc')->first();
-            if ($lastBalance) {
-                $newFinalAmount = $lastBalance->finalAmount + $bid->amount;
+            $participationFeeBalance = customerBalance::where('customerId', $bid->customerId)
+                ->where('lotid', $bid->lotId)
+                ->where('action', 'Participate Fees') // Identify the participation fee entry
+                ->where('status', 0) // Identify entries that haven't been processed yet
+                ->first();
+        
+            if ($participationFeeBalance) {
+                $participationFee = $participationFeeBalance->actionAmount; // Get the stored participation fee amount
+        
+                // Update customer balance to return the participation fee
+                $newFinalAmount = $participationFeeBalance->finalAmount + $participationFee;
                 CustomerBalance::create([
-                    'customerId' => $customer->id,
-                    'balanceAmount' => $lastBalance->finalAmount,
+                    'customerId' => $bid->customerId,
+                    'balanceAmount' => $participationFeeBalance->finalAmount,
                     'action' => 'Return Participation Fee',
-                    'actionAmount' => $bid->amount,
+                    'actionAmount' => $participationFee, // Use participation fee here
                     'finalAmount' => $newFinalAmount,
                     'lotid' => $bid->lotId,
-                    'status' => 1, // Status 1 for returned participation fee
+                    'status' => 1,
                     'date' => Carbon::now(),
                 ]);
+        
+                // Update the status of the participation fee entry to indicate it has been processed
+                $participationFeeBalance->status = 1;
+                $participationFeeBalance->save();
             }
         }
-    }
+    
+    //     ********* End Participation Code **********
+
+
+
 
     // *********previous auto bid code***********
 
@@ -2181,7 +2230,8 @@ class AuctionContoller extends Controller
      }
 
 
-    }catch(\Exception $e){
+    }catch(\Exception $e)
+    {
         return response()->json(["success" => false , "msg" => "Something Went Wrong!" , "error" => $e->getMessage()]);
     }
         
@@ -2191,7 +2241,8 @@ class AuctionContoller extends Controller
 
     }
 
-    function addNewBidding($customer , $amount , $lot , $bidType ){
+    function addNewBidding($customer , $amount , $lot , $bidType )
+    {
         // dd("add new bidding");
         $currentPricing =  $lot->bids->count() > 0 ? $lot->bids->max('amount') : $lot->price;
 
@@ -2232,6 +2283,8 @@ class AuctionContoller extends Controller
 
         return response()->json(['success' => true ,  'msg' =>'Your Bid Added Successfully' , 'bid' => $manualBid]);
     }
+
+
 
     public function assignLastBidder($lot)
     {
