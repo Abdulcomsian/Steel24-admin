@@ -42,9 +42,10 @@
     38 => 'Yajra\\DataTables\\DataTablesServiceProvider',
     39 => 'App\\Providers\\AppServiceProvider',
     40 => 'App\\Providers\\AuthServiceProvider',
-    41 => 'App\\Providers\\EventServiceProvider',
-    42 => 'App\\Providers\\RouteServiceProvider',
-    43 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
+    41 => 'App\\Providers\\BroadcastServiceProvider',
+    42 => 'App\\Providers\\EventServiceProvider',
+    43 => 'App\\Providers\\RouteServiceProvider',
+    44 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
   ),
   'eager' => 
   array (
@@ -75,9 +76,10 @@
     24 => 'Yajra\\DataTables\\DataTablesServiceProvider',
     25 => 'App\\Providers\\AppServiceProvider',
     26 => 'App\\Providers\\AuthServiceProvider',
-    27 => 'App\\Providers\\EventServiceProvider',
-    28 => 'App\\Providers\\RouteServiceProvider',
-    29 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
+    27 => 'App\\Providers\\BroadcastServiceProvider',
+    28 => 'App\\Providers\\EventServiceProvider',
+    29 => 'App\\Providers\\RouteServiceProvider',
+    30 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
   ),
   'deferred' => 
   array (
