@@ -219,24 +219,47 @@ class LotsContoller extends Controller
     //     return response()->json(['userLots' => $lots, 'success' => true]);
 
 
+
+
     // public function getActiveLots(Request $request)
     // {
     //     $customerId = $request->customer_id;
     
-    //     $lots = lots::with(['customerBalance' => function ($query) use ($customerId) 
-    //     {
+    //     $lots = lots::with(['customerBalance' => function ($query) use ($customerId) {
     //             $query->where('customerId', $customerId);
     //         }])
     //         ->with(['customers' => function ($query) use ($customerId) {
     //             $query->where('customer_id', $customerId);
     //         }])
-    //         ->with('categories,bids')
+    //         ->with(['categories', 'bids'])
     //         ->where('lot_status', 'LIKE', '%live%')
     //         ->orderBy('created_at', 'asc')
     //         ->get();
     
     //     return response()->json(['userLots' => $lots, 'success' => true]);
     // }
+      
+
+    // public function getActiveLots(Request $request)
+    // {
+    //     $customerId = $request->customer_id;
+    
+    //     $lots = lots::with(['customerBalance' => function ($query) use ($customerId) {
+    //             $query->where('customerId', $customerId);
+    //         }])
+    //         ->with(['customers' => function ($query) use ($customerId) {
+    //             $query->where('customer_id', $customerId);
+    //         }])
+    //         ->with(['categories', 'bids' => function ($query) {
+    //             $query->orderBy('created_at', 'desc')->take(1);
+    //         }])
+    //         ->where('lot_status', 'LIKE', '%live%')
+    //         ->orderBy('created_at', 'asc')
+    //         ->get();
+    
+    //     return response()->json(['userLots' => $lots, 'success' => true]);
+    // }
+
 
     public function getActiveLots(Request $request)
     {
@@ -248,13 +271,17 @@ class LotsContoller extends Controller
             ->with(['customers' => function ($query) use ($customerId) {
                 $query->where('customer_id', $customerId);
             }])
-            ->with(['categories', 'bids'])
+            ->with(['categories', 'bids' => function ($query) {
+                $query->orderBy('created_at', 'desc')->take(1);
+            }])
             ->where('lot_status', 'LIKE', '%live%')
             ->orderBy('created_at', 'asc')
             ->get();
     
         return response()->json(['userLots' => $lots, 'success' => true]);
     }
+    
+    
     
     
 
