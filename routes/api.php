@@ -125,7 +125,7 @@ Route::get('getCategoriesAndLots', 'App\Http\Controllers\Api\v1\Admin\LotsContol
 Route::post('activeLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getActiveLots');
 
 // Upcoming lots 
-Route::get('upcomingLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getUpcomingLots');
+Route::post('getactiveupcominglots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getActiveAndUpcomingLots');
 
 // Experied lots
 Route::post('expiredLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getexpiredlots');

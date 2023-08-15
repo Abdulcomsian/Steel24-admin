@@ -278,6 +278,7 @@ class LotsContoller extends Controller
                 $query->orderBy('created_at', 'desc')->take(1);
             }])
             ->where('lot_status', 'LIKE', '%live%')
+
             ->orderBy('StartDate', 'asc') 
             ->get();
     
@@ -496,27 +497,82 @@ class LotsContoller extends Controller
     //     ]);
     // }
 
-    public function getUpcomingLots()
+    // ***************new code here***********
+
+    // public function getUpcomingLots()
+    // {
+    //     $upcomingLots = DB::table('lots')
+    //         ->join('categories', 'lots.categoryId', '=', 'categories.id')
+    //         ->leftJoin('user_lot', 'lots.id', '=', 'user_lot.lot_id')
+    //         ->selectRaw('categories.id as cat_id, categories.title as category_title, categories.*, lots.id as l_id, lots.title as lot_title, lots.*, user_lot.id as fav_id, user_lot.*')
+    //         ->where('lots.lot_status', 'upcoming')
+    //         ->get();
+
+    //     if ($upcomingLots->isEmpty()) 
+    //     {
+    //         return response()->json([
+    //             'message' => 'No upcoming lots available',
+    //             'success' => false,
+    //         ]);
+    //     }
+
+    //     return response()->json([
+    //         'upcomingLots' => $upcomingLots,
+    //         'success' => true,
+    //     ]);
+    // }
+      
+    public function getActiveAndUpcomingLots(Request $request)
     {
-        $upcomingLots = DB::table('lots')
-            ->join('categories', 'lots.categoryId', '=', 'categories.id')
-            ->leftJoin('user_lot', 'lots.id', '=', 'user_lot.lot_id')
-            ->selectRaw('categories.id as cat_id, categories.title as category_title, categories.*, lots.id as l_id, lots.title as lot_title, lots.*, user_lot.id as fav_id, user_lot.*')
-            ->where('lots.lot_status', 'upcoming')
+        // $lots = DB::table('lots')
+        //     ->join('categories', 'lots.categoryId', '=', 'categories.id')
+        //     ->leftJoin('user_lot', 'lots.id', '=', 'user_lot.lot_id')
+        //     ->selectRaw('categories.id as cat_id, categories.title as category_title, categories.*, lots.id as l_id, lots.title as lot_title, lots.*, user_lot.id as fav_id, user_lot.*')
+        //     ->where(function ($query) {
+        //         $query->where('lots.lot_status', 'live')
+        //               ->orWhere('lots.lot_status', 'upcoming');
+        //     })
+        //     ->get();
+    
+        // if ($lots->isEmpty()) 
+        // {
+        //     return response()->json([
+        //         'message' => 'No live or upcoming lots available',
+        //         'success' => false,
+        //     ]);
+        // }
+    
+        // return response()->json([
+        //     'lots' => $lots,
+        //     'success' => true,
+        // ]);
+
+
+        $customerId = $request->customer_id;
+    
+        $lots = lots::with(['customerBalance' => function ($query) use ($customerId) 
+        {
+                $query->where('customerId', $customerId);
+            }])
+            ->with(['customers' => function ($query) use ($customerId) 
+            {
+                $query->where('customer_id', $customerId);
+            }])
+            ->with(['categories', 'bids' => function ($query) 
+            {
+                $query->orderBy('created_at', 'desc')->take(1);
+            }])
+            ->where('lot_status', 'LIKE', '%live%')
+            ->orWhere('lot_status', 'LIKE', '%upcoming%')
+            ->orderBy('StartDate', 'asc') 
             ->get();
-
-        if ($upcomingLots->isEmpty()) {
-            return response()->json([
-                'message' => 'No upcoming lots available',
-                'success' => false,
-            ]);
-        }
-
-        return response()->json([
-            'upcomingLots' => $upcomingLots,
-            'success' => true,
-        ]);
+    
+        return response()->json(['userLots' => $lots, 'success' => true]);
     }
+    
+
+
+    // ************** new code end ************
 
 
 
