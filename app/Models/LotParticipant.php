@@ -13,6 +13,6 @@ class LotParticipant extends Model
     
     protected $primaryKey = "id";
 
-    protected $fillable = ["customer_id" , "lot_id"];
+    protected $fillable = ["customer_id" , "lot_id" ,"status"];
 
 }
