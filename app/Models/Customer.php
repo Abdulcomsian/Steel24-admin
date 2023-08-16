@@ -71,5 +71,9 @@ class Customer extends Authenticatable  implements JWTSubject
         return $this->hasMany(BidsOfLots::class, 'customerId');
     }
 
+    public function engageLot()
+    {
+        return $this->belongsToMany(lots::class , 'lot_participants' , 'customer_id' , 'lot_id');
+    }
 
 }

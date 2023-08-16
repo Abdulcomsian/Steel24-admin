@@ -70,4 +70,9 @@ class lots extends Model
     {
         return $this->hasMany(AutoBid::class, 'lotId');
     }
+
+    public function participant()
+    {
+        return $this->belongsToMany(Customer::class , 'lot_participants' , 'lot_id' , 'customer_id');
+    }
 }
