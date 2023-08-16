@@ -153,12 +153,16 @@ class AuctionContoller extends Controller
             WHERE lots.id  = ' . $lotId . ' 
             ORDER by bids_of_lots.amount DESC LIMIT 1;');
         
+            
+            
+        $lot = lots::with('participants')->where('id' , $lotId)->first();
         // Return the response in JSON format using response()->json()
         return response()->json([
             'lotDetails' => $lotDetails[0], // Assuming $lotDetails is not empty, get the first element
             'materialList' => $materialilist,
             'lotTerms' => $lotTerms,
             'maxbid' => $maxbid,
+            'lot' => $lot,
             'success' => true,
         ]);
 
