@@ -73,6 +73,6 @@ class lots extends Model
 
     public function participant()
     {
-        return $this->belongsToMany(Customer::class , 'lot_participants' , 'lot_id' , 'customer_id');
+        return $this->belongsToMany(Customer::class , 'lot_participants' , 'lot_id' , 'customer_id')->withPivot('status');
     }
 }
