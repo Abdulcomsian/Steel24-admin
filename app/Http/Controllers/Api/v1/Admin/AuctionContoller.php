@@ -37,6 +37,7 @@ use Illuminate\Support\Facades\Artisan;
 use App\Models\AutoBid;
 use App\Models\CustomerLot;
 use App\Jobs\{ LotWinnerMail , LotMail as LotJob};
+use App\Models\LotParticipant;
 
 
 
@@ -438,11 +439,15 @@ class AuctionContoller extends Controller
             }
     
             // Check if the user has already participated in the same lot
-            $existingParticipation = customerBalance::where('customerId', $request->customerId)
-                ->where('lotid', $request->lotid)
-                ->where('status', '!=', '1')
-                ->first();
+            // $existingParticipation = customerBalance::where('customerId', $request->customerId)
+            //     ->where('lotid', $request->lotid)
+            //     ->where('status', '!=', '1')
+            //     ->first();
     
+            $existingParticipation = LotParticipant::where('customer_id', $request->customerId)
+                                                     ->where('lot_id' , $request->lot_id)
+                                                     ->first();
+
             if ($existingParticipation) {
                 return response()->json([
                     'message' => 'User already paid the participation fee for this lot.',
@@ -463,6 +468,12 @@ class AuctionContoller extends Controller
                     'lotid' => $request->lotid,
                     'status' => 0,
                     'date' => Carbon::now(),
+                ]);
+
+                LotParticipant::create([
+                    'customer_id' => $request->customerId,
+                    'lot_id' => $request->lotid,
+                    'status' => 'Participate Fees'
                 ]);
     
                 $participatedCustomers = customerBalance::where([['lotid', $request->lotid], ['status', '!=', '1']])->groupBy('customerId')->pluck('customerId')->toArray();
@@ -1418,6 +1429,20 @@ class AuctionContoller extends Controller
 // }
     
 
+    public function returnParticipationAmount( $lastBid , $lot)
+    {
+        $participationAmount = $lot->participate_fee;
+        foreach($lot->participant as $participant){
+            if($lastBid->customerId != $participant->id){
+                $customerBalance = CustomerBalance::where('customerId' , $participant->id)->first();
+                $customerBalance->balanceAmount = $customerBalance->balanceAmount + $participationAmount;
+                $customerBalance->save();
+                LotParticipant::where('lot_id' , $lot->id)->where('customer_id' , $participant->id)->update(['status' => 'Participate Fees Back']);
+            }
+        }
+        
+    }
+
     
     private function returnParticipationFee($bid)
     {
@@ -2128,7 +2153,7 @@ class AuctionContoller extends Controller
 
        
        //getting the lot information
-       $lot = lots::with('autoBids' , 'bids.customer')->where('id' , $lotId)->first();
+       $lot = lots::with('autoBids' , 'bids.customer' , 'participant')->where('id' , $lotId)->first();
        $customer = Customer::find($customerId);
 
 
@@ -2253,7 +2278,7 @@ class AuctionContoller extends Controller
 
             $lastBid = BidsOfLots::where('lotId' , $lot->id)->latest()->orderBy('id','desc')->first();
 
-            $this->returnParticipationFee($lastBid);
+            $this->returnParticipationAmount($lastBid , $lot);
 
             return response()->json(['success' => false ,  'msg' =>'Another Bidder Has Won Bidding You Are Too Late!' , 'bid' => $lastBid]);
 
