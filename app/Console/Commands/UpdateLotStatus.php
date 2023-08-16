@@ -124,8 +124,18 @@ class UpdateLotStatus extends Command
                             foreach($lot->participant as $participant)
                             {
                                 if($lastBid->customerId != $participant->id){
-                                    $customerBalance = CustomerBalance::where('customerId' , $participant->id)->first();
-                                    $customerBalance->balanceAmount = $customerBalance->balanceAmount + $participationAmount;
+                                    $lastCustomerBalance = CustomerBalance::where('customerId' , $participant->id)->orderBy('id' , 'desc')->first();
+                                    $newAmount = $lastCustomerBalance->balanceAmount + $participationAmount;
+                                    $customerBalance = new CustomerBalance;
+                                    $customerBalance->customerId = $participant->id;
+                                    $customerBalance->balanceAmount = $newAmount;
+                                    $customerBalance->finalAmount = $newAmount;
+                                    $customerBalance->actionAmount = $participationAmount;
+                                    $customerBalance->action = "Return Participation Fee";
+                                    $customerBalance->lotId = $lot->id;
+                                    $customerBalance->created_at = date("Y-m-d H:i:s");
+                                    $customerBalance->updated_at = date("Y-m-d H:i:s");
+                                    $customerBalance->status  = 1; 
                                     $customerBalance->save();
                                     LotParticipant::where('lot_id' , $lot->id)->where('customer_id' , $participant->id)->update(['status' => 'Participate Fees Back']);
                                 }
