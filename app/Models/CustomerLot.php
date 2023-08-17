@@ -22,7 +22,7 @@ class CustomerLot extends Model
     }
 
     public function lot(){
-        return $this->belongsTo(lots::class , 'lot_id' , 'id');
+        return $this->belongsTo(lots::class , 'lot_id' ,'id');
     }
 
 }

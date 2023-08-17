@@ -593,7 +593,7 @@ class LotsContoller extends Controller
             ->orderBy('StartDate', 'asc') 
             ->get();
     
-        return response()->json(['userLots' => $lots, 'success' => true]);
+        return response()->json(['userLots' => $lots,'success' => true]);
     }
     
 
@@ -736,33 +736,61 @@ class LotsContoller extends Controller
         //     ]);
         // }
 
+        // previous API
 
-        $customerId = $request->input('customer_id');
 
-        $soldLots = Lots::with('categories')
-                        ->with(['customers' => function($query) use ($customerId)
-                        {
-                             $query->where('customers.id' , $customerId);
-                        }])
-                        ->where('lot_status' , 'LIKE' , '%Sold%')
-                        ->get();
+    //     $customerId = $request->input('customer_id');
 
-                        // dd($userLots);
+    //     $soldLots = Lots::with('categories')
+    //                     ->with(['customers' => function($query) use ($customerId)
+    //                     {
+    //                          $query->where('customers.id' , $customerId);
+    //                     }])
+    //                     ->where('lot_status' , 'LIKE' , '%Sold%')
+    //                     ->get();
 
-                        if ($soldLots->isEmpty()) {
-                            return response()->json([
-                                'message' => 'No Sold lots available for the customer',
-                                'success' => false,
-                            ],200);
-                        }
+    //                     // dd($userLots);
+
+    //                     if ($soldLots->isEmpty()) {
+    //                         return response()->json([
+    //                             'message' => 'No Sold lots available for the customer',
+    //                             'success' => false,
+    //                         ],200);
+    //                     }
                     
-                        return response()->json([
-                            'soldLots' => $soldLots,
-                            'success' => true,
-                        ]);
+    //                     return response()->json([
+    //                         'soldLots' => $soldLots,
+    //                         'success' => true,
+    //                     ]);
 
 
-    }
+    // }
+
+
+            $customerId = $request->customer_id;
+            
+            $lots = lots::with(['customerBalance' => function ($query) use ($customerId) 
+            {
+                    $query->where('customerId', $customerId);
+                }])
+                ->with(['customers' => function ($query) use ($customerId) 
+                {
+                    $query->where('customer_id', $customerId);
+                }])
+                ->with(['categories', 'bids' => function ($query) 
+                {
+                    $query->orderBy('created_at', 'desc')->take(1);
+                }])
+                ->where('lot_status', 'LIKE', '%Sold%')
+
+                ->orderBy('StartDate', 'asc') 
+                ->get();
+
+            return response()->json(['userLots' => $lots, 'success' => true]);
+        }
+
+
+    // end sold api
 
     // Lots Details API
 
