@@ -94,7 +94,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
         // Define the route to manually process the return of the participation fee
        Route::post('returnParticipationFee/{bidId}', 'AuctionContoller@returnParticipationFee');
 
-
         //nouman route starts here
         Route::post('customer-bid' ,  'AuctionContoller@customerBidding' );
 
@@ -104,7 +103,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
         Route::post('stop-customer-autobid' , 'AuctionContoller@stopAutoBid');
         //nouman route ends here
-
     });
 
     Route::get('getlivebid', 'App\Http\Controllers\Api\v1\Admin\AuctionContoller@getlivebid');
@@ -128,7 +126,7 @@ Route::post('activeLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getAc
 Route::post('upcomingLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@upcomingLots');
 
 // Active And Upcoming Lots
-Route::post('getactiveupcominglots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getActiveAndUpcomingLots');
+Route::post('getactiveupcominglots', 'App\Http\Controllersgit branch\Api\v1\Admin\LotsContoller@getActiveAndUpcomingLots');
 
 // Experied lots
 Route::post('expiredLots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@getexpiredlots');

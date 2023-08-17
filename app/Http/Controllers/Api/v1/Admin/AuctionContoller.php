@@ -1433,31 +1433,6 @@ class AuctionContoller extends Controller
 // }
     
 
-
-//     ****** Participation code************
-
-    // private function returnParticipationFee($bid)
-    // {
-    //     $customer = Customer::find($bid->customerId);
-    //     if ($customer) 
-    //     {
-    //         $lastBalance = CustomerBalance::where('customerId', $customer->id)->orderBy('id', 'desc')->first();
-    //         if ($lastBalance) {
-    //             $newFinalAmount = $lastBalance->finalAmount + $bid->amount;
-    //             CustomerBalance::create([
-    //                 'customerId' => $customer->id,
-    //                 'balanceAmount' => $lastBalance->finalAmount,
-    //                 'action' => 'Return Participation Fee',
-    //                 'actionAmount' => $bid->amount,
-    //                 'finalAmount' => $newFinalAmount,
-    //                 'lotid' => $bid->lotId,
-    //                 'status' => 1,
-    //                 'date' => Carbon::now(),
-    //             ]);
-    //         }
-    //     }
-    // }
-
     public function returnParticipationAmount( $lastBid , $lot)
     {
         $participationAmount = $lot->participate_fee;

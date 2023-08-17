@@ -1019,25 +1019,85 @@ class LotsContoller extends Controller
 
     // Previous CODE
 
-    public function getcustomerwinlots($customerId)
+    // public function getcustomerwinlots($customerId)
+    // {
+    //     $maxBid = BidsOfLots::where('customerId', $customerId)->max('amount');
+
+    //     if ($maxBid !== null) 
+    //     {
+    //         $winLot = BidsOfLots::where('customerId', $customerId)
+    //             ->where('amount', $maxBid)
+    //             ->with('lotDetails')
+    //             ->orderBy('id', 'desc')
+    //             ->first();
+
+    //         if ($winLot) 
+    //         {
+    //             $winLot->material = new_maerials_2::where('lotid', $winLot->lotId)->get()->toArray();
+    //             return response()->json(["lots" => [$winLot], "success" => true]);
+    //         }
+    //     }
+
+    //     return response()->json(["message" => "No win lot found for the customer", "success" => false]);
+    // }
+
+    // public function getCustomerWinLots($customerId)
+    // {
+    //     // Get the maximum bid amount for the customer
+    //     $maxBidAmount = BidsOfLots::where('customerId', $customerId)->max('amount');
+    
+    //     if ($maxBidAmount !== null) {
+    //         // Retrieve the lot with the maximum bid amount for the customer
+    //         $winLot = BidsOfLots::where('customerId', $customerId)
+    //             ->where('amount', $maxBidAmount)
+    //             ->with('lotDetails')
+    //             ->orderBy('id', 'desc')
+    //             ->first();
+    
+    //         if ($winLot) {
+    //             // Load the related materials for the win lot
+    //             $winLot->material = new_maerials_2::where('lotid', $winLot->lotId)->get()->toArray();
+    //             return response()->json(["lots" => [$winLot], "success" => true]);
+    //         }
+    //     }
+    
+    //     return response()->json(["message" => "No win lot found for the customer", "success" => false]);
+    // }
+
+        public function getCustomerWinLots($customerId)
     {
-        $maxBid = BidsOfLots::where('customerId', $customerId)->max('amount');
+        // Get distinct win lots for the customer
+        $winLots = BidsOfLots::select('lotId')
+            ->distinct()
+            ->where('customerId', $customerId)
+            ->orderBy('lotId')
+            ->get();
 
-        if ($maxBid !== null) {
-            $winLot = BidsOfLots::where('customerId', $customerId)
-                ->where('amount', $maxBid)
-                ->with('lotDetails')
-                ->orderBy('id', 'desc')
-                ->first();
+        if ($winLots->count() > 0) 
+        {
+            $winningLots = [];
 
-            if ($winLot) {
-                $winLot->material = new_maerials_2::where('lotid', $winLot->lotId)->get()->toArray();
-                return response()->json(["lots" => [$winLot], "success" => true]);
+            foreach ($winLots as $winLot) {
+                $lot = BidsOfLots::where('customerId', $customerId)
+                    ->where('lotId', $winLot->lotId)
+                    ->orderBy('amount', 'desc')
+                    ->with('lotDetails')
+                    ->first();
+
+                if ($lot) {
+                    $lot->materials = new_maerials_2::where('lotid', $winLot->lotId)->get()->toArray();
+                    $winningLots[] = $lot;
+                }
             }
+
+            return response()->json(["lots" => $winningLots, "success" => true]);
         }
 
-        return response()->json(["message" => "No win lot found for the customer", "success" => false]);
+        return response()->json(["message" => "No win lots found for the customer", "success" => false]);
     }
+
+    
+    
 
     // ENDED PREVOUS CODE
 
