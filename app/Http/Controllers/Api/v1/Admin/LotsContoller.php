@@ -767,25 +767,49 @@ class LotsContoller extends Controller
     // }
 
 
-            $customerId = $request->customer_id;
+
+
+            // $customerId = $request->customer_id;
             
+            // $lots = lots::with(['customerBalance' => function ($query) use ($customerId) 
+            // {
+            //         $query->where('customerId', $customerId);
+            //     }])
+            //     ->with(['customers' => function ($query) use ($customerId) 
+            //     {
+            //         $query->where('customer_id', $customerId);
+            //     }])
+            //     ->with(['categories', 'bids' => function ($query) 
+            //     {
+            //         $query->orderBy('created_at', 'desc')->take(1);
+            //     }])
+            //     ->where('lot_status', 'LIKE', '%Sold%')
+
+            //     ->orderBy('StartDate', 'asc') 
+            //     ->get();
+
+            // return response()->json(['userLots' => $lots, 'success' => true]);
+
+
+            $customerId = $request->customer_id;
+
             $lots = lots::with(['customerBalance' => function ($query) use ($customerId) 
             {
-                    $query->where('customerId', $customerId);
-                }])
-                ->with(['customers' => function ($query) use ($customerId) 
-                {
-                    $query->where('customer_id', $customerId);
-                }])
-                ->with(['categories', 'bids' => function ($query) 
-                {
-                    $query->orderBy('created_at', 'desc')->take(1);
-                }])
-                ->where('lot_status', 'LIKE', '%Sold%')
-
-                ->orderBy('StartDate', 'asc') 
-                ->get();
-
+                $query->where('customerId', $customerId);
+            }])
+            ->with(['customers' => function ($query) use ($customerId)
+            {
+                $query->where('customer_id', $customerId);
+            }])
+            ->with(['categories'])
+            ->with(['bids' => function ($query) 
+            {
+                $query->select('lotId', DB::raw('MAX(amount) as max_bid'))->groupBy('lotId');
+            }])
+            ->where('lot_status', 'LIKE', '%Sold%')
+            ->orderBy('StartDate', 'asc') 
+            ->get();
+        
             return response()->json(['userLots' => $lots, 'success' => true]);
         }
 
@@ -1092,13 +1116,16 @@ class LotsContoller extends Controller
     //     return response()->json(["message" => "No win lot found for the customer", "success" => false]);
     // }
 
+
+
+
         public function getCustomerWinLots($customerId)
     {
         // Get distinct win lots for the customer
         $winLots = BidsOfLots::select('lotId')
             ->distinct()
             ->where('customerId', $customerId)
-            ->orderBy('lotId')
+            ->orderBy('lotId', 'desc')
             ->get();
 
         if ($winLots->count() > 0) 
@@ -1123,6 +1150,11 @@ class LotsContoller extends Controller
 
         return response()->json(["message" => "No win lots found for the customer", "success" => false]);
     }
+
+    
+    
+
+        
 
     
     
