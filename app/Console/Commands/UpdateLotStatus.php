@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Events\winLotsEvent;
 use Pusher\Pusher;
 use App\Jobs\LotMail;
-use App\Models\{BidsOfLots , CustomerLot};
+use App\Models\{BidsOfLots , CustomerLot , customerBalance , LotParticipant};
 
 
 class UpdateLotStatus extends Command
@@ -20,7 +20,7 @@ class UpdateLotStatus extends Command
     public function handle()
     {
         //new code starts here
-        $lots = lots::with('bids.customer','autobids.customer')->whereNotIn('lot_status' ,  ['Sold' , 'Expired'])->get();        
+        $lots = lots::with('bids.customer','autobids.customer' , 'participant')->whereNotIn('lot_status' ,  ['Sold' , 'Expired'])->get();        
         $currentTime = Carbon::now();
         
         foreach($lots as $lot)
@@ -117,8 +117,30 @@ class UpdateLotStatus extends Command
                             
                             dispatch(new LotMail($lot , $latestBidCustomer));
                             //sending winner bidders email  
-    
                             event(new winLotsEvent('Bidding Has Been Won By The Customer', $lastBid, $latestBidCustomer, false));
+
+
+                            $participationAmount = $lot->participate_fee;
+                            foreach($lot->participant as $participant)
+                            {
+                                if($lastBid->customerId != $participant->id){
+                                    $lastCustomerBalance = CustomerBalance::where('customerId' , $participant->id)->orderBy('id' , 'desc')->first();
+                                    $newAmount = $lastCustomerBalance->balanceAmount + $participationAmount;
+                                    $customerBalance = new CustomerBalance;
+                                    $customerBalance->customerId = $participant->id;
+                                    $customerBalance->balanceAmount = $newAmount;
+                                    $customerBalance->finalAmount = $newAmount;
+                                    $customerBalance->actionAmount = $participationAmount;
+                                    $customerBalance->action = "Return Participation Fee";
+                                    $customerBalance->lotId = $lot->id;
+                                    $customerBalance->created_at = date("Y-m-d H:i:s");
+                                    $customerBalance->updated_at = date("Y-m-d H:i:s");
+                                    $customerBalance->status  = 1; 
+                                    $customerBalance->save();
+                                    LotParticipant::where('lot_id' , $lot->id)->where('customer_id' , $participant->id)->update(['status' => 'Participate Fees Back']);
+                                }
+                            }
+
     
                         }
     

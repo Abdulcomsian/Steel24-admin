@@ -105,6 +105,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
         //nouman route ends here
 
 
+
     });
 
     Route::get('getlivebid', 'App\Http\Controllers\Api\v1\Admin\AuctionContoller@getlivebid');
