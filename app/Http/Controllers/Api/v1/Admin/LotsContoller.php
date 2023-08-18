@@ -791,6 +791,30 @@ class LotsContoller extends Controller
             // return response()->json(['userLots' => $lots, 'success' => true]);
 
 
+
+
+            // $customerId = $request->customer_id;
+
+            // $lots = lots::with(['customerBalance' => function ($query) use ($customerId) 
+            // {
+            //     $query->where('customerId', $customerId);
+            // }])
+            // ->with(['customers' => function ($query) use ($customerId)
+            // {
+            //     $query->where('customer_id', $customerId);
+            // }])
+            // ->with(['categories'])
+            // ->with(['bids' => function ($query) 
+            // {
+            //     $query->select('lotId', DB::raw('MAX(amount) as max_bid'))->groupBy('lotId');
+            // }])
+            // ->where('lot_status', 'LIKE', '%Sold%')
+            // ->orderBy('StartDate', 'asc') 
+            // ->get();
+        
+            // return response()->json(['userLots' => $lots, 'success' => true]);
+
+
             $customerId = $request->customer_id;
 
             $lots = lots::with(['customerBalance' => function ($query) use ($customerId) 
@@ -804,15 +828,16 @@ class LotsContoller extends Controller
             ->with(['categories'])
             ->with(['bids' => function ($query) 
             {
-                $query->select('lotId', DB::raw('MAX(amount) as max_bid'))->groupBy('lotId');
+                $query->select('id', 'customerId', DB::raw('MAX(amount) as max_bid'), 'lotId', 'autoBid', 'created_at', 'updated_at')
+                    ->groupBy('lotId'); // Retrieve the max_bid and group by lotId
             }])
             ->where('lot_status', 'LIKE', '%Sold%')
             ->orderBy('StartDate', 'asc') 
             ->get();
-        
-            return response()->json(['userLots' => $lots, 'success' => true]);
-        }
 
+            return response()->json(['userLots' => $lots, 'success' => true]);
+
+        }
 
     // end sold api
 
