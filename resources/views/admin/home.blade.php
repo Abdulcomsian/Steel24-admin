@@ -15,7 +15,8 @@
 <script>
     var user_id = 2;
     console.log('user',user_id);
-    window.Echo.channel('live_lots').listen('MessageEvent', function(e) {
+    window.Echo.channel('live_lots').listen('MessageEvent', function(e) 
+    {
                 console.log("listan",e);
                 $('#msg').html(e.message);
     });

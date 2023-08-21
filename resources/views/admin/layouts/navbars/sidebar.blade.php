@@ -74,7 +74,6 @@
             </li>
 
 
-
             <li class="nav-item{{ $activePage == 'Live Lots' ? ' active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/live_lots') }}">
                     <i class="material-icons"></i>
@@ -94,6 +93,16 @@
                     <p>{{ __('Payments') }}</p>
                 </a>
             </li>
+
+            <li class="nav-item{{ $activePage == 'productimages' ? ' active' : '' }}">
+                <a class="nav-link" href="{{ url('admin/productimage') }}">
+                    <i class="material-icons"></i>
+                    <p>{{ __('Product Images') }}</p>
+                </a>
+            </li>
+
+
+
 
             <div class="dropdown-divider"></div>
 

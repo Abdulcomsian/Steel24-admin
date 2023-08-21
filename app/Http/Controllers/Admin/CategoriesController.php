@@ -76,4 +76,5 @@ class CategoriesController extends Controller
     {
         $categories->delete();
    }
+   
 }
