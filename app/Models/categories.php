@@ -17,7 +17,7 @@ class categories extends Model
 
     public function lot()
     {
-        return $this->hasMany(lots::class, 'categoryId');
+        return $this->hasMany(lots::class, 'categoryId', 'id');
     }
     
 

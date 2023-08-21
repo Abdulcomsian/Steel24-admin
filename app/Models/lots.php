@@ -60,7 +60,7 @@ class lots extends Model
     public function maxBid()
     {
         return DB::table('bids_of_lots')
-            ->select('customerId', 'amount', 'lotId', 'created_at')
+            ->select('id','customerId', 'amount', 'lotId', 'created_at','updated_at')
             ->where('lotId', $this->id)
             ->orderBy('amount', 'DESC')
             ->first();
