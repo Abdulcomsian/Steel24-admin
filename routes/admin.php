@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\PaymentsController;
 use App\Http\Controllers\LiveLotsController;
 use App\Http\Controllers\Admin\AccountNotificationController;
 use App\Http\Controllers\CsvImportController;
+use App\Http\Controllers\Admin\ProductImageController;
 
 // Dashboard
 Route::get('/', 'HomeController@index')->name('home');
@@ -70,9 +71,18 @@ Route::get('/categories/{categories}/edit', [CategoriesController::class, 'edit'
 Route::patch('/categories/{categories}', [CategoriesController::class, 'update']);
 Route::get('/categories/destroy/{categories}', [CategoriesController::class, 'destroy']);
 
+// Product Image Routes
+Route::get('/productimage', [ProductImageController::class, 'index'])->name('productimages');
+Route::get('/productimages/create', [ProductImageController::class, 'create']);
+Route::get('/productimages/show/{productimages}', [ProductImageController::class, 'show']);
+Route::post('/productimages/store', [ProductImageController::class, 'store']);
+Route::get('/productimage/{productimage}/edit', [ProductImageController::class, 'edit']);
+Route::patch('/productimage/{productimage}', [ProductImageController::class, 'update']);
+Route::get('/productimage/destroy/{productimage}', [ProductImageController::class, 'destroy']);
+
+
 // Lots Routes
 Route::get('/lots', [LotsController::class, 'index'])->name('lots');
-
 
 Route::get('/lots/create', [LotsController::class, 'create'])->name('create');
 // import lots

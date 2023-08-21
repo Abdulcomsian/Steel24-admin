@@ -80,8 +80,7 @@
                                                     class="btn btn-sm btn-primary Back_btn_customer">Back</a>
                                                 <a href="{{ url('admin/categories/' . $categories->id . '/edit') }}"
                                                     class="btn btn-sm btn-success">Update</a>
-                                                <a href="javascript:void" id={{ $categories->id }}
-                                                    class="btn btn-danger btn-sm remove">Remove</a>
+                                                <a href="javascript:void" id={{ $categories->id }} class="btn btn-danger btn-sm remove">Remove</a>
                                             </div>
                                         </div>
                                     </div>
@@ -107,7 +106,8 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 <script>
-    $(document).on('click', '.remove', function(e) {
+    $(document).on('click', '.remove', function(e) 
+    {
         e.preventDefault();
         var id = $(this).attr('id');
         var token = $("meta[name='csrf-token']").attr("content");
@@ -130,9 +130,11 @@
                                 "id": id,
                                 "_token": token,
                             },
-                            success: function(data) {
+                            success: function(data) 
+                            {
                                 Swal.fire(
-                                    "Success! Category has been deleted!", {
+                                    "Success! Category has been deleted!", 
+                                    {
                                         icon: "success",
                                     });
                                 $('.data-table').DataTable().ajax
