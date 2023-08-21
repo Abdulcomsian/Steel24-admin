@@ -10,6 +10,7 @@ use App\Models\categories;
 use App\Models\lot_materials;
 use App\Models\lots;
 use App\Models\FavLots;
+use Illuminate\Support\Facades\DB;
 use App\Models\lotTerms;
 use App\Models\MaterialFiles;
 use App\Models\materials;
@@ -22,7 +23,7 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 // use \Illuminate\Support\Carbon;
 use Carbon\Carbon;
-use \Illuminate\Support\Facades\DB;
+// use \Illuminate\Support\Facades\DB;
 use App\Events\winLotsEvent;
 use Pusher\Pusher;
 
@@ -1061,32 +1062,188 @@ class LotsContoller extends Controller
 
      // show Favorites Lots in Lots 
 
+    // public function showFavorites($customer_id)
+    // {
+    //     // Retrieve the favorite lots for the given customer_id from the database
+    //     $favoritesLots = DB::table('user_lot')
+    //         ->where('customer_id', $customer_id)
+    //         ->join('lots', 'user_lot.lot_id', '=', 'lots.id')
+    //         ->select('lots.*')
+    //         ->get();
+
+    //     // Check if there are any favorite lots available for the customer
+    //     if ($favoritesLots->isEmpty()) {
+    //         return response()->json([
+    //             'message' => 'Favorite lots not available for this customer',
+    //             'success' => false,
+    //         ]);
+    //     }
+
+    //     // Return the favorite lots as a response
+    //     return response()->json([
+    //         'message' => 'Favorite lots retrieved',
+    //         'success' => true,
+    //         'lots' => $favoritesLots,
+    //     ]);
+    // }
+
+
+
+
+    //     public function showFavorites($customer_id)
+    // {
+    //     // Retrieve the favorite lots for the given customer_id along with their max_bid
+    //     $favoritesLots = FavLots::where('customer_id', $customer_id)
+    //         ->with(['lot' => function ($query) {
+    //             $query->with(['bids' => function ($subQuery) {
+    //                 $subQuery->orderBy('amount', 'desc')->take(1);
+    //             }]);
+    //         }])
+    //         ->get();
+
+    //     $result = [];
+
+    //     foreach ($favoritesLots as $favoriteLot) {
+    //         $lot = $favoriteLot->lot;
+
+    //         if ($lot && $lot->bids->isNotEmpty()) 
+    //         {
+    //             $maxBid = $lot->bids->first()->amount;
+    //             $result[] = [
+    //                 'id' => $lot->id,
+    //                 'customerId' => $customer_id,
+    //                 'max_bid' => $maxBid,
+    //                 'created_at' => $lot->bids->first()->created_at,
+    //                 'updated_at' => $lot->bids->first()->updated_at,
+    //             ];
+    //         }
+    //     }
+
+    //     // Return the favorite lots with max_bid as a response
+    //     return response()->json([
+    //         'message' => 'Favorite lots retrieved',
+    //         'success' => true,
+    //         'bids' => $result,
+    //     ]);
+    // }
+
+    // public function showFavorites($customer_id)
+    // {
+    //     // Retrieve the favorite lots for the given customer_id
+    //     $favoriteLots = FavLots::where('customer_id', $customer_id)->get();
+    
+    //     $result = [];
+    
+    //     foreach ($favoriteLots as $favoriteLot) {
+    //         $lotId = $favoriteLot->lot_id;
+            
+    //         // Retrieve the maximum bid amount for the lot
+    //         $maxBidAmount = DB::table('bids_of_lots')
+    //             ->where('lotId', $lotId)
+    //             ->max('amount');
+    
+    //         if ($maxBidAmount !== null) {
+    //             $result[] = [
+    //                 'id' => $lotId,
+    //                 'customerId' => $customer_id,
+    //                 'max_bid' => $maxBidAmount,
+    //             ];
+    //         }
+    //     }
+    
+    //     // Return the favorite lots with max_bid as a response
+    //     return response()->json([
+    //         'message' => 'Favorite lots retrieved',
+    //         'success' => true,
+    //         'bids' => $result,
+    //     ]);
+    // }
+
+    // public function showFavorites($customer_id)
+    // {
+    //     // Retrieve the favorite lots for the given customer_id from the database
+    //     $favoritesLots = DB::table('user_lot')
+    //         ->where('customer_id', $customer_id)
+    //         ->join('lots', 'user_lot.lot_id', '=', 'lots.id')
+    //         ->select('lots.*')
+    //         ->get();
+    
+    //     // Check if there are any favorite lots available for the customer
+    //     if ($favoritesLots->isEmpty()) 
+    //     {
+    //         return response()->json([
+    //             'message' => 'Favorite lots not available for this customer',
+    //             'success' => false,
+    //         ]);
+    //     }
+    
+    //     // Retrieve the maximum bid amount for each favorite lot
+    //     foreach ($favoritesLots as $favoriteLot) {
+    //         $maxBidAmount = DB::table('bids_of_lots')
+    //             ->where('lotId', $favoriteLot->id)
+    //             ->max('amount');
+    
+    //         if ($maxBidAmount !== null) {
+    //             $favoriteLot->max_bid = $maxBidAmount;
+    //         }
+    //     }
+    
+    //     // Return the favorite lots with max_bid as a response
+    //     return response()->json([
+    //         'message' => 'Favorite lots retrieved',
+    //         'success' => true,
+    //         'lots' => $favoritesLots,
+    //     ]);
+    // }
+    
     public function showFavorites($customer_id)
     {
-        // Retrieve the favorite lots for the given customer_id from the database
-        $favoritesLots = DB::table('user_lot')
-            ->where('customer_id', $customer_id)
-            ->join('lots', 'user_lot.lot_id', '=', 'lots.id')
-            ->select('lots.*')
+        // Retrieve the favorite lots for the given customer_id
+        $favoriteLots = FavLots::where('customer_id', $customer_id)
+            ->with('lot')
             ->get();
-
-        // Check if there are any favorite lots available for the customer
-        if ($favoritesLots->isEmpty()) {
-            return response()->json([
-                'message' => 'Favorite lots not available for this customer',
-                'success' => false,
-            ]);
+    
+        $result = [];
+    
+        foreach ($favoriteLots as $favoriteLot) {
+            $lot = $favoriteLot->lot;
+    
+            if ($lot) {
+                // Retrieve the maximum bid for the lot
+                $maxBid = BidsOfLots::where('lotId', $lot->id)
+                    ->orderBy('amount', 'desc')
+                    ->first();
+    
+                $lotArray = $lot->toArray();
+    
+                if ($maxBid) {
+                    $maxBidArray = [
+                        'id' => $maxBid->id,
+                        'customerId' => $maxBid->customerId,
+                        'amount' => $maxBid->amount,
+                        'lotId' => $maxBid->lotId,
+                        'created_at' => $maxBid->created_at,
+                        'updated_at' => $maxBid->updated_at,
+                    ];
+    
+                    $lotArray['bids'] = [$maxBidArray];
+                }
+    
+                $result[] = $lotArray;
+            }
         }
-
-        // Return the favorite lots as a response
+    
+        // Return the favorite lots with max_bid as a response
         return response()->json([
             'message' => 'Favorite lots retrieved',
             'success' => true,
-            'lots' => $favoritesLots,
+            'Fav_lots' => $result,
         ]);
     }
+    
+   
 
-
+    
 
     // Get Custimer Participated lots.
     public function getcustimerparticipatelots($customerId)
