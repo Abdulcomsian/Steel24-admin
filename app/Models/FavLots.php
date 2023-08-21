@@ -8,8 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 class FavLots extends Model
 {
     use HasFactory;
+
+    protected $table = 'user_lot';
+
     protected  $fillable =[
-        'user_id ',
-        'lot_id ',
+        'customer_id',
+        'lot_id',
     ];
+
+
+    public function bids()
+    {
+        return $this->hasMany(BidsOfLots::class, 'customerId');
+    }
+
+    public function lot()
+    {
+        return $this->belongsTo(lots::class , 'lot_id' ,'id');
+    }
 }
