@@ -1259,35 +1259,71 @@ class LotsContoller extends Controller
 
     // show category with lots
 
+    // public function showcategorieswithlot(Request $request)
+    // {
+    //     $customerId = $request->input('customerId');
+    //     $categoryId = $request->input('categoryId');
+
+    //     // Retrieve the category along with its lots
+    //     $categoryWithLots = categories::with(['lot' => function ($query) use ($customerId) 
+    //     {
+    //         $query->with(['bids' => function ($subQuery) use ($customerId) {
+    //             $subQuery->where('customerId', $customerId)->orderBy('amount', 'desc')->take(1);
+    //         }]);
+    //     }])
+    //     ->find($categoryId);
+
+    //     if (!$categoryWithLots) {
+    //         return response()->json([
+    //             'message' => 'Category not found',
+    //             'success' => false,
+    //         ]);
+    //     }
+
+    //     return response()->json([
+    //         'message' => 'Category with lots retrieved',
+    //         'success' => true,
+    //         'category' => $categoryWithLots,
+    //     ]);
+    // }
+    
     public function showcategorieswithlot(Request $request)
     {
         $customerId = $request->input('customerId');
         $categoryId = $request->input('categoryId');
-
-        // Retrieve the category along with its lots
-        $categoryWithLots = categories::with(['lot' => function ($query) use ($customerId) {
-            $query->with(['bids' => function ($subQuery) use ($customerId) {
-                $subQuery->where('customerId', $customerId)->orderBy('amount', 'desc')->take(1);
-            }]);
-        }])
-        ->find($categoryId);
-
-        if (!$categoryWithLots) {
+    
+        // Retrieve the category
+        $category = categories::find($categoryId);
+    
+        if (!$category) {
             return response()->json([
                 'message' => 'Category not found',
                 'success' => false,
             ]);
         }
-
+    
+        // Retrieve live lots associated with the category
+        $liveLots = $category->lot()->where('lot_status', 'live')->get();
+    
+        // Fetch max bid for each live lot
+        $liveLotsWithMaxBids = [];
+        foreach ($liveLots as $lot) {
+            $maxBid = $lot->maxBid();
+            $liveLotsWithMaxBids[] = [
+                'lot' => $lot,
+                'max_bid' => $maxBid,
+            ];
+        }
+    
         return response()->json([
-            'message' => 'Category with lots retrieved',
+            'message' => 'Live lots for the category retrieved',
             'success' => true,
-            'category' => $categoryWithLots,
+            'category' => $category,
+            'live_lots' => $liveLotsWithMaxBids,
         ]);
     }
-
-
-
+    
+    
 
 
     // Get Custimer Participated lots.
