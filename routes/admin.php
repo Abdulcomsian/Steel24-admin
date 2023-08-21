@@ -78,7 +78,7 @@ Route::get('/productimages/show/{productimages}', [ProductImageController::class
 Route::post('/productimages/store', [ProductImageController::class, 'store']);
 Route::get('/productimage/{productimage}/edit', [ProductImageController::class, 'edit']);
 Route::patch('/productimage/{productimage}', [ProductImageController::class, 'update']);
-Route::get('/productimage/destroy/{productimage}', [ProductImageController::class, 'destroy']);
+Route::delete('/admin/productimages/destroy/{productimage}', [ProductImageController::class, 'destroy'])->name('productimages.destroy');
 
 
 // Lots Routes

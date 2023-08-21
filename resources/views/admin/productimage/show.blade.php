@@ -102,7 +102,7 @@
                                             <div class="button-container">
                                                 <a href="{{ url('admin/productimage/') }}" class="btn btn-sm btn-primary Back_btn_customer">Back</a>
                                                 <a href="{{ url('admin/productimage/' . $productimage->id . '/edit') }}" class="btn btn-sm btn-success">Update</a>
-                                                <a href="javascript:void" id="{{ $productimage->id }}" class="btn btn-danger btn-sm remove">Remove</a>
+                                                <a href="javascript:void(0)" id="{{ $productimage->id }}" class="btn btn-danger btn-sm remove" onclick="confirmRemoval({{ $productimage->id }})">Remove</a>
                                             </div>
                                         </div>
                                     </div>
