@@ -149,6 +149,10 @@ Route::post('deleteFavorite', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@d
 // show fav lot
 Route::get('showFavorites/{customer_id}', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showFavorites');
 
+// show All Lots Category
+Route::get('showcategories', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showcategories');
+
+
 // new APIS's by zeshan rabnawaz
 
 

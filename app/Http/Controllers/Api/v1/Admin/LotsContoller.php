@@ -1240,10 +1240,23 @@ class LotsContoller extends Controller
             'Fav_lots' => $result,
         ]);
     }
-    
-   
 
-    
+
+    // Show Lots Categories
+   
+        public function showcategories()
+    {
+        // Retrieve all categories
+        $categories = categories::all();
+
+        return response()->json([
+            'message' => 'Categories retrieved',
+            'success' => true,
+            'categories' => $categories,
+        ]);
+    }
+
+
 
     // Get Custimer Participated lots.
     public function getcustimerparticipatelots($customerId)
