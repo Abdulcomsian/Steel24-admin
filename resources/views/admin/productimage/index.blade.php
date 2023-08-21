@@ -122,16 +122,18 @@
             {
                 data: 'image',
                 name: 'image',
-                render: function(data, type, row) {
+                render: function(data, type, row) 
+                {
                     // Use the asset() helper to generate the correct image URL
-                    var imageUrl = "{{ asset('productimages') }}/" + data;
+                    var imageUrl = "{{ asset("") }}" + data;
                     return `<img src="${imageUrl}" alt="Product Image" class="product-image">`;
                 }
             },
             {
                 data: null,
                 sorting: false,
-                render: function(data, type, row) {
+                render: function(data, type, row) 
+                {
                     return `<div><a href="{{ url('admin/productimages/show/${data.id}') }}" class="btn btn-info btn-sm">Details</a></div>`;
                 },
             }
@@ -178,14 +180,15 @@
                 return new Promise(function(resolve, reject) {
                     setTimeout(function() {
                         $.ajax({
-                            url: "{{ url('/admin/productimages/destroy') }}" + "/" + id,
-                            type: 'delete',
+                            url: "{{ url('/productimages/destroy') }}" + "/" + id,
+                            type: 'post',
                             data: {
                                 "id": id,
                                 "_token": token,
                             },
                             success: function(data) {
-                                Swal.fire("Success! Product Images has been deleted!", {
+                                Swal.fire("Success! Product Images has been deleted!", 
+                                {
                                     icon: "success",
                                 });
                                 $('.data-table').DataTable().ajax.reload(null, true);

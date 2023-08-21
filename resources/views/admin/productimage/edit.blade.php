@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <form method="post" action="{{ url('admin/productimage', $productimage->id) }}" class="form-horizontal" enctype="multipart/form-data">
+                    <form method="post" action="{{ url('admin/productimages', $productimage->id) }}" class="form-horizontal" enctype="multipart/form-data">
                         @method('PATCH')
                         @csrf
                         <div class="card">
