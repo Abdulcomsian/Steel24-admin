@@ -1257,6 +1257,38 @@ class LotsContoller extends Controller
     }
 
 
+    // show category with lots
+
+    public function showcategorieswithlot(Request $request)
+    {
+        $customerId = $request->input('customerId');
+        $categoryId = $request->input('categoryId');
+
+        // Retrieve the category along with its lots
+        $categoryWithLots = categories::with(['lot' => function ($query) use ($customerId) {
+            $query->with(['bids' => function ($subQuery) use ($customerId) {
+                $subQuery->where('customerId', $customerId)->orderBy('amount', 'desc')->take(1);
+            }]);
+        }])
+        ->find($categoryId);
+
+        if (!$categoryWithLots) {
+            return response()->json([
+                'message' => 'Category not found',
+                'success' => false,
+            ]);
+        }
+
+        return response()->json([
+            'message' => 'Category with lots retrieved',
+            'success' => true,
+            'category' => $categoryWithLots,
+        ]);
+    }
+
+
+
+
 
     // Get Custimer Participated lots.
     public function getcustimerparticipatelots($customerId)

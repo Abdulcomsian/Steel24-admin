@@ -19,4 +19,6 @@ class categories extends Model
     {
         return $this->hasMany(lots::class, 'categoryId');
     }
+    
+
 }

@@ -27,20 +27,21 @@
                                             </svg>New</a>
                                         </div>
                                     </div>
-                                    <div ><!-- remove class="table-responsive" -->
+                                    <div>
+                                        <!-- remove class="table-responsive" -->
                                         <table class="table data-table table-striped">
                                             <thead class="text-primary text-center">
                                                 <th>ID</th>
                                                 <th>Title</th>
                                                 <th>Description</th>
-                                                <th>Images<th>
+                                                <th>Images</th> 
                                                 <th>Actions</th>
                                             </thead>
                                             <tbody class="text-center">
-
+                                    
                                             </tbody>
                                         </table>
-                                    </div>
+                                    </div>                                    
                                 </div>
                                 <div class="card-footer mr-auto">
                                     {{-- {{ $auctions->links() }} --}}
@@ -61,41 +62,86 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
-        var table = $('.data-table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax:"{!! route('admin.productimages') !!}",
 
-            columns: [
-                {
-                    data: 'id',
-                    name: 'id'
-                },
-                {
-                    data: 'title',
-                    name: 'title'
-                },
-                {
-                    data: 'description',
-                    name: 'description'
-                },
-                {
-                    data: 'image',
-                    name: 'image'
-                },
-                {
-                data: null,
-                sorting:false,
+    // $(document).ready(function() {
+    //     var table = $('.data-table').DataTable({
+    //         processing: true,
+    //         serverSide: true,
+    //         ajax:"{!! route('admin.productimages') !!}",
+
+    //         columns: [
+    //             {
+    //                 data: 'id',
+    //                 name: 'id'
+    //             },
+    //             {
+    //                 data: 'title',
+    //                 name: 'title'
+    //             },
+    //             {
+    //                 data: 'description',
+    //                 name: 'description'
+    //             },
+    //             {
+    //                 data: 'image',
+    //                 name: 'image'
+    //             },
+    //             {
+    //             data: null,
+    //             sorting:false,
+    //             render: function(data, type, row) 
+    //             {
+    //                 return(`<div><a href="{{ url('admin/productimages/show/${data.id}') }}"class="btn btn-info btn-sm">Details</a>
+    //            </div>
+    //                 `);
+    //             },
+    //         }
+    //         ]
+    //     });
+    // });
+
+    $(document).ready(function() {
+    var table = $('.data-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{!! route('admin.productimages') !!}",
+
+        columns: [
+            {
+                data: 'id',
+                name: 'id'
+            },
+            {
+                data: 'title',
+                name: 'title'
+            },
+            {
+                data: 'description',
+                name: 'description'
+            },
+            {
+                data: 'image',
+                name: 'image',
                 render: function(data, type, row) {
-                    return(`<div><a href="{{ url('admin/productimages/show/${data.id}') }}"class="btn btn-info btn-sm">Details</a>
-               </div>
-                    `);
+                    // Use the asset() helper to generate the correct image URL
+                    var imageUrl = "{{ asset('productimages') }}/" + data;
+                    return `<img src="${imageUrl}" alt="Product Image" class="product-image">`;
+                }
+            },
+            {
+                data: null,
+                sorting: false,
+                render: function(data, type, row) {
+                    return `<div><a href="{{ url('admin/productimages/show/${data.id}') }}" class="btn btn-info btn-sm">Details</a></div>`;
                 },
             }
-            ]
-        });
+        ]
     });
+});
+
+
+
+
 </script>
 <style>
     .sorting:before,
@@ -107,7 +153,14 @@
         .sorting::after {
             display: none !important;
         }
+
+        .product-image {
+        max-width: 100px; /* Set the maximum width for the image */
+        height: auto; /* Maintain the aspect ratio */
+}
+
 </style>
+
 <script>
     $(document).on('click', '.remove', function(e) {
         e.preventDefault();

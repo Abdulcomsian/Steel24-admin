@@ -16,6 +16,7 @@ class ProductImageController extends Controller
     {
         $this->middleware('admin.auth:admin');
     }
+
     public function index(Request $request)
     {
         $productimage = productimage::all();
@@ -231,8 +232,14 @@ class ProductImageController extends Controller
      * @param  \App\Models\productimage  $productimage
      * @return \Illuminate\Http\Response
      */
-    public function destroy(productimage $productimage)
+        public function destroy(productimage $productimage)
     {
-        $productimage->delete();
-   }
+        try {
+            $productimage->delete();
+            return response()->json(['success' => true], 200);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
+        }
+    }
+
 }
