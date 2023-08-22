@@ -152,9 +152,11 @@ Route::get('showFavorites/{customer_id}', 'App\Http\Controllers\Api\v1\Admin\Lot
 // show All Lots Category
 Route::get('showcategories', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showcategories');
 
-// show All Categories and and its lots
+// Show All Categories and and its lots
 Route::post('showcategorieswithlot', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showcategorieswithlot');
 
+// Show All Product Images 
+Route::get('showProductImages', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showProductImages');
 
 // new APIS's by zeshan rabnawaz
 

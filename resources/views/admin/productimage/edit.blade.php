@@ -4,8 +4,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <form method="post" action="{{ url('admin/productimages', $productimage->id) }}" class="form-horizontal" enctype="multipart/form-data">
-                        @method('PATCH')
+                    <form method="POST" action="{{ url('admin/productimages', $productimage->id) }}" class="form-horizontal" enctype="multipart/form-data">
+                        @method('POST')
                         @csrf
                         <div class="card">
                             <!-- Header -->

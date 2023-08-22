@@ -77,7 +77,7 @@ Route::get('/productimages/create', [ProductImageController::class, 'create']);
 Route::get('/productimages/show/{productimages}', [ProductImageController::class, 'show']);
 Route::post('/productimages/store', [ProductImageController::class, 'store']);
 Route::get('/productimages/{productimage}/edit', [ProductImageController::class, 'edit']);
-Route::patch('/productimages/{productimage}', [ProductImageController::class, 'update']);
+Route::post('/productimages/{productimage}', [ProductImageController::class, 'update']);
 Route::post('/productimages/destroy/{productimage}', [ProductImageController::class, 'destroy'])->name('productimages.destroy');
 
 

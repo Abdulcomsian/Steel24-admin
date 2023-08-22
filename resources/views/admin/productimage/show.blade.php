@@ -128,42 +128,136 @@
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
 <script>
-    $(document).on('click', '.remove', function(e) {
-        e.preventDefault();
-        var id = $(this).attr('id');
-        var token = $("meta[name='csrf-token']").attr("content");
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'Once deleted, you will not be able to recover this Product Images!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, Remove!",
-            showLoaderOnConfirm: true,
-            preConfirm: function() 
+    // $(document).on('click', '.remove', function(e) 
+    // {
+    //     e.preventDefault();
+    //     var id = $(this).attr('id');
+    //     var token = $("meta[name='csrf-token']").attr("content");
+    //     Swal.fire({
+    //         title: 'Are you sure?',
+    //         text: 'Once deleted, you will not be able to recover this Product Images!',
+    //         icon: 'warning',
+    //         showCancelButton: true,
+    //         confirmButtonColor: "#DD6B55",
+    //         confirmButtonText: "Yes, Remove!",
+    //         showLoaderOnConfirm: true,
+    //         preConfirm: function() 
+    //         {
+    //             return new Promise(function(resolve, reject) 
+    //             {
+    //                 setTimeout(function() 
+    //                 {
+    //                     $.ajax({
+    //                         url: "{{ url('/admin/productimages/destroy') }}" + "/" + id,
+    //                         type: 'post',
+    //                         data: {
+    //                             "id": id,
+    //                             "_token": token,
+    //                         },
+    //                         success: function(data) {
+    //                             Swal.fire("Success! Product Images has been deleted!", {
+    //                                 icon: "success",
+    //                             });
+    //                             $('.data-table').DataTable().ajax.reload(null, true);
+    //                         }
+    //                     });
+    //                 }, 0);
+    //             });
+    //         },
+    //     });
+    // });
+
+//     $(document).on('click', '.remove', function(e) 
+// {
+//     e.preventDefault();
+//     var id = $(this).attr('id');
+//     var token = $("meta[name='csrf-token']").attr("content");
+//     Swal.fire({
+//         title: 'Are you sure?',
+//         text: 'Once deleted, you will not be able to recover this Product Images!',
+//         icon: 'warning',
+//         showCancelButton: true,
+//         confirmButtonColor: "#DD6B55",
+//         confirmButtonText: "Yes, Remove!",
+//         showLoaderOnConfirm: true,
+//         preConfirm: function() 
+//         {
+//             return new Promise(function(resolve, reject) 
+//             {
+//                 setTimeout(function() 
+//                 {
+//                     $.ajax({
+//                         url: "{{ url('/admin/productimages/destroy') }}" + "/" + id,
+//                         type: 'post',
+//                         data: {
+//                             "id": id,
+//                             "_token": token,
+//                         },
+//                         success: function(data) {
+//                             Swal.fire({
+//                                 title: 'Success!',
+//                                 text: 'Product Images has been deleted!',
+//                                 icon: 'success'
+//                             }).then(function(result) {
+//                                 if (result.value) {
+//                                     // Reload only the current page without redirecting
+//                                     $('.data-table').DataTable().ajax.reload(null, false);
+//                                 }
+//                             });
+//                         }
+//                     });
+//                 }, 0);
+//             });
+//         },
+//     });
+// });
+
+$(document).on('click', '.remove', function(e) 
+{
+    e.preventDefault();
+    var id = $(this).attr('id');
+    var token = $("meta[name='csrf-token']").attr("content");
+    Swal.fire({
+        title: 'Are you sure?',
+        text: 'Once deleted, you will not be able to recover this Product Images!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes, Remove!",
+        showLoaderOnConfirm: true,
+        preConfirm: function() 
+        {
+            return new Promise(function(resolve, reject) 
             {
-                return new Promise(function(resolve, reject) 
+                setTimeout(function() 
                 {
-                    setTimeout(function() 
-                    {
-                        $.ajax({
-                            url: "{{ url('/admin/productimages/destroy') }}" + "/" + id,
-                            type: 'get',
-                            data: {
-                                "id": id,
-                                "_token": token,
-                            },
-                            success: function(data) {
-                                Swal.fire("Success! Product Images has been deleted!", {
-                                    icon: "success",
-                                });
-                                $('.data-table').DataTable().ajax.reload(null, true);
-                            }
-                        });
-                    }, 0);
-                });
-            },
-        });
+                    $.ajax({
+                        url: "{{ url('/admin/productimages/destroy') }}" + "/" + id,
+                        type: 'post',
+                        data: {
+                            "id": id,
+                            "_token": token,
+                        },
+                        success: function(data) {
+                            Swal.fire({
+                                title: 'Success!',
+                                text: 'Product Images has been deleted!',
+                                icon: 'success'
+                            }).then(function(result) {
+                                if (result.value) {
+                                    // Redirect to the index route
+                                    window.location.href = "{{ url('admin/productimage') }}";
+                                }
+                            });
+                        }
+                    });
+                }, 0);
+            });
+        },
     });
+});
+
+
 </script>

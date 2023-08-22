@@ -104,9 +104,6 @@ class ProductImageController extends Controller
         return redirect('admin/productimage');
     }
     
-
-   
-    
     public function show($id)
     {
         $productimage  = productimage::find($id);
@@ -114,10 +111,10 @@ class ProductImageController extends Controller
     }
 
 
-    public function edit(productimage $productimage)
+    public function edit($id)
     {
-        $parentproductimage  = productimage::all();
-        return view('admin.productimage.edit', compact('productimage', 'parentproductimage'));
+        $productimage  = productimage::find($id);
+        return view('admin.productimage.edit', compact('productimage'));
     }
 
     // public function update(Request $request, Productimage $productimage)
@@ -189,6 +186,43 @@ class ProductImageController extends Controller
     //     return redirect('admin/productimages/show/' . $productimage->id);
     // }
 
+
+
+    // public function update(Request $request, Productimage $productimage)
+    // {
+    //     $validatedData = $request->validate([
+    //         'title' => 'required',
+    //         'description' => 'nullable',
+    //         'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    //     ]);
+    
+    //     // Handle image upload and storage if a new image is provided
+    //     if ($request->hasFile('image')) 
+    //     {
+    //         // Delete the old image if it exists
+    //         if ($productimage->image) {
+    //             $oldImagePath = public_path($productimage->image);
+    //             if (file_exists($oldImagePath)) {
+    //                 unlink($oldImagePath);
+    //             }
+    //         }
+    
+    //         // Store the new image in the public/productimages directory
+    //         $newImage = $request->file('image');
+    //         $newImagePath = 'public/productimages/' . time() . '_' . $newImage->getClientOriginalName();
+    //         $newImage->move(public_path('productimages'), $newImagePath);
+    
+    //         $validatedData['image'] = $newImagePath;
+    //     }
+    
+    //     // Update the product image record with the validated data
+    //     $productimage->update($validatedData);
+
+    //     // dd($oldImagePath, $newImagePath);
+    
+    //     return redirect('admin/productimages/show/' . $productimage->id);
+    // }
+
     public function update(Request $request, Productimage $productimage)
     {
         $validatedData = $request->validate([
@@ -197,9 +231,7 @@ class ProductImageController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
     
-        // Handle image upload and storage if a new image is provided
-        if ($request->hasFile('image')) 
-        {
+        if ($request->hasFile('image')) {
             // Delete the old image if it exists
             if ($productimage->image) {
                 $oldImagePath = public_path($productimage->image);
@@ -210,10 +242,13 @@ class ProductImageController extends Controller
     
             // Store the new image in the public/productimages directory
             $newImage = $request->file('image');
-            $newImagePath = 'public/productimages/' . time() . '_' . $newImage->getClientOriginalName();
-            $newImage->move(public_path('productimages'), $newImagePath);
+            $newImagePath = 'productimages/' . time() . '_' . $newImage->getClientOriginalName();
+            $newImage->move(public_path('productimages'), basename($newImagePath));
     
             $validatedData['image'] = $newImagePath;
+        } else {
+            // If no new image provided, keep the old image path
+            $validatedData['image'] = $productimage->image;
         }
     
         // Update the product image record with the validated data
@@ -222,7 +257,7 @@ class ProductImageController extends Controller
         return redirect('admin/productimages/show/' . $productimage->id);
     }
     
-    
+
     
     
 
