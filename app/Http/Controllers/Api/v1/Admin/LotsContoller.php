@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\lotTerms;
 use App\Models\MaterialFiles;
 use App\Models\materials;
+use App\Models\productimage;
 use App\Models\new_maerials_2;
 use App\Models\newMaterial;
 use App\Models\payments;
@@ -1359,6 +1360,43 @@ class LotsContoller extends Controller
             // 'category' => $category,
         ]);
     }
+      
+        // Show all product Images
+        // public function showProductImages()
+        // {
+        //     $productImages = productimage::all();
+
+        //     $productImagesWithUrls = $productImages->map(function ($image) {
+        //         $imageUrl = asset($image->image); // Assuming image field contains the relative path
+        //         $image->image_url = $imageUrl;
+        //         return $image;
+        //     });
+
+        //     return response()->json(['productImages' => $productImagesWithUrls]);
+        // }
+
+        public function showProductImages()
+        {
+            $productImages = productimage::all();
+            
+            $productImagesWithUrls = $productImages->map(function ($image) 
+            {
+                $imagePath = url('public/' . $image->image);
+                $image->image = $imagePath;
+                unset($image->image_url);
+                return $image;
+            });
+            
+            return response()->json(['productImages' => $productImagesWithUrls]);
+        }
+
+        
+
+        
+
+
+
+
     
     
     
