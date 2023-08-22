@@ -1287,6 +1287,42 @@ class LotsContoller extends Controller
     //     ]);
     // }
     
+    // public function showcategorieswithlot(Request $request)
+    // {
+    //     $customerId = $request->input('customerId');
+    //     $categoryId = $request->input('categoryId');
+    
+    //     // Retrieve the category
+    //     $category = categories::find($categoryId);
+    
+    //     if (!$category) {
+    //         return response()->json([
+    //             'message' => 'Category not found',
+    //             'success' => false,
+    //         ]);
+    //     }
+    
+    //     // Retrieve live lots associated with the category
+    //     $liveLots = $category->lot()->where('lot_status', 'live')->get();
+    
+    //     // Fetch max bid for each live lot
+    //     $liveLotsWithMaxBids = [];
+    //     foreach ($liveLots as $lot) {
+    //         $maxBid = $lot->maxBid();
+    //         $liveLotsWithMaxBids[] = [
+    //             'lot' => $lot,
+    //             'max_bid' => $maxBid,
+    //         ];
+    //     }
+    
+    //     return response()->json([
+    //         'message' => 'Live lots for the category retrieved',
+    //         'success' => true,
+    //         'category' => $category,
+    //         'live_lots' => $liveLotsWithMaxBids,
+    //     ]);
+    // }
+
     public function showcategorieswithlot(Request $request)
     {
         $customerId = $request->input('customerId');
@@ -1303,25 +1339,27 @@ class LotsContoller extends Controller
         }
     
         // Retrieve live lots associated with the category
-        $liveLots = $category->lot()->where('lot_status', 'live')->get();
-    
-        // Fetch max bid for each live lot
-        $liveLotsWithMaxBids = [];
-        foreach ($liveLots as $lot) {
-            $maxBid = $lot->maxBid();
-            $liveLotsWithMaxBids[] = [
-                'lot' => $lot,
-                'max_bid' => $maxBid,
-            ];
-        }
+        $liveLots = lots::with([
+            'customers' => function ($query) use ($customerId) {
+                $query->where('customer_id', $customerId);
+            },
+            'categories',
+            'bids' => function ($query) {
+                $query->orderBy('created_at', 'desc')->take(1);
+            }
+        ])
+        ->where('categoryId', $categoryId)
+        ->where('lot_status', 'LIKE', '%live%')
+        ->orderBy('StartDate', 'asc')
+        ->get();
     
         return response()->json([
-            'message' => 'Live lots for the category retrieved',
+            'userLots' => $liveLots,
             'success' => true,
-            'category' => $category,
-            'live_lots' => $liveLotsWithMaxBids,
+            // 'category' => $category,
         ]);
     }
+    
     
     
 
