@@ -1381,7 +1381,7 @@ class LotsContoller extends Controller
             
             $productImagesWithUrls = $productImages->map(function ($image) 
             {
-                $imagePath = url('public/' . $image->image);
+                $imagePath = url('/' . $image->image);
                 $image->image = $imagePath;
                 unset($image->image_url);
                 return $image;
