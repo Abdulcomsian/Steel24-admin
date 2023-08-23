@@ -100,6 +100,8 @@
                                             required>
                                     </div>
                                     <!-- <label for="endDate" class="col-sm-2 col-form-label">End Date</label> -->
+
+
                                     <div class="col-sm-4">
                                         <input type="text" class="form_customer" id="endDate" name="EndDate" placeholder="End Date"
                                            onfocus="(this.type='datetime-local')" onblur="(this.type='text')"
@@ -166,7 +168,8 @@
 @endsection
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function() 
+    {
         // Select2 Multiple
         $('.select2-multiple').select2({
             placeholder: "Select",

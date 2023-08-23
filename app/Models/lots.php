@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\lotTerms;
@@ -16,10 +17,20 @@ class lots extends Model
     use HasFactory;
     protected $table = 'lots';
     protected $primaryKey = 'id';
+    protected $dates = ['EndDate'];
+    
     protected  $fillable =  [
         'title', 'description', 'categoryId', 'uid', 'Seller', 'Plant', 'materialLocation', 'Quantity','Payment_terms',
         'StartDate', 'EndDate', 'Price', 'auction_status', 'lot_status', 'customFields', 'participate_fee', 'ReStartDate', 'ReEndDate', 'LiveSequenceNumber','status'
     ];
+
+   
+    // Convert the EndDate attribute to a Carbon instance with the correct format
+    public function getEndDateAttribute($value)
+    {
+        return Carbon::createFromFormat('Y-m-d H:i:s', $value);
+    }
+
 
     public function materials()
     {
