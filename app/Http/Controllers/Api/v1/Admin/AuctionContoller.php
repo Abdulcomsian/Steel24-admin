@@ -2177,82 +2177,131 @@ class AuctionContoller extends Controller
         return json_encode($response);
     }
 
+    
+    // Nouman raiz bid api
 
     //new code starts here
+    // public function customerBidding(Request $request)
+    // {
+    //    try {
+    //    $customerId = auth()->user()->id;
+    //    $lotId = $request->lotId;
+    //    $amount = $request->amount;
+
+       
+    //    //getting the lot information
+    //    $lot = lots::with('autoBids' , 'bids.customer' , 'participant')->where('id' , $lotId)->first();
+    //    $customer = Customer::find($customerId);
+
+
+    //     //check wheather bid already sold or expired
+    //     $status = $lot->lot_status;
+
+    //     if(in_array($status , ['Sold' , 'Expired']))
+    //     {
+    //          $msg =   $status == 'Sold' ? "Lot Has Already Been Sold" : "Lot Has Been Expired"; 
+    //          return response()->json(["success" => false , "msg" => $msg ]);
+    //     }
+
+    //    if($customer->isApproved)
+    //    {
+    //     // dd($lot->bids->isEmpty());      
+    //     //if someone has bid against the lot
+    //     if(!$lot->bids->isEmpty())
+    //     {
+    //         $lastRecordTime = $lot->bids()->latest()->orderBy('id','desc')->first()->created_at;
+
+
+    //         $currentTime = Carbon::now();
+            
+    //         $lastBidTime = Carbon::createFromFormat('Y-m-d H:i:s', $lastRecordTime);
+            
+    //         $timeDifferenceInSeconds = $lastBidTime->diffInSeconds($currentTime);
+            
+    //         if ($timeDifferenceInSeconds <= 120)
+    //         {
+    //             //when time is still remaingin add new bidding
+    //             return $this->addNewBidding($customer , $amount , $lot , 0);
+    //         }else{
+    //             //when time is finished assigned lot to last bidder
+    //             return $this->assignLastBidder($lot);
+    //         }
+
+    //     }
+    //     else{
+    //         //if no one has bid against the lot
+    //         return $this->addNewBidding($customer , $amount , $lot , 0);
+    //     }
+
+    //     }
+    //     else
+    //     {
+        
+    //     return response()->json(["success" => false , "msg" => "User Is Not Allowed"]);
+       
+    //     }
+
+
+    //     }catch(\Exception $e)
+    //     {
+    //         return response()->json(["success" => false , "msg" => "Something Went Wrong!" , "error" => $e->getMessage()]);
+    //     }
+
+    // }
+
     public function customerBidding(Request $request)
     {
-       try {
-       $customerId = auth()->user()->id;
-       $lotId = $request->lotId;
-       $amount = $request->amount;
-
-       
-       //getting the lot information
-       $lot = lots::with('autoBids' , 'bids.customer' , 'participant')->where('id' , $lotId)->first();
-       $customer = Customer::find($customerId);
-
-
-        //check wheather bid already sold or expired
-        $status = $lot->lot_status;
-
-        if(in_array($status , ['Sold' , 'Expired']))
-        {
-             $msg =   $status == 'Sold' ? "Lot Has Already Been Sold" : "Lot Has Been Expired"; 
-             return response()->json(["success" => false , "msg" => $msg ]);
-        }
-
-       if($customer->isApproved)
-       {
-        // dd($lot->bids->isEmpty());      
-        //if someone has bid against the lot
-        if(!$lot->bids->isEmpty())
-        {
-            $lastRecordTime = $lot->bids()->latest()->orderBy('id','desc')->first()->created_at;
-
-
-            $currentTime = Carbon::now();
-            
-            $lastBidTime = Carbon::createFromFormat('Y-m-d H:i:s', $lastRecordTime);
-            
-            $timeDifferenceInSeconds = $lastBidTime->diffInSeconds($currentTime);
-            
-            if ($timeDifferenceInSeconds <= 120)
-            {
-                //when time is still remaingin add new bidding
-                return $this->addNewBidding($customer , $amount , $lot , 0);
-            }else{
-                //when time is finished assigned lot to last bidder
-                return $this->assignLastBidder($lot);
-            }
-
-        }else{
-            //if no one has bid against the lot
-            return $this->addNewBidding($customer , $amount , $lot , 0);
-        }
+        try {
+            $customerId = auth()->user()->id;
+            $lotId = $request->lotId;
+            $amount = $request->amount;
     
-
-
-       }
-       else
-       {
-        
-        return response()->json(["success" => false , "msg" => "User Is Not Allowed"]);
-       
-     }
-
-
-    }catch(\Exception $e)
-    {
-        return response()->json(["success" => false , "msg" => "Something Went Wrong!" , "error" => $e->getMessage()]);
+            $lot = lots::with('autoBids', 'bids.customer', 'participant')->where('id', $lotId)->first();
+            $customer = Customer::find($customerId);
+    
+            $status = $lot->lot_status;
+    
+            if (in_array($status, ['Sold', 'Expired'])) 
+            {
+                $msg = $status == 'Sold' ? "Lot Has Already Been Sold" : "Lot Has Been Expired";
+                return response()->json(["success" => false, "msg" => $msg]);
+            }
+    
+            if ($customer->isApproved) 
+            {
+                // Check if the bidding is allowed based on the endDate
+                $currentTime = Carbon::now();
+                $endDate = Carbon::createFromFormat('Y-m-d H:i:s', $lot->EndDate);
+    
+                if ($currentTime->lte($endDate)) 
+                {
+                    if (!$lot->bids->isEmpty()) 
+                    {
+                        // If someone has bid against the lot
+                        return $this->addNewBidding($customer, $amount, $lot, 0);
+                    } 
+                    else {
+                        // If no one has bid against the lot
+                        return $this->addNewBidding($customer, $amount, $lot, 0);
+                    }
+                } 
+                else {
+                    // If bidding is not allowed after endDate
+                    return response()->json(["success" => false, "msg" => "Bidding is no longer allowed for this lot."]);
+                }
+            } 
+            else {
+                return response()->json(["success" => false, "msg" => "User Is Not Allowed"]);
+            }
+        } catch (\Exception $e) {
+            return response()->json(["success" => false, "msg" => "Something Went Wrong!", "error" => $e->getMessage()]);
+        }
     }
-        
+    
+    // end nouman raiz api of bid 
 
 
-
-
-    }
-
-    function addNewBidding($customer , $amount , $lot , $bidType )
+    function addNewBidding($customer , $amount , $lot , $bidType)
     {
         // dd("add new bidding");
         $currentPricing =  $lot->bids->count() > 0 ? $lot->bids->max('amount') : $lot->price;

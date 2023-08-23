@@ -287,6 +287,8 @@ class LotsContoller extends Controller
         return response()->json(['userLots' => $lots, 'success' => true]);
     }
 
+
+
     // Upcoming Lots API
 
     public function upcomingLots(Request $request)
@@ -313,12 +315,6 @@ class LotsContoller extends Controller
         return response()->json(['userLots' => $lots, 'success' => true]);
     }
     
-    
-    
-    
-    
-
-
     
         // $customerId = $request->input('customer_id');
 
@@ -1056,147 +1052,9 @@ class LotsContoller extends Controller
             }
         }
         
-
-
-    
-
-
+        
      // show Favorites Lots in Lots 
 
-    // public function showFavorites($customer_id)
-    // {
-    //     // Retrieve the favorite lots for the given customer_id from the database
-    //     $favoritesLots = DB::table('user_lot')
-    //         ->where('customer_id', $customer_id)
-    //         ->join('lots', 'user_lot.lot_id', '=', 'lots.id')
-    //         ->select('lots.*')
-    //         ->get();
-
-    //     // Check if there are any favorite lots available for the customer
-    //     if ($favoritesLots->isEmpty()) {
-    //         return response()->json([
-    //             'message' => 'Favorite lots not available for this customer',
-    //             'success' => false,
-    //         ]);
-    //     }
-
-    //     // Return the favorite lots as a response
-    //     return response()->json([
-    //         'message' => 'Favorite lots retrieved',
-    //         'success' => true,
-    //         'lots' => $favoritesLots,
-    //     ]);
-    // }
-
-
-
-
-    //     public function showFavorites($customer_id)
-    // {
-    //     // Retrieve the favorite lots for the given customer_id along with their max_bid
-    //     $favoritesLots = FavLots::where('customer_id', $customer_id)
-    //         ->with(['lot' => function ($query) {
-    //             $query->with(['bids' => function ($subQuery) {
-    //                 $subQuery->orderBy('amount', 'desc')->take(1);
-    //             }]);
-    //         }])
-    //         ->get();
-
-    //     $result = [];
-
-    //     foreach ($favoritesLots as $favoriteLot) {
-    //         $lot = $favoriteLot->lot;
-
-    //         if ($lot && $lot->bids->isNotEmpty()) 
-    //         {
-    //             $maxBid = $lot->bids->first()->amount;
-    //             $result[] = [
-    //                 'id' => $lot->id,
-    //                 'customerId' => $customer_id,
-    //                 'max_bid' => $maxBid,
-    //                 'created_at' => $lot->bids->first()->created_at,
-    //                 'updated_at' => $lot->bids->first()->updated_at,
-    //             ];
-    //         }
-    //     }
-
-    //     // Return the favorite lots with max_bid as a response
-    //     return response()->json([
-    //         'message' => 'Favorite lots retrieved',
-    //         'success' => true,
-    //         'bids' => $result,
-    //     ]);
-    // }
-
-    // public function showFavorites($customer_id)
-    // {
-    //     // Retrieve the favorite lots for the given customer_id
-    //     $favoriteLots = FavLots::where('customer_id', $customer_id)->get();
-    
-    //     $result = [];
-    
-    //     foreach ($favoriteLots as $favoriteLot) {
-    //         $lotId = $favoriteLot->lot_id;
-            
-    //         // Retrieve the maximum bid amount for the lot
-    //         $maxBidAmount = DB::table('bids_of_lots')
-    //             ->where('lotId', $lotId)
-    //             ->max('amount');
-    
-    //         if ($maxBidAmount !== null) {
-    //             $result[] = [
-    //                 'id' => $lotId,
-    //                 'customerId' => $customer_id,
-    //                 'max_bid' => $maxBidAmount,
-    //             ];
-    //         }
-    //     }
-    
-    //     // Return the favorite lots with max_bid as a response
-    //     return response()->json([
-    //         'message' => 'Favorite lots retrieved',
-    //         'success' => true,
-    //         'bids' => $result,
-    //     ]);
-    // }
-
-    // public function showFavorites($customer_id)
-    // {
-    //     // Retrieve the favorite lots for the given customer_id from the database
-    //     $favoritesLots = DB::table('user_lot')
-    //         ->where('customer_id', $customer_id)
-    //         ->join('lots', 'user_lot.lot_id', '=', 'lots.id')
-    //         ->select('lots.*')
-    //         ->get();
-    
-    //     // Check if there are any favorite lots available for the customer
-    //     if ($favoritesLots->isEmpty()) 
-    //     {
-    //         return response()->json([
-    //             'message' => 'Favorite lots not available for this customer',
-    //             'success' => false,
-    //         ]);
-    //     }
-    
-    //     // Retrieve the maximum bid amount for each favorite lot
-    //     foreach ($favoritesLots as $favoriteLot) {
-    //         $maxBidAmount = DB::table('bids_of_lots')
-    //             ->where('lotId', $favoriteLot->id)
-    //             ->max('amount');
-    
-    //         if ($maxBidAmount !== null) {
-    //             $favoriteLot->max_bid = $maxBidAmount;
-    //         }
-    //     }
-    
-    //     // Return the favorite lots with max_bid as a response
-    //     return response()->json([
-    //         'message' => 'Favorite lots retrieved',
-    //         'success' => true,
-    //         'lots' => $favoritesLots,
-    //     ]);
-    // }
-    
     public function showFavorites($customer_id)
     {
         // Retrieve the favorite lots for the given customer_id
@@ -1209,7 +1067,8 @@ class LotsContoller extends Controller
         foreach ($favoriteLots as $favoriteLot) {
             $lot = $favoriteLot->lot;
     
-            if ($lot) {
+            if ($lot) 
+            {
                 // Retrieve the maximum bid for the lot
                 $maxBid = BidsOfLots::where('lotId', $lot->id)
                     ->orderBy('amount', 'desc')
@@ -1217,7 +1076,8 @@ class LotsContoller extends Controller
     
                 $lotArray = $lot->toArray();
     
-                if ($maxBid) {
+                if ($maxBid) 
+                {
                     $maxBidArray = [
                         'id' => $maxBid->id,
                         'customerId' => $maxBid->customerId,
@@ -1260,70 +1120,6 @@ class LotsContoller extends Controller
 
     // show category with lots
 
-    // public function showcategorieswithlot(Request $request)
-    // {
-    //     $customerId = $request->input('customerId');
-    //     $categoryId = $request->input('categoryId');
-
-    //     // Retrieve the category along with its lots
-    //     $categoryWithLots = categories::with(['lot' => function ($query) use ($customerId) 
-    //     {
-    //         $query->with(['bids' => function ($subQuery) use ($customerId) {
-    //             $subQuery->where('customerId', $customerId)->orderBy('amount', 'desc')->take(1);
-    //         }]);
-    //     }])
-    //     ->find($categoryId);
-
-    //     if (!$categoryWithLots) {
-    //         return response()->json([
-    //             'message' => 'Category not found',
-    //             'success' => false,
-    //         ]);
-    //     }
-
-    //     return response()->json([
-    //         'message' => 'Category with lots retrieved',
-    //         'success' => true,
-    //         'category' => $categoryWithLots,
-    //     ]);
-    // }
-    
-    // public function showcategorieswithlot(Request $request)
-    // {
-    //     $customerId = $request->input('customerId');
-    //     $categoryId = $request->input('categoryId');
-    
-    //     // Retrieve the category
-    //     $category = categories::find($categoryId);
-    
-    //     if (!$category) {
-    //         return response()->json([
-    //             'message' => 'Category not found',
-    //             'success' => false,
-    //         ]);
-    //     }
-    
-    //     // Retrieve live lots associated with the category
-    //     $liveLots = $category->lot()->where('lot_status', 'live')->get();
-    
-    //     // Fetch max bid for each live lot
-    //     $liveLotsWithMaxBids = [];
-    //     foreach ($liveLots as $lot) {
-    //         $maxBid = $lot->maxBid();
-    //         $liveLotsWithMaxBids[] = [
-    //             'lot' => $lot,
-    //             'max_bid' => $maxBid,
-    //         ];
-    //     }
-    
-    //     return response()->json([
-    //         'message' => 'Live lots for the category retrieved',
-    //         'success' => true,
-    //         'category' => $category,
-    //         'live_lots' => $liveLotsWithMaxBids,
-    //     ]);
-    // }
-
     public function showcategorieswithlot(Request $request)
     {
         $customerId = $request->input('customerId');
@@ -1332,7 +1128,8 @@ class LotsContoller extends Controller
         // Retrieve the category
         $category = categories::find($categoryId);
     
-        if (!$category) {
+        if (!$category)
+        {
             return response()->json([
                 'message' => 'Category not found',
                 'success' => false,
@@ -1341,11 +1138,13 @@ class LotsContoller extends Controller
     
         // Retrieve live lots associated with the category
         $liveLots = lots::with([
-            'customers' => function ($query) use ($customerId) {
+            'customers' => function ($query) use ($customerId) 
+            {
                 $query->where('customer_id', $customerId);
             },
             'categories',
-            'bids' => function ($query) {
+            'bids' => function ($query) 
+            {
                 $query->orderBy('created_at', 'desc')->take(1);
             }
         ])
@@ -1391,15 +1190,6 @@ class LotsContoller extends Controller
         }
 
         
-
-        
-
-
-
-
-    
-    
-    
 
 
     // Get Custimer Participated lots.
