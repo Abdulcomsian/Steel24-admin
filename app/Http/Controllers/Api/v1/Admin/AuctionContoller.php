@@ -2363,7 +2363,6 @@ class AuctionContoller extends Controller
     }
 
 
-    
     // end nouman raiz api of bid 
 
     function addNewBidding($customer , $amount , $lot , $bidType)
@@ -2442,6 +2441,8 @@ class AuctionContoller extends Controller
 
 
 
+
+
     public function setCustomerAutobid(Request $request)
     {
         $lotId = $request->lotId;
@@ -2481,7 +2482,8 @@ class AuctionContoller extends Controller
                                 'autoBid' => 1
                             ]);
 
-                if($createBid){
+                if($createBid)
+                {
                     AutoBid::create([
                         'customerId' => $customerId,
                         'lotId' => $lotId,
@@ -2492,17 +2494,20 @@ class AuctionContoller extends Controller
 
                     return response()->json(['success' => true , 'msg' => 'Autobid has been placed successfully']);
 
-                }else{
+                }
+                else
+                {
                     return response()->json(['succes' => false , "msg" => "Something Went Wrong"]);
                 }
-
-
                 
-            }else{
+            }
+            else
+            {
                 return $this->assignLastBidder($lot);
             }
 
-        }else{
+        }
+        else{
 
             $createBid = BidsOfLots::create([
                 'customerId' => $customerId,
@@ -2527,6 +2532,61 @@ class AuctionContoller extends Controller
         }
 
     }
+
+       
+
+    // public function setCustomerAutobid(Request $request)
+    // {
+    //     $lotId = $request->lotId;
+    //     $customerId = auth()->user()->id;
+    
+    //     $lot = lots::with('bids.customer')->where('id', $lotId)->first();
+    
+    //     $status = $lot->lot_status;
+    
+    //     if (in_array($status, ['Sold', 'Expired'])) 
+    //     {
+    //         $msg = $status == 'Sold' ? "Lot Has Already Been Sold" : "Lot Has Been Expired";
+    //         return response()->json(["success" => false, "msg" => $msg]);
+    //     }
+    
+    //     $amount = $lot->bids->isEmpty() ? $lot->price : $lot->bids->max('amount');
+    //     $amount += 100;
+    
+    //     $currentTime = Carbon::now();
+    //     $endDate = Carbon::createFromFormat('Y-m-d H:i:s', $lot->EndDate);
+    
+    //     if ($currentTime->lte($endDate)) 
+    //     {
+    //         $createBid = BidsOfLots::create([
+    //             'customerId' => $customerId,
+    //             'amount' => $amount,
+    //             'lotId' => $lotId,
+    //             'autoBid' => 1
+    //         ]);
+    
+    //         if ($createBid) {
+    //             AutoBid::create([
+    //                 'customerId' => $customerId,
+    //                 'lotId' => $lotId,
+    //                 'autoBid' => 1
+    //             ]);
+    
+    //             event(new winLotsEvent('Bid Has Been Placed.', $createBid, $lot->engageLot->customer, true));
+    
+    //             return response()->json(['success' => true, 'msg' => 'Autobid has been placed successfully']);
+    //         } else {
+    //             return response()->json(['success' => false, "msg" => "Something Went Wrong"]);
+    //         }
+    //     } 
+    //     else 
+    //     {
+    //         return $this->assignLastBidder($lot);
+    //     }
+    // }
+    
+
+    
 
     //new code ends here
 

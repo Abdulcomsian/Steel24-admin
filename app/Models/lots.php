@@ -18,10 +18,28 @@ class lots extends Model
     protected $table = 'lots';
     protected $primaryKey = 'id';
     protected $dates = ['EndDate'];
-    
+
     protected  $fillable =  [
-        'title', 'description', 'categoryId', 'uid', 'Seller', 'Plant', 'materialLocation', 'Quantity','Payment_terms',
-        'StartDate', 'EndDate', 'Price', 'auction_status', 'lot_status', 'customFields', 'participate_fee', 'ReStartDate', 'ReEndDate', 'LiveSequenceNumber','status'
+        'title', 
+        'description', 
+        'categoryId',
+        'uid',
+        'Seller',
+        'Plant',
+        'materialLocation', 
+        'Quantity',
+        'Payment_terms',
+        'StartDate',
+        'EndDate',
+        'Price',
+        'auction_status',
+        'lot_status',
+        'customFields',
+        'participate_fee',
+        'ReStartDate',
+        'ReEndDate',
+        'LiveSequenceNumber',
+        'status'
     ];
 
    
@@ -32,10 +50,10 @@ class lots extends Model
     }
 
 
-    public function materials()
-    {
-        // return $this->belongsToMany(materials::class, 'lot_materials');
-    }
+    // public function materials()
+    // {
+    //     // return $this->belongsToMany(materials::class, 'lot_materials');
+    // }
 
     public function categories()
     {
@@ -86,4 +104,15 @@ class lots extends Model
     {
         return $this->belongsToMany(Customer::class , 'lot_participants' , 'lot_id' , 'customer_id')->withPivot('status');
     }
+
+    public function engageLot()
+    {
+        return $this->belongsToMany(lots::class , 'lot_participants' , 'customer_id' , 'lot_id');
+    }
+
+    public function materials()
+    {
+        return $this->hasMany(new_maerials_2::class, 'lotid');
+    }
+
 }

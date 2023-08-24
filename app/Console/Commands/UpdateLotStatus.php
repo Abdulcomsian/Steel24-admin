@@ -34,7 +34,8 @@ class UpdateLotStatus extends Command
                 $lot->lot_status = "live";
             }
 
-            if( $endTime < $currentTime && $lot->lot_status != "live"){
+            if( $endTime < $currentTime && $lot->lot_status != "live")
+            {
                 $lot->lot_status = "Expired";
             }
 
@@ -102,7 +103,8 @@ class UpdateLotStatus extends Command
 
                         }
 
-                    }else{
+                    }
+                    else{
                         info("last else 2 minute gone");
                         $lastBid = $lot->bids()->latest()->orderBy('id' , 'desc')->first();
                         $latestBidCustomer = $lastBid->customer;
@@ -111,7 +113,8 @@ class UpdateLotStatus extends Command
                             ['lot_id' => $lot->id],
                             ['lot_id' => $lot->id  , 'customer_id' => $latestBidCustomer->id , 'created_at' => date('Y-m-d H:i:s')]
                         );
-                        if( $customerLot ){
+                        if( $customerLot)
+                        {
                             $lot->lot_status = "Sold";
                             $lot->save();
                             

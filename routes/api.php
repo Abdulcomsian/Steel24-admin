@@ -161,6 +161,11 @@ Route::post('showcategorieswithlot', 'App\Http\Controllers\Api\v1\Admin\LotsCont
 // Show All Product Images 
 Route::get('showProductImages', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showProductImages');
 
+
+// Generate Excel file of lots 
+Route::get('exportLotsToExcel', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@exportLotsToExcel');
+
+
 // new APIS's by zeshan rabnawaz
 
 
