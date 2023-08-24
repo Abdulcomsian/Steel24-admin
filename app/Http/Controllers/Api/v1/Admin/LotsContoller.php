@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1\Admin;
 
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Response;
 use App\Models\BidsOfLots;
 use App\Models\categories;
 use App\Models\lot_materials;
@@ -24,9 +24,15 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 // use \Illuminate\Support\Carbon;
 use Carbon\Carbon;
-// use \Illuminate\Support\Facades\DB;
 use App\Events\winLotsEvent;
 use Pusher\Pusher;
+use App\Exports\LotsExport;
+use Maatwebsite\Excel\Facades\Excel;
+// use Illuminate\Support\Facades\Response;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Illuminate\Support\Facades\Session;
 
 
 class LotsContoller extends Controller
@@ -1304,13 +1310,72 @@ class LotsContoller extends Controller
         return response()->json(["message" => "No win lots found for the customer", "success" => false]);
     }
 
-    
-    
+    // Generate Excel File OF Lots API
 
-        
+
+    //     public function exportLotsToExcel()
+    // {
+    //     $export = new LotsExport();
+
+    //     // Generate a unique filename using a timestamp
+    //     $timestamp = now()->format('Ymd_His');
+    //     $fileName = 'lots_' . $timestamp . '.xlsx';
+
+    //     $disk = 'ExcelLots';
+
+    //     // Generate and store the Excel file on the "ExcelLots" disk
+    //     Excel::store($export, $fileName, $disk);
+
+    //     // Return a JSON response with the success message
+    //     return response()->json(['message' => 'Excel file generated and saved successfully']);
+    // }
+
+
+
 
     
+    // public function exportLotsToExcel()
+    // {
+    //     // Fetch lots with lot_status = "live"
+    //     $lots = lots::where('lot_status', 'live')->get();
     
+    //     // Create a new LotsExport instance and pass the fetched lots
+    //     $export = new LotsExport($lots);
+    
+    //     // Generate a unique filename using a timestamp
+    //     $timestamp = now()->format('Ymd_His');
+    //     $fileName = 'lots_' . $timestamp . '.xlsx';
+    
+    //     $disk = 'ExcelLots';
+    
+    //     // Generate and store the Excel file on the "ExcelLots" disk
+    //     Excel::store($export, $fileName, $disk);
+    
+    //     // Return a JSON response with the success message
+    //     return response()->json(['message' => 'Excel file generated and saved successfully']);
+    // }
+
+        public function exportLotsToExcel()
+    {
+        // Fetch lots with lot_status = "live"
+        $lots = lots::where('lot_status', 'live')->get();
+
+        // Create a new LotsExport instance and pass the fetched lots
+        $export = new LotsExport($lots);
+
+        // Generate a unique filename using a timestamp
+        $timestamp = now()->format('Ymd_His');
+        $fileName = 'lots_' . $timestamp . '.xlsx';
+
+        $disk = 'ExcelLots';
+
+        // Generate and store the Excel file on the "ExcelLots" disk
+        Excel::store($export, $fileName, $disk);
+
+        // Return a JSON response with the success message
+        return response()->json(['message' => 'Excel file generated and saved successfully']);
+    }
+
 
     // ENDED PREVOUS CODE
 
