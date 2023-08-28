@@ -20,4 +20,11 @@ class  new_maerials_2 extends Model
         "Remark",
         "images",
     ];
+
+    public function lots()
+    {
+        return $this->belongsToMany(lots::class, 'new_maerials_2'); 
+    }
+
+    
 }
