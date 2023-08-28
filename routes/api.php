@@ -203,7 +203,10 @@ Route::get('showProductImages', 'App\Http\Controllers\Api\v1\Admin\LotsContoller
 
 
 // Generate Excel file of lots 
-Route::get('exportLotsToExcel', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@exportLotsToExcel');
+Route::post('exportLotsToExcel', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@exportLotsToExcel');
+
+// Show Win lots again start date , End Date and CustomerId
+
 
 
 // new APIS's by zeshan rabnawaz
