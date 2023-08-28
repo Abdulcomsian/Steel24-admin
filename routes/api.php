@@ -158,15 +158,39 @@ Route::post('addSoldLotsFavorites', 'App\Http\Controllers\Api\v1\Admin\LotsConto
 Route::post('addExpiredLotsFavorites', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@addExpiredLotsFavorites');
 
 
-
-
-
-
 // delete fav lot 
 Route::post('deleteFavorite', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@deleteFavorite');
 
 // show fav lot
 Route::get('showFavorites/{customer_id}', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showFavorites');
+
+
+
+// *********** Start 4 show API Fav API LIVE , Upcoming , Sold and Expired ************
+
+
+// Show  Live fav lot
+
+Route::get('showLiveLotsFavorites/{customer_id}', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showLiveLotsFavorites');
+
+
+// Show Upcoming fav lot
+
+Route::get('showUpcomingLotsFavorites/{customer_id}', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showUpcomingLotsFavorites');
+
+// Show Sold fav lot
+
+Route::get('showSoldLotsFavorites/{customer_id}', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showSoldLotsFavorites');
+
+// Show Expired fav lot
+
+Route::get('showExpiredLotsFavorites/{customer_id}', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showExpiredLotsFavorites');
+
+
+
+// *********** End 4 show API Fav API LIVE , Upcoming , Sold and Expired ************
+
+
 
 // show All Lots Category
 Route::get('showcategories', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showcategories');

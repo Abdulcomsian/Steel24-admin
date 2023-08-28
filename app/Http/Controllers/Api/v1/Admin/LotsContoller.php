@@ -1322,6 +1322,211 @@ class LotsContoller extends Controller
     }
 
 
+
+    // Start Show 4 APIs live, Upcoming, Sold and Expired
+
+    // Show live lots Fav
+
+    public function showLiveLotsFavorites($customer_id)
+    {
+        // Retrieve the favorite lots for the given customer_id
+        $favoriteLots = FavLots::where('customer_id', $customer_id)
+            ->with('lot')
+            ->get();
+
+        $result = [];
+
+        foreach ($favoriteLots as $favoriteLot) {
+            $lot = $favoriteLot->lot;
+
+            if ($lot && $lot->lot_status === 'live') 
+            {
+                // Retrieve the maximum bid for the lot
+                $maxBid = BidsOfLots::where('lotId', $lot->id)
+                    ->orderBy('amount', 'desc')
+                    ->first();
+
+                $lotArray = $lot->toArray();
+
+                if ($maxBid) {
+                    $maxBidArray = [
+                        'id' => $maxBid->id,
+                        'customerId' => $maxBid->customerId,
+                        'amount' => $maxBid->amount,
+                        'lotId' => $maxBid->lotId,
+                        'created_at' => $maxBid->created_at,
+                        'updated_at' => $maxBid->updated_at,
+                    ];
+
+                    $lotArray['bids'] = [$maxBidArray];
+                }
+
+                $result[] = $lotArray;
+            }
+        }
+
+        // Return the favorite lots with max_bid as a response
+        return response()->json([
+            'message' => 'Favorite live lots retrieved',
+            'success' => true,
+            'Fav_lots' => $result,
+        ]);
+    }
+
+
+
+    // Show Upcoming lots Fav
+
+    public function showUpcomingLotsFavorites($customer_id)
+    {
+        // Retrieve the favorite lots for the given customer_id
+        $favoriteLots = FavLots::where('customer_id', $customer_id)
+            ->with('lot')
+            ->get();
+
+        $result = [];
+
+        foreach ($favoriteLots as $favoriteLot) {
+            $lot = $favoriteLot->lot;
+
+            if ($lot && $lot->lot_status === 'upcoming') 
+            {
+                // Retrieve the maximum bid for the lot
+                $maxBid = BidsOfLots::where('lotId', $lot->id)
+                    ->orderBy('amount', 'desc')
+                    ->first();
+
+                $lotArray = $lot->toArray();
+
+                if ($maxBid) {
+                    $maxBidArray = [
+                        'id' => $maxBid->id,
+                        'customerId' => $maxBid->customerId,
+                        'amount' => $maxBid->amount,
+                        'lotId' => $maxBid->lotId,
+                        'created_at' => $maxBid->created_at,
+                        'updated_at' => $maxBid->updated_at,
+                    ];
+
+                    $lotArray['bids'] = [$maxBidArray];
+                }
+
+                $result[] = $lotArray;
+            }
+        }
+
+        // Return the favorite lots with max_bid as a response
+        return response()->json([
+            'message' => 'Favorite Upcoming lots retrieved',
+            'success' => true,
+            'Fav_lots' => $result,
+        ]);
+    }
+
+
+    // Show Sold lots Fav 
+
+    public function showSoldLotsFavorites($customer_id)
+    {
+        // Retrieve the favorite lots for the given customer_id
+        $favoriteLots = FavLots::where('customer_id', $customer_id)
+            ->with('lot')
+            ->get();
+
+        $result = [];
+
+        foreach ($favoriteLots as $favoriteLot) {
+            $lot = $favoriteLot->lot;
+
+            if ($lot && $lot->lot_status === 'Sold') 
+            {
+                // Retrieve the maximum bid for the lot
+                $maxBid = BidsOfLots::where('lotId', $lot->id)
+                    ->orderBy('amount', 'desc')
+                    ->first();
+
+                $lotArray = $lot->toArray();
+
+                if ($maxBid) 
+                {
+                    $maxBidArray = [
+                        'id' => $maxBid->id,
+                        'customerId' => $maxBid->customerId,
+                        'amount' => $maxBid->amount,
+                        'lotId' => $maxBid->lotId,
+                        'created_at' => $maxBid->created_at,
+                        'updated_at' => $maxBid->updated_at,
+                    ];
+
+                    $lotArray['bids'] = [$maxBidArray];
+                }
+
+                $result[] = $lotArray;
+            }
+        }
+
+        // Return the favorite lots with max_bid as a response
+        return response()->json([
+            'message' => 'Favorite Sold lots retrieved',
+            'success' => true,
+            'Fav_lots' => $result,
+        ]);
+    }
+
+     // Show Expired lots Fav 
+
+    public function showExpiredLotsFavorites($customer_id)
+    {
+        // Retrieve the favorite lots for the given customer_id
+        $favoriteLots = FavLots::where('customer_id', $customer_id)
+            ->with('lot')
+            ->get();
+
+        $result = [];
+
+        foreach ($favoriteLots as $favoriteLot) {
+            $lot = $favoriteLot->lot;
+
+            if ($lot && $lot->lot_status === 'Expired') 
+            {
+                // Retrieve the maximum bid for the lot
+                $maxBid = BidsOfLots::where('lotId', $lot->id)
+                    ->orderBy('amount', 'desc')
+                    ->first();
+
+                $lotArray = $lot->toArray();
+
+                if ($maxBid) 
+                {
+                    $maxBidArray = [
+                        'id' => $maxBid->id,
+                        'customerId' => $maxBid->customerId,
+                        'amount' => $maxBid->amount,
+                        'lotId' => $maxBid->lotId,
+                        'created_at' => $maxBid->created_at,
+                        'updated_at' => $maxBid->updated_at,
+                    ];
+
+                    $lotArray['bids'] = [$maxBidArray];
+                }
+
+                $result[] = $lotArray;
+            }
+        }
+
+        // Return the favorite lots with max_bid as a response
+        return response()->json([
+            'message' => 'Favorite Expired lots retrieved',
+            'success' => true,
+            'Fav_lots' => $result,
+        ]);
+    }
+
+
+    // End Show 4 APIs live, Upcoming, Sold and Expired
+    
+
+
     // Show Lots Categories
    
         public function showcategories()
