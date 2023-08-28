@@ -1898,10 +1898,13 @@ class LotsContoller extends Controller
 
     // working fine 
 
-    public function exportLotsToExcel()
+    public function exportLotsToExcel(Request $request)
     {
+
+        $status = $request->input('status');
+
         // Fetch lots with lot_status = "live"
-        $lots = lots::where('lot_status', 'live')->get();
+        $lots = lots::where('lot_status', $status)->get();
     
         // Create a new LotsExport instance and pass the fetched lots
         $export = new LotsExport($lots);

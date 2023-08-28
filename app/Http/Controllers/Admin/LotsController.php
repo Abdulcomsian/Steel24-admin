@@ -401,9 +401,84 @@ class LotsController extends Controller
         return view('admin.lots.edit', compact('addForm', 'lots', 'materials', 'lot_materials', 'live', 'categorys'));
     }
 
+
+
+    // public function update(Request $request, lots $lots)
+    // {
+    //     $userDetails = Auth::guard('admin')->user();
+    //     $data = $request->validate([
+    //         'title' => 'required',
+    //         'description' => 'nullable',
+    //         "Seller" => "required",
+    //         "Plant" => "nullable",
+    //         "materialLocation" => "nullable",
+    //         "Quantity" => "required",
+    //         "StartDate" => "required",
+    //         "EndDate" => "required",
+    //         "material" => "nullable",
+    //         'categoryId' => "required",
+    //         "Price" => "required",
+    //         "participate_fee" => 'required',
+    //         'lot_status' =>'required',
+    //     ]);
+
+
+    //     if ($lots !== null) {
+    //         $materials = $lots->materials();
+    //         // dd($materials);
+            
+    //         if ($materials !== null) {
+    //             $materials->sync(array_key_exists('material', $data) ? $data['material'] : []);
+    //         } else 
+    //         {
+    //             // Handle the case when $materials is null
+    //         }
+    //     } else {
+    //         // Handle the case when $lots is null
+    //     }
+        
+        
+    //     $data['uid'] = $userDetails->id;
+    //     $lots->update($data);
+
+    //     // $firebase = (new Factory)
+    //     //     ->withServiceAccount(__DIR__ . '/lotbids-7751a-firebase-adminsdk-2kxk6-5db00e2535.json')
+    //     //     ->withDatabaseUri('https://lotbids-7751a-default-rtdb.europe-west1.firebasedatabase.app/');
+    //     // $database = $firebase->createDatabase();
+
+
+    //     if ($lots->lot_status == 'live') 
+    //     {
+    //         $lots->ParticipateUsers = customerBalance::where([['lotId', $lots->id], ['status', '!=', '1']])->groupBy('customerId')->pluck('customerId')->toArray();;
+    //         // $database->getReference('TodaysLots/liveList/' . $lots->id)->set($lots);
+    //     } else if ($lots->lot_status == 'upcoming') 
+    //     {
+    //         // $database->getReference('TodaysLots/upcoming/' . $lots->id)->set($lots);
+    //     }
+
+    //     $liveLots = DB::select("SELECT lots.* ,categories.title as categoriesTitle FROM `lots` 
+    //     LEFT JOIN categories on categories.id  = lots.categoryId
+    //     WHERE (date(lots.EndDate) = CURDATE()) and lots.id  > $lots->id");
+
+    //     foreach ($liveLots as $lot) {
+    //         // $lot = lots::where('id', $lot->id)->update(['EndDate' => Carbon::parse($lot->EndDate)->addMinutes(3)]);
+    //         $lot = lots::where('id', $lot->id)->update(['EndDate' => Carbon::parse($lot->EndDate)->addMinutes(3)]);
+    //     }
+    //     // Have to Brodcast with
+    //     // $response = ["sucess" => true, 'lots' => $$lot, "message"=>"Lot Details Updated"];
+    //     LiveLotsController::pushonfirbase();
+    //     if ($request->live) {
+    //         return redirect('/admin/live_lots_bids/' . $lots->id);
+    //     } else {
+    //         return redirect('/admin/lots/' . $lots->id);
+    //     }
+    // }
+
+
+
+
     public function update(Request $request, lots $lots)
     {
-
         $userDetails = Auth::guard('admin')->user();
         $data = $request->validate([
             'title' => 'required',
@@ -418,58 +493,54 @@ class LotsController extends Controller
             'categoryId' => "required",
             "Price" => "required",
             "participate_fee" => 'required',
-            'lot_status' =>'required',
+            'lot_status' => 'required',
         ]);
 
-
-        if ($lots !== null) {
-            $materials = $lots->materials();
-            
-            if ($materials !== null) {
-                $materials->sync(array_key_exists('material', $data) ? $data['material'] : []);
-            } else {
-                // Handle the case when $materials is null
-            }
-        } else {
-            // Handle the case when $lots is null
+    
+        // Update related materials using belongsToMany relationship
+        if ($lots !== null) 
+        {
+            $lots->materialss()->sync(array_key_exists('material', $data) ? $data['material'] : []);
         }
-        
 
         $data['uid'] = $userDetails->id;
         $lots->update($data);
-
-        // $firebase = (new Factory)
-        //     ->withServiceAccount(__DIR__ . '/lotbids-7751a-firebase-adminsdk-2kxk6-5db00e2535.json')
-        //     ->withDatabaseUri('https://lotbids-7751a-default-rtdb.europe-west1.firebasedatabase.app/');
-        // $database = $firebase->createDatabase();
-
-
+    
+        // Update lot status and related logic
         if ($lots->lot_status == 'live') 
         {
-            $lots->ParticipateUsers = customerBalance::where([['lotId', $lots->id], ['status', '!=', '1']])->groupBy('customerId')->pluck('customerId')->toArray();;
-            // $database->getReference('TodaysLots/liveList/' . $lots->id)->set($lots);
-        } else if ($lots->lot_status == 'upcoming') 
-        {
-            // $database->getReference('TodaysLots/upcoming/' . $lots->id)->set($lots);
+            $lots->ParticipateUsers = customerBalance::where([
+                ['lotId', $lots->id],
+                ['status', '!=', '1']
+            ])->groupBy('customerId')->pluck('customerId')->toArray();
+            // Update Firebase or other logic here
+        } else if ($lots->lot_status == 'upcoming') {
+            // Update Firebase or other logic here
         }
-
+    
         $liveLots = DB::select("SELECT lots.* ,categories.title as categoriesTitle FROM `lots` 
-        LEFT JOIN categories on categories.id  = lots.categoryId
-        WHERE (date(lots.EndDate) = CURDATE()) and lots.id  > $lots->id");
-
+            LEFT JOIN categories on categories.id  = lots.categoryId
+            WHERE (date(lots.EndDate) = CURDATE()) and lots.id  > $lots->id");
+    
         foreach ($liveLots as $lot) {
-            // $lot = lots::where('id', $lot->id)->update(['EndDate' => Carbon::parse($lot->EndDate)->addMinutes(3)]);
-            $lot = lots::where('id', $lot->id)->update(['EndDate' => Carbon::parse($lot->EndDate)->addMinutes(3)]);
+            lots::where('id', $lot->id)->update(['EndDate' => Carbon::parse($lot->EndDate)->addMinutes(3)]);
         }
-        // Have to Brodcast with
-        // $response = ["sucess" => true, 'lots' => $$lot, "message"=>"Lot Details Updated"];
+    
+        // Update Firebase or other logic here
         LiveLotsController::pushonfirbase();
+    
         if ($request->live) {
             return redirect('/admin/live_lots_bids/' . $lots->id);
         } else {
             return redirect('/admin/lots/' . $lots->id);
         }
     }
+    
+    
+
+
+
+
 
     public function destroy(lots $lots)
     {

@@ -49,6 +49,19 @@ class lots extends Model
         return Carbon::createFromFormat('Y-m-d H:i:s', $value);
     }
 
+    // public function materialss()
+    // {
+    //     return $this->belongsToMany(new_maerials_2::class, 'new_maerials_2'); // Specify the pivot table name
+    // }
+
+        public function materialss()
+    {
+        return $this->belongsToMany(new_maerials_2::class, 'new_maerials_2')
+            ->withPivot(['id', 'new_maerials_2']); 
+    }
+
+    
+
 
     // public function materials()
     // {
