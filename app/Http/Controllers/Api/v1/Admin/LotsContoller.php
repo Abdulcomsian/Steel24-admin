@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Admin;
 
-
+// use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\BidsOfLots;
@@ -1935,17 +1935,66 @@ class LotsContoller extends Controller
         ]);
     }
 
-
-   
-    
-    
-
-
-    
-    
-
-
     // ENDED PREVOUS CODE
+
+
+    // Fetch win Lots Against the Customer_id, start_date and end_date
+
+        public function winLotsShow(Request $request)
+    {
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        $customerId = $request->input('customer_id');
+
+        $winLots = DB::table('customer_lots')
+            ->where('customer_id', $customerId)
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->get();
+
+        if ($winLots->isEmpty()) {
+            $message = 'Sorry, No Win lots against this Customer.';
+        } else {
+            $message = 'Win Lot Retrieved Successfully.';
+        }
+
+        return response()->json([
+            'message' => $message,
+            'win_lots' => $winLots,
+        ]);
+    }
+
+ 
+    // public function winLotsShow(Request $request)
+    // {
+    //     $startDate = Carbon::createFromFormat('Y-m-d', $request->input('start_date'))->format('d-m-Y');
+    //     $endDate = Carbon::createFromFormat('Y-m-d', $request->input('end_date'))->format('d-m-Y');
+    //     $customerId = $request->input('customer_id');
+
+    //     $winLots = DB::table('customer_lots')
+    //         ->where('customer_id', $customerId)
+    //         ->whereBetween('created_at', [$request->input('start_date'), $request->input('end_date')])
+    //         ->get();
+
+    //     if ($winLots->isEmpty()) {
+    //         $message = 'Sorry, no Win lots against this Customer.';
+    //     } else {
+    //         $message = 'Win Lot Retrieved Successfully.';
+    //     }
+
+    //     $response = [
+    //         'message' => $message,
+    //         'start_date' => $startDate,
+    //         'end_date' => $endDate,
+    //     ];
+
+    //     if (!$winLots->isEmpty()) {
+    //         $response['win_lots'] = $winLots;
+    //     }
+
+    //     return response()->json($response, 200, [], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+    // }
+
+
 
 
     // public function getcustomerwinlots($customerId)

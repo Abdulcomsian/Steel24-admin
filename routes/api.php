@@ -209,6 +209,8 @@ Route::get('showProductImages', 'App\Http\Controllers\Api\v1\Admin\LotsContoller
 Route::post('exportLotsToExcel', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@exportLotsToExcel');
 
 // Show Win lots again start date , End Date and CustomerId
+Route::post('winLotsShow', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@winLotsShow');
+
 
 
 
