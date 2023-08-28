@@ -146,6 +146,25 @@ Route::get('lotsdetails/{lotId}', 'App\Http\Controllers\Api\v1\Admin\LotsContoll
 // Favorites lots add and show API
 Route::post('addFavorites', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@addFavorites');
 
+
+
+// Add Live lot into Fav
+Route::post('addLiveLotsFavorites', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@addLiveLotsFavorites');
+
+// Add Live lot into Fav
+Route::post('addUpcomingLotsFavorites', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@addUpcomingLotsFavorites');
+
+// Add Live lot into Fav
+Route::post('addSoldLotsFavorites', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@addSoldLotsFavorites');
+
+// Add Live lot into Fav
+Route::post('addExpiredLotsFavorites', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@addExpiredLotsFavorites');
+
+
+
+
+
+
 // delete fav lot 
 Route::post('deleteFavorite', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@deleteFavorite');
 

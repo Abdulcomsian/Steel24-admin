@@ -997,6 +997,8 @@ class LotsContoller extends Controller
 
     
     
+
+
     // add Favorites Lots in Lots 
 
     public function addFavorites(Request $request)
@@ -1031,6 +1033,216 @@ class LotsContoller extends Controller
             'success' => true,
         ]);
     }
+
+
+    // ********* Start 4 LOT API INTO FAV **********
+     
+    // 1 add Favorites Lots in Lots
+
+    public function addLiveLotsFavorites(Request $request)
+    {
+        $customer_id = $request->input('customer_id');
+        $lot_id = $request->input('lot_id');
+
+        // Check if the favorite lot already exists for the given customer and lot_id
+        $existingFavorite = DB::table('user_lot')
+            ->where('customer_id', $customer_id)
+            ->where('lot_id', $lot_id)
+            ->first();
+
+        // If the favorite lot already exists, return an error response
+        if ($existingFavorite) 
+        {
+            return response()->json([
+                'message' => 'Favorite Live lot already exists for this customer',
+                'success' => false,
+            ]);
+        }
+
+        // Check if the lot is live before adding to favorites
+        $lot = DB::table('lots')
+            ->where('id', $lot_id)
+            ->where('lot_status', 'live') // Assuming 'lot_status' is a column in your 'lots' table
+            ->first();
+
+        if (!$lot) {
+            return response()->json([
+                'message' => 'Cannot add lot to favorites. Lot is not live.',
+                'success' => false,
+            ]);
+        }
+
+        // Save the customer_id and lot_id to the favorites table in the database
+        DB::table('user_lot')->insert([
+            'customer_id' => $customer_id,
+            'lot_id' => $lot_id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return response()->json([
+            'message' => 'Live Lot added to Favorites Lots',
+            'success' => true,
+        ]);
+    }
+
+
+
+    // 2 add Fav lots into Upcoming
+
+    public function addUpcomingLotsFavorites(Request $request)
+    {
+        $customer_id = $request->input('customer_id');
+        $lot_id = $request->input('lot_id');
+
+        // Check if the favorite lot already exists for the given customer and lot_id
+        $existingFavorite = DB::table('user_lot')
+            ->where('customer_id', $customer_id)
+            ->where('lot_id', $lot_id)
+            ->first();
+
+        // If the favorite lot already exists, return an error response
+        if ($existingFavorite) 
+        {
+            return response()->json([
+                'message' => 'Favorite Upcoming lot already exists for this customer',
+                'success' => false,
+            ]);
+        }
+
+        // Check if the lot is live before adding to favorites
+        $lot = DB::table('lots')
+            ->where('id', $lot_id)
+            ->where('lot_status', 'upcoming') // Assuming 'lot_status' is a column in your 'lots' table
+            ->first();
+
+        if (!$lot) {
+            return response()->json([
+                'message' => 'Cannot add lot to favorites. Lot is not Upcoming.',
+                'success' => false,
+            ]);
+        }
+
+        // Save the customer_id and lot_id to the favorites table in the database
+        DB::table('user_lot')->insert([
+            'customer_id' => $customer_id,
+            'lot_id' => $lot_id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return response()->json([
+            'message' => 'Upcoming Lot added to Favorites Lots',
+            'success' => true,
+        ]);
+    }
+
+
+
+    // 3 add Fav lots into Sold
+
+    public function addSoldLotsFavorites(Request $request)
+    {
+        $customer_id = $request->input('customer_id');
+        $lot_id = $request->input('lot_id');
+
+        // Check if the favorite lot already exists for the given customer and lot_id
+        $existingFavorite = DB::table('user_lot')
+            ->where('customer_id', $customer_id)
+            ->where('lot_id', $lot_id)
+            ->first();
+
+        // If the favorite lot already exists, return an error response
+        if ($existingFavorite) 
+        {
+            return response()->json([
+                'message' => 'Favorite Sold lot already exists for this customer',
+                'success' => false,
+            ]);
+        }
+
+        // Check if the lot is live before adding to favorites
+        $lot = DB::table('lots')
+            ->where('id', $lot_id)
+            ->where('lot_status', 'Sold')
+            ->first();
+
+        if (!$lot) {
+            return response()->json([
+                'message' => 'Cannot add lot to favorites. Lot is not Sold.',
+                'success' => false,
+            ]);
+        }
+
+        // Save the customer_id and lot_id to the favorites table in the database
+        DB::table('user_lot')->insert([
+            'customer_id' => $customer_id,
+            'lot_id' => $lot_id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return response()->json([
+            'message' => 'Sold Lot added to Favorites Lots',
+            'success' => true,
+        ]);
+    }
+
+
+     // 4 add Fav lots into Expired
+
+    public function addExpiredLotsFavorites(Request $request)
+    {
+        $customer_id = $request->input('customer_id');
+        $lot_id = $request->input('lot_id');
+
+        // Check if the favorite lot already exists for the given customer and lot_id
+        $existingFavorite = DB::table('user_lot')
+            ->where('customer_id', $customer_id)
+            ->where('lot_id', $lot_id)
+            ->first();
+
+        // If the favorite lot already exists, return an error response
+        if ($existingFavorite) 
+        {
+            return response()->json([
+                'message' => 'Favorite Expired lot already exists for this customer',
+                'success' => false,
+            ]);
+        }
+
+        // Check if the lot is live before adding to favorites
+        $lot = DB::table('lots')
+            ->where('id', $lot_id)
+            ->where('lot_status', 'Expired')
+            ->first();
+
+        if (!$lot) {
+            return response()->json([
+                'message' => 'Cannot add lot to favorites. Lot is not Expired.',
+                'success' => false,
+            ]);
+        }
+
+        // Save the customer_id and lot_id to the favorites table in the database
+        DB::table('user_lot')->insert([
+            'customer_id' => $customer_id,
+            'lot_id' => $lot_id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        return response()->json([
+            'message' => 'Expired Lot added to Favorites Lots',
+            'success' => true,
+        ]);
+    }
+
+
+    // ********* End 4 LOT API INTO FAV **********
+
+
+
 
 
 
@@ -1477,6 +1689,10 @@ class LotsContoller extends Controller
     //     ]);
     // }
 
+
+
+    // working fine 
+
     public function exportLotsToExcel()
     {
         // Fetch lots with lot_status = "live"
@@ -1510,6 +1726,10 @@ class LotsContoller extends Controller
             'file_url' => $liveUrl,
         ]);
     }
+
+
+   
+    
     
 
 
