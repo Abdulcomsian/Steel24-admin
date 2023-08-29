@@ -385,21 +385,24 @@ class LotsController extends Controller
     {
         $addForm = false;
         $materials = materials::all();
-        $lot_materials = lot_materials::where('lots_id', $lots->id)->get();
+        // $lots = lots::all();
+        $specificLot = lots::find($lots->id);
+        $lot_materials = lot_materials::where('lots_id', $specificLot->id)->get();
+        // $lot_materials = lot_materials::where('lots_id', $lots->id)->get();
         $live = false;
         $categorys =  categories::all();
-        return view('admin.lots.edit', compact('addForm', 'lots', 'materials', 'lot_materials', 'live', 'categorys'));
+        return view('admin.lots.edit', compact('addForm', 'specificLot', 'materials', 'lot_materials', 'live', 'categorys'));
     }
 
-    public function editLive(lots $lots)
-    {
-        $addForm = false;
-        $materials = materials::all();
-        $lot_materials = lot_materials::where('lots_id', $lots->id)->get();
-        $live = true;
-        $categorys =  categories::all();
-        return view('admin.lots.edit', compact('addForm', 'lots', 'materials', 'lot_materials', 'live', 'categorys'));
-    }
+    // public function editLive(lots $lots)
+    // {
+    //     $addForm = false;
+    //     $materials = materials::all();
+    //     $lot_materials = lot_materials::where('lots_id', $lots->id)->get();
+    //     $live = true;
+    //     $categorys =  categories::all();
+    //     return view('admin.lots.edit', compact('addForm', 'lots', 'materials', 'lot_materials', 'live', 'categorys'));
+    // }
 
 
 
