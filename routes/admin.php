@@ -96,7 +96,7 @@ Route::get('/lots/import-csv/', [CsvImportController::class, 'showForm'])->name(
 Route::post('/newlots', [LotsController::class, 'store']);
 Route::get('/lots/{lots}', [LotsController::class, 'show']);
 Route::get('/lots/edit/{lots}', [LotsController::class, 'edit']);
-Route::get('/lots/edit/{lots}/live', [LotsController::class, 'editLive']);
+// Route::get('/lots/edit/{lots}/live', [LotsController::class, 'editLive']);
 Route::patch('/lots/{lots}', [LotsController::class, 'update']);
 Route::get('/lots/remove/{lots}', [LotsController::class, 'destroy']);
 
