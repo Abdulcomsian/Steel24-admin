@@ -520,13 +520,15 @@ class LotsController extends Controller
         } else if ($lots->lot_status == 'upcoming') {
             // Update Firebase or other logic here
         }
+
+
     
         $liveLots = DB::select("SELECT lots.* ,categories.title as categoriesTitle FROM `lots` 
             LEFT JOIN categories on categories.id  = lots.categoryId
             WHERE (date(lots.EndDate) = CURDATE()) and lots.id  > $lots->id");
     
         foreach ($liveLots as $lot) {
-            lots::where('id', $lot->id)->update(['EndDate' => Carbon::parse($lot->EndDate)->addMinutes(3)]);
+            lots::where('id', $lot->id)->update(['EndDate' => Carbon::parse($lot->EndDate)->addMinutes(0)]);
         }
     
         // Update Firebase or other logic here
