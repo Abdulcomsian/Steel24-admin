@@ -83,7 +83,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
         // new APIS's by zeshan rabnawaz
 
-        Route::get('getcustomerwinlots/{customerId}', 'LotsContoller@getcustomerwinlots');
+        Route::get('getcustomerwinlots/{customerId}', 'LotsContoller@getCustomerWinLots');
 
         Route::get('getcustimerparticipatelots/{customerId}', 'LotsContoller@getcustimerparticipatelots');
 

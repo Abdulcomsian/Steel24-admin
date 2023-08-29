@@ -128,4 +128,9 @@ class lots extends Model
         return $this->hasMany(new_maerials_2::class, 'lotid');
     }
 
+    public function lotDetails()
+    {
+        return $this->hasOne(CustomerLot::class, 'lot_id');
+    }
+
 }
