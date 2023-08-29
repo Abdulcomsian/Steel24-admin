@@ -1999,39 +1999,86 @@ class LotsContoller extends Controller
     //     ]);
     // }
 
+
+
+
+    // public function winLotsShow(Request $request)
+    // {
+    //     $startDate = $request->input('start_date');
+    //     $endDate = $request->input('end_date');
+    //     $customerId = $request->input('customer_id');
+
+    //     $customerLots = CustomerLot::with('lot')
+    //      ->where(DB::raw('Date(created_at)') , '>=' , $startDate)
+    //      ->where(DB::raw('Date(created_at)') , '<=' , $endDate)
+    //     ->where('customer_id' , $customerId)
+    //     ->get();
+
+    
+    //     if ($customerLots->isEmpty()) 
+    //     {
+    //         $message = 'Sorry, No Win lots against this Customer.';
+    //     } else {
+    //         $message = 'Win Lot Retrieved Successfully.';
+    //     }
+    
+    //     $winningLots = [];
+    
+    //     foreach ($customerLots as $customerLot) 
+    //     {
+    //         $lot = $customerLot->lot;
+            
+    //         $lot->load('lotDetails', 'materials'); 
+            
+    //         $winningLots[] = $lot;
+    //     }
+    
+    //     return response()->json([
+    //         'message' => $message,
+    //         'win_lots' => $winningLots,
+    //     ]);
+    // }
+
+
+    // public function winLotsShow(Request $request)
+    // {
+    //     $startDate = $request->input('start_date');
+    //     $endDate = $request->input('end_date');
+    //     $customerId = $request->input('customer_id');
+    
+    //     $customerLots = CustomerLot::with(['lot.lotDetails', 'lot.materials'])
+    //         ->where(DB::raw('Date(customer_lots.created_at)'), '>=', $startDate)
+    //         ->where(DB::raw('Date(customer_lots.created_at)'), '<=', $endDate)
+    //         ->where('customer_id', $customerId)
+    //         ->get();
+    
+    //     if ($customerLots->isEmpty()) {
+    //         $message = 'Sorry, No Win lots against this Customer.';
+    //     } else {
+    //         $message = 'Win Lot Retrieved Successfully.';
+    //     }
+    
+    //     $response = [
+    //         'message' => $message,
+    //         'win_lots' => $customerLots->toArray(), // Convert to array for proper JSON formatting
+    //     ];
+    
+    //     return response()->json($response);
+    // }
+
     public function winLotsShow(Request $request)
     {
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
         $customerId = $request->input('customer_id');
-
-        // //new code starts here
-        // $customerLot = CustomerLot::with(['lot' => function($query) use($startDate , $endDate){
-            
-        // }])
-        // ->where('customer_id' , $customerId)
-        // ->get();
-
-        $customerLots = CustomerLot::with('lot')
-         ->where(DB::raw('Date(created_at)') , '>=' , $startDate)
-         ->where(DB::raw('Date(created_at)') , '<=' , $endDate)
-        ->where('customer_id' , $customerId)
-        ->get();
-
-
-        // $query->where(DB::raw("DATE(created_at) >= '".date('Y-m-d')."'"))
-        //     ->where(DB::raw("DATE(created_at) <= '".date('Y-m-d')."'"));
-            
-            // ->where('startDate' , '>=' , $startDate)
-            //      ->where('endDate' , '<=' , $endDate);
-
-        // dd($customerLot);
-
-        // //new code ends here
-
     
-        if ($customerLots->isEmpty()) 
-        {
+        $customerLots = CustomerLot::with(['lot', 'lot.materials'])
+            ->where(DB::raw('Date(customer_lots.created_at)'), '>=', $startDate)
+            ->where(DB::raw('Date(customer_lots.created_at)'), '<=', $endDate)
+            ->where('customer_id', $customerId)
+            ->get();
+    
+        if ($customerLots->isEmpty()) {
             $message = 'Sorry, No Win lots against this Customer.';
         } else {
             $message = 'Win Lot Retrieved Successfully.';
@@ -2042,17 +2089,28 @@ class LotsContoller extends Controller
         foreach ($customerLots as $customerLot) 
         {
             $lot = $customerLot->lot;
-            
-            $lot->load('lotDetails', 'materials'); 
-            
-            $winningLots[] = $lot;
+    
+            $winningLots[] = [
+                'id' => $customerLot->id,
+                'customer_id' => $customerLot->customer_id,
+                'lot_id' => $customerLot->lot_id,
+                'created_at' => $customerLot->created_at,
+                'updated_at' => $customerLot->updated_at,
+                'lot_details' => $lot,
+            ];
         }
     
-        return response()->json([
+        $response = [
             'message' => $message,
             'win_lots' => $winningLots,
-        ]);
+        ];
+    
+        return response()->json($response);
     }
+    
+    
+
+    
     
     
     
