@@ -51,7 +51,7 @@ class lots extends Model
 
         public function materialss()
     {
-        return $this->belongsToMany(new_maerials_2::class, 'new_maerials_2s', 'id', 'lot_id');
+        return $this->belongsToMany(new_maerials_2::class, 'new_maerials_2s', 'id', 'lotId');
     }
 
     public function categories()

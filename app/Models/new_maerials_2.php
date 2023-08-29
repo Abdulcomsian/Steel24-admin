@@ -23,7 +23,7 @@ class  new_maerials_2 extends Model
 
     public function lots()
     {
-        return $this->belongsToMany(lots::class, 'new_maerials_2s', 'lot_id', 'id'); 
+        return $this->belongsToMany(lots::class, 'new_maerials_2s', 'lotId', 'id'); 
     }
 
     
