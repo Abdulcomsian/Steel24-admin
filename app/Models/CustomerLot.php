@@ -21,7 +21,8 @@ class CustomerLot extends Model
         return $this->belongsTo(Customer::class, 'customer_id' , 'id');
     }
 
-    public function lot(){
+    public function lot()
+    {
         return $this->belongsTo(lots::class , 'lot_id' ,'id');
     }
 
