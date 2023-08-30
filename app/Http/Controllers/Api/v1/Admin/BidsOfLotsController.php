@@ -9,7 +9,6 @@ use App\Models\Auction;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Carbon;
-
 use App\Models\BidsOfLots;
 use App\Models\Customer;
 use App\Models\lots;
