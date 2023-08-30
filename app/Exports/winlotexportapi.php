@@ -71,6 +71,7 @@ class winlotexportapi implements FromCollection, WithHeadings, ShouldAutoSize, W
     public function collection()
     {
         $data = $this->transformData($this->winningLotsData);
+
         return new Collection($data);
     }
 
@@ -126,10 +127,11 @@ class winlotexportapi implements FromCollection, WithHeadings, ShouldAutoSize, W
     {
         $transformedData = [];
 
-        foreach ($data as $lot) {
+        foreach ($data as $lot) 
+        {
             foreach ($lot['lot']['materials'] as $material) 
             {
-                
+
                 $transformedData[] = [
                     'Lot ID' => $lot['lot_id'],
                     'Lot Title' => $lot['lot']['title'],

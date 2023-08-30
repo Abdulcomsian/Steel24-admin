@@ -2057,14 +2057,14 @@ class LotsContoller extends Controller
             ->where('customer_id', $customerId)
             ->get();
 
-        // Create a new export instance
+        // Create a new export instances
         $export = new winlotexportapi($winningLotsData);
 
         $timestamp = now()->format('Ymd_His');
         $fileName = 'winlots_' . $timestamp . '.xlsx';
         $filePath = 'ExcelLots' . DIRECTORY_SEPARATOR . $fileName;
 
-        // Generate and store the Excel file
+        // Generate and store the Excel files
         Excel::store($export, $filePath, 'public');
 
         $fileUrl = url($filePath);
