@@ -28,6 +28,7 @@ return [
     |
     */
 
+    
     'disks' => [
 
         'local' => [
@@ -37,7 +38,7 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => public_path(),
+            'root' => public_path( ),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],      
@@ -52,7 +53,6 @@ return [
         //     'root' => public_path('ExcelWinLots'),
         // ],
         
-
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

@@ -2205,39 +2205,7 @@ class LotsContoller extends Controller
 
     public function winExcelLotExport(Request $request)
     {
-        // $customerId = $request->input('customer_id');
-
-        // // Fetch the winning lots data based on the customer ID
-        // $winningLotsData = CustomerLot::with(['lot', 'lot.materials'])
-        //     ->where('customer_id', $customerId)
-        //     ->get();
-
-        // // Generate a unique filename for the exported Excel file
-        // $filename = 'winLots_' . now()->format('Ymd_His') . '.xlsx';
-
-        // // Generate Excel file using Laravel Excel package
-        // $excel = new winlotexportapi($winningLotsData);
-
-        // // Generate the Excel file path
-        // $excelPath = public_path('ExcelLots') . '/' . $filename;
-
-        // // Store the Excel file in the specified path
-        // Excel::store($excel, $excelPath);
-
-        // // Save the filename to the exported file in the database
-        // ExportWinLots::create(['url' => $filename]); 
-
-        // // Generate the file URL for the response
-        // $fileUrl = url('ExcelLots') . '/' . $filename;
-
-        // $response = [
-        //     'message' => 'Excel file generated, saved, and URL recorded successfully.',
-        //     'file_url' => $fileUrl,
-        // ];
-
-        // return response()->json($response);
-
-
+        
         $customerId = $request->input('customer_id');
 
         $winningLotsData = CustomerLot::with(['lot', 'lot.materials'])
@@ -2247,7 +2215,7 @@ class LotsContoller extends Controller
         // Create a new export instance
         $export = new winlotexportapi($winningLotsData);
 
-        $timestamp = now()->format('His_Ymd');
+        $timestamp = now()->format('Ymd_His');
         $fileName = 'winlots_' . $timestamp . '.xlsx';
         $filePath = 'ExcelLots' . DIRECTORY_SEPARATOR . $fileName;
 
@@ -2258,7 +2226,7 @@ class LotsContoller extends Controller
 
         // Save the URL in the database
         ExportWinLots::create([
-            'url' => $filePath, // Store the relative path
+            'url' => $filePath, 
         ]);
 
         $response = [
