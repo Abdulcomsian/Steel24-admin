@@ -116,6 +116,7 @@ class winlotexportapi implements FromCollection, WithHeadings, ShouldAutoSize, W
         return 'WinLots';
     }
 
+
     public function startCell(): string
     {
         return 'A2';
@@ -126,7 +127,9 @@ class winlotexportapi implements FromCollection, WithHeadings, ShouldAutoSize, W
         $transformedData = [];
 
         foreach ($data as $lot) {
-            foreach ($lot['lot']['materials'] as $material) {
+            foreach ($lot['lot']['materials'] as $material) 
+            {
+                
                 $transformedData[] = [
                     'Lot ID' => $lot['lot_id'],
                     'Lot Title' => $lot['lot']['title'],
@@ -163,8 +166,10 @@ class winlotexportapi implements FromCollection, WithHeadings, ShouldAutoSize, W
         }
 
         return $transformedData;
-    }
+   }
 }
+
+
 
 
 // also working
