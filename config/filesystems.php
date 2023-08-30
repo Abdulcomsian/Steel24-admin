@@ -32,7 +32,7 @@ return [
 
         'local' => [
             'driver' => 'local',
-            'root' => storage_path('app'),
+            'root' => public_path('public'),
         ],
 
         // 'public' => [
@@ -44,7 +44,7 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => public_path('app/public'),
+            'root' => public_path( ),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
         ],        
@@ -54,10 +54,10 @@ return [
             'root' => public_path('ExcelLots'),
         ],
 
-        'ExcelWinLots' => [
-            'driver' => 'local',
-            'root' => public_path('ExcelWinLots'),
-        ],
+        // 'ExcelWinLots' => [
+        //     'driver' => 'local',
+        //     'root' => public_path('ExcelWinLots'),
+        // ],
         
 
         's3' => [
