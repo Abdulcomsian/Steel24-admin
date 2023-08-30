@@ -2205,6 +2205,7 @@ class LotsContoller extends Controller
 
     public function winExcelLotExport(Request $request)
     {
+
         
         $customerId = $request->input('customer_id');
 
@@ -2223,7 +2224,6 @@ class LotsContoller extends Controller
         Excel::store($export, $filePath, 'public');
 
         $fileUrl = url($filePath);
-
         // Save the URL in the database
         ExportWinLots::create([
             'url' => $filePath, 
