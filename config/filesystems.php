@@ -47,17 +47,12 @@ return [
             'root' => public_path( ),
             'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
-        ],        
+        ], 
 
         'ExcelLots' => [
             'driver' => 'local',
             'root' => public_path('ExcelLots'),
         ],
-
-        // 'ExcelWinLots' => [
-        //     'driver' => 'local',
-        //     'root' => public_path('ExcelWinLots'),
-        // ],
         
 
         's3' => [
