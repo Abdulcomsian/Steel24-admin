@@ -35,6 +35,8 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Illuminate\Support\Facades\Session;
+use App\Exports\winlotexportapi;
+use App\Models\ExportWinLots;
 
 
 class LotsContoller extends Controller
@@ -1964,82 +1966,6 @@ class LotsContoller extends Controller
     // }
 
 
-   
-    // public function winLotsShow(Request $request)
-    // {
-    //     $startDate = $request->input('start_date');
-    //     $endDate = $request->input('end_date');
-    //     $customerId = $request->input('customer_id');
-    
-    //     $customerLots = CustomerLot::whereHas('lot', function ($query) use ($startDate, $endDate) {
-    //         $query->whereBetween('created_at', [$startDate, $endDate]);
-    //     })
-    //     ->where('customer_id', $customerId)
-    //     ->get();
-    
-    //     if ($customerLots->isEmpty()) {
-    //         $message = 'Sorry, No Win lots against this Customer.';
-    //     } else {
-    //         $message = 'Win Lot Retrieved Successfully.';
-    //     }
-    
-    //     $winningLots = [];
-    
-    //     foreach ($customerLots as $customerLot) {
-    //         $lot = $customerLot->lot;
-            
-    //         $lot->load('lotDetails', 'materials'); 
-            
-    //         $winningLots[] = $lot;
-    //     }
-    
-    //     return response()->json([
-    //         'message' => $message,
-    //         'win_lots' => $winningLots,
-    //     ]);
-    // }
-
-
-
-
-    // public function winLotsShow(Request $request)
-    // {
-    //     $startDate = $request->input('start_date');
-    //     $endDate = $request->input('end_date');
-    //     $customerId = $request->input('customer_id');
-
-    //     $customerLots = CustomerLot::with('lot')
-    //      ->where(DB::raw('Date(created_at)') , '>=' , $startDate)
-    //      ->where(DB::raw('Date(created_at)') , '<=' , $endDate)
-    //     ->where('customer_id' , $customerId)
-    //     ->get();
-
-    
-    //     if ($customerLots->isEmpty()) 
-    //     {
-    //         $message = 'Sorry, No Win lots against this Customer.';
-    //     } else {
-    //         $message = 'Win Lot Retrieved Successfully.';
-    //     }
-    
-    //     $winningLots = [];
-    
-    //     foreach ($customerLots as $customerLot) 
-    //     {
-    //         $lot = $customerLot->lot;
-            
-    //         $lot->load('lotDetails', 'materials'); 
-            
-    //         $winningLots[] = $lot;
-    //     }
-    
-    //     return response()->json([
-    //         'message' => $message,
-    //         'win_lots' => $winningLots,
-    //     ]);
-    // }
-
-
     // public function winLotsShow(Request $request)
     // {
     //     $startDate = $request->input('start_date');
@@ -2107,6 +2033,254 @@ class LotsContoller extends Controller
     
         return response()->json($response);
     }
+
+
+
+
+
+
+    //     public function winLotsExcelExport(Request $request)
+    // {
+    //     $customerId = $request->input('customer_id');
+
+    //     // Generate a unique filename for the exported Excel file
+    //     $filename = 'lots_' . now()->format('Ymd_His') . '.xlsx';
+
+    //     // Generate Excel file using Laravel Excel package
+    //     $excel = new WinLotsExport($customerId);
+    //     $excelPath = 'public/WinLotsExport/' . $filename; // Updated path
+    //     Excel::store($excel, $excelPath);
+
+    //     // Save the URL to the exported file in the database
+    //     $url = Storage::url($excelPath);
+    //     ExportWinLots::create(['url' => $url]);
+
+    //     $response = [
+    //         'message' => 'Excel file generated, saved, and URL recorded successfully.',
+    //         'file_url' => url($url),
+    //     ];
+
+    //     return response()->json($response);
+    // }
+
+
+
+
+    // public function winLotsExcelExport(Request $request)
+    // {
+    //     $customerId = $request->input('customer_id');
+
+    //     // Fetch the winning lots data based on the customer ID
+    //     $winningLotsData = CustomerLot::with(['lot', 'lot.materials'])
+    //         ->where('customer_id', $customerId)
+    //         ->get();
+
+
+    //     // Generate a unique filename for the exported Excel file
+    //     $filename = 'winlot_' . now()->format('Ymd_His') . '.xlsx';
+
+    //     // Generate Excel file using Laravel Excel package
+    //     $excel = new WinLotsExport($winningLotsData);
+    //     $excelPath = 'public/WinLotsExport/' . $filename;
+    //     Excel::store($excel, $excelPath);
+
+    //     // Save the URL to the exported file in the database
+    //     $url = Storage::url($excelPath);
+    //     ExportWinLots::create(['url' => $filename]);
+
+    //     dd( $url);
+
+    //     $response = [
+    //         'message' => 'Excel file generated, saved, and URL recorded successfully.',
+    //         'file_url' => url('WinLotsExport/' . $filename),
+    //     ];
+
+    //     return response()->json($response);
+    // }
+
+
+
+
+
+
+    // public function winLotsExcelExport(Request $request)
+    // {
+    //     $customerId = $request->input('customer_id');
+    
+    //     // Fetch the winning lots data based on the customer ID
+    //     $winningLotsData = CustomerLot::with(['lot', 'lot.materials'])
+    //         ->where('customer_id', $customerId)
+    //         ->get();
+    
+    //     // Generate a unique filename for the exported Excel file
+    //     $filename = 'lots_' . now()->format('Ymd_His') . '.xlsx';
+    
+    //     // Generate Excel file using Laravel Excel package
+    //     $excel = new WinLotsExport($winningLotsData);
+    //     $excelPath = public_path('WinLotsExport/' . $filename); // Updated path
+    //     Excel::store($excel, $excelPath);
+    
+    //     // Save the file path to the exported file in the database
+    //     ExportWinLots::create(['url' => $excelPath]);
+    
+    //     $response = [
+    //         'message' => 'Excel file generated, saved, and URL recorded successfully.',
+    //         'file_url' => url('WinLotsExport/' . $filename),
+    //     ];
+    
+    //     return response()->json($response);
+    // }
+
+
+    // public function winLotsExcelExport(Request $request)
+    // {
+    //     $customerId = $request->input('customer_id');
+    
+    //     // Fetch the winning lots data based on the customer ID
+    //     $winningLotsData = CustomerLot::with(['lot', 'lot.materials'])
+    //         ->where('customer_id', $customerId)
+    //         ->get();
+    
+    //     // Generate a unique filename for the exported Excel file
+    //     $filename = 'lots_' . now()->format('Ymd_His') . '.xlsx';
+    
+    //     // Generate Excel file using Laravel Excel package
+    //     $excel = new WinLotsExport($winningLotsData);
+
+    //     $excelPath = public_path('WinLotsExport/' . $filename);
+    //     Excel::store($excel, $excelPath);
+    //     // $excelPath = 'public/WinLotsExport/' . $filename; // Updated path
+    //     // Excel::store($excel, $excelPath);
+    
+    //     // Save the URL to the exported file in the database
+    //     ExportWinLots::create(['url' => $excelPath]);
+    
+    //     $response = [
+    //         'message' => 'Excel file generated, saved, and URL recorded successfully.',
+    //         'file_url' => url('WinLotsExport/' . $filename),
+
+    //     ];
+    
+    //     return response()->json($response);
+    // }
+
+    // public function winLotsExcelExport(Request $request)
+    // {
+    //     $customerId = $request->input('customer_id');
+    
+    //     // Fetch the winning lots data based on the customer ID
+    //     $winningLotsData = CustomerLot::with(['lot', 'lot.materials'])
+    //         ->where('customer_id', $customerId)
+    //         ->get();
+    
+    //     // Generate a unique filename for the exported Excel file
+    //     $filename = 'lots_' . now()->format('Ymd_His') . '.xlsx';
+    
+    //     // Generate Excel file using Laravel Excel package
+    //     $excel = new WinLotsExport($winningLotsData);
+    
+    //     // Generate the Excel file path
+    //     $excelPath = public_path('WinLotsExport' . DIRECTORY_SEPARATOR . $filename);
+    
+    //     // Store the Excel file in the specified path
+    //     Excel::store($excel, $excelPath);
+    
+    //     // Save the URL to the exported file in the database
+    //     ExportWinLots::create(['url' => $excelPath]);
+    
+    //     // Generate the file URL for the response
+    //     $fileUrl = url('WinLotsExport' . DIRECTORY_SEPARATOR . $filename);
+    
+    //     $response = [
+    //         'message' => 'Excel file generated, saved, and URL recorded successfully.',
+    //         'file_url' => $fileUrl,
+    //     ];
+    
+    //     return response()->json($response);
+    // }
+
+
+
+    
+
+    public function winExcelLotExport(Request $request)
+    {
+        // $customerId = $request->input('customer_id');
+
+        // // Fetch the winning lots data based on the customer ID
+        // $winningLotsData = CustomerLot::with(['lot', 'lot.materials'])
+        //     ->where('customer_id', $customerId)
+        //     ->get();
+
+        // // Generate a unique filename for the exported Excel file
+        // $filename = 'winLots_' . now()->format('Ymd_His') . '.xlsx';
+
+        // // Generate Excel file using Laravel Excel package
+        // $excel = new winlotexportapi($winningLotsData);
+
+        // // Generate the Excel file path
+        // $excelPath = public_path('ExcelLots') . '/' . $filename;
+
+        // // Store the Excel file in the specified path
+        // Excel::store($excel, $excelPath);
+
+        // // Save the filename to the exported file in the database
+        // ExportWinLots::create(['url' => $filename]); 
+
+        // // Generate the file URL for the response
+        // $fileUrl = url('ExcelLots') . '/' . $filename;
+
+        // $response = [
+        //     'message' => 'Excel file generated, saved, and URL recorded successfully.',
+        //     'file_url' => $fileUrl,
+        // ];
+
+        // return response()->json($response);
+
+
+        $customerId = $request->input('customer_id');
+
+        $winningLotsData = CustomerLot::with(['lot', 'lot.materials'])
+            ->where('customer_id', $customerId)
+            ->get();
+
+        // Create a new export instance
+        $export = new winlotexportapi($winningLotsData);
+
+        $timestamp = now()->format('His_Ymd');
+        $fileName = 'winlots_' . $timestamp . '.xlsx';
+        $filePath = 'ExcelLots' . DIRECTORY_SEPARATOR . $fileName;
+
+        // Generate and store the Excel file
+        Excel::store($export, $filePath, 'public');
+
+        $fileUrl = url($filePath);
+
+        // Save the URL in the database
+        ExportWinLots::create([
+            'url' => $filePath, // Store the relative path
+        ]);
+
+        $response = [
+            'message' => 'Excel file generated, saved, and URL recorded successfully.',
+            'file_url' => $fileUrl,
+        ];
+
+        return response()->json($response);
+
+    }
+
+    
+    
+    
+    
+    
+
+    
+    
+
+    
+    
     
     
 
