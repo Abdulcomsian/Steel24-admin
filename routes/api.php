@@ -213,6 +213,9 @@ Route::post('winLotsShow', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@winL
 Route::post('winLotsExcelExport', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@winExcelLotExport');
 
 
+// Show customer balance again start date , End Date and CustomerId
+Route::post('showcustomerbalnace', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showcustomerbalnace');
+
 
 
 

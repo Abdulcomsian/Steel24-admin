@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class payments extends Model
 {
     use HasFactory;
+    protected $table = 'payments';
+
     protected $fillable = [
         'lotId',
         'customerId',
