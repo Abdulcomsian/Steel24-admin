@@ -1731,140 +1731,7 @@ class LotsContoller extends Controller
         return response()->json(["message" => "No win lots found for the customer", "success" => false]);
     }
 
-    // Generate Excel File OF Lots API
-
-
-    //     public function exportLotsToExcel()
-    // {
-    //     $export = new LotsExport();
-
-    //     // Generate a unique filename using a timestamp
-    //     $timestamp = now()->format('Ymd_His');
-    //     $fileName = 'lots_' . $timestamp . '.xlsx';
-
-    //     $disk = 'ExcelLots';
-
-    //     // Generate and store the Excel file on the "ExcelLots" disk
-    //     Excel::store($export, $fileName, $disk);
-
-    //     // Return a JSON response with the success message
-    //     return response()->json(['message' => 'Excel file generated and saved successfully']);
-    // }
-
-
-
-
-    
-    // public function exportLotsToExcel()
-    // {
-    //     // Fetch lots with lot_status = "live"
-    //     $lots = lots::where('lot_status', 'live')->get();
-    
-    //     // Create a new LotsExport instance and pass the fetched lots
-    //     $export = new LotsExport($lots);
-    
-    //     // Generate a unique filename using a timestamp
-    //     $timestamp = now()->format('Ymd_His');
-    //     $fileName = 'lots_' . $timestamp . '.xlsx';
-    
-    //     $disk = 'ExcelLots';
-    
-    //     // Generate and store the Excel file on the "ExcelLots" disk
-    //     Excel::store($export, $fileName, $disk);
-    
-    //     // Return a JSON response with the success message
-    //     return response()->json(['message' => 'Excel file generated and saved successfully']);
-    // }
-
-
-
-    //     public function exportLotsToExcel()
-    // {
-    //     // Fetch lots with lot_status = "live"
-    //     $lots = lots::where('lot_status', 'live')->get();
-
-    //     // Create a new LotsExport instance and pass the fetched lots
-    //     $export = new LotsExport($lots);
-
-    //     // Generate a unique filename using a timestamp
-    //     $timestamp = now()->format('Ymd_His');
-    //     $fileName = 'lots_' . $timestamp . '.xlsx';
-
-    //     $disk = 'ExcelLots';
-
-    //     // Generate and store the Excel file on the "ExcelLots" disk
-    //     Excel::store($export, $fileName, $disk);
-
-    //     // Return a JSON response with the success message
-    //     return response()->json(['message' => 'Excel file generated and saved successfully']);
-    // }
-
-    // public function exportLotsToExcel()
-    // {
-    //     // Fetch lots with lot_status = "live"
-    //     $lots = lots::where('lot_status', 'live')->get();
-    
-    //     // Create a new LotsExport instance and pass the fetched lots
-    //     $export = new LotsExport($lots);
-    
-    //     // Generate a unique filename using a timestamp
-    //     $timestamp = now()->format('Ymd_His');
-    //     $fileName = 'lots_' . $timestamp . '.xlsx';
-    //     $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
-    
-    //     // Generate and store the Excel file on the local filesystem
-    //     Excel::store($export, $fileName, 'ExcelLots');
-    
-    //     // Save the URL in the 'export_urls' table
-    //     $url = asset('ExcelLots/' . $fileName);
-    
-    //     // Create a new record in the 'export_urls' table
-    //     ExportUrl::create([
-    //         'url' => $url,
-    //     ]);
-    
-    //     // Return a JSON response with the success message and the file URL
-    //     return response()->json([
-    //         'message' => 'Excel file generated, saved, and URL recorded successfully.',
-    //         'file_url' => $url,
-    //     ]);
-    // }
-
-    //     public function exportLotsToExcel()
-    // {
-    //     // Fetch lots with lot_status = "live"
-    //     $lots = Lots::where('lot_status', 'live')->get();
-
-    //     // Create a new LotsExport instance and pass the fetched lots
-    //     $export = new LotsExport($lots);
-
-    //     // Generate a unique filename using a timestamp
-    //     $timestamp = now()->format('Ymd_His');
-    //     $fileName = 'lots_' . $timestamp . '.xlsx';
-    //     $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
-
-    //     // Generate and store the Excel file on the local filesystem
-    //     Excel::store($export, $fileName, 'ExcelLots');
-
-    //     // Full local file path
-    //     $localFilePath = $filePath;
-
-    //     // Save the URL in the 'export_urls' table
-    //     $url = asset('ExcelLots/' . $fileName); // Generates a URL relative to the public directory
-
-    //     // Create a new record in the 'export_urls' table
-    //     ExportUrl::create([
-    //         'url' => $url,
-    //     ]);
-
-    //     // Return a JSON response with the success message, local file path, and the file URL
-    //     return response()->json([
-    //         'message' => 'Excel file generated, saved, and URL recorded successfully.',
-    //         // 'local_file_path' => $localFilePath,
-    //         // 'file_url' => $url,
-    //         'file_url' => $localFilePath,
-    //     ]);
-    // }
+    // Generate Excel File OF win Lots Against the Customer_id, start_date and end_date
 
     //     public function exportLotsToExcel()
     // {
@@ -1901,42 +1768,96 @@ class LotsContoller extends Controller
 
     // working fine 
 
+    // public function exportLotsToExcel(Request $request)
+    // {
+
+    //     $status = $request->input('status');
+
+    //     // Fetch lots with lot_status = "live"
+    //     $lots = lots::where('lot_status', $status)->get();
+    
+    //     // Create a new LotsExport instance and pass the fetched lots
+    //     $export = new LotsExport($lots);
+    
+    //     // Generate a unique filename using a timestamp
+    //     $timestamp = now()->format('Ymd_His');
+    //     $fileName = 'lots_' . $timestamp . '.xlsx';
+    //     $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
+    
+    //     // Generate and store the Excel file on the local filesystem
+    //     Excel::store($export, $fileName, 'ExcelLots');
+    
+    //     // Full local file path
+    //     $localFilePath = $filePath;
+    
+    //     // Generate live URL
+    //     $liveUrl = url('ExcelLots/' . $fileName);
+    
+    //     // Save the local file path in the 'export_urls' table
+    //     ExportUrl::create([
+    //         'url' => $localFilePath,
+    //     ]);
+    
+    //     // Return a JSON response with the success message and live URL
+    //     return response()->json([
+    //         'message' => 'Excel file generated, saved, and URL recorded successfully.',
+    //         'file_url' => $liveUrl,
+    //     ]);
+    // }
+
+
+
     public function exportLotsToExcel(Request $request)
     {
+        try {
+            $status = $request->input('status');
 
-        $status = $request->input('status');
+            // // Fetch lots with lot_status = "live"
+            // $lots = lots::where('lot_status', $status)->get();
+            // Fetch lots with lot_status = "live" along with their related materials and categories
+                $lots = lots::with('new_maerials_2', 'categories')
+                ->where('lot_status', $status)
+                ->get();
 
-        // Fetch lots with lot_status = "live"
-        $lots = lots::where('lot_status', $status)->get();
-    
-        // Create a new LotsExport instance and pass the fetched lots
-        $export = new LotsExport($lots);
-    
-        // Generate a unique filename using a timestamp
-        $timestamp = now()->format('Ymd_His');
-        $fileName = 'lots_' . $timestamp . '.xlsx';
-        $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
-    
-        // Generate and store the Excel file on the local filesystem
-        Excel::store($export, $fileName, 'ExcelLots');
-    
-        // Full local file path
-        $localFilePath = $filePath;
-    
-        // Generate live URL
-        $liveUrl = url('ExcelLots/' . $fileName);
-    
-        // Save the local file path in the 'export_urls' table
-        ExportUrl::create([
-            'url' => $localFilePath,
-        ]);
-    
-        // Return a JSON response with the success message and live URL
-        return response()->json([
-            'message' => 'Excel file generated, saved, and URL recorded successfully.',
-            'file_url' => $liveUrl,
-        ]);
+            // Create a new LotsExport instance and pass the fetched lots
+            $export = new LotsExport($lots);
+
+            // Generate a unique filename using a timestamp
+            $timestamp = now()->format('Ymd_His');
+            $fileName = 'lots_' . $timestamp . '.xlsx';
+            $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
+
+            // Generate and store the Excel file on the local filesystem
+            Excel::store($export, $fileName, 'ExcelLots');
+
+            // Full local file path
+            $localFilePath = $filePath;
+
+            // Generate live URL
+            $liveUrl = url('ExcelLots/' . $fileName);
+
+            // Save the local file path in the 'export_urls' table
+            ExportUrl::create([
+                'url' => $localFilePath,
+            ]);
+
+            // Return a JSON response with the success message and live URL
+            return response()->json([
+                'message' => 'Excel file generated, saved, and URL recorded successfully.',
+                'file_url' => $liveUrl,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Error occurred during export: ' . $e->getMessage(),
+            ], 500);
+        }
     }
+
+
+
+
+
+
 
     // ENDED PREVOUS CODE
 
