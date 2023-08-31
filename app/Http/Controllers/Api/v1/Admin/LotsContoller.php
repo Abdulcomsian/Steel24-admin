@@ -2062,23 +2062,27 @@ class LotsContoller extends Controller
 
         $timestamp = now()->format('Ymd_His');
         $fileName = 'winlots_' . $timestamp . '.xlsx';
-        $filePath = 'ExcelLots' . DIRECTORY_SEPARATOR . $fileName;
+        // $filePath = 'ExcelLots' . DIRECTORY_SEPARATOR . $fileName;
+        $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
 
         // Generate and store the Excel files
-        Excel::store($export, $filePath, 'public');
+        Excel::store($export, $fileName, 'ExcelLots');
 
-        $fileUrl = url($filePath);
+        // Full local file path
+        $localFilePath = $filePath;
+
+        // Generate live URL
+        $liveUrl = url('ExcelLots/' . $fileName);
+
         // Save the URL in the database
         ExportWinLots::create([
-            'url' => $filePath, 
+            'url' => $localFilePath, 
         ]);
 
-        $response = [
+         return response()->json([
             'message' => 'Excel file generated, saved, and URL recorded successfully.',
-            'file_url' => $fileUrl,
-        ];
-
-        return response()->json($response);
+            'file_url' => $liveUrl,
+        ]);
 
     }
 
