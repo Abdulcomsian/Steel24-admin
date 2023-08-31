@@ -15,8 +15,7 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 
 
-
-// class LotsExport implements FromCollection, WithHeadings
+// class LotsExport implements FromCollection, WithHeadings, WithCustomStartCell
 // {
 //     use Exportable;
 
@@ -27,92 +26,88 @@ use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 //         $this->lots = $lots;
 //     }
 
-//         public function headings(): array
-//     {
-//         return [
-//             // Live lot columns
-//             'title',
-//             'description',
-//             'categoryId',
-//             'uid',
-//             'Seller',
-//             'Plant',
-//             'materialLocation',
-//             'Quantity',
-//             'Payment_terms',
-//             'StartDate',
-//             'EndDate',
-//             'Price',
-//             'auction_status',
-//             'lot_status',
-//             'customFields',
-//             'participate_fee',
-//             'ReStartDate',
-//             'ReEndDate',
-//             'LiveSequenceNumber',
-//             'status',
-//             // Materials columns
-//             'lotid',
-//             'Product',
-//             'Thickness',
-//             'Width',
-//             'Length',
-//             'Weight',
-//             'Grade',
-//             'Remark',
-//             'images',
-//         ];
-//     }
-
 //     public function collection()
 //     {
-//         $data = [];
+//         $data = new Collection();
 
-//         foreach ($this->lots as $lot) {
-//             foreach ($lot->new_maerials_2 as $material) {
-//                 $data[] = [
-//                     // Live lot data
-//                     $lot->title,
-//                     $lot->description,
-//                     $lot->categoryId,
-//                     $lot->uid,
-//                     $lot->Seller,
-//                     $lot->Plant,
-//                     $lot->materialLocation,
-//                     $lot->Quantity,
-//                     $lot->Payment_terms,
-//                     $lot->StartDate,
-//                     $lot->EndDate,
-//                     $lot->Price,
-//                     $lot->auction_status,
-//                     $lot->lot_status,
-//                     $lot->customFields,
-//                     $lot->participate_fee,
-//                     $lot->ReStartDate,
-//                     $lot->ReEndDate,
-//                     $lot->LiveSequenceNumber,
-//                     $lot->status,
-//                     // Material data
-//                     $material->lotid,
+//         foreach ($this->lots as $index => $lot) {
+//             if ($index > 0) {
+//                 $data->push([]); 
+//             }
+
+//             // Add header rows
+//             $data->push(['Steel24 Auction List - Coated by JSW-COATED - 37 Lots']);
+//             $data->push(['Report Date: ' . now()->format('D d M Y h:i a')]);
+//             $data->push([]);
+
+//             // Add column headers
+//             $data->push([
+//                 'Lot No', 'Seller', 'Plant', 'Material Location', 'Product', 'Category', 'Description',
+//                 'Quantity', 'Start Date', 'End Date', 'Start Price', 'Material', 'Auction'
+//             ]);
+
+//             $lotRow = [
+//                 $lot->id,
+//                 $lot->Seller,
+//                 $lot->Plant,
+//                 $lot->materialLocation,
+//                 $lot->Product,
+//                 $lot->Category,
+//                 $lot->Description,
+//                 $lot->Quantity,
+//                 Carbon::parse($lot->StartDate)->format('d-M-y h:ia'), 
+//                 Carbon::parse($lot->EndDate)->format('d-M-y h:ia'), 
+//                 $lot->Price,
+//                 'Ex-Stock',
+//                 'Bid n Win'
+//             ];
+//             $data->push($lotRow);
+
+//             $data->push([]);
+
+//             foreach ($lot->new_maerials_2 as $material) 
+//             {
+
+//                 $materialRow = [
+//                     'Batch No',
 //                     $material->Product,
-//                     $material->Thickness,
+//                     $material->ProductCode,
+//                     $material->Thk,
 //                     $material->Width,
-//                     $material->Length,
-//                     $material->Weight,
+//                     $material->CoilLength,
+//                     $material->JSWGrade,
 //                     $material->Grade,
+//                     $material->Quantity,
+//                     $material->MajorDefect,
+//                     $material->Coating,
+//                     $material->TinTemper,
+//                     $material->EqSpeci,
+//                     $material->SpangleType,
+//                     $material->Passivation,
+//                     $material->ColdTreatment,
+//                     $material->PlantNo,
 //                     $material->Remark,
-//                     $material->images,
+//                     $material->StorageLocation,
+//                     $material->PlantLotNo,
 //                 ];
+//                 $data->push($materialRow);
+
 //             }
 //         }
 
-//         return collect($data);
+//         return $data;
 //     }
 
+//     public function headings(): array
+//     {
+//         return [];
+//     }
+
+//     public function startCell(): string
+//     {
+//         return 'A2';
+//     }
 // }
-
-
-
 
 
 // class LotsExport implements FromCollection, WithHeadings, WithCustomStartCell
@@ -130,18 +125,18 @@ use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 //     {
 //         $data = new Collection();
 
-//         // Add header rows
-//         $data->push(['Steelemart Auction List - Coated by JSW-COATED - 37 Lots']);
-//         $data->push(['Report Date: ' . now()->format('D d M Y h:i a')]);
-//         $data->push([]);
-
-//         // Add column headers
-//         $data->push([
-//             'Lot No', 'Seller', 'Plant', 'Material Location', 'Product', 'Category', 'Description',
-//             'Quantity', 'Start Date', 'End Date', 'Start Price', 'Material', 'Auction'
-//         ]);
-
 //         foreach ($this->lots as $lot) {
+//             $data->push(['Steel24 Auction List']);
+//             $data->push(['Report Date: ' . now()->format('D d M Y h:i a')]);
+//             $data->push([]);
+
+//             // Add column headers for each lot
+//             $data->push([
+//                 'Lot No', 'Seller', 'Plant', 'Material Location', 'Product', 'Category', 'Description',
+//                 'Quantity', 'Start Date', 'End Date', 'Start Price', 'Material', 'Auction'
+//             ]);
+
+//             // Add lot data
 //             $lotRow = [
 //                 $lot->id,
 //                 $lot->Seller,
@@ -151,15 +146,25 @@ use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 //                 $lot->Category,
 //                 $lot->Description,
 //                 $lot->Quantity,
-//                 Carbon::parse($lot->StartDate)->format('d-M-y h:ia'), // Convert and format StartDate
-//                 Carbon::parse($lot->EndDate)->format('d-M-y h:ia'),   // Convert and format EndDate
+//                 Carbon::parse($lot->StartDate)->format('d-M-y h:ia'), 
+//                 Carbon::parse($lot->EndDate)->format('d-M-y h:ia'), 
 //                 $lot->Price,
 //                 'Ex-Stock',
 //                 'Bid n Win'
 //             ];
 //             $data->push($lotRow);
 
-//             foreach ($lot->new_maerials_2 as $material) {
+//             $data->push([]);
+//             $data->push([]);
+
+//             $data->push([
+//                 'Batch No', 'Product', 'Product Code', 'Thk', 'Width', 'Coil Length', 'JSW Grade', 'Grade',
+//                 'Qty', 'Major Defect', 'Coating', 'Tin Temper', 'Eq Speci', 'Spangle Type', 'Passivation',
+//                 'Cold Treatment', 'Plant No', 'Remark', 'Storage Location', 'Plant Lot No'
+//             ]);
+
+//             foreach ($lot->new_maerials_2 as $material) 
+//             {
 //                 $materialRow = [
 //                     'Batch No',
 //                     $material->Product,
@@ -169,7 +174,7 @@ use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 //                     $material->CoilLength,
 //                     $material->JSWGrade,
 //                     $material->Grade,
-//                     $material->Qty,
+//                     $material->Quantity,
 //                     $material->MajorDefect,
 //                     $material->Coating,
 //                     $material->TinTemper,
@@ -184,6 +189,9 @@ use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 //                 ];
 //                 $data->push($materialRow);
 //             }
+
+//             $data->push([]);
+//             $data->push([]);
 //         }
 
 //         return $data;
@@ -203,6 +211,8 @@ use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 
 
 
+// Final code working
+
 // class LotsExport implements FromCollection, WithHeadings, WithCustomStartCell
 // {
 //     use Exportable;
@@ -218,64 +228,68 @@ use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 //     {
 //         $data = new Collection();
 
-//         foreach ($this->lots as $index => $lot) {
-//             if ($index > 0) {
-//                 $data->push([]); // Add a blank row between lots
-//             }
+//         $data->push(['Steel24 Auction List']);
+//         $data->push(['Report Date: ' . now()->format('D d M Y h:i a')]);
+//         $data->push([]);
 
-//             // Add header rows
-//             $data->push(['Steelemart Auction List - Coated by JSW-COATED - 37 Lots']);
-//             $data->push(['Report Date: ' . now()->format('D d M Y h:i a')]);
-//             $data->push([]);
-
-//             // Add column headers
+//         foreach ($this->lots as $lot) 
+//         {
 //             $data->push([
-//                 'Lot No', 'Seller', 'Plant', 'Material Location', 'Product', 'Category', 'Description',
-//                 'Quantity', 'Start Date', 'End Date', 'Start Price', 'Material', 'Auction'
+//                 'Lot No', 'Title', 'Description' , 'Category Id', 'U_Id', 'Seller', 'Plant', 'Material Location', 'Quantity', 'StartDate', 'EndDate','Start Price', 'Lot Status', 'Participate Fee'
 //             ]);
 
 //             $lotRow = [
 //                 $lot->id,
+//                 $lot->title,
+//                 $lot->description,
+//                 $lot->categoryId,
+//                 $lot->uid,
 //                 $lot->Seller,
 //                 $lot->Plant,
 //                 $lot->materialLocation,
-//                 $lot->Product,
-//                 $lot->Category,
-//                 $lot->Description,
 //                 $lot->Quantity,
-//                 Carbon::parse($lot->StartDate)->format('d-M-y h:ia'), // Convert and format StartDate
-//                 Carbon::parse($lot->EndDate)->format('d-M-y h:ia'),   // Convert and format EndDate
+//                 $lot->StartDate,
+//                 $lot->EndDate,
+//                 // Carbon::parse($lot->StartDate)->format('d-M-y h:ia'), 
+//                 // Carbon::parse($lot->EndDate)->format('d-M-y h:ia'), 
 //                 $lot->Price,
+//                 $lot->lot_status,
+//                 $lot->participate_fee,
 //                 'Ex-Stock',
 //                 'Bid n Win'
 //             ];
 //             $data->push($lotRow);
 
-//             foreach ($lot->new_maerials_2 as $material) {
+//             $data->push([]);
+
+//             $data->push([]);
+
+        
+//             $data->push([
+//                 'Material Id', 'Lot Id', 'Product', 'Thickness', 'Width', 'Length', 'Weight', 'Grade',
+//                 'Remark', 'images', 'Created_at', 'Updated_at'
+//             ]);
+
+//             foreach ($lot->new_maerials_2 as $material) 
+//             {
 //                 $materialRow = [
-//                     'Batch No',
+//                     $material->id,
+//                     $material->lotid,
 //                     $material->Product,
-//                     $material->ProductCode,
-//                     $material->Thk,
+//                     $material->Thickness,
 //                     $material->Width,
-//                     $material->CoilLength,
-//                     $material->JSWGrade,
+//                     $material->Length,
+//                     $material->Weight,
 //                     $material->Grade,
-//                     $material->Qty,
-//                     $material->MajorDefect,
-//                     $material->Coating,
-//                     $material->TinTemper,
-//                     $material->EqSpeci,
-//                     $material->SpangleType,
-//                     $material->Passivation,
-//                     $material->ColdTreatment,
-//                     $material->PlantNo,
 //                     $material->Remark,
-//                     $material->StorageLocation,
-//                     $material->PlantLotNo,
+//                     $material->images,
+//                     $material->created_at,
+//                     $material->updated_at,
 //                 ];
 //                 $data->push($materialRow);
 //             }
+
+//             $data->push([]);
 //         }
 
 //         return $data;
@@ -284,6 +298,7 @@ use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 //     public function headings(): array
 //     {
 //         return [];
+//         $data->push([]);
 //     }
 
 //     public function startCell(): string
@@ -308,70 +323,66 @@ class LotsExport implements FromCollection, WithHeadings, WithCustomStartCell
     {
         $data = new Collection();
 
-        foreach ($this->lots as $index => $lot) {
-            if ($index > 0) {
-                $data->push([]); 
-            }
+        $data->push(['Steel24 Auction List']);
+        $data->push(['Report Date: ' . now()->format('D d M Y h:i a')]);
 
-            // Add header rows
-            $data->push(['Steelemart Auction List - Coated by JSW-COATED - 37 Lots']);
-            $data->push(['Report Date: ' . now()->format('D d M Y h:i a')]);
-            $data->push([]);
+        foreach ($this->lots as $lot) 
+        {
+            $data->push(['']);
 
-            // Add column headers
             $data->push([
-                'Lot No', 'Seller', 'Plant', 'Material Location', 'Product', 'Category', 'Description',
-                'Quantity', 'Start Date', 'End Date', 'Start Price', 'Material', 'Auction'
+                'Lot No', 'Title', 'Description', 'Category Id', 'U_Id', 'Seller', 'Plant', 'Material Location', 'Quantity', 'StartDate', 'EndDate', 'Start Price', 'Lot Status', 'Participate Fee'
             ]);
 
             $lotRow = [
                 $lot->id,
+                $lot->title,
+                $lot->description,
+                $lot->categoryId,
+                $lot->uid,
                 $lot->Seller,
                 $lot->Plant,
                 $lot->materialLocation,
-                $lot->Product,
-                $lot->Category,
-                $lot->Description,
                 $lot->Quantity,
-                Carbon::parse($lot->StartDate)->format('d-M-y h:ia'), 
-                Carbon::parse($lot->EndDate)->format('d-M-y h:ia'), 
+                $lot->StartDate,
+                $lot->EndDate,
+                // Carbon::parse($lot->StartDate)->format('d-M-y h:ia'), 
+                // Carbon::parse($lot->EndDate)->format('d-M-y h:ia'), 
                 $lot->Price,
-                'Ex-Stock',
-                'Bid n Win'
+                $lot->lot_status,
+                $lot->participate_fee,
+                // 'Ex-Stock',
+                // 'Bid n Win'
             ];
             $data->push($lotRow);
 
-            $data->push([]);
+            $data->push(['']); 
+        
+            $data->push([
+                'Material Id', 'Lot Id', 'Product', 'Thickness', 'Width', 'Length', 'Weight', 'Grade',
+                'Remark', 'images', 'Created_at', 'Updated_at'
+            ]);
 
             foreach ($lot->new_maerials_2 as $material) 
             {
-
                 $materialRow = [
-                    'Batch No',
+                    $material->id,
+                    $material->lotid,
                     $material->Product,
-                    $material->ProductCode,
-                    $material->Thk,
+                    $material->Thickness,
                     $material->Width,
-                    $material->CoilLength,
-                    $material->JSWGrade,
+                    $material->Length,
+                    $material->Weight,
                     $material->Grade,
-                    $material->Quantity,
-                    $material->MajorDefect,
-                    $material->Coating,
-                    $material->TinTemper,
-                    $material->EqSpeci,
-                    $material->SpangleType,
-                    $material->Passivation,
-                    $material->ColdTreatment,
-                    $material->PlantNo,
                     $material->Remark,
-                    $material->StorageLocation,
-                    $material->PlantLotNo,
+                    $material->images,
+                    $material->created_at,
+                    $material->updated_at,
                 ];
                 $data->push($materialRow);
-
-                // dd($materialRow);
             }
+
+            $data->push(['']); // Empty row
         }
 
         return $data;
@@ -387,4 +398,3 @@ class LotsExport implements FromCollection, WithHeadings, WithCustomStartCell
         return 'A1';
     }
 }
-
