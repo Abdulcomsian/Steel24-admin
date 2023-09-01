@@ -2324,7 +2324,7 @@ class AuctionContoller extends Controller
 
             if ($customer->isApproved) 
             {
-                $currentTime = now(); // Use Carbon's now() method for current time
+                $currentTime = now();
                 $endDate = Carbon::createFromFormat('Y-m-d H:i:s', $lot->EndDate);
 
                 // Log the current time and end date for debugging
@@ -2439,13 +2439,12 @@ class AuctionContoller extends Controller
     }
 
 
-
-
-
     public function setCustomerAutobid(Request $request)
     {
         $lotId = $request->lotId;
         $customerId = auth()->user()->id;
+
+        // dd($customerId);
 
         $lot = lots::with('bids.customer')->where('id' , $lotId)->first();
         $customer = Customer::find($customerId);

@@ -1293,6 +1293,7 @@ class LotsContoller extends Controller
     {
         $customerId = $request->input('customerId');
         $categoryId = $request->input('categoryId');
+        $status     = $request->input('status');
     
         // Retrieve the category
         $category = categories::find($categoryId);
@@ -1318,7 +1319,7 @@ class LotsContoller extends Controller
             }
         ])
         ->where('categoryId', $categoryId)
-        ->where('lot_status', 'LIKE', '%live%')
+        ->where('lot_status', $status)
         ->orderBy('StartDate', 'asc')
         ->get();
     
