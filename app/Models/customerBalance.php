@@ -20,4 +20,11 @@ class customerBalance extends Model
     {
         return $this->belongsTo(lots::class, 'lot_id', 'id');
     }
+
+    public function lots()
+    {
+        return $this->belongsTo(lots::class, 'lotid');
+    }
+
+
 }

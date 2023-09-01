@@ -38,7 +38,6 @@ use App\Models\ExportWinLots;
 use Illuminate\Support\Facades\Validator;
 
 
-
 class LotsContoller extends Controller
 {
     private $user, $defaultNumber;
@@ -1643,7 +1642,7 @@ class LotsContoller extends Controller
     }
 
 
-    // Win lot against the customer_id to show Excel Export
+    // Win lot against the customer_id to show Excel Export API
 
     public function winExcelLotExport(Request $request)
     {
@@ -1710,24 +1709,103 @@ class LotsContoller extends Controller
             return response()->json(['errors' => $validator->errors()],200);
         }
 
+        // $customerId = $request->input('customer_id');
+        // $startDate = $request->input('start_date');
+        // $endDate = $request->input('end_date');
+
+        // $customerBalances = CustomerBalance::with('lots') 
+        //     ->where('customerId', $customerId)
+        //     ->whereBetween('date', [$startDate, $endDate])
+        //     ->get()
+        //     ->map(function ($item) 
+        //     {
+        //         $lotTitle = optional($item->lots)->title;
+        //         return [
+        //             'id' => $item->id,
+        //             'customerId' => $item->customerId,
+        //             'balanceAmount' => $item->balanceAmount,
+        //             'action' => $item->action,
+        //             'actionAmount' => $item->actionAmount,
+        //             'finalAmount' => $item->finalAmount,
+        //             'date' => $item->date,
+        //             'status' => $item->status,
+        //             'lot_title' => $lotTitle, 
+        //             'created_at' => $item->created_at,
+        //             'updated_at' => $item->updated_at,
+        //             'lotid' => $item->lotid,
+        //         ];
+        //     });
+
+        // $data = [
+        //     'Customer_Balances' => $customerBalances,
+        // ];
+
+        // return response()->json($data);
+
+
         $customerId = $request->input('customer_id');
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
 
-        $customerBalances = CustomerBalance::where('customerId', $customerId)
-            ->whereBetween('date', [$startDate, $endDate])
-            ->get();
-
-        $payments = Payments::where('customerId', $customerId)
-            ->whereBetween('Date', [$startDate, $endDate])
-            ->get();
+        if ($startDate === $endDate) 
+        {
+            // Fetch data for the same date
+            $customerBalances = CustomerBalance::with('lots')
+                ->where('customerId', $customerId)
+                ->whereDate('date', $startDate)
+                ->get()
+                ->map(function ($item) 
+                {
+                    $lotTitle = optional($item->lots)->title;
+                    return [
+                        'id' => $item->id,
+                        'customerId' => $item->customerId,
+                        'balanceAmount' => $item->balanceAmount,
+                        'action' => $item->action,
+                        'actionAmount' => $item->actionAmount,
+                        'finalAmount' => $item->finalAmount,
+                        'date' => $item->date,
+                        'status' => $item->status,
+                        'lot_title' => $lotTitle, 
+                        'created_at' => $item->created_at,
+                        'updated_at' => $item->updated_at,
+                        'lotid' => $item->lotid,
+                    ];
+                });
+        } 
+        else 
+        {
+            // Fetch data within the date range
+            $customerBalances = CustomerBalance::with('lots')
+                ->where('customerId', $customerId)
+                ->whereBetween('date', [$startDate, $endDate])
+                ->get()
+                ->map(function ($item) 
+                {
+                    $lotTitle = optional($item->lots)->title;
+                    return [
+                        'id' => $item->id,
+                        'customerId' => $item->customerId,
+                        'balanceAmount' => $item->balanceAmount,
+                        'action' => $item->action,
+                        'actionAmount' => $item->actionAmount,
+                        'finalAmount' => $item->finalAmount,
+                        'date' => $item->date,
+                        'status' => $item->status,
+                        'lot_title' => $lotTitle, 
+                        'created_at' => $item->created_at,
+                        'updated_at' => $item->updated_at,
+                        'lotid' => $item->lotid,
+                    ];
+                });
+        }
 
         $data = [
-            'customerBalances' => $customerBalances,
-            // 'payments' => $payments,
+            'Customer_Balances' => $customerBalances,
         ];
 
         return response()->json($data);
+
     }
     
 }
