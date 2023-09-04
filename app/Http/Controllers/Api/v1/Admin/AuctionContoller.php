@@ -2305,6 +2305,68 @@ class AuctionContoller extends Controller
     //     }
     // }
 
+
+
+
+
+    // public function customerBidding(Request $request)
+    // {
+    //     try {
+    //         $customerId = auth()->user()->id;
+    //         $lotId = $request->lotId;
+    //         $amount = $request->amount;
+
+    //         $lot = lots::with('autoBids', 'bids.customer', 'participant')->where('id', $lotId)->first();
+    //         $customer = Customer::find($customerId);
+
+    //         $status = $lot->lot_status;
+
+    //         if (in_array($status, ['Sold', 'Expired'])) 
+    //         {
+    //             $msg = $status == 'Sold' ? "Lot Has Already Been Sold" : "Lot Has Been Expired";
+    //             return response()->json(["success" => false, "msg" => $msg]);
+    //         }
+
+    //         if ($customer->isApproved) 
+    //         {
+    //             $currentTime = now();
+    //             $endDate = Carbon::createFromFormat('Y-m-d H:i:s', $lot->EndDate);
+
+    //             // Log the current time and end date for debugging
+    //             // Log::info('Current Time: ' . $currentTime);
+    //             // Log::info('End Date: ' . $endDate);
+
+    //             if ($currentTime->lte($endDate))
+    //             {
+    //                 // If the current time is before or equal to the EndDate, allow bidding
+    //                 if (!$lot->bids->isEmpty()) 
+    //                 {
+    //                     // If someone has bid against the lot
+    //                     return $this->addNewBidding($customer, $amount, $lot, 0);
+    //                 } else 
+    //                 {
+    //                     // If no one has bid against the lot
+    //                     return $this->addNewBidding($customer, $amount, $lot, 0);
+    //                 }
+    //             } 
+    //             else 
+    //             {
+    //                 // If the current time is after the EndDate, disallow bidding
+    //                 return response()->json(["success" => false, "msg" => "Bidding is no longer allowed for this lot."]);
+    //             }
+    //         } else {
+    //             return response()->json(["success" => false, "msg" => "User Is Not Allowed"]);
+    //         }
+    //     } catch (\Exception $e) 
+    //     {
+    //         // Log the exception for debugging
+    //         // Log::error($e);
+
+    //         return response()->json(["success" => false, "msg" => "Something Went Wrong!", "error" => $e->getMessage()]);
+    //     }
+    // }
+
+        
     public function customerBidding(Request $request)
     {
         try {
@@ -2317,36 +2379,38 @@ class AuctionContoller extends Controller
 
             $status = $lot->lot_status;
 
-            if (in_array($status, ['Sold', 'Expired'])) 
-            {
+            if (in_array($status, ['Sold', 'Expired'])) {
                 $msg = $status == 'Sold' ? "Lot Has Already Been Sold" : "Lot Has Been Expired";
                 return response()->json(["success" => false, "msg" => $msg]);
             }
 
-            if ($customer->isApproved) 
-            {
+            if ($customer->isApproved) {
                 $currentTime = now();
                 $endDate = Carbon::createFromFormat('Y-m-d H:i:s', $lot->EndDate);
 
-                // Log the current time and end date for debugging
-                // Log::info('Current Time: ' . $currentTime);
-                // Log::info('End Date: ' . $endDate);
+                if ($currentTime->lte($endDate)) {
+                    // Calculate the time difference in seconds
+                    $timeDifference = $endDate->diffInSeconds($currentTime);
 
-                if ($currentTime->lte($endDate))
-                {
-                    // If the current time is before or equal to the EndDate, allow bidding
-                    if (!$lot->bids->isEmpty()) 
+                    // Check if there's less than 1 minute remaining
+                    if ($timeDifference <= 60) 
                     {
-                        // If someone has bid against the lot
-                        return $this->addNewBidding($customer, $amount, $lot, 0);
-                    } else 
-                    {
-                        // If no one has bid against the lot
-                        return $this->addNewBidding($customer, $amount, $lot, 0);
+                        // Extend the end time by 1 minute
+                        $endDate->addMinutes(1);
+                        
+                        // Update the lot's end date in the database
+                        $lot->EndDate = $endDate;
+
+                        // Save the updated end date
+                        $lot->save();
                     }
-                } 
-                else 
-                {
+
+                    // Place the customer's bid
+                    $bidResponse = $this->addNewBidding($customer, $amount, $lot, 0);
+
+                    // Return the bid response
+                    return $bidResponse;
+                } else {
                     // If the current time is after the EndDate, disallow bidding
                     return response()->json(["success" => false, "msg" => "Bidding is no longer allowed for this lot."]);
                 }
@@ -2355,9 +2419,6 @@ class AuctionContoller extends Controller
             }
         } catch (\Exception $e) 
         {
-            // Log the exception for debugging
-            // Log::error($e);
-
             return response()->json(["success" => false, "msg" => "Something Went Wrong!", "error" => $e->getMessage()]);
         }
     }
@@ -2440,97 +2501,172 @@ class AuctionContoller extends Controller
     }
 
 
+
+
+
+
+    // public function setCustomerAutobid(Request $request)
+    // {
+    //     $lotId = $request->lotId;
+    //     $customerId = auth()->user()->id;
+
+    //     // dd($customerId);
+
+    //     $lot = lots::with('bids.customer')->where('id' , $lotId)->first();
+    //     $customer = Customer::find($customerId);
+
+    //     $status = $lot->lot_status;
+
+    //     if(in_array($status , ['Sold' , 'Expired']))
+    //     {
+    //          $msg =   $status == 'Sold' ? "Lot Has Already Been Sold" : "Lot Has Been Expired"; 
+    //          return response()->json(["success" => false , "msg" => $msg ]);
+    //     }
+
+    //     $amount = $lot->bids->isEmpty() ? $lot->price : $lot->bids->max('amount');
+
+    //     $amount += 100;
+
+    //     if(!$lot->bids->isEmpty())
+    //     {
+    //         $lastBid = $lot->bids()->latest()->orderBy('id','desc')->first();
+
+    //         $lastBidTime = Carbon::createFromFormat( "Y-m-d H:i:s" , $lastBid->created_at);
+
+    //         $currentTime = Carbon::now();
+
+    //         $timeDifferenceInSeconds = $lastBidTime->diffInSeconds($currentTime);
+
+    //         if($timeDifferenceInSeconds <= 120)
+    //         {
+    //             $createBid = BidsOfLots::create([
+    //                             'customerId' => $customerId,
+    //                             'amount' => $amount,
+    //                             'lotId' => $lotId,
+    //                             'autoBid' => 1
+    //                         ]);
+
+    //             if($createBid)
+    //             {
+    //                 AutoBid::create([
+    //                     'customerId' => $customerId,
+    //                     'lotId' => $lotId,
+    //                     'autoBid' => 1
+    //                 ]);
+
+    //                 event(new winLotsEvent('Another Bid Has Been Placed.', $createBid, $customer, true));
+
+    //                 return response()->json(['success' => true , 'msg' => 'Autobid has been placed successfully']);
+
+    //             }
+    //             else
+    //             {
+    //                 return response()->json(['succes' => false , "msg" => "Something Went Wrong"]);
+    //             }
+                
+    //         }
+    //         else
+    //         {
+    //             return $this->assignLastBidder($lot);
+    //         }
+
+    //     }
+    //     else{
+
+    //         $createBid = BidsOfLots::create([
+    //             'customerId' => $customerId,
+    //             'amount' => $amount,
+    //             'lotId' => $lotId,
+    //             'autoBid' => 1
+    //         ]);
+
+    //         if($createBid){
+    //             AutoBid::create([
+    //                 'customerId' => $customerId,
+    //                 'lotId' => $lotId,
+    //                 'autoBid' => 1
+    //             ]);
+
+    //             event(new winLotsEvent('Bid Has Been Placed.', $createBid, $customer, true));
+
+    //             return response()->json(['success' => true , 'msg' => 'Autobid has been placed successfully']);
+
+    //         }
+
+    //     }
+
+    // }
+
+
     public function setCustomerAutobid(Request $request)
     {
-        $lotId = $request->lotId;
-        $customerId = auth()->user()->id;
-
-        // dd($customerId);
-
-        $lot = lots::with('bids.customer')->where('id' , $lotId)->first();
-        $customer = Customer::find($customerId);
-
-        $status = $lot->lot_status;
-
-        if(in_array($status , ['Sold' , 'Expired']))
-        {
-             $msg =   $status == 'Sold' ? "Lot Has Already Been Sold" : "Lot Has Been Expired"; 
-             return response()->json(["success" => false , "msg" => $msg ]);
-        }
-
-        $amount = $lot->bids->isEmpty() ? $lot->price : $lot->bids->max('amount');
-
-        $amount += 100;
-
-        if(!$lot->bids->isEmpty())
-        {
-            $lastBid = $lot->bids()->latest()->orderBy('id','desc')->first();
-
-            $lastBidTime = Carbon::createFromFormat( "Y-m-d H:i:s" , $lastBid->created_at);
-
+        try {
+            $lotId = $request->lotId;
+            $customerId = auth()->user()->id;
+    
+            $lot = lots::with('bids.customer')->where('id', $lotId)->first();
+            $customer = Customer::find($customerId);
+    
+            $status = $lot->lot_status;
+    
+            if (in_array($status, ['Sold', 'Expired'])) 
+            {
+                $msg = $status == 'Sold' ? "Lot Has Already Been Sold" : "Lot Has Been Expired";
+                return response()->json(["success" => false, "msg" => $msg]);
+            }
+    
+            $amount = $lot->bids->isEmpty() ? $lot->price : $lot->bids->max('amount');
+    
+            $amount += 100;
+    
+            $lastBid = $lot->bids()->latest()->orderBy('id', 'desc')->first();
+    
+            $lastBidTime = Carbon::createFromFormat("Y-m-d H:i:s", $lastBid->created_at);
+    
             $currentTime = Carbon::now();
-
-            $timeDifferenceInSeconds = $lastBidTime->diffInSeconds($currentTime);
-
-            if($timeDifferenceInSeconds <= 120)
+    
+            // Check if there's less than 1 minute remaining before the end time
+            $timeDifferenceToEndTime = $lot->EndDate->diffInSeconds($currentTime);
+            if ($timeDifferenceToEndTime <= 60) 
             {
-                $createBid = BidsOfLots::create([
-                                'customerId' => $customerId,
-                                'amount' => $amount,
-                                'lotId' => $lotId,
-                                'autoBid' => 1
-                            ]);
-
-                if($createBid)
-                {
-                    AutoBid::create([
-                        'customerId' => $customerId,
-                        'lotId' => $lotId,
-                        'autoBid' => 1
-                    ]);
-
-                    event(new winLotsEvent('Another Bid Has Been Placed.', $createBid, $customer, true));
-
-                    return response()->json(['success' => true , 'msg' => 'Autobid has been placed successfully']);
-
-                }
-                else
-                {
-                    return response()->json(['succes' => false , "msg" => "Something Went Wrong"]);
-                }
-                
+                // Extend the end time by 1 minute
+                $lot->EndDate->addMinutes(1);
+                // Save the updated end date
+                $lot->save();
             }
-            else
-            {
-                return $this->assignLastBidder($lot);
-            }
-
-        }
-        else{
-
+    
             $createBid = BidsOfLots::create([
                 'customerId' => $customerId,
                 'amount' => $amount,
                 'lotId' => $lotId,
                 'autoBid' => 1
             ]);
-
-            if($createBid){
+    
+            if ($createBid) {
                 AutoBid::create([
                     'customerId' => $customerId,
                     'lotId' => $lotId,
                     'autoBid' => 1
                 ]);
-
-                event(new winLotsEvent('Bid Has Been Placed.', $createBid, $customer, true));
-
-                return response()->json(['success' => true , 'msg' => 'Autobid has been placed successfully']);
-
+    
+                event(new winLotsEvent('Another Bid Has Been Placed.', $createBid, $customer, true));
+    
+                return response()->json(['success' => true, 'msg' => 'Autobid has been placed successfully']);
+            } 
+            else 
+            {
+                return response()->json(['success' => false, "msg" => "Something Went Wrong"]);
             }
-
+        } catch (\Exception $e) 
+        {
+            return response()->json(["success" => false, "msg" => "Something Went Wrong!", "error" => $e->getMessage()]);
         }
-
     }
+    
+
+
+
+
 
        
 
