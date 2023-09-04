@@ -209,12 +209,16 @@ Route::post('exportLotsToExcel', 'App\Http\Controllers\Api\v1\Admin\LotsContolle
 Route::post('winLotsShow', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@winLotsShow');
 
 
+// Show customer balance again start date , End Date and CustomerId
+Route::post('showcustomerbalnace', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showcustomerbalnace');
+
+
 // Show Win lots API With Excel Export
 Route::post('winLotsExcelExport', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@winExcelLotExport');
 
 
-// Show customer balance again start date , End Date and CustomerId
-Route::post('showcustomerbalnace', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showcustomerbalnace');
+// win lot to show specific win lot using start date and end date 
+Route::post('winspecificdateExcel', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@winspecificdateExcel');
 
 
 

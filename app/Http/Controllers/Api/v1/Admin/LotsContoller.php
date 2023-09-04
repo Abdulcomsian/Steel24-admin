@@ -35,6 +35,8 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Illuminate\Support\Facades\Session;
 use App\Exports\winlotexportapi;
 use App\Models\ExportWinLots;
+use App\Exports\ExportSpecificwin_lots;
+use App\Models\Excel_specific_win_lots;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -1647,8 +1649,6 @@ class LotsContoller extends Controller
 
     public function winExcelLotExport(Request $request)
     {
-
-        
         $customerId = $request->input('customer_id');
 
         $winningLotsData = CustomerLot::with(['lot', 'lot.materials'])
@@ -1683,6 +1683,64 @@ class LotsContoller extends Controller
         ]);
 
     }
+
+
+
+    // Win Lots Excel Export using start date, end date and Customer_id 
+
+    public function winspecificdateExcel(Request $request)
+    {
+        $customerId = $request->input('customer_id');
+        $startDate  = $request->input('start_date');
+        $endDate    = $request->input('end_date');
+
+        // $winningLotsData = CustomerLot::with(['lot', 'lot.materials'])
+        //     ->where('customer_id', $customerId)
+        //     ->where('start_date', $startDate)
+        //     ->where('end_date',$endDate)
+        //     ->get();
+
+            $winningLotsData = CustomerLot::with(['lot', 'lot.materials'])
+            ->where('customer_id', $customerId)
+            ->where(DB::raw('Date(customer_lots.created_at)'), '>=', $startDate)
+            ->where(DB::raw('Date(customer_lots.created_at)'), '<=', $endDate)
+            ->get();
+
+
+        // Create a new export instances
+        $export = new ExportSpecificwin_lots($winningLotsData);
+
+        $timestamp = now()->format('Ymd_His');
+        $fileName = 'winspecificlots_' . $timestamp . '.xlsx';
+        // $filePath = 'ExcelLots' . DIRECTORY_SEPARATOR . $fileName;
+        $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
+
+        // Generate and store the Excel files
+        Excel::store($export, $fileName, 'ExcelLots');
+
+        // Full local file path
+        $localFilePath = $filePath;
+
+        // Generate live URL
+        $liveUrl = url('ExcelLots/' . $fileName);
+
+        // Save the URL in the database
+        Excel_specific_win_lots::create([
+            'url' => $localFilePath, 
+        ]);
+
+         return response()->json([
+            'message' => 'Excel file generated, saved, and URL recorded successfully.',
+            'file_url' => $liveUrl,
+        ]);
+
+    }
+
+
+
+
+
+
 
     // customer balance using start_date, End_Date and customer_Id
 
