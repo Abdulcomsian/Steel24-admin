@@ -464,7 +464,6 @@ class AuctionContoller extends Controller
     
             if ($lastBalance && ($lotDetails->participate_fee <= $lastBalance->finalAmount)) 
             {
-
                 customerBalance::create([
                     'customerId' => $request->customerId,
                     'balanceAmount' => $lastBalance->finalAmount,
@@ -1771,7 +1770,7 @@ class AuctionContoller extends Controller
     // }
 
 
-            public function createautobid(Request $request)
+    public function createautobid(Request $request)
         {
             // Validate the incoming request data
             $request->validate([

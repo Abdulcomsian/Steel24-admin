@@ -103,9 +103,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
         Route::post('stop-customer-autobid' , 'AuctionContoller@stopAutoBid');
         //nouman route ends here
-
-
-
     });
 
     Route::get('getlivebid', 'App\Http\Controllers\Api\v1\Admin\AuctionContoller@getlivebid');
