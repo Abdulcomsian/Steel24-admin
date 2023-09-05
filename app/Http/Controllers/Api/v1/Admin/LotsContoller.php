@@ -423,53 +423,60 @@ class LotsContoller extends Controller
         // ]);
 
 
-        
-
-        // $customerId = $request->input('customer_id');
-        // $expiredLots = Lots::with('categories')
-        //                 ->with(['customers' => function($query) use ($customerId)
-        //                 {
-        //                      $query->where('customers.id' , $customerId);
-        //                 }])
-        //                 ->where('lot_status' , 'LIKE' , '%Expired%')
-        //                 ->get();
-
-        //                 // dd($userLots);
-
-        //                 if ($expiredLots->isEmpty()) {
-        //                     return response()->json([
-        //                         'message' => 'No Expired lots available for the customer',
-        //                         'success' => false,
-        //                     ], 200);
-        //                 }
-                    
-        //                 return response()->json([
-        //                     'expiredLots' => $expiredLots,
-        //                     'success' => true,
-        //                 ]);
 
 
+        // Show All Expired Lots working
+
+        // $customerId = $request->customer_id;
+    
+        // $lots = lots::with(['customerBalance' => function ($query) use ($customerId) 
+        // {
+        //         $query->where('customerId', $customerId);
+        //     }])
+        //     ->with(['customers' => function ($query) use ($customerId) 
+        //     {
+        //         $query->where('customer_id', $customerId);
+        //     }])
+        //     ->with(['categories', 'bids' => function ($query) 
+        //     {
+        //         $query->orderBy('created_at', 'desc')->take(1);
+        //     }])
+        //     ->where('lot_status', 'LIKE', '%Expired%')
+
+        //     ->orderBy('StartDate', 'asc') 
+        //     ->get();
+    
+        // return response()->json(['ExpiredLots' => $lots, 'success' => true]);
+
+
+
+        // Show Expired Lots current date(Today date)
 
         $customerId = $request->customer_id;
-    
+
+        // Get the current date
+        $currentDate = now()->toDateString();
+
         $lots = lots::with(['customerBalance' => function ($query) use ($customerId) 
         {
                 $query->where('customerId', $customerId);
-            }])
-            ->with(['customers' => function ($query) use ($customerId) 
-            {
-                $query->where('customer_id', $customerId);
-            }])
-            ->with(['categories', 'bids' => function ($query) 
-            {
-                $query->orderBy('created_at', 'desc')->take(1);
-            }])
-            ->where('lot_status', 'LIKE', '%Expired%')
+        }])
+        ->with(['customers' => function ($query) use ($customerId) 
+        {
+            $query->where('customer_id', $customerId);
+        }])
+        ->with(['categories', 'bids' => function ($query) 
+        {
+            $query->orderBy('created_at', 'desc')->take(1);
+        }])
+        ->where('lot_status', 'LIKE', '%Expired%')
+        ->whereDate('EndDate', $currentDate) // Filter by lots that have expired (StartDate is earlier than the current date)
+        ->orderBy('StartDate', 'asc')
+        ->get();
 
-            ->orderBy('StartDate', 'asc') 
-            ->get();
-    
-        return response()->json(['ExpiredLots' => $lots, 'success' => true]);
+       return response()->json(['ExpiredLots' => $lots, 'success' => true]);
+
+
     }
     
 
@@ -515,59 +522,7 @@ class LotsContoller extends Controller
         // previous API
 
 
-    //     $customerId = $request->input('customer_id');
-
-    //     $soldLots = Lots::with('categories')
-    //                     ->with(['customers' => function($query) use ($customerId)
-    //                     {
-    //                          $query->where('customers.id' , $customerId);
-    //                     }])
-    //                     ->where('lot_status' , 'LIKE' , '%Sold%')
-    //                     ->get();
-
-    //                     // dd($userLots);
-
-    //                     if ($soldLots->isEmpty()) {
-    //                         return response()->json([
-    //                             'message' => 'No Sold lots available for the customer',
-    //                             'success' => false,
-    //                         ],200);
-    //                     }
-                    
-    //                     return response()->json([
-    //                         'soldLots' => $soldLots,
-    //                         'success' => true,
-    //                     ]);
-
-
-    // }
-
-
-
-
-            // $customerId = $request->customer_id;
-            
-            // $lots = lots::with(['customerBalance' => function ($query) use ($customerId) 
-            // {
-            //         $query->where('customerId', $customerId);
-            //     }])
-            //     ->with(['customers' => function ($query) use ($customerId) 
-            //     {
-            //         $query->where('customer_id', $customerId);
-            //     }])
-            //     ->with(['categories', 'bids' => function ($query) 
-            //     {
-            //         $query->orderBy('created_at', 'desc')->take(1);
-            //     }])
-            //     ->where('lot_status', 'LIKE', '%Sold%')
-
-            //     ->orderBy('StartDate', 'asc') 
-            //     ->get();
-
-            // return response()->json(['userLots' => $lots, 'success' => true]);
-
-
-
+        // Show Sold All Lots
 
             // $customerId = $request->customer_id;
 
@@ -582,36 +537,45 @@ class LotsContoller extends Controller
             // ->with(['categories'])
             // ->with(['bids' => function ($query) 
             // {
-            //     $query->select('lotId', DB::raw('MAX(amount) as max_bid'))->groupBy('lotId');
+            //     $query->select('id', 'customerId', DB::raw('MAX(amount) as max_bid'), 'lotId', 'autoBid', 'created_at', 'updated_at')
+            //         ->groupBy('lotId'); // Retrieve the max_bid and group by lotId
             // }])
             // ->where('lot_status', 'LIKE', '%Sold%')
             // ->orderBy('StartDate', 'asc') 
             // ->get();
-        
+
             // return response()->json(['userLots' => $lots, 'success' => true]);
 
 
+
+
+            // Sold lots show on current Date (Today Sold Lots)
+
             $customerId = $request->customer_id;
+        
+            // Get the current date
+            $currentDate = now()->toDateString();
 
             $lots = lots::with(['customerBalance' => function ($query) use ($customerId) 
             {
-                $query->where('customerId', $customerId);
-            }])
-            ->with(['customers' => function ($query) use ($customerId)
-            {
-                $query->where('customer_id', $customerId);
-            }])
-            ->with(['categories'])
-            ->with(['bids' => function ($query) 
-            {
-                $query->select('id', 'customerId', DB::raw('MAX(amount) as max_bid'), 'lotId', 'autoBid', 'created_at', 'updated_at')
-                    ->groupBy('lotId'); // Retrieve the max_bid and group by lotId
-            }])
-            ->where('lot_status', 'LIKE', '%Sold%')
-            ->orderBy('StartDate', 'asc') 
-            ->get();
+                    $query->where('customerId', $customerId);
+                }])
+                ->with(['customers' => function ($query) use ($customerId) 
+                {
+                    $query->where('customer_id', $customerId);
+                }])
+                ->with(['categories'])
+                ->with(['bids' => function ($query) 
+                {
+                    $query->select('id', 'customerId', DB::raw('MAX(amount) as max_bid'), 'lotId', 'autoBid', 'created_at', 'updated_at')
+                        ->groupBy('lotId'); // Retrieve the max_bid and group by lotId
+                }])
+                ->where('lot_status', 'LIKE', '%Sold%')
+                ->whereDate('EndDate', $currentDate) // Filter by the current date
+                ->orderBy('StartDate', 'asc')
+                ->get();
 
-            return response()->json(['userLots' => $lots, 'success' => true]);
+            return response()->json(['SoldLots' => $lots, 'success' => true]);
 
         }
 
