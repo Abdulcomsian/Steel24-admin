@@ -23,12 +23,22 @@ class CustomerLot extends Model
 
     public function lot()
     {
-        return $this->belongsTo(lots::class , 'lot_id' ,'id');
+        return $this->hasMany(lots::class ,'id', 'lot_id' );
+    }
+
+    public function lotDetail()
+    {
+        return $this->belongsTo(lots::class ,'lot_id' ,'id');
     }
 
     public function new_maerials_2()
     {
-        return $this->hasMany(new_maerials_2::class, 'lotid');
+        return $this->hasMany(new_maerials_2::class, 'id', 'lot_id');
+    }
+
+    public function categories()
+    {
+        return $this->belongsTo(categories::class, 'categoryId', 'id');
     }
 
 }

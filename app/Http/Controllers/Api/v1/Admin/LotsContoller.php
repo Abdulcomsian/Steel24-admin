@@ -1367,9 +1367,6 @@ class LotsContoller extends Controller
     }
 
 
-
-
-
       
         // Show all product Images
         // public function showProductImages()
@@ -1739,7 +1736,7 @@ class LotsContoller extends Controller
         //     ->where('end_date',$endDate)
         //     ->get();
 
-            $lots = CustomerLot::with(['lot', 'new_maerials_2', 'lot.materials'])
+            $lots = CustomerLot::with(['lotDetail', 'new_maerials_2', 'categories'])
             ->where('customer_id', $customerId)
             ->where(DB::raw('Date(customer_lots.created_at)'), '>=', $startDate)
             ->where(DB::raw('Date(customer_lots.created_at)'), '<=', $endDate)

@@ -72,12 +72,17 @@ class lots extends Model
 
       public function new_maerials_2()
     {
-        return $this->hasMany(new_maerials_2::class, 'lotid');
+        return $this->hasMany(new_maerials_2::class, 'lotid','id');
+    }
+
+    public function lot()
+    {
+        return $this->hasMany(lots::class ,'lot_id','id');
     }
 
     public function customerBalance()
     {
-        return $this->hasMany(customerBalance::class , 'lotid' , 'id');
+        return $this->hasMany(customerBalance::class , 'lotid', 'id');
     }
 
     public function bids()
