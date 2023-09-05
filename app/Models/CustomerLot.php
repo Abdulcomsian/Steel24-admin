@@ -26,4 +26,9 @@ class CustomerLot extends Model
         return $this->belongsTo(lots::class , 'lot_id' ,'id');
     }
 
+    public function new_maerials_2()
+    {
+        return $this->hasMany(new_maerials_2::class, 'lotid');
+    }
+
 }
