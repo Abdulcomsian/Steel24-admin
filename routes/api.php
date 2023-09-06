@@ -188,15 +188,11 @@ Route::get('showExpiredLotsFavorites/{customer_id}', 'App\Http\Controllers\Api\v
 
 
 
-// *********** End 4 show API Fav API LIVE , Upcoming , Sold and Expired ************
-
+// *********** Latest API  ************
 
 
 // show All Lots Category
 Route::get('showcategories', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showcategories');
-
-// Show All Categories and and its lots
-Route::post('showcategorieswithlot', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showcategorieswithlot');
 
 // Show All Product Images 
 Route::get('showProductImages', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showProductImages');
@@ -219,6 +215,18 @@ Route::post('winLotsExcelExport', 'App\Http\Controllers\Api\v1\Admin\LotsContoll
 
 // win lot to show specific win lot using start date and end date 
 Route::post('winspecificdateExcel', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@winspecificdateExcel');
+
+
+// Show All Categories and and its lots
+Route::post('showcategorieswithlot', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showcategorieswithlot');
+
+
+// excel export using category of lots 
+Route::post('excelcategoryoflots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@excelcategoryoflots');
+
+
+
+
 
 
 

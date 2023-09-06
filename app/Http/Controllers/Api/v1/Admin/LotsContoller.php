@@ -37,6 +37,8 @@ use App\Exports\winlotexportapi;
 use App\Models\ExportWinLots;
 use App\Exports\ExportSpecificwin_lots;
 use App\Models\Excel_specific_win_lots;
+use App\Models\ExcelCategoryOfLots;
+use App\Exports\ExcelCategoryofLot;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -1367,6 +1369,95 @@ class LotsContoller extends Controller
     }
 
 
+    // Excel Export using category of lots API
+    public function excelcategoryoflots(Request $request)
+    {
+        $customerId = $request->input('customerId');
+        $categoryId = $request->input('categoryId');
+        $status = $request->input('status');
+
+        $currentDate = now()->toDateString();
+
+        // Define the lot_status values for which you want to show current date lots
+        $currentDateStatuses = ['Sold', 'live', 'Expired'];
+
+        // Check if the status is one of the current date statuses
+        if (in_array($status, $currentDateStatuses)) 
+        {
+            // Retrieve lots based on current date
+            $lots = lots::with([
+                'customers' => function ($query) use ($customerId) 
+                {
+                    $query->where('customer_id', $customerId);
+                },
+                'categories',
+                'bids' => function ($query) 
+                {
+                    $query->orderBy('created_at', 'desc')->take(1);
+                }
+            ])
+                ->where('categoryId', $categoryId)
+                ->where('lot_status', $status)
+                ->whereDate('EndDate', $currentDate)
+                ->orderBy('StartDate', 'asc')
+                ->get();
+        } 
+        else 
+        {
+            // For "Upcoming" status, show normal behavior
+            $lots = lots::with([
+                'customers' => function ($query) use ($customerId) 
+                {
+                    $query->where('customer_id', $customerId);
+                },
+                'categories',
+                'bids' => function ($query) 
+                {
+                    $query->orderBy('created_at', 'desc')->take(1);
+                }
+            ])
+                ->where('categoryId', $categoryId)
+                ->where('lot_status', $status)
+                ->orderBy('StartDate', 'asc')
+                ->get();
+        }
+
+        // Create a new export instance
+        $export = new ExcelCategoryofLot($lots);
+
+        // Generate and store the Excel file
+        $timestamp = now()->format('Ymd_His');
+        $fileName = 'categoryoflots_' . $timestamp . '.xlsx';
+        $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
+
+        Excel::store($export, $fileName, 'ExcelLots');
+
+
+        // Full local file path
+        $localFilePath = $filePath;
+
+        // Generate live URL
+        $liveUrl = url('ExcelLots/' . $fileName);
+
+
+        // Save the URL in the database
+        ExcelCategoryOfLots::create([
+            'url' => $localFilePath, 
+        ]);
+
+
+        // Save the URL in the database if needed
+        // ExcelCategoryOfLots::create(['url' => $localFilePath]);
+
+        return response()->json([
+            'message' => 'Excel file generated, saved, and URL recorded successfully.',
+            'file_url' => $liveUrl,
+        ]);
+
+    }
+    
+
+
       
         // Show all product Images
         // public function showProductImages()
@@ -1644,7 +1735,7 @@ class LotsContoller extends Controller
         $endDate = $request->input('end_date');
         $customerId = $request->input('customer_id');
     
-        $customerLots = CustomerLot::with(['lot', 'lot.materials'])
+        $customerLots = CustomerLot::with(['lotDetail.materials', 'lot.materials'])
             ->where(DB::raw('Date(customer_lots.created_at)'), '>=', $startDate)
             ->where(DB::raw('Date(customer_lots.created_at)'), '<=', $endDate)
             ->where('customer_id', $customerId)
@@ -1660,7 +1751,7 @@ class LotsContoller extends Controller
     
         foreach ($customerLots as $customerLot) 
         {
-            $lot = $customerLot->lot;
+            $lot = $customerLot->lotDetail;
     
             $winningLots[] = [
                 'id' => $customerLot->id,
@@ -1730,12 +1821,6 @@ class LotsContoller extends Controller
         $startDate  = $request->input('start_date');
         $endDate    = $request->input('end_date');
 
-        // $winningLotsData = CustomerLot::with(['lot', 'lot.materials'])
-        //     ->where('customer_id', $customerId)
-        //     ->where('start_date', $startDate)
-        //     ->where('end_date',$endDate)
-        //     ->get();
-
             $lots = CustomerLot::with(['lotDetail', 'new_maerials_2', 'categories'])
             ->where('customer_id', $customerId)
             ->where(DB::raw('Date(customer_lots.created_at)'), '>=', $startDate)
@@ -1771,11 +1856,6 @@ class LotsContoller extends Controller
         ]);
 
     }
-
-
-
-
-
 
 
     // customer balance using start_date, End_Date and customer_Id
