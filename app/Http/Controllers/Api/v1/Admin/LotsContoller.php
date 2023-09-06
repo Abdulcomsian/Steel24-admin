@@ -1040,27 +1040,74 @@ class LotsContoller extends Controller
 
     // Show live lots Fav
 
+    // public function showLiveLotsFavorites($customer_id)
+    // {
+    //     // Retrieve the favorite lots for the given customer_id
+    //     $favoriteLots = FavLots::where('customer_id', $customer_id)
+    //         ->with('lot')
+    //         ->get();
+
+    //     $result = [];
+
+    //     foreach ($favoriteLots as $favoriteLot) {
+    //         $lot = $favoriteLot->lot;
+
+    //         if ($lot && $lot->lot_status === 'live') 
+    //         {
+    //             // Retrieve the maximum bid for the lot
+    //             $maxBid = BidsOfLots::where('lotId', $lot->id)
+    //                 ->orderBy('amount', 'desc')
+    //                 ->first();
+
+    //             $lotArray = $lot->toArray();
+
+    //             if ($maxBid) {
+    //                 $maxBidArray = [
+    //                     'id' => $maxBid->id,
+    //                     'customerId' => $maxBid->customerId,
+    //                     'amount' => $maxBid->amount,
+    //                     'lotId' => $maxBid->lotId,
+    //                     'created_at' => $maxBid->created_at,
+    //                     'updated_at' => $maxBid->updated_at,
+    //                 ];
+
+    //                 $lotArray['bids'] = [$maxBidArray];
+    //             }
+
+    //             $result[] = $lotArray;
+    //         }
+    //     }
+
+    //     // Return the favorite lots with max_bid as a response
+    //     return response()->json([
+    //         'message' => 'Favorite live lots retrieved',
+    //         'success' => true,
+    //         'Fav_lots' => $result,
+    //     ]);
+    // }
+
     public function showLiveLotsFavorites($customer_id)
     {
         // Retrieve the favorite lots for the given customer_id
         $favoriteLots = FavLots::where('customer_id', $customer_id)
             ->with('lot')
             ->get();
-
+    
         $result = [];
-
+        $currentDate = now()->toDateString();
+    
         foreach ($favoriteLots as $favoriteLot) {
             $lot = $favoriteLot->lot;
-
-            if ($lot && $lot->lot_status === 'live') 
+    
+            if ($lot && $lot->lot_status === 'live' && $lot->EndDate->toDateString() === $currentDate) 
             {
                 // Retrieve the maximum bid for the lot
                 $maxBid = BidsOfLots::where('lotId', $lot->id)
                     ->orderBy('amount', 'desc')
                     ->first();
-
+    
                 $lotArray = $lot->toArray();
-
+    
                 if ($maxBid) {
                     $maxBidArray = [
                         'id' => $maxBid->id,
@@ -1070,21 +1117,22 @@ class LotsContoller extends Controller
                         'created_at' => $maxBid->created_at,
                         'updated_at' => $maxBid->updated_at,
                     ];
-
+    
                     $lotArray['bids'] = [$maxBidArray];
                 }
-
+    
                 $result[] = $lotArray;
             }
         }
-
-        // Return the favorite lots with max_bid as a response
+    
+        // Return the favorite live lots with max_bid as a response
         return response()->json([
-            'message' => 'Favorite live lots retrieved',
+            'message' => 'Today Favorite live lots retrieved',
             'success' => true,
             'Fav_lots' => $result,
         ]);
     }
+    
 
 
 
@@ -1139,29 +1187,76 @@ class LotsContoller extends Controller
 
     // Show Sold lots Fav 
 
+    // public function showSoldLotsFavorites($customer_id)
+    // {
+    //     // Retrieve the favorite lots for the given customer_id
+    //     $favoriteLots = FavLots::where('customer_id', $customer_id)
+    //         ->with('lot')
+    //         ->get();
+
+    //     $result = [];
+
+    //     foreach ($favoriteLots as $favoriteLot) {
+    //         $lot = $favoriteLot->lot;
+
+    //         if ($lot && $lot->lot_status === 'Sold') 
+    //         {
+    //             // Retrieve the maximum bid for the lot
+    //             $maxBid = BidsOfLots::where('lotId', $lot->id)
+    //                 ->orderBy('amount', 'desc')
+    //                 ->first();
+
+    //             $lotArray = $lot->toArray();
+
+    //             if ($maxBid) 
+    //             {
+    //                 $maxBidArray = [
+    //                     'id' => $maxBid->id,
+    //                     'customerId' => $maxBid->customerId,
+    //                     'amount' => $maxBid->amount,
+    //                     'lotId' => $maxBid->lotId,
+    //                     'created_at' => $maxBid->created_at,
+    //                     'updated_at' => $maxBid->updated_at,
+    //                 ];
+
+    //                 $lotArray['bids'] = [$maxBidArray];
+    //             }
+
+    //             $result[] = $lotArray;
+    //         }
+    //     }
+
+    //     // Return the favorite lots with max_bid as a response
+    //     return response()->json([
+    //         'message' => 'Favorite Sold lots retrieved',
+    //         'success' => true,
+    //         'Fav_lots' => $result,
+    //     ]);
+    // }
+
     public function showSoldLotsFavorites($customer_id)
     {
         // Retrieve the favorite lots for the given customer_id
         $favoriteLots = FavLots::where('customer_id', $customer_id)
             ->with('lot')
             ->get();
-
+    
         $result = [];
-
+        $currentDate = now()->toDateString(); // Get the current date
+    
         foreach ($favoriteLots as $favoriteLot) {
             $lot = $favoriteLot->lot;
-
-            if ($lot && $lot->lot_status === 'Sold') 
+    
+            if ($lot && $lot->lot_status === 'Sold' && $lot->EndDate->toDateString() === $currentDate) 
             {
                 // Retrieve the maximum bid for the lot
                 $maxBid = BidsOfLots::where('lotId', $lot->id)
                     ->orderBy('amount', 'desc')
                     ->first();
-
+    
                 $lotArray = $lot->toArray();
-
-                if ($maxBid) 
-                {
+    
+                if ($maxBid) {
                     $maxBidArray = [
                         'id' => $maxBid->id,
                         'customerId' => $maxBid->customerId,
@@ -1170,23 +1265,72 @@ class LotsContoller extends Controller
                         'created_at' => $maxBid->created_at,
                         'updated_at' => $maxBid->updated_at,
                     ];
-
+    
                     $lotArray['bids'] = [$maxBidArray];
                 }
-
+    
                 $result[] = $lotArray;
             }
         }
-
-        // Return the favorite lots with max_bid as a response
+    
+        // Return the favorite Sold lots with max_bid as a response
         return response()->json([
-            'message' => 'Favorite Sold lots retrieved',
+            'message' => 'Today Favorite Sold lots retrieved',
             'success' => true,
             'Fav_lots' => $result,
         ]);
     }
+    
 
      // Show Expired lots Fav 
+
+    // public function showExpiredLotsFavorites($customer_id)
+    // {
+    //     // Retrieve the favorite lots for the given customer_id
+    //     $favoriteLots = FavLots::where('customer_id', $customer_id)
+    //         ->with('lot')
+    //         ->get();
+
+    //     $result = [];
+
+    //     foreach ($favoriteLots as $favoriteLot) 
+    //     {
+    //         $lot = $favoriteLot->lot;
+
+    //         if ($lot && $lot->lot_status === 'Expired') 
+    //         {
+    //             // Retrieve the maximum bid for the lot
+    //             $maxBid = BidsOfLots::where('lotId', $lot->id)
+    //                 ->orderBy('amount', 'desc')
+    //                 ->first();
+
+    //             $lotArray = $lot->toArray();
+
+    //             if ($maxBid) 
+    //             {
+    //                 $maxBidArray = [
+    //                     'id' => $maxBid->id,
+    //                     'customerId' => $maxBid->customerId,
+    //                     'amount' => $maxBid->amount,
+    //                     'lotId' => $maxBid->lotId,
+    //                     'created_at' => $maxBid->created_at,
+    //                     'updated_at' => $maxBid->updated_at,
+    //                 ];
+
+    //                 $lotArray['bids'] = [$maxBidArray];
+    //             }
+
+    //             $result[] = $lotArray;
+    //         }
+    //     }
+
+    //     // Return the favorite lots with max_bid as a response
+    //     return response()->json([
+    //         'message' => 'Favorite Expired lots retrieved',
+    //         'success' => true,
+    //         'Fav_lots' => $result,
+    //     ]);
+    // }
 
     public function showExpiredLotsFavorites($customer_id)
     {
@@ -1194,21 +1338,23 @@ class LotsContoller extends Controller
         $favoriteLots = FavLots::where('customer_id', $customer_id)
             ->with('lot')
             ->get();
-
+    
         $result = [];
-
-        foreach ($favoriteLots as $favoriteLot) {
+        $currentDate = now()->toDateString(); // Get the current date
+    
+        foreach ($favoriteLots as $favoriteLot) 
+        {
             $lot = $favoriteLot->lot;
-
-            if ($lot && $lot->lot_status === 'Expired') 
+    
+            if ($lot && $lot->lot_status === 'Expired' && $lot->EndDate->toDateString() === $currentDate) 
             {
                 // Retrieve the maximum bid for the lot
                 $maxBid = BidsOfLots::where('lotId', $lot->id)
                     ->orderBy('amount', 'desc')
                     ->first();
-
+    
                 $lotArray = $lot->toArray();
-
+    
                 if ($maxBid) 
                 {
                     $maxBidArray = [
@@ -1219,21 +1365,22 @@ class LotsContoller extends Controller
                         'created_at' => $maxBid->created_at,
                         'updated_at' => $maxBid->updated_at,
                     ];
-
+    
                     $lotArray['bids'] = [$maxBidArray];
                 }
-
+    
                 $result[] = $lotArray;
             }
         }
-
-        // Return the favorite lots with max_bid as a response
+    
+        // Return the favorite Expired lots with max_bid as a response
         return response()->json([
-            'message' => 'Favorite Expired lots retrieved',
+            'message' => 'Today Favorite Expired lots retrieved',
             'success' => true,
             'Fav_lots' => $result,
         ]);
     }
+    
 
 
     // End Show 4 APIs live, Upcoming, Sold and Expired
@@ -1370,6 +1517,92 @@ class LotsContoller extends Controller
 
 
     // Excel Export using category of lots API
+    // public function excelcategoryoflots(Request $request)
+    // {
+    //     $customerId = $request->input('customerId');
+    //     $categoryId = $request->input('categoryId');
+    //     $status = $request->input('status');
+
+    //     $currentDate = now()->toDateString();
+
+    //     // Define the lot_status values for which you want to show current date lots
+    //     $currentDateStatuses = ['Sold', 'live', 'Expired'];
+
+    //     // Check if the status is one of the current date statuses
+    //     if (in_array($status, $currentDateStatuses)) 
+    //     {
+    //         // Retrieve lots based on current date
+    //         $lots = lots::with([
+    //             'customers' => function ($query) use ($customerId) 
+    //             {
+    //                 $query->where('customer_id', $customerId);
+    //             },
+    //             'categories',
+    //             'bids' => function ($query) 
+    //             {
+    //                 $query->orderBy('created_at', 'desc')->take(1);
+    //             }
+    //         ])
+    //             ->where('categoryId', $categoryId)
+    //             ->where('lot_status', $status)
+    //             ->whereDate('EndDate', $currentDate)
+    //             ->orderBy('StartDate', 'asc')
+    //             ->get();
+    //     } 
+    //     else 
+    //     {
+    //         // For "Upcoming" status, show normal behavior
+    //         $lots = lots::with([
+    //             'customers' => function ($query) use ($customerId) 
+    //             {
+    //                 $query->where('customer_id', $customerId);
+    //             },
+    //             'categories',
+    //             'bids' => function ($query) 
+    //             {
+    //                 $query->orderBy('created_at', 'desc')->take(1);
+    //             }
+    //         ])
+    //             ->where('categoryId', $categoryId)
+    //             ->where('lot_status', $status)
+    //             ->orderBy('StartDate', 'asc')
+    //             ->get();
+    //     }
+
+    //     // Create a new export instance
+    //     $export = new ExcelCategoryofLot($lots);
+
+    //     // Generate and store the Excel file
+    //     $timestamp = now()->format('Ymd_His');
+    //     $fileName = 'categoryoflots_' . $timestamp . '.xlsx';
+    //     $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
+
+    //     Excel::store($export, $fileName, 'ExcelLots');
+
+
+    //     // Full local file path
+    //     $localFilePath = $filePath;
+
+    //     // Generate live URL
+    //     $liveUrl = url('ExcelLots/' . $fileName);
+
+
+    //     // Save the URL in the database
+    //     ExcelCategoryOfLots::create([
+    //         'url' => $localFilePath, 
+    //     ]);
+
+
+    //     // Save the URL in the database if needed
+    //     // ExcelCategoryOfLots::create(['url' => $localFilePath]);
+
+    //     return response()->json([
+    //         'message' => 'Excel file generated, saved, and URL recorded successfully.',
+    //         'file_url' => $liveUrl,
+    //     ]);
+
+    // }
+
     public function excelcategoryoflots(Request $request)
     {
         $customerId = $request->input('customerId');
@@ -1378,48 +1611,30 @@ class LotsContoller extends Controller
 
         $currentDate = now()->toDateString();
 
-        // Define the lot_status values for which you want to show current date lots
-        $currentDateStatuses = ['Sold', 'live', 'Expired'];
+        // Retrieve lots based on current date
+        $lots = lots::with([
+            'customers' => function ($query) use ($customerId) 
+            {
+                $query->where('customer_id', $customerId);
+            },
+            'categories',
+            'bids' => function ($query) {
+                $query->orderBy('created_at', 'desc')->take(1);
+            }
+        ])
+            ->where('categoryId', $categoryId)
+            ->where('lot_status', $status)
+            ->whereDate('EndDate', $currentDate)
+            ->orderBy('StartDate', 'asc')
+            ->get();
 
-        // Check if the status is one of the current date statuses
-        if (in_array($status, $currentDateStatuses)) 
-        {
-            // Retrieve lots based on current date
-            $lots = lots::with([
-                'customers' => function ($query) use ($customerId) 
-                {
-                    $query->where('customer_id', $customerId);
-                },
-                'categories',
-                'bids' => function ($query) 
-                {
-                    $query->orderBy('created_at', 'desc')->take(1);
-                }
-            ])
-                ->where('categoryId', $categoryId)
-                ->where('lot_status', $status)
-                ->whereDate('EndDate', $currentDate)
-                ->orderBy('StartDate', 'asc')
-                ->get();
-        } 
-        else 
-        {
-            // For "Upcoming" status, show normal behavior
-            $lots = lots::with([
-                'customers' => function ($query) use ($customerId) 
-                {
-                    $query->where('customer_id', $customerId);
-                },
-                'categories',
-                'bids' => function ($query) 
-                {
-                    $query->orderBy('created_at', 'desc')->take(1);
-                }
-            ])
-                ->where('categoryId', $categoryId)
-                ->where('lot_status', $status)
-                ->orderBy('StartDate', 'asc')
-                ->get();
+            // dd($lots);
+
+        // Check if there are no lots
+        if ($lots->isEmpty()) {
+            return response()->json([
+                'message' => 'No data available for export.',
+            ], 404); // You can return an appropriate HTTP status code
         }
 
         // Create a new export instance
@@ -1432,29 +1647,30 @@ class LotsContoller extends Controller
 
         Excel::store($export, $fileName, 'ExcelLots');
 
-
         // Full local file path
         $localFilePath = $filePath;
 
         // Generate live URL
         $liveUrl = url('ExcelLots/' . $fileName);
 
-
         // Save the URL in the database
         ExcelCategoryOfLots::create([
-            'url' => $localFilePath, 
+            'url' => $localFilePath,
         ]);
-
-
-        // Save the URL in the database if needed
-        // ExcelCategoryOfLots::create(['url' => $localFilePath]);
 
         return response()->json([
             'message' => 'Excel file generated, saved, and URL recorded successfully.',
             'file_url' => $liveUrl,
         ]);
-
     }
+
+
+
+
+
+
+
+
     
 
 

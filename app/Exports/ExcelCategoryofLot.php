@@ -44,7 +44,7 @@ class ExcelCategoryofLot implements FromCollection, WithHeadings, WithCustomStar
     {
         $this->lots = $lots;
 
-        dd($lots);
+        // dd($lots);
     }
 
 
