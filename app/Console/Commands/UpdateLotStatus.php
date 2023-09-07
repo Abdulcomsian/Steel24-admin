@@ -199,6 +199,7 @@ class UpdateLotStatus extends Command
         //Two minute code ends here
         info("update lot status running");
         $currentDateTime = Carbon::now()->format('Y-m-d H:i:s');
+        info($currentDateTime);
         lots::where(DB::raw('Date(StartDate)') , '<=' ,$currentDateTime)
                                         ->where(DB::raw('Date(EndDate)') , '>=' ,$currentDateTime)
                                         ->where('lot_status' , 'upcoming')
