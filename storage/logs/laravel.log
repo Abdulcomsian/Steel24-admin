@@ -421,3 +421,60 @@ Did you mean one of these?
 #45 C:\\xampp\\htdocs\\steel24\\server.php(21): require_once('C:\\\\xampp\\\\htdocs...')
 #46 {main}
 "} 
+[2023-09-07 11:11:42] local.ERROR: syntax error, unexpected token "<<", expecting ")" {"exception":"[object] (ParseError(code: 0): syntax error, unexpected token \"<<\", expecting \")\" at C:\\wamp64\\www\\bidding\\vendor\\composer\\installed.php:6)
+[stacktrace]
+#0 C:\\wamp64\\www\\bidding\\vendor\\composer\\InstalledVersions.php(139): Composer\\InstalledVersions::getInstalled()
+#1 C:\\wamp64\\www\\bidding\\vendor\\composer\\InstalledVersions.php(123): Composer\\InstalledVersions::getVersionRanges('psr/simple-cach...')
+#2 C:\\wamp64\\www\\bidding\\vendor\\maatwebsite\\excel\\src\\Cache\\CacheManager.php(43): Composer\\InstalledVersions::satisfies(Object(Composer\\Semver\\VersionParser), 'psr/simple-cach...', Object(Composer\\Semver\\Constraint\\MultiConstraint))
+#3 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Manager.php(105): Maatwebsite\\Excel\\Cache\\CacheManager->createMemoryDriver()
+#4 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Manager.php(80): Illuminate\\Support\\Manager->createDriver('memory')
+#5 C:\\wamp64\\www\\bidding\\vendor\\maatwebsite\\excel\\src\\SettingsProvider.php(31): Illuminate\\Support\\Manager->driver()
+#6 C:\\wamp64\\www\\bidding\\vendor\\maatwebsite\\excel\\src\\SettingsProvider.php(25): Maatwebsite\\Excel\\SettingsProvider->configureCellCaching()
+#7 C:\\wamp64\\www\\bidding\\vendor\\maatwebsite\\excel\\src\\ExcelServiceProvider.php(47): Maatwebsite\\Excel\\SettingsProvider->provide()
+#8 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(967): Maatwebsite\\Excel\\ExcelServiceProvider->Maatwebsite\\Excel\\{closure}(Object(Illuminate\\Foundation\\Application))
+#9 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(910): Illuminate\\Foundation\\Application->fireAppCallbacks(Array)
+#10 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\BootProviders.php(17): Illuminate\\Foundation\\Application->boot()
+#11 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(237): Illuminate\\Foundation\\Bootstrap\\BootProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#12 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(310): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#13 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(127): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#14 C:\\wamp64\\www\\bidding\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#15 {main}
+"} 
+[2023-09-07 11:12:25] local.ERROR: syntax error, unexpected token "<<", expecting ")" {"exception":"[object] (ParseError(code: 0): syntax error, unexpected token \"<<\", expecting \")\" at C:\\wamp64\\www\\bidding\\vendor\\composer\\installed.php:562)
+[stacktrace]
+#0 C:\\wamp64\\www\\bidding\\vendor\\composer\\InstalledVersions.php(139): Composer\\InstalledVersions::getInstalled()
+#1 C:\\wamp64\\www\\bidding\\vendor\\composer\\InstalledVersions.php(123): Composer\\InstalledVersions::getVersionRanges('psr/simple-cach...')
+#2 C:\\wamp64\\www\\bidding\\vendor\\maatwebsite\\excel\\src\\Cache\\CacheManager.php(43): Composer\\InstalledVersions::satisfies(Object(Composer\\Semver\\VersionParser), 'psr/simple-cach...', Object(Composer\\Semver\\Constraint\\MultiConstraint))
+#3 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Manager.php(105): Maatwebsite\\Excel\\Cache\\CacheManager->createMemoryDriver()
+#4 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Manager.php(80): Illuminate\\Support\\Manager->createDriver('memory')
+#5 C:\\wamp64\\www\\bidding\\vendor\\maatwebsite\\excel\\src\\SettingsProvider.php(31): Illuminate\\Support\\Manager->driver()
+#6 C:\\wamp64\\www\\bidding\\vendor\\maatwebsite\\excel\\src\\SettingsProvider.php(25): Maatwebsite\\Excel\\SettingsProvider->configureCellCaching()
+#7 C:\\wamp64\\www\\bidding\\vendor\\maatwebsite\\excel\\src\\ExcelServiceProvider.php(47): Maatwebsite\\Excel\\SettingsProvider->provide()
+#8 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(967): Maatwebsite\\Excel\\ExcelServiceProvider->Maatwebsite\\Excel\\{closure}(Object(Illuminate\\Foundation\\Application))
+#9 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(910): Illuminate\\Foundation\\Application->fireAppCallbacks(Array)
+#10 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\BootProviders.php(17): Illuminate\\Foundation\\Application->boot()
+#11 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(237): Illuminate\\Foundation\\Bootstrap\\BootProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#12 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(310): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#13 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(127): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#14 C:\\wamp64\\www\\bidding\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#15 {main}
+"} 
+[2023-09-07 11:13:29] local.ERROR: syntax error, unexpected token "<<", expecting ")" {"exception":"[object] (ParseError(code: 0): syntax error, unexpected token \"<<\", expecting \")\" at C:\\wamp64\\www\\bidding\\vendor\\composer\\installed.php:562)
+[stacktrace]
+#0 C:\\wamp64\\www\\bidding\\vendor\\composer\\InstalledVersions.php(139): Composer\\InstalledVersions::getInstalled()
+#1 C:\\wamp64\\www\\bidding\\vendor\\composer\\InstalledVersions.php(123): Composer\\InstalledVersions::getVersionRanges('psr/simple-cach...')
+#2 C:\\wamp64\\www\\bidding\\vendor\\maatwebsite\\excel\\src\\Cache\\CacheManager.php(43): Composer\\InstalledVersions::satisfies(Object(Composer\\Semver\\VersionParser), 'psr/simple-cach...', Object(Composer\\Semver\\Constraint\\MultiConstraint))
+#3 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Manager.php(105): Maatwebsite\\Excel\\Cache\\CacheManager->createMemoryDriver()
+#4 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Support\\Manager.php(80): Illuminate\\Support\\Manager->createDriver('memory')
+#5 C:\\wamp64\\www\\bidding\\vendor\\maatwebsite\\excel\\src\\SettingsProvider.php(31): Illuminate\\Support\\Manager->driver()
+#6 C:\\wamp64\\www\\bidding\\vendor\\maatwebsite\\excel\\src\\SettingsProvider.php(25): Maatwebsite\\Excel\\SettingsProvider->configureCellCaching()
+#7 C:\\wamp64\\www\\bidding\\vendor\\maatwebsite\\excel\\src\\ExcelServiceProvider.php(47): Maatwebsite\\Excel\\SettingsProvider->provide()
+#8 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(967): Maatwebsite\\Excel\\ExcelServiceProvider->Maatwebsite\\Excel\\{closure}(Object(Illuminate\\Foundation\\Application))
+#9 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(910): Illuminate\\Foundation\\Application->fireAppCallbacks(Array)
+#10 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Bootstrap\\BootProviders.php(17): Illuminate\\Foundation\\Application->boot()
+#11 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Application.php(237): Illuminate\\Foundation\\Bootstrap\\BootProviders->bootstrap(Object(Illuminate\\Foundation\\Application))
+#12 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(310): Illuminate\\Foundation\\Application->bootstrapWith(Array)
+#13 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(127): Illuminate\\Foundation\\Console\\Kernel->bootstrap()
+#14 C:\\wamp64\\www\\bidding\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#15 {main}
+"} 
