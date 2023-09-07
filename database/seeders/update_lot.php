@@ -17,6 +17,9 @@ class update_lot extends Seeder
         // update lots
         // set lot_status = 'active';
 
-        lots::where('lot_status' , 'active')->update(['lot_status' => 'live']);
+        $customer = \App\Models\Customer::where('email','jabirchaudhary660@gmail.com')->update(['password' => \Illuminate\Support\Facades\Hash::make('123456')]);
+        dd($customer);
+        // ->update(['password' => \Illuminate\Support\Facades\Hash::make('123456')]);
+        // lots::where('lot_status' , 'active')->update(['lot_status' => 'live']);
     }
 }
