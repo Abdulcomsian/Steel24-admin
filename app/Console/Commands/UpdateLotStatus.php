@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Carbon\Carbon;
 use App\Models\lots;
 use Symfony\Component\HttpFoundation\Response;
-use App\Events\winLotsEvent;
+use App\Events\{winLotsEvent , LotStatusUpdate};
 use Pusher\Pusher;
 use App\Jobs\LotMail;
 use App\Models\{BidsOfLots , CustomerLot , customerBalance , LotParticipant};
@@ -200,16 +200,25 @@ class UpdateLotStatus extends Command
         info("update lot status running");
         $currentDateTime = Carbon::now()->format('Y-m-d H:i:s');
         info($currentDateTime);
-        lots::where('StartDate' , '<=' ,$currentDateTime)
+        $upcomingLots = lots::where('StartDate' , '<=' ,$currentDateTime)
                                         ->where('EndDate' , '>=' ,$currentDateTime)
                                         ->where('lot_status' , 'upcoming')
-                                        ->update(['lot_status' => 'live']);
+                                        ->get();
+
+        foreach($upcomingLots as $lot)
+        {
+            event(new LotStatusUpdate($lot));
+            $lot->lot_status = 'live';
+            $lot->save();
+            // ->update(['lot_status' => 'live']);
+        }
         
         //setting expired lots
         lots::doesntHave('bids')
             ->where('EndDate)' , '<=' ,$currentDateTime)
             ->where('lot_status' , 'live')
             ->update(['lot_status' => 'Expired']);
+            //->get();
             // ->get();
 
         //updating lots to STA where time has been over
@@ -243,7 +252,7 @@ class UpdateLotStatus extends Command
 
 
 
-            
+
 
     }
 }
