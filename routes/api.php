@@ -144,7 +144,6 @@ Route::get('lotsdetails/{lotId}', 'App\Http\Controllers\Api\v1\Admin\LotsContoll
 Route::post('addFavorites', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@addFavorites');
 
 
-
 // Add Live lot into Fav
 Route::post('addLiveLotsFavorites', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@addLiveLotsFavorites');
 
