@@ -215,7 +215,7 @@ class UpdateLotStatus extends Command
         
         //setting expired lots
         lots::doesntHave('bids')
-            ->where('EndDate)' , '<=' ,$currentDateTime)
+            ->where('EndDate' , '<=' ,$currentDateTime)
             ->where('lot_status' , 'live')
             ->update(['lot_status' => 'Expired']);
             //->get();
