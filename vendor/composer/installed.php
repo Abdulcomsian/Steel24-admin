@@ -560,7 +560,11 @@
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             'reference' => '84cad6622c379fcf001a139c4758c7edaf0e2d2e',
+=======
+            'reference' => 'ee393d331adb22e06e201064f733641b1d1c07c8',
+>>>>>>> Stashed changes
 =======
             'reference' => 'ee393d331adb22e06e201064f733641b1d1c07c8',
 >>>>>>> Stashed changes

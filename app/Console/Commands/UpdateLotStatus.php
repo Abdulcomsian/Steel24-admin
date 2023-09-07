@@ -20,7 +20,7 @@ class UpdateLotStatus extends Command
 
     public function handle()
     {
-//Two minute code starts here 
+        //Two minute code starts here 
         //new code starts here
         // $lots = lots::with('bids.customer','autobids.customer' , 'participant')->whereNotIn('lot_status' ,  ['Sold' , 'Expired'])->get();        
         // $currentTime = Carbon::now();
@@ -176,14 +176,25 @@ class UpdateLotStatus extends Command
 
         //     }
 
+        //             $newPricing = $lot->price;
+
+        //             foreach($lot->autoBids as $bidder)
+        //             {
+
+        //                 $newPricing = $newPricing + 100;
+        //                 $customer = $bidder->customer;
+        //                 $autoBid = BidsOfLots::create([
+        //                     "customerId" => $bidder->customerId,
+        //                     "amount" => $newPricing,
+        //                     "lotId" => $lot->id,
+        //                     "autoBid" => 1,
+        //                     'created_at' => date('Y-m-d H:i:s'),
+        //                     'updated_at' => date('Y-m-d H:i:s')
+        //                 ]);
+
+        //             event(new winLotsEvent('Good Luck! You placed a new bid.', $autoBid, $customer, true));
 
         // }
-
-        //two minute codes ends here    }
-
-        // $currentDateTime = Carbon
-        // lots::where
-
 
     }
 }
