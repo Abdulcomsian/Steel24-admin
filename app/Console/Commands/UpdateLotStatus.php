@@ -195,6 +195,48 @@ class UpdateLotStatus extends Command
         //             event(new winLotsEvent('Good Luck! You placed a new bid.', $autoBid, $customer, true));
 
         // }
+        //Two minute code ends here
+    
+        $currentDateTime = Carbon::now()->format('Y-m-d H:i:s');
+        lots::where(DB::raw('Date(StartDate)') , '<=' ,$currentDateTime)
+                                        ->where(DB::raw('Date(EndDate)') , '>=' ,$currentDateTime)
+                                        ->where('lot_status' , 'upcoming')
+                                        ->update(['lot_status' => 'live']);
+        
+        //setting expired lots
+        lots::doesntHave('bids')
+            ->where(DB::raw('Date(EndDate)') , '<=' ,$currentDateTime)
+            ->where('lot_status' , 'live')
+            ->update(['lot_status' => 'Expired']);
+            // ->get();
+
+        //updating lots to STA where time has been over
+            // lots::with('bids')->whereHas('bids')
+        
+
+            $runningLot = lots::with('bids.customer')
+                                ->whereHas('bids')
+                                ->where(DB::raw('Date(EndDate)') , '<=' , $currentDateTime)
+                                ->where('lot_status' , 'live')
+                                ->get();
+
+
+            foreach($runningLot as $lot){
+                $lastBid = $lot->bids()->latest()->orderBy('id' , 'desc')->first();
+                $latestBidCustomer = $lastBid->customer;
+                $customerLot = CustomerLot::updateOrCreate(
+                                        ['lot_id' => $lot->id],
+                                        ['lot_id' => $lot->id  , 'customer_id' => $latestBidCustomer->id , 'created_at' => date('Y-m-d H:i:s')]
+                                    );
+                if( $customerLot ){
+                        $lot->lot_status = "STA";
+                        $lot->save();
+                        
+                        dispatch(new LotMail($lot , $latestBidCustomer));
+                        //sending winner bidders email  
+                        event(new winLotsEvent('Bidding Has Been Won By The Customer', $lastBid, $latestBidCustomer, false));
+                }
+            }
 
     }
 }
