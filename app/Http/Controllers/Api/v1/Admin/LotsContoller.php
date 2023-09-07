@@ -1236,15 +1236,18 @@ class LotsContoller extends Controller
 
     public function showSoldLotsFavorites($customer_id)
     {
+        
         // Retrieve the favorite lots for the given customer_id
         $favoriteLots = FavLots::where('customer_id', $customer_id)
             ->with('lot')
             ->get();
     
         $result = [];
-        $currentDate = now()->toDateString(); // Get the current date
+
+        $currentDate = now()->toDateString();
     
-        foreach ($favoriteLots as $favoriteLot) {
+        foreach ($favoriteLots as $favoriteLot) 
+        {
             $lot = $favoriteLot->lot;
     
             if ($lot && $lot->lot_status === 'Sold' && $lot->EndDate->toDateString() === $currentDate) 
@@ -1256,7 +1259,8 @@ class LotsContoller extends Controller
     
                 $lotArray = $lot->toArray();
     
-                if ($maxBid) {
+                if ($maxBid) 
+                {
                     $maxBidArray = [
                         'id' => $maxBid->id,
                         'customerId' => $maxBid->customerId,
@@ -1272,8 +1276,6 @@ class LotsContoller extends Controller
                 $result[] = $lotArray;
             }
         }
-    
-        // Return the favorite Sold lots with max_bid as a response
         return response()->json([
             'message' => 'Today Favorite Sold lots retrieved',
             'success' => true,
@@ -1540,92 +1542,6 @@ class LotsContoller extends Controller
 
 
     // Excel Export using category of lots API
-    // public function excelcategoryoflots(Request $request)
-    // {
-    //     $customerId = $request->input('customerId');
-    //     $categoryId = $request->input('categoryId');
-    //     $status = $request->input('status');
-
-    //     $currentDate = now()->toDateString();
-
-    //     // Define the lot_status values for which you want to show current date lots
-    //     $currentDateStatuses = ['Sold', 'live', 'Expired'];
-
-    //     // Check if the status is one of the current date statuses
-    //     if (in_array($status, $currentDateStatuses)) 
-    //     {
-    //         // Retrieve lots based on current date
-    //         $lots = lots::with([
-    //             'customers' => function ($query) use ($customerId) 
-    //             {
-    //                 $query->where('customer_id', $customerId);
-    //             },
-    //             'categories',
-    //             'bids' => function ($query) 
-    //             {
-    //                 $query->orderBy('created_at', 'desc')->take(1);
-    //             }
-    //         ])
-    //             ->where('categoryId', $categoryId)
-    //             ->where('lot_status', $status)
-    //             ->whereDate('EndDate', $currentDate)
-    //             ->orderBy('StartDate', 'asc')
-    //             ->get();
-    //     } 
-    //     else 
-    //     {
-    //         // For "Upcoming" status, show normal behavior
-    //         $lots = lots::with([
-    //             'customers' => function ($query) use ($customerId) 
-    //             {
-    //                 $query->where('customer_id', $customerId);
-    //             },
-    //             'categories',
-    //             'bids' => function ($query) 
-    //             {
-    //                 $query->orderBy('created_at', 'desc')->take(1);
-    //             }
-    //         ])
-    //             ->where('categoryId', $categoryId)
-    //             ->where('lot_status', $status)
-    //             ->orderBy('StartDate', 'asc')
-    //             ->get();
-    //     }
-
-    //     // Create a new export instance
-    //     $export = new ExcelCategoryofLot($lots);
-
-    //     // Generate and store the Excel file
-    //     $timestamp = now()->format('Ymd_His');
-    //     $fileName = 'categoryoflots_' . $timestamp . '.xlsx';
-    //     $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
-
-    //     Excel::store($export, $fileName, 'ExcelLots');
-
-
-    //     // Full local file path
-    //     $localFilePath = $filePath;
-
-    //     // Generate live URL
-    //     $liveUrl = url('ExcelLots/' . $fileName);
-
-
-    //     // Save the URL in the database
-    //     ExcelCategoryOfLots::create([
-    //         'url' => $localFilePath, 
-    //     ]);
-
-
-    //     return response()->json([
-    //         'message' => 'Excel file generated, saved, and URL recorded successfully.',
-    //         'file_url' => $liveUrl,
-    //     ]);
-
-    // }
-
-
-
-
 
     // public function excelcategoryoflots(Request $request)
     // {
@@ -1751,29 +1667,6 @@ class LotsContoller extends Controller
         $liveStatus = 'live';
     
         $allLots = [];
-    
-        // Retrieve lots for Sold and Expired statuses
-        // if (in_array($status, $soldlots ,$expiredlots)) 
-        // {
-        //     $lotsSoldExpired = lots::with([
-        //         'customers' => function ($query) use ($customerId) 
-        //         {
-        //             $query->where('customer_id', $customerId);
-        //         },
-        //         'categories',
-        //         'bids' => function ($query) {
-        //             $query->orderBy('created_at', 'desc')->take(1);
-        //         },
-        //     ])
-        //         ->where('categoryId', $categoryId)
-        //         ->whereIn('lot_status', $soldlots)
-        //         ->whereIn('lot_status', $expiredlots)
-        //         ->whereDate('EndDate', $currentDate)
-        //         ->orderBy('StartDate', 'asc')
-        //         ->get();
-    
-        //     $allLots = array_merge($allLots, $lotsSoldExpired->toArray());
-        // }
 
         if($status === $soldlots)
         {

@@ -175,11 +175,11 @@ Route::get('showLiveLotsFavorites/{customer_id}', 'App\Http\Controllers\Api\v1\A
 
 // Show Upcoming fav lot
 
-Route::get('showUpcomingLotsFavorites/{customer_id}', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showUpcomingLotsFavorites');
+Route::get('showUpcomingLotsFavorites/{customer_id}','App\Http\Controllers\Api\v1\Admin\LotsContoller@showUpcomingLotsFavorites');
 
 // Show Sold fav lot
 
-Route::get('showSoldLotsFavorites/{customer_id}', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showSoldLotsFavorites');
+Route::get('showSoldLotsFavorites/{customer_id}','App\Http\Controllers\Api\v1\Admin\LotsContoller@showSoldLotsFavorites');
 
 // Show Expired fav lot
 
@@ -222,6 +222,10 @@ Route::post('showcategorieswithlot', 'App\Http\Controllers\Api\v1\Admin\LotsCont
 
 // excel export using category of lots 
 Route::post('excelcategoryoflots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@excelcategoryoflots');
+
+
+// excel export using category of lots 
+Route::post('favlotsexcelexport', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@favlotsexcelexport');
 
 
 

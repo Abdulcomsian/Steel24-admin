@@ -119,9 +119,6 @@ use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 //     }
 // }
 
-
-
-
 class ExcelCategoryofLot implements FromCollection, WithHeadings
 {
     protected $allLots;
