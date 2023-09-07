@@ -200,14 +200,14 @@ class UpdateLotStatus extends Command
         info("update lot status running");
         $currentDateTime = Carbon::now()->format('Y-m-d H:i:s');
         info($currentDateTime);
-        lots::where(DB::raw('Date(StartDate)') , '<=' ,$currentDateTime)
-                                        ->where(DB::raw('Date(EndDate)') , '>=' ,$currentDateTime)
+        lots::where('StartDate' , '<=' ,$currentDateTime)
+                                        ->where('EndDate' , '>=' ,$currentDateTime)
                                         ->where('lot_status' , 'upcoming')
                                         ->update(['lot_status' => 'live']);
         
         //setting expired lots
         lots::doesntHave('bids')
-            ->where(DB::raw('Date(EndDate)') , '<=' ,$currentDateTime)
+            ->where('EndDate)' , '<=' ,$currentDateTime)
             ->where('lot_status' , 'live')
             ->update(['lot_status' => 'Expired']);
             // ->get();
@@ -218,7 +218,7 @@ class UpdateLotStatus extends Command
 
             $runningLot = lots::with('bids.customer')
                                 ->whereHas('bids')
-                                ->where(DB::raw('Date(EndDate)') , '<=' , $currentDateTime)
+                                ->where('EndDate' , '<=' , $currentDateTime)
                                 ->where('lot_status' , 'live')
                                 ->get();
 
@@ -239,6 +239,11 @@ class UpdateLotStatus extends Command
                         event(new winLotsEvent('Bidding Has Been Won By The Customer', $lastBid, $latestBidCustomer, false));
                 }
             }
+
+
+
+
+            
 
     }
 }
