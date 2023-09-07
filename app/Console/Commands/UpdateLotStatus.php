@@ -10,6 +10,7 @@ use App\Events\winLotsEvent;
 use Pusher\Pusher;
 use App\Jobs\LotMail;
 use App\Models\{BidsOfLots , CustomerLot , customerBalance , LotParticipant};
+use Illuminate\Support\Facades\DB;
 
 
 
