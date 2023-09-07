@@ -119,6 +119,36 @@ class LotsContoller extends Controller
     
         return response()->json(['userLots' => $lots, 'success' => true]);
     }
+
+
+    // STA Lots 
+    public function stalots(Request $request)
+    {
+        $customerId = $request->customer_id;
+    
+        $lots = lots::with(['customerBalance' => function ($query) use ($customerId) 
+        {
+                $query->where('customerId', $customerId);
+            }])
+            ->with(['customers' => function ($query) use ($customerId) 
+            {
+                $query->where('customer_id', $customerId);
+            }])
+            ->with(['categories', 'bids' => function ($query) 
+            {
+                $query->orderBy('created_at', 'desc')->take(1);
+            }])
+            ->where('lot_status', 'LIKE', '%STA%')
+
+            ->orderBy('StartDate', 'asc') 
+            ->get();
+    
+        return response()->json(['STA_Lots' => $lots, 'success' => true]);
+    }
+
+
+
+        
         
         //new code ends here
         // $customerId = $request->input('customer_id');

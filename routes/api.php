@@ -224,8 +224,8 @@ Route::post('showcategorieswithlot', 'App\Http\Controllers\Api\v1\Admin\LotsCont
 Route::post('excelcategoryoflots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@excelcategoryoflots');
 
 
-// excel export using category of lots 
-Route::post('favlotsexcelexport', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@favlotsexcelexport');
+// STA lots 
+Route::post('stalots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@stalots');
 
 
 
