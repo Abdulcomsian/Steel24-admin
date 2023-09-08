@@ -2103,6 +2103,48 @@ class LotsContoller extends Controller
 
     // Fetch win Lots Against the Customer_id, start_date and end_date
 
+    // public function winLotsShow(Request $request)
+    // {
+    //     $startDate = $request->input('start_date');
+    //     $endDate = $request->input('end_date');
+    //     $customerId = $request->input('customer_id');
+    
+    //     $customerLots = CustomerLot::with(['lotDetail.materials', 'lot.materials'])
+    //         ->where(DB::raw('Date(customer_lots.created_at)'), '>=', $startDate)
+    //         ->where(DB::raw('Date(customer_lots.created_at)'), '<=', $endDate)
+    //         ->where('customer_id', $customerId)
+    //         ->get();
+    
+    //     if ($customerLots->isEmpty()) {
+    //         $message = 'Sorry, No Win lots against this Customer.';
+    //     } else {
+    //         $message = 'Win Lot Retrieved Successfully.';
+    //     }
+    
+    //     $winningLots = [];
+    
+    //     foreach ($customerLots as $customerLot) 
+    //     {
+    //         $lot = $customerLot->lotDetail;
+    
+    //         $winningLots[] = [
+    //             'id' => $customerLot->id,
+    //             'customer_id' => $customerLot->customer_id,
+    //             'lot_id' => $customerLot->lot_id,
+    //             'created_at' => $customerLot->created_at,
+    //             'updated_at' => $customerLot->updated_at,
+    //             'lot_details' => $lot,
+    //         ];
+    //     }
+    
+    //     $response = [
+    //         'message' => $message,
+    //         'win_lots' => $winningLots,
+    //     ];
+    
+    //     return response()->json($response);
+    // }
+
     public function winLotsShow(Request $request)
     {
         $startDate = $request->input('start_date');
@@ -2110,8 +2152,7 @@ class LotsContoller extends Controller
         $customerId = $request->input('customer_id');
     
         $customerLots = CustomerLot::with(['lotDetail.materials', 'lot.materials'])
-            ->where(DB::raw('Date(customer_lots.created_at)'), '>=', $startDate)
-            ->where(DB::raw('Date(customer_lots.created_at)'), '<=', $endDate)
+            ->whereBetween(DB::raw('Date(customer_lots.created_at)'), [$startDate, $endDate])
             ->where('customer_id', $customerId)
             ->get();
     
@@ -2127,14 +2168,17 @@ class LotsContoller extends Controller
         {
             $lot = $customerLot->lotDetail;
     
-            $winningLots[] = [
-                'id' => $customerLot->id,
-                'customer_id' => $customerLot->customer_id,
-                'lot_id' => $customerLot->lot_id,
-                'created_at' => $customerLot->created_at,
-                'updated_at' => $customerLot->updated_at,
-                'lot_details' => $lot,
-            ];
+            if ($lot->lot_status === 'Sold') 
+            {
+                $winningLots[] = [
+                    'id' => $customerLot->id,
+                    'customer_id' => $customerLot->customer_id,
+                    'lot_id' => $customerLot->lot_id,
+                    'created_at' => $customerLot->created_at,
+                    'updated_at' => $customerLot->updated_at,
+                    'lot_details' => $lot,
+                ];
+            }
         }
     
         $response = [
@@ -2144,6 +2188,14 @@ class LotsContoller extends Controller
     
         return response()->json($response);
     }
+    
+
+
+
+
+
+      
+       
 
 
     // Win lot against the customer_id to show Excel Export API
