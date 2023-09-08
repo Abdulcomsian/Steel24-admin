@@ -80,10 +80,10 @@ class lots extends Model
         return $this->hasMany(lots::class ,'lot_id','id');
     }
 
-    // public function lot()
-    // {
-    //     return $this->belongsTo(lots::class, 'lot_id', 'id');
-    // }
+    public function favlots()
+    {
+        return $this->hasMany(lots::class,'id','lot_id');
+    }
 
 
     public function customerBalance()

@@ -26,4 +26,10 @@ class FavLots extends Model
     {
         return $this->belongsTo(lots::class , 'lot_id' ,'id');
     }
+
+    public function favlots()
+    {
+        return $this->belongsTo(lots::class , 'lot_id' ,'id');
+    }
+
 }

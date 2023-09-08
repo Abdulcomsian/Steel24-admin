@@ -227,8 +227,15 @@ Route::post('excelcategoryoflots', 'App\Http\Controllers\Api\v1\Admin\LotsContol
 // STA lots 
 Route::post('stalots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@stalots');
 
+
 // STA Fav lots 
 Route::post('stafavlots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@stafavlots');
+
+
+// Fav Lots Excel Export
+Route::post('favlotsexcelexport', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@favlotsexcelexport');
+
+
 
 
 

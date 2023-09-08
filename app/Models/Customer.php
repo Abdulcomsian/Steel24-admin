@@ -76,4 +76,9 @@ class Customer extends Authenticatable  implements JWTSubject
         return $this->belongsToMany(lots::class , 'lot_participants' , 'customer_id' , 'lot_id');
     }
 
+    public function favlots()
+    {
+        return $this->belongsTo(lots::class , 'lot_id' ,'id');
+    }
+
 }

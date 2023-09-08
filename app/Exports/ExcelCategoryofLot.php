@@ -158,14 +158,12 @@ class ExcelCategoryofLot implements FromCollection, WithHeadings
                 $lot['created_at'],
                 $lot['updated_at'],
                 $lot['participate_fee'],
-
                 $lot['categories']['id'] ?? null, 
                 $lot['categories']['title'] ?? null, 
                 $lot['categories']['description'] ?? null,
                 $lot['categories']['parentcategory'] ?? null,
                 $lot['categories']['created_at'] ?? null,
                 $lot['categories']['updated_at'] ?? null,
-
                 $lot['bids'][0]['id'] ?? null,
                 $lot['bids'][0]['customerId'] ?? null,
                 $lot['bids'][0]['amount'] ?? null,
@@ -201,15 +199,12 @@ class ExcelCategoryofLot implements FromCollection, WithHeadings
             'created_at',
             'updated_at',
             'Participate Fee',
-            
-
             'Category Id',
             'Title',
             'Description',
             'Parentcategory',
             'created_at',
             'updated_at',
-
             'Bid Id',
             'Customer Id',
             'Amount',

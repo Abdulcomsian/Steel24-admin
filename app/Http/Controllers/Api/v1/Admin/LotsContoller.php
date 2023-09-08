@@ -39,7 +39,11 @@ use App\Exports\ExportSpecificwin_lots;
 use App\Models\Excel_specific_win_lots;
 use App\Models\ExcelCategoryOfLots;
 use App\Exports\ExcelCategoryofLot;
+use App\Exports\favLotsExcelExport;
+use App\Models\favlotsexcel_export;
 use Illuminate\Support\Facades\Validator;
+
+
 
 
 class LotsContoller extends Controller
@@ -1467,48 +1471,6 @@ class LotsContoller extends Controller
 
     // show category with lots
 
-    // public function showcategorieswithlot(Request $request)
-    // {
-    //     $customerId = $request->input('customerId');
-    //     $categoryId = $request->input('categoryId');
-    //     $status     = $request->input('status');
-    
-    //     // Retrieve the category
-    //     $category = categories::find($categoryId);
-    
-    //     if (!$category)
-    //     {
-    //         return response()->json([
-    //             'message' => 'Category not found',
-    //             'success' => false,
-    //         ]);
-    //     }
-    
-    //     // Retrieve live lots associated with the category
-    //     $liveLots = lots::with([
-    //         'customers' => function ($query) use ($customerId) 
-    //         {
-    //             $query->where('customer_id', $customerId);
-    //         },
-    //         'categories',
-    //         'bids' => function ($query) 
-    //         {
-    //             $query->orderBy('created_at', 'desc')->take(1);
-    //         }
-    //     ])
-    //     ->where('categoryId', $categoryId)
-    //     ->where('lot_status', $status)
-    //     ->orderBy('StartDate', 'asc')
-    //     ->get();
-    
-    //     return response()->json([
-    //         'userLots' => $liveLots,
-    //         'success' => true,
-    //         // 'category' => $category,
-    //     ]);
-    // }
-
-
     public function showcategorieswithlot(Request $request)
     {
         $customerId = $request->input('customerId');
@@ -1604,115 +1566,6 @@ class LotsContoller extends Controller
 
     // Excel Export using category of lots API
 
-    // public function excelcategoryoflots(Request $request)
-    // {
-    //     $customerId = $request->input('customerId');
-    //     $categoryId = $request->input('categoryId');
-    //     $status = $request->input('status');
-    
-    //     $currentDate = now()->toDateString();
-    
-
-    //     $soldExpiredStatuses = ['Sold', 'Expired'];
-    //     $liveStatus = 'live';
-    
-        
-    //     $allLots = [];
-    
-    //     // Retrieve lots for Sold and Expired statuses
-    //     if (in_array($status, $soldExpiredStatuses)) 
-    //     {
-    //         $lotsSoldExpired = lots::with([
-    //             'customers' => function ($query) use ($customerId) 
-    //             {
-    //                 $query->where('customer_id', $customerId);
-    //             },
-    //             'categories',
-    //             'bids' => function ($query) {
-    //                 $query->orderBy('created_at', 'desc')->take(1);
-    //             }
-    //         ])
-    //         ->where('categoryId', $categoryId)
-    //         ->whereIn('lot_status', $soldExpiredStatuses)
-    //         ->whereDate('EndDate', $currentDate)
-    //         ->orderBy('StartDate', 'asc')
-    //         ->get();
-            
-    
-    //         $allLots = array_merge($allLots, $lotsSoldExpired->toArray());
-    //     }
-    
-        
-    //     if ($status === $liveStatus) 
-    //     {
-    //         $lotsLive = lots::with([
-    //             'customers' => function ($query) use ($customerId) 
-    //             {
-    //                 $query->where('customer_id', $customerId);
-    //             },
-    //             'categories',
-    //             'bids' => function ($query) {
-    //                 $query->orderBy('created_at', 'desc')->take(1);
-    //             }
-    //         ])
-    //         ->where('categoryId', $categoryId)
-    //         ->where('lot_status', $liveStatus)
-    //         ->where('StartDate', '<=', $currentDate)
-    //         ->where('EndDate', '>=', $currentDate)
-    //         ->orderBy('StartDate', 'asc')
-    //         ->get();
-    
-    //         $allLots = array_merge($allLots, $lotsLive->toArray());
-    //     }
-    
-    
-    //     if ($status === 'upcoming') 
-    //     {
-    //         $lotsUpcoming = lots::with([
-    //             'customers' => function ($query) use ($customerId) {
-    //                 $query->where('customer_id', $customerId);
-    //             },
-    //             'categories',
-    //             'bids' => function ($query) {
-    //                 $query->orderBy('created_at', 'desc')->take(1);
-    //             }
-    //         ])
-    //         ->where('categoryId', $categoryId)
-    //         ->where('lot_status', 'Upcoming')
-    //         ->orderBy('StartDate', 'asc')
-    //         ->get();
-    
-    //         $allLots = array_merge($allLots, $lotsUpcoming->toArray());
-    //     }
-    
-    //     // Create a new export instance
-    //     $export = new ExcelCategoryofLot($allLots);
-    
-        // // Generate and store the Excel file
-        // $timestamp = now()->format('Ymd_His');
-        // $fileName = 'categoryoflots_' . $timestamp . '.xlsx';
-        // $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
-    
-        // Excel::store($export, $filePath, 'ExcelLots');
-    
-        // // Full local file path
-        // $localFilePath = $filePath;
-    
-        // // Generate live URL
-        // $liveUrl = url('ExcelLots/' . $fileName);
-    
-        // // Save the URL in the database
-        // ExcelCategoryOfLots::create([
-        //     'url' => $localFilePath,
-        // ]);
-    
-        // return response()->json([
-        //     'message' => 'Excel file generated, saved, and URL recorded successfully.',
-        //     'file_url' => $liveUrl,
-        // ]);
-    // }
-
-
 
     public function excelcategoryoflots(Request $request)
     {
@@ -1765,12 +1618,6 @@ class LotsContoller extends Controller
                     $query->orderBy('created_at', 'desc')->take(1);
                 },
             ])
-                // ->where('categoryId', $categoryId)
-                // ->where('lot_status', $expiredlots)
-                // ->where('StartDate', '<=', $currentDate)
-                // ->where('EndDate', '>=', $currentDate)
-                // ->orderBy('StartDate', 'asc')
-                // ->get();
 
                 ->where('categoryId', $categoryId)
                 ->where('lot_status', $expiredlots)
@@ -1847,6 +1694,53 @@ class LotsContoller extends Controller
             'file_url' => $liveUrl,
         ]);
     }
+
+
+    // Fav lot Excel Export 
+
+    public function favlotsexcelexport(Request $request)
+    {
+        try {
+            $customer_id = $request->input('customer_id');
+
+            // Fetch "fav lots" for the specific customer
+            $lots = FavLots::where('customer_id', $customer_id)->get();
+
+            // Create a new LotsExport instance and pass the fetched "fav lots"
+            $export = new favLotsExcelExport($lots);
+
+            // Generate a unique filename using a timestamp
+            $timestamp = now()->format('Ymd_His');
+            $fileName = 'Favlots_' . $timestamp . '.xlsx';
+            $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
+
+            // Generate and store the Excel file on the local filesystem
+            Excel::store($export, $fileName, 'ExcelLots');
+
+            // Full local file path
+            $localFilePath = $filePath;
+
+            // Generate live URL
+            $liveUrl = url('ExcelLots/' . $fileName);
+
+            // Save the local file path in the 'export_urls' table
+            favlotsexcel_export::create([
+                'url' => $localFilePath,
+            ]);
+
+            // Return a JSON response with the success message and live URL
+            return response()->json([
+                'message' => 'Excel file generated, saved, and URL recorded successfully.',
+                'file_url' => $liveUrl,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => 'Error occurred during export: ' . $e->getMessage(),
+            ], 500);
+        }
+
+    }
+
     
 
    
@@ -2008,88 +1902,11 @@ class LotsContoller extends Controller
 
     // Generate Excel File OF win Lots Against the Customer_id, start_date and end_date
 
-    //     public function exportLotsToExcel()
-    // {
-    //     // Fetch lots with lot_status = "live"
-    //     $lots = Lots::where('lot_status', 'live')->get();
-
-    //     // Create a new LotsExport instance and pass the fetched lots
-    //     $export = new LotsExport($lots);
-
-    //     // Generate a unique filename using a timestamp
-    //     $timestamp = now()->format('Ymd_His');
-    //     $fileName = 'lots_' . $timestamp . '.xlsx';
-    //     $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
-
-    //     // Generate and store the Excel file on the local filesystem
-    //     Excel::store($export, $fileName, 'ExcelLots');
-
-    //     // Full local file path
-    //     $localFilePath = $filePath;
-
-    //     // Save the local file path in the 'export_urls' table
-    //     ExportUrl::create([
-    //         'url' => $localFilePath,
-    //     ]);
-
-    //     // Return a JSON response with the success message and local file path
-    //     return response()->json([
-    //         'message' => 'Excel file generated, saved, and URL recorded successfully.',
-    //         'file_url' => $localFilePath,
-    //     ]);
-    // }
-
-
-
-    // working fine 
-
-    // public function exportLotsToExcel(Request $request)
-    // {
-
-    //     $status = $request->input('status');
-
-    //     // Fetch lots with lot_status = "live"
-    //     $lots = lots::where('lot_status', $status)->get();
-    
-    //     // Create a new LotsExport instance and pass the fetched lots
-    //     $export = new LotsExport($lots);
-    
-    //     // Generate a unique filename using a timestamp
-    //     $timestamp = now()->format('Ymd_His');
-    //     $fileName = 'lots_' . $timestamp . '.xlsx';
-    //     $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
-    
-    //     // Generate and store the Excel file on the local filesystem
-    //     Excel::store($export, $fileName, 'ExcelLots');
-    
-    //     // Full local file path
-    //     $localFilePath = $filePath;
-    
-    //     // Generate live URL
-    //     $liveUrl = url('ExcelLots/' . $fileName);
-    
-    //     // Save the local file path in the 'export_urls' table
-    //     ExportUrl::create([
-    //         'url' => $localFilePath,
-    //     ]);
-    
-    //     // Return a JSON response with the success message and live URL
-    //     return response()->json([
-    //         'message' => 'Excel file generated, saved, and URL recorded successfully.',
-    //         'file_url' => $liveUrl,
-    //     ]);
-    // }
-
-
-
     public function exportLotsToExcel(Request $request)
     {
         try {
             $status = $request->input('status');
 
-            // // Fetch lots with lot_status = "live"
-            // $lots = lots::where('lot_status', $status)->get();
-            // Fetch lots with lot_status = "live" along with their related materials and categories
                 $lots = lots::with('new_maerials_2', 'categories')
                 ->where('lot_status', $status)
                 ->get();
