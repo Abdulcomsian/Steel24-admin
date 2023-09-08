@@ -1772,25 +1772,23 @@ class LotsContoller extends Controller
                 ->get();
     
             $allLots = array_merge($allLots, $lotsLive->toArray());
-        }
-    
-        if ($status === 'upcoming') {
-            $lotsUpcoming = lots::with([
-                'customers' => function ($query) use ($customerId) {
-                    $query->where('customer_id', $customerId);
-                },
-                'categories',
-                'bids' => function ($query) {
-                    $query->orderBy('created_at', 'desc')->take(1);
-                },
-            ])
-                ->where('categoryId', $categoryId)
-                ->where('lot_status', 'Upcoming')
-                ->orderBy('StartDate', 'asc')
-                ->get();
-    
-            $allLots = array_merge($allLots, $lotsUpcoming->toArray());
-        }
+        } else {
+                $lotsUpcoming = lots::with([
+                    'customers' => function ($query) use ($customerId) {
+                        $query->where('customer_id', $customerId);
+                    },
+                    'categories',
+                    'bids' => function ($query) {
+                        $query->orderBy('created_at', 'desc')->take(1);
+                    },
+                ])
+                    ->where('categoryId', $categoryId)
+                    ->where('lot_status', $status)
+                    ->orderBy('StartDate', 'asc')
+                    ->get();
+        
+                $allLots = array_merge($allLots, $lotsUpcoming->toArray());
+            }
     
         // Create a new export instance
         $export = new ExcelCategoryofLot($allLots);
@@ -2189,14 +2187,6 @@ class LotsContoller extends Controller
         return response()->json($response);
     }
     
-
-
-
-
-
-      
-       
-
 
     // Win lot against the customer_id to show Excel Export API
 
