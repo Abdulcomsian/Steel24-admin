@@ -21,44 +21,6 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 
 
-
-// class winlotexportapi implements FromCollection, WithHeadings, ShouldAutoSize, WithTitle, WithCustomStartCell
-// {
-//     protected $winningLotsData;
-
-//     public function __construct(Collection $winningLotsData)
-//     {
-//         $this->winningLotsData = $winningLotsData;
-//     }
-
-//     public function collection()
-//     {
-//         return $this->winningLotsData;
-//     }
-
-//     public function headings(): array
-//     {
-//         return [
-//             'ID',
-//             'Customer ID',
-//             'Lot ID',
-//             'Created At',
-//             'Updated At',
-//         ];
-//     }
-
-//     public function title(): string
-//     {
-//         return 'WinLots'; 
-//     }
-
-//     public function startCell(): string
-//     {
-//         return 'A2';
-//     }
-// }
-
-
 class winlotexportapi implements FromCollection, WithHeadings, ShouldAutoSize, WithTitle, WithCustomStartCell
 {
     protected $winningLotsData;
@@ -129,46 +91,48 @@ class winlotexportapi implements FromCollection, WithHeadings, ShouldAutoSize, W
 
         foreach ($data as $lot) 
         {
-            foreach ($lot['lot']['materials'] as $material) 
-            {
-
-                $transformedData[] = [
-                    'Lot ID' => $lot['lot_id'],
-                    'Lot Title' => $lot['lot']['title'],
-                    'Lot Description' => $lot['lot']['description'],
-                    'Category Id' => $lot['lot']['categoryId'],
-                    'User Id' => $lot['lot']['uid'],
-                    'Seller' => $lot['lot']['Seller'],
-                    'Plant' => $lot['lot']['Plant'],
-                    'Material Location' => $lot['lot']['materialLocation'],
-                    'Quantity' => $lot['lot']['Quantity'],
-                    'StartDate' => $lot['lot']['StartDate'],
-                    'EndDate' => $lot['lot']['EndDate'],
-                    'Price' => $lot['lot']['Price'],
-                    'Lot Status' => $lot['lot']['lot_status'],
-                    'Auction Status' => $lot['lot']['auction_status'],
-                    'Custom Fields' => $lot['lot']['customFields'],
-                    'Created_at' => $lot['lot']['created_at'],
-                    'Updated_at' => $lot['lot']['updated_at'],
-                    'Participate Fee' => $lot['lot']['participate_fee'],
-                    'ReStart Date' => $lot['lot']['ReStartDate'],
-                    'ReEnd Date' => $lot['lot']['ReEndDate'],
-                    'Live Sequence Number' => $lot['lot']['LiveSequenceNumber'],
-                    'Payment Terms' => $lot['lot']['Payment_terms'],
-                    'Status' => $lot['lot']['status'],
-                    'Material ID' => $material['id'],
-                    'Material Product' => $material['Product'],
-                    'Material Thickness' => $material['Thickness'],
-                    'Material Width' => $material['Width'],
-                    'Material Length' => $material['Length'],
-                    'Material Weight' => $material['Weight'],
-                    'Material Grade' => $material['Grade'],
-                ];
+            if ($lot->lotDetail->materials->count())
+            { 
+                foreach ($lot->lotDetail->materials as $material)
+                {
+                    $transformedData[] = [
+                        'Lot ID' => $lot->lot_id,
+                        'Lot Title' => $lot->lotDetail->title,
+                        'Lot Description' => $lot->lotDetail->description,
+                        'Category Id' => $lot->lotDetail->categoryId,
+                        'User Id' => $lot->lotDetail->uid,
+                        'Seller' => $lot->lotDetail->Seller,
+                        'Plant' => $lot->lotDetail->Plant,
+                        'Material Location' => $lot->lotDetail->materialLocation,
+                        'Quantity' => $lot->lotDetail->Quantity,
+                        'StartDate' => $lot->lotDetail->StartDate,
+                        'EndDate' => $lot->lotDetail->EndDate,
+                        'Price' => $lot->lotDetail->Price,
+                        'Lot Status' => $lot->lotDetail->lot_status,
+                        'Auction Status' => $lot->lotDetail->auction_status,
+                        'Custom Fields' => $lot->lotDetail->customFields,
+                        'Created_at' => $lot->lotDetail->created_at,
+                        'Updated_at' => $lot->lotDetail->updated_at,
+                        'Participate Fee' => $lot->lotDetail->participate_fee,
+                        'ReStart Date' => $lot->lotDetail->ReStartDate,
+                        'ReEnd Date' => $lot->lotDetail->ReEndDate,
+                        'Live Sequence Number' => $lot->lotDetail->LiveSequenceNumber,
+                        'Payment Terms' => $lot->lotDetail->Payment_terms,
+                        'Status' => $lot->lotDetail->status,
+                        'Material ID' => $material->id,
+                        'Material Product' => $material->Product,
+                        'Material Thickness' => $material->Thickness,
+                        'Material Width' => $material->Width,
+                        'Material Length' => $material->Length,
+                        'Material Weight' => $material->Weight,
+                        'Material Grade' => $material->Grade,
+                    ];
+                }
             }
         }
-
         return $transformedData;
-   }
+    }
+
 }
 
 

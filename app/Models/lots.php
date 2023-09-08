@@ -49,7 +49,7 @@ class lots extends Model
         return Carbon::createFromFormat('Y-m-d H:i:s', $value);
     }
 
-        public function materialss()
+    public function materialss()
     {
         return $this->belongsToMany(new_maerials_2::class, 'new_maerials_2s', 'id', 'lotId');
     }
@@ -79,6 +79,12 @@ class lots extends Model
     {
         return $this->hasMany(lots::class ,'lot_id','id');
     }
+
+    // public function lot()
+    // {
+    //     return $this->belongsTo(lots::class, 'lot_id', 'id');
+    // }
+
 
     public function customerBalance()
     {

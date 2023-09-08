@@ -147,6 +147,37 @@ class LotsContoller extends Controller
     }
 
 
+    // STA Fav lots API
+
+    public function stafavlots(Request $request)
+    {
+        $customerId = $request->customer_id;
+
+        $favoriteLotIds = FavLots::where('customer_id', $customerId)->pluck('lot_id');
+    
+        $lots = lots::with(['customers' => function ($query) use ($customerId) {
+            $query->where('customer_id', $customerId);
+        }])
+        ->with(['bids' => function ($query) {
+            $query->orderBy('created_at', 'desc')->take(1);
+        }])
+        ->with(['categories', 'bids' => function ($query) 
+            {
+                $query->orderBy('created_at', 'desc')->take(1);
+        }])
+        ->whereIn('id', $favoriteLotIds)
+        ->where('lot_status', 'STA')
+        ->orderBy('StartDate', 'asc')
+        ->get();
+    
+        return response()->json(['STA_Fav_Lots' => $lots, 'success' => true]);
+    }
+    
+
+
+    
+
+
 
         
         
@@ -2101,48 +2132,6 @@ class LotsContoller extends Controller
 
     // Fetch win Lots Against the Customer_id, start_date and end_date
 
-    // public function winLotsShow(Request $request)
-    // {
-    //     $startDate = $request->input('start_date');
-    //     $endDate = $request->input('end_date');
-    //     $customerId = $request->input('customer_id');
-    
-    //     $customerLots = CustomerLot::with(['lotDetail.materials', 'lot.materials'])
-    //         ->where(DB::raw('Date(customer_lots.created_at)'), '>=', $startDate)
-    //         ->where(DB::raw('Date(customer_lots.created_at)'), '<=', $endDate)
-    //         ->where('customer_id', $customerId)
-    //         ->get();
-    
-    //     if ($customerLots->isEmpty()) {
-    //         $message = 'Sorry, No Win lots against this Customer.';
-    //     } else {
-    //         $message = 'Win Lot Retrieved Successfully.';
-    //     }
-    
-    //     $winningLots = [];
-    
-    //     foreach ($customerLots as $customerLot) 
-    //     {
-    //         $lot = $customerLot->lotDetail;
-    
-    //         $winningLots[] = [
-    //             'id' => $customerLot->id,
-    //             'customer_id' => $customerLot->customer_id,
-    //             'lot_id' => $customerLot->lot_id,
-    //             'created_at' => $customerLot->created_at,
-    //             'updated_at' => $customerLot->updated_at,
-    //             'lot_details' => $lot,
-    //         ];
-    //     }
-    
-    //     $response = [
-    //         'message' => $message,
-    //         'win_lots' => $winningLots,
-    //     ];
-    
-    //     return response()->json($response);
-    // }
-
     public function winLotsShow(Request $request)
     {
         $startDate = $request->input('start_date');
@@ -2190,88 +2179,172 @@ class LotsContoller extends Controller
 
     // Win lot against the customer_id to show Excel Export API
 
+    // public function winExcelLotExport(Request $request)
+    // {
+    //     $customerId = $request->input('customer_id');
+
+    //     $winningLotsData = CustomerLot::with(['lot', 'lot.materials'])
+    //         ->where('customer_id', $customerId)
+    //         ->get();
+
+    //     // Create a new export instances
+    //     $export = new winlotexportapi($winningLotsData);
+
+    //     $timestamp = now()->format('Ymd_His');
+    //     $fileName = 'winlots_' . $timestamp . '.xlsx';
+    //     // $filePath = 'ExcelLots' . DIRECTORY_SEPARATOR . $fileName;
+    //     $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
+
+    //     // Generate and store the Excel files
+    //     Excel::store($export, $fileName, 'ExcelLots');
+
+    //     // Full local file path
+    //     $localFilePath = $filePath;
+
+    //     // Generate live URL
+    //     $liveUrl = url('ExcelLots/' . $fileName);
+
+    //     // Save the URL in the database
+    //     ExportWinLots::create([
+    //         'url' => $localFilePath, 
+    //     ]);
+
+    //      return response()->json([
+    //         'message' => 'Excel file generated, saved, and URL recorded successfully.',
+    //         'file_url' => $liveUrl,
+    //     ]);
+
+    // }
+
     public function winExcelLotExport(Request $request)
     {
         $customerId = $request->input('customer_id');
+    
+        $winningLotsData = CustomerLot::whereHas('lot', function ($query) 
+        {
+            $query->where('lot_status', 'Sold');
+        })
+        ->with(['lot', 'lotDetail.materials'])
+        ->where('customer_id', $customerId) 
+        ->get();
 
-        $winningLotsData = CustomerLot::with(['lot', 'lot.materials'])
-            ->where('customer_id', $customerId)
-            ->get();
-
-        // Create a new export instances
+        // dd($winningLotsData);
+    
+        // Create a new export instance
         $export = new winlotexportapi($winningLotsData);
-
+    
         $timestamp = now()->format('Ymd_His');
         $fileName = 'winlots_' . $timestamp . '.xlsx';
-        // $filePath = 'ExcelLots' . DIRECTORY_SEPARATOR . $fileName;
         $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
-
-        // Generate and store the Excel files
+    
+        // Generate and store the Excel file
         Excel::store($export, $fileName, 'ExcelLots');
-
+    
         // Full local file path
         $localFilePath = $filePath;
-
+    
         // Generate live URL
         $liveUrl = url('ExcelLots/' . $fileName);
-
+    
         // Save the URL in the database
         ExportWinLots::create([
             'url' => $localFilePath, 
         ]);
-
-         return response()->json([
+    
+        return response()->json([
             'message' => 'Excel file generated, saved, and URL recorded successfully.',
             'file_url' => $liveUrl,
         ]);
-
     }
+    
 
 
 
     // Win Lots Excel Export using start date, end date and Customer_id 
 
+    // public function winspecificdateExcel(Request $request)
+    // {
+    //     $customerId = $request->input('customer_id');
+    //     $startDate  = $request->input('start_date');
+    //     $endDate    = $request->input('end_date');
+
+    //         $lots = CustomerLot::with(['lotDetail', 'new_maerials_2', 'categories'])
+    //         ->where('customer_id', $customerId)
+    //         ->where(DB::raw('Date(customer_lots.created_at)'), '>=', $startDate)
+    //         ->where(DB::raw('Date(customer_lots.created_at)'), '<=', $endDate)
+    //         ->get();
+
+
+    //     // Create a new export instances
+    //     $export = new ExportSpecificwin_lots($lots);
+
+    //     $timestamp = now()->format('Ymd_His');
+    //     $fileName = 'winspecificlots_' . $timestamp . '.xlsx';
+    //     // $filePath = 'ExcelLots' . DIRECTORY_SEPARATOR . $fileName;
+    //     $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
+
+    //     // Generate and store the Excel files
+    //     Excel::store($export, $fileName, 'ExcelLots');
+
+    //     // Full local file path
+    //     $localFilePath = $filePath;
+
+    //     // Generate live URL
+    //     $liveUrl = url('ExcelLots/' . $fileName);
+
+    //     // Save the URL in the database
+    //     Excel_specific_win_lots::create([
+    //         'url' => $localFilePath, 
+    //     ]);
+
+    //      return response()->json([
+    //         'message' => 'Excel file generated, saved, and URL recorded successfully.',
+    //         'file_url' => $liveUrl,
+    //     ]);
+
+    // }
+
+      
     public function winspecificdateExcel(Request $request)
     {
         $customerId = $request->input('customer_id');
         $startDate  = $request->input('start_date');
         $endDate    = $request->input('end_date');
 
-            $lots = CustomerLot::with(['lotDetail', 'new_maerials_2', 'categories'])
+        $lots = CustomerLot::with(['lotDetail', 'new_maerials_2', 'categories'])
             ->where('customer_id', $customerId)
             ->where(DB::raw('Date(customer_lots.created_at)'), '>=', $startDate)
             ->where(DB::raw('Date(customer_lots.created_at)'), '<=', $endDate)
             ->get();
 
+        // Filter lots to include only the Sold lots
+        $soldLots = $lots->filter(function ($lot) 
+        {
+            return $lot->lotDetail->lot_status === 'Sold';
+        });
 
-        // Create a new export instances
-        $export = new ExportSpecificwin_lots($lots);
+        // Create a new export instance with the filtered Sold lots
+        $export = new ExportSpecificwin_lots($soldLots);
 
         $timestamp = now()->format('Ymd_His');
         $fileName = 'winspecificlots_' . $timestamp . '.xlsx';
-        // $filePath = 'ExcelLots' . DIRECTORY_SEPARATOR . $fileName;
         $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
 
-        // Generate and store the Excel files
         Excel::store($export, $fileName, 'ExcelLots');
 
-        // Full local file path
         $localFilePath = $filePath;
-
-        // Generate live URL
         $liveUrl = url('ExcelLots/' . $fileName);
 
-        // Save the URL in the database
         Excel_specific_win_lots::create([
             'url' => $localFilePath, 
         ]);
 
-         return response()->json([
+        return response()->json([
             'message' => 'Excel file generated, saved, and URL recorded successfully.',
             'file_url' => $liveUrl,
         ]);
-
     }
+
 
 
     // customer balance using start_date, End_Date and customer_Id
