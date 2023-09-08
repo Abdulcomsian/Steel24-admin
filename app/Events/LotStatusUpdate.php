@@ -10,9 +10,9 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class LotStatusUpdate
+class LotStatusUpdate implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels , ShouldBroadcast;
+    use Dispatchable, InteractsWithSockets, SerializesModels ;
     public $lot;
     /**
      * Create a new event instance.
