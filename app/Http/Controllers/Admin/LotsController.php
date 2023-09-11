@@ -129,7 +129,7 @@ class LotsController extends Controller
             "participate_fee",
             // "Payment_terms"
         ]);
-        $input['lot_status'] = 'upcoming';
+        $input['lot_status'] = 'Upcoming';
         $input['uid'] = $userDetails->id;
         $input['Payment_terms'] = $request->paymentId;
             // dd( $input['Payment_terms']);
