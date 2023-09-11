@@ -205,7 +205,7 @@ class ExportSpecificwin_lots implements FromCollection, WithHeadings, WithCustom
                 $data->push($materialRow);
             }
 
-            $data->push(['']); // Empty row
+            $data->push(['']);
         }
 
         return $data;

@@ -1597,8 +1597,6 @@ class LotsContoller extends Controller
                 ->where('categoryId', $categoryId)
                 ->where('lot_status', $soldlots)
                 ->whereDate('EndDate', $currentDate)
-                // ->where('StartDate', '<=', $currentDate)
-                // ->where('EndDate', '>=', $currentDate)
                 ->orderBy('StartDate', 'asc')
                 ->get();
     
@@ -1698,15 +1696,91 @@ class LotsContoller extends Controller
 
     // Fav lot Excel Export 
 
+    // public function favlotsexcelexport(Request $request)
+    // {
+    //     try {
+
+    //         $customer_id = $request->input('customer_id');
+    //         $status = $request->input('status');
+
+    //         $lots = FavLots::where('customer_id', $customer_id)
+    //             ->with(['lot.materials'])
+    //             ->whereHas('lot', function ($query) use ($status) 
+    //             {
+    //                 if ($status) 
+    //                 {
+    //                     $query->where('lot_status', $status);
+    //                 }
+    //             })
+    //             ->get();
+
+    //         $export = new favLotsExcelExport($lots);
+
+    //         // Generate a unique filename using a timestamp
+    //         $timestamp = now()->format('Ymd_His');
+    //         $fileName = 'Favlots_' . $timestamp . '.xlsx';
+    //         $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
+
+    //         // Generate and store the Excel file on the local filesystem
+    //         Excel::store($export, $fileName, 'ExcelLots');
+
+    //         // Full local file path
+    //         $localFilePath = $filePath;
+
+    //         // Generate live URL
+    //         $liveUrl = url('ExcelLots/' . $fileName);
+
+    //         // Save the local file path in the 'export_urls' table
+    //         favlotsexcel_export::create([
+    //             'url' => $localFilePath,
+    //         ]);
+
+    //         // Return a JSON response with the success message and live URL
+    //         return response()->json([
+    //             'message' => 'Excel file generated, saved, and URL recorded successfully.',
+    //             'file_url' => $liveUrl,
+    //         ]);
+    //     } catch (\Throwable $e) {
+    //         return response()->json([
+    //             'message' => 'Error occurred during export: ' . $e->getMessage(),
+    //         ], 500);
+    //     }
+
+    // }
+
+
     public function favlotsexcelexport(Request $request)
     {
         try {
             $customer_id = $request->input('customer_id');
+            $status = $request->input('status');
 
-            // Fetch "fav lots" for the specific customer
-            $lots = FavLots::where('customer_id', $customer_id)->get();
+            $currentDate = now()->toDateString();
 
-            // Create a new LotsExport instance and pass the fetched "fav lots"
+            $lots = FavLots::where('customer_id', $customer_id)
+                ->with(['lot.materials'])
+                ->whereHas('lot', function ($query) use ($status, $currentDate) 
+                {
+                    if ($status === 'live') 
+                    {
+                        $query->where('lot_status', $status)
+                            ->where('StartDate', '<=', $currentDate)
+                            ->where('EndDate', '>=', $currentDate);
+                    } elseif ($status === 'Sold') 
+                    {
+                        $query->where('lot_status', $status)
+                            ->whereDate('EndDate', $currentDate);
+                    } elseif ($status === 'Expired') 
+                    {
+                        $query->where('lot_status', $status)
+                            ->whereDate('EndDate', $currentDate);
+                    } elseif ($status === 'Upcoming') 
+                    {
+                        $query->where('lot_status', $status);
+                    }
+                })
+                ->get();
+
             $export = new favLotsExcelExport($lots);
 
             // Generate a unique filename using a timestamp
@@ -1738,8 +1812,8 @@ class LotsContoller extends Controller
                 'message' => 'Error occurred during export: ' . $e->getMessage(),
             ], 500);
         }
-
     }
+
 
     
 
