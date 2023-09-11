@@ -1313,7 +1313,7 @@ class LotsContoller extends Controller
         {
             $lot = $favoriteLot->lot;
     
-            if ($lot && $lot->lot_status === 'Sold' && $lot->EndDate->toDateString() === $currentDate) 
+            if ($lot && $lot->lot_status === 'sold' && $lot->EndDate->toDateString() === $currentDate) 
             {
                 $maxBid = BidsOfLots::where('lotId', $lot->id)
                     ->orderBy('amount', 'desc')
