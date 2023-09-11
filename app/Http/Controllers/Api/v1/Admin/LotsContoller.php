@@ -1301,8 +1301,6 @@ class LotsContoller extends Controller
 
     public function showSoldLotsFavorites($customer_id)
     {
-        
-        // Retrieve the favorite lots for the given customer_id
         $favoriteLots = FavLots::where('customer_id', $customer_id)
             ->with('lot')
             ->get();
@@ -1317,7 +1315,6 @@ class LotsContoller extends Controller
     
             if ($lot && $lot->lot_status === 'Sold' && $lot->EndDate->toDateString() === $currentDate) 
             {
-                // Retrieve the maximum bid for the lot
                 $maxBid = BidsOfLots::where('lotId', $lot->id)
                     ->orderBy('amount', 'desc')
                     ->first();
@@ -1341,6 +1338,7 @@ class LotsContoller extends Controller
                 $result[] = $lotArray;
             }
         }
+
         return response()->json([
             'message' => 'Today Favorite Sold lots retrieved',
             'success' => true,
