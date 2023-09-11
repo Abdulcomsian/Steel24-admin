@@ -157,8 +157,8 @@
                                         <select class="custom-select" id="lotStatus" name="lot_status" style="margin-top: 10px;">
                                             <option value="">Select Lot Status</option>
                                             <option {{ $lots->lot_status === "live" ? 'selected' : '' }} value="live">Live Lot</option>
-                                            <option {{ $lots->lot_status === "expired" ? 'selected' : '' }} value="expired">Expired Lot</option>
-                                            <option {{ $lots->lot_status === "sold" ? 'selected' : '' }} value="sold">Sold Lot</option>
+                                            <option {{ $lots->lot_status === "Expired" ? 'selected' : '' }} value="Expired">Expired Lot</option>
+                                            <option {{ $lots->lot_status === "Sold" ? 'selected' : '' }} value="Sold">Sold Lot</option>
                                         </select>
                                     </div>
                                     

@@ -1151,6 +1151,57 @@ class LotsContoller extends Controller
     //     ]);
     // }
 
+
+
+    // public function showLiveLotsFavorites($customer_id)
+    // {
+    //     // Retrieve the favorite lots for the given customer_id
+    //     $favoriteLots = FavLots::where('customer_id', $customer_id)
+    //         ->with('lot')
+    //         ->get();
+    
+    //     $result = [];
+    //     $currentDate = now()->toDateString();
+    
+    //     foreach ($favoriteLots as $favoriteLot) 
+    //     {
+    //         $lot = $favoriteLot->lot;
+    
+    //         if ($lot && $lot->lot_status === 'live' && $lot->EndDate->toDateString() === $currentDate) 
+    //         {
+    //             // Retrieve the maximum bid for the lot
+    //             $maxBid = BidsOfLots::where('lotId', $lot->id)
+    //                 ->orderBy('amount', 'desc')
+    //                 ->first();
+    
+    //             $lotArray = $lot->toArray();
+    
+    //             if ($maxBid) {
+    //                 $maxBidArray = [
+    //                     'id' => $maxBid->id,
+    //                     'customerId' => $maxBid->customerId,
+    //                     'amount' => $maxBid->amount,
+    //                     'lotId' => $maxBid->lotId,
+    //                     'created_at' => $maxBid->created_at,
+    //                     'updated_at' => $maxBid->updated_at,
+    //                 ];
+    
+    //                 $lotArray['bids'] = [$maxBidArray];
+    //             }
+    
+    //             $result[] = $lotArray;
+    //         }
+    //     }
+    
+    //     // Return the favorite live lots with max_bid as a response
+    //     return response()->json([
+    //         'message' => 'Today Favorite live lots retrieved',
+    //         'success' => true,
+    //         'Fav_lots' => $result,
+    //     ]);
+    // }
+
+
     public function showLiveLotsFavorites($customer_id)
     {
         // Retrieve the favorite lots for the given customer_id
@@ -1161,10 +1212,11 @@ class LotsContoller extends Controller
         $result = [];
         $currentDate = now()->toDateString();
     
-        foreach ($favoriteLots as $favoriteLot) {
+        foreach ($favoriteLots as $favoriteLot) 
+        {
             $lot = $favoriteLot->lot;
     
-            if ($lot && $lot->lot_status === 'live' && $lot->EndDate->toDateString() === $currentDate) 
+            if ($lot && $lot->lot_status === 'live' && $lot->StartDate <= $currentDate && $lot->EndDate >= $currentDate) 
             {
                 // Retrieve the maximum bid for the lot
                 $maxBid = BidsOfLots::where('lotId', $lot->id)
@@ -1173,7 +1225,8 @@ class LotsContoller extends Controller
     
                 $lotArray = $lot->toArray();
     
-                if ($maxBid) {
+                if ($maxBid) 
+                {
                     $maxBidArray = [
                         'id' => $maxBid->id,
                         'customerId' => $maxBid->customerId,
@@ -1192,11 +1245,12 @@ class LotsContoller extends Controller
     
         // Return the favorite live lots with max_bid as a response
         return response()->json([
-            'message' => 'Today Favorite live lots retrieved',
+            'message' => 'Favorite live lots retrieved',
             'success' => true,
             'Fav_lots' => $result,
         ]);
     }
+    
     
 
 
@@ -1215,7 +1269,7 @@ class LotsContoller extends Controller
         foreach ($favoriteLots as $favoriteLot) {
             $lot = $favoriteLot->lot;
 
-            if ($lot && $lot->lot_status === 'upcoming') 
+            if ($lot && $lot->lot_status === 'Upcoming') 
             {
                 // Retrieve the maximum bid for the lot
                 $maxBid = BidsOfLots::where('lotId', $lot->id)
@@ -1313,7 +1367,7 @@ class LotsContoller extends Controller
         {
             $lot = $favoriteLot->lot;
     
-            if ($lot && $lot->lot_status === 'sold' && $lot->EndDate->toDateString() === $currentDate) 
+            if ($lot && $lot->lot_status === 'Sold' && $lot->EndDate->toDateString() === $currentDate) 
             {
                 $maxBid = BidsOfLots::where('lotId', $lot->id)
                     ->orderBy('amount', 'desc')
@@ -1405,7 +1459,7 @@ class LotsContoller extends Controller
             ->get();
     
         $result = [];
-        $currentDate = now()->toDateString(); // Get the current date
+        $currentDate = now()->toDateString();
     
         foreach ($favoriteLots as $favoriteLot) 
         {
