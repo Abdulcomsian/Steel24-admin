@@ -1775,6 +1775,9 @@ class LotsContoller extends Controller
                     } elseif ($status === 'Upcoming') 
                     {
                         $query->where('lot_status', $status);
+                    } elseif ($status === 'STA') 
+                    {
+                        $query->where('lot_status', $status);
                     }
                 })
                 ->get();
