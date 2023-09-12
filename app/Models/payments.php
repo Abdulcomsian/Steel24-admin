@@ -16,7 +16,8 @@ class payments extends Model
         'total_amount',
         'paid_amount',
         'remaining_amount',
-        "Date", "customerVisible"
+        "Date",
+        "customerVisible"
     ];
 
 

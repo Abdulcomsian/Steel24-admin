@@ -41,7 +41,11 @@ use App\Models\ExcelCategoryOfLots;
 use App\Exports\ExcelCategoryofLot;
 use App\Exports\favLotsExcelExport;
 use App\Models\favlotsexcel_export;
+use App\Exports\paymentexcelexportfile;
+use App\Models\Excel_export_payment;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
+
 
 
 
@@ -1748,59 +1752,6 @@ class LotsContoller extends Controller
 
     // Fav lot Excel Export 
 
-    // public function favlotsexcelexport(Request $request)
-    // {
-    //     try {
-
-    //         $customer_id = $request->input('customer_id');
-    //         $status = $request->input('status');
-
-    //         $lots = FavLots::where('customer_id', $customer_id)
-    //             ->with(['lot.materials'])
-    //             ->whereHas('lot', function ($query) use ($status) 
-    //             {
-    //                 if ($status) 
-    //                 {
-    //                     $query->where('lot_status', $status);
-    //                 }
-    //             })
-    //             ->get();
-
-    //         $export = new favLotsExcelExport($lots);
-
-    //         // Generate a unique filename using a timestamp
-    //         $timestamp = now()->format('Ymd_His');
-    //         $fileName = 'Favlots_' . $timestamp . '.xlsx';
-    //         $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
-
-    //         // Generate and store the Excel file on the local filesystem
-    //         Excel::store($export, $fileName, 'ExcelLots');
-
-    //         // Full local file path
-    //         $localFilePath = $filePath;
-
-    //         // Generate live URL
-    //         $liveUrl = url('ExcelLots/' . $fileName);
-
-    //         // Save the local file path in the 'export_urls' table
-    //         favlotsexcel_export::create([
-    //             'url' => $localFilePath,
-    //         ]);
-
-    //         // Return a JSON response with the success message and live URL
-    //         return response()->json([
-    //             'message' => 'Excel file generated, saved, and URL recorded successfully.',
-    //             'file_url' => $liveUrl,
-    //         ]);
-    //     } catch (\Throwable $e) {
-    //         return response()->json([
-    //             'message' => 'Error occurred during export: ' . $e->getMessage(),
-    //         ], 500);
-    //     }
-
-    // }
-
-
     public function favlotsexcelexport(Request $request)
     {
         try {
@@ -1868,6 +1819,57 @@ class LotsContoller extends Controller
             ], 500);
         }
     }
+
+
+    // Payment Excel export API
+
+    public function paymentexcelexport(Request $request)
+{
+    try {
+        $dynamicData = payments::all(); 
+
+        $collection = $dynamicData->map(function ($item) 
+        {
+            return [
+                'Date' => $item->date,
+                'Action' => $item->action,
+                'lottitle' => $item->lottitle,
+                'Debit' => $item->debit,
+                'Credit' => $item->credit,
+                'finalAmount' => $item->finalAmount,
+            ];
+        });
+
+        $export = new paymentexcelexportfile($collection);
+
+        // Generate a unique filename using a timestamp
+        $timestamp = now()->format('Ymd_His');
+        $fileName = 'Payments_' . $timestamp . '.xlsx';
+        $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
+
+        // Generate and store the Excel file on the local filesystem
+        Excel::store($export, $fileName, 'ExcelLots');
+
+        // Full local file path
+        $localFilePath = $filePath;
+
+        // Generate live URL
+        $liveUrl = url('ExcelLots/' . $fileName);
+
+        // Return a JSON response with the success message and live URL
+        return response()->json([
+            'message' => 'Excel file generated and saved successfully.',
+            'file_url' => $liveUrl,
+        ]);
+    } catch (\Throwable $e) {
+        // Handle exceptions gracefully, log errors, and return an error response
+        Log::error('Error occurred during export: ' . $e->getMessage());
+        return response()->json([
+            'message' => 'Error occurred during export: ' . $e->getMessage(),
+        ], 500);
+    }
+}
+
 
 
     

@@ -230,8 +230,8 @@ Route::post('stafavlots', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@stafa
 // Fav Lots Excel Export
 Route::post('favlotsexcelexport', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@favlotsexcelexport');
 
-
-
+// Payment Excel Export 
+Route::post('paymentexcelexport', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@paymentexcelexport');
 
 
 
