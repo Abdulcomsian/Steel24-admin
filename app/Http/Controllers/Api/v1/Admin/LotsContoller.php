@@ -1824,51 +1824,45 @@ class LotsContoller extends Controller
     // Payment Excel export API
 
     public function paymentexcelexport(Request $request)
-{
-    try {
-        $dynamicData = payments::all(); 
+    {
+        try {
+            // Fetch dynamic data from your request input
+            $dynamicData = $request->input('data');
 
-        $collection = $dynamicData->map(function ($item) 
+            // Convert the dynamic data to a Laravel Collection
+            $collection = collect($dynamicData);
+
+
+            $export = new paymentexcelexportfile($collection);
+
+            // Generate a unique filename using a timestamp
+            $timestamp = now()->format('Ymd_His');
+            $fileName = 'Payments_' . $timestamp . '.xlsx';
+            $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
+
+            // Generate and store the Excel file on the local filesystem
+            Excel::store($export, $fileName, 'ExcelLots');
+
+            // Full local file path
+            $localFilePath = $filePath;
+
+            // Generate live URL
+            $liveUrl = url('ExcelLots/' . $fileName);
+
+            // Return a JSON response with the success message and live URL
+            return response()->json([
+                'message' => 'Excel file generated and saved successfully.',
+                'file_url' => $liveUrl,
+            ]);
+        } catch (\Throwable $e) 
         {
-            return [
-                'Date' => $item->date,
-                'Action' => $item->action,
-                'lottitle' => $item->lottitle,
-                'Debit' => $item->debit,
-                'Credit' => $item->credit,
-                'finalAmount' => $item->finalAmount,
-            ];
-        });
-
-        $export = new paymentexcelexportfile($collection);
-
-        // Generate a unique filename using a timestamp
-        $timestamp = now()->format('Ymd_His');
-        $fileName = 'Payments_' . $timestamp . '.xlsx';
-        $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
-
-        // Generate and store the Excel file on the local filesystem
-        Excel::store($export, $fileName, 'ExcelLots');
-
-        // Full local file path
-        $localFilePath = $filePath;
-
-        // Generate live URL
-        $liveUrl = url('ExcelLots/' . $fileName);
-
-        // Return a JSON response with the success message and live URL
-        return response()->json([
-            'message' => 'Excel file generated and saved successfully.',
-            'file_url' => $liveUrl,
-        ]);
-    } catch (\Throwable $e) {
-        // Handle exceptions gracefully, log errors, and return an error response
-        Log::error('Error occurred during export: ' . $e->getMessage());
-        return response()->json([
-            'message' => 'Error occurred during export: ' . $e->getMessage(),
-        ], 500);
+            // Handle exceptions gracefully, log errors, and return an error response
+            Log::error('Error occurred during export: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Error occurred during export: ' . $e->getMessage(),
+            ], 500);
+        }
     }
-}
 
 
 
