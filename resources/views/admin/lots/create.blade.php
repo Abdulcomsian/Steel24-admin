@@ -10,7 +10,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>
 
     <style>
-        .bootstrap-select.btn-group.show-tick .dropdown-menu li.selected a span.check-mark {
+        .bootstrap-select.btn-group.show-tick .dropdown-menu li.selected a span.check-mark 
+        {
             position: relative;
             display: inline-block;
             right: 15px;
@@ -18,7 +19,8 @@
             left: 2px;
         }
 
-        .bootstrap-select.btn-group.show-tick .dropdown-menu li a span.text {
+        .bootstrap-select.btn-group.show-tick .dropdown-menu li a span.text 
+        {
             margin-right: 34px;
         }
 
@@ -45,7 +47,8 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <form method="POST" action="{{ url('admin/newlots') }}" class="form-horizontal">
+                    {{-- <form method="POST" action="{{ url('admin/newlots') }}" class="form-horizontal"> --}}
+                    <form method="POST" action="{{ url('admin/newlots') }}" class="form-horizontal" enctype="multipart/form-data">
                         @csrf
                         <div class="card ">
                             <!--Header-->
@@ -101,7 +104,6 @@
                                     </div>
                                     <!-- <label for="endDate" class="col-sm-2 col-form-label">End Date</label> -->
 
-
                                     <div class="col-sm-4">
                                         <input type="text" class="form_customer" id="endDate" name="EndDate" placeholder="End Date"
                                            onfocus="(this.type='datetime-local')" onblur="(this.type='text')"
@@ -132,6 +134,7 @@
                                             min="0" autocomplete="off" autofocus>
                                     </div>
                                     <!-- <label for="participate_fee" class="col-sm-2 col-form-label">Participation Fee</label> -->
+                                    
                                     <div class="col-sm-4">
                                         <input type="number" class="form_customer" step="0.01" id="participate_fee" placeholder="Participation Fee"
                                             min="0" name="participate_fee" autocomplete="off" autofocus>
@@ -145,6 +148,11 @@
                                                 <option value="{{ $payment->id }}">{{ $payment->Payment_Terms }}</option>
                                             @endforeach
                                         </select>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <input type="file" class="form_customer" name="uploadlotpicture" placeholder="Upload Lot Image"
+                                            autocomplete="off" autofocus>
                                     </div>
                                     
                                      <!--Footer-->

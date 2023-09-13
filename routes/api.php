@@ -20,15 +20,17 @@ use App\Http\Controllers\Api\v1\Admin\LotsController;
 
 
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) 
+{
     return $request->user();
 });
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('auth:api')->get('/user', function (Request $request) 
+{
     return $request->user();
     });
     $api = app('Dingo\Api\Routing\Router');
-    $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1\Admin'], function ($api) {
-
+    $api->version('v1', ['namespace' => 'App\Http\Controllers\Api\v1\Admin'], function ($api) 
+    {
     $api->post('auth/loginWithGoolge', 'Auth\SignUpController@loginWithGoolge');
     $api->post('auth/signUp', 'Auth\SignUpController@signUp');
     $api->post('auth/updateUser/{id}', 'Auth\SignUpController@updateUser');
@@ -40,7 +42,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
         'middleware' => 'jwt.auth',
         'namespace' => 'App\Http\Controllers\Api\v1\Admin',
         // 'middleware' => ['api', 'cors'],
-    ], function () {
+    ], function () 
+    {
         Route::get('user', 'Auth\SignUpController@getAuthenticatedUser');
         Route::get('closed', 'Auth\DemoController@closed');
         Route::get('lots', 'LotsContoller@getLots');

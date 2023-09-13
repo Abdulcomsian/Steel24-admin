@@ -92,8 +92,114 @@ class LotsController extends Controller
         $lots = false;
         $categorys =  categories::all();
         $paymentTerms = lotTerms::all();
-        return view('admin.lots.create', compact('addForm',  'lots', 'categorys', 'paymentTerms'));
+        return view('admin.lots.create', compact('addForm', 'lots', 'categorys', 'paymentTerms'));
     }
+
+
+
+    // public function store(Request $request)
+    // {
+    //     $userDetails = Auth::guard('admin')->user();
+    //     $this->validate($request, [
+    //         'title' => 'required',
+    //         'description' => 'nullable',
+    //         "Seller" => "required",
+    //         "Plant" => "nullable",
+    //         "materialLocation" => "nullable",
+    //         "Quantity" => "required",
+    //         "StartDate" => "required",
+    //         "EndDate" => "required",
+    //         // "material" => "required",
+    //         "Price" => "required",
+    //         'categoryId' => "required",
+    //         "participate_fee" => "required",
+    //         // "Payment_terms" => "required"
+    //         "paymentId" => "required",
+    //         "uploadlotpicture" => "required"
+    //     ]);
+    //     $input = $request->only([
+    //         'title',
+    //         'description',
+    //         "Seller",
+    //         "Plant",
+    //         "materialLocation",
+    //         "Quantity",
+    //         "StartDate",
+    //         "EndDate",
+    //         // "material",
+    //         "Price",
+    //         "categoryId",
+    //         "participate_fee",
+    //         // "Payment_terms"
+    //         "uploadlotpicture",
+    //     ]);
+    //     $input['lot_status'] = 'Upcoming';
+    //     $input['uid'] = $userDetails->id;
+    //     $input['Payment_terms'] = $request->paymentId;
+    //         // dd( $input['Payment_terms']);
+    //     $data = lots::create($input);
+    //     // $data->materials()->attach(array_key_exists('material', $input) ? $input['material'] : []);
+
+    //     return redirect('/admin/addmaterialslots/' . $data->id);
+    // }
+
+
+
+    // public function store(Request $request)
+    // {
+    //     // dd("abc");
+    //     $userDetails = Auth::guard('admin')->user();
+    //     $this->validate($request, [
+    //         'title' => 'required',
+    //         'description' => 'nullable',
+    //         "Seller" => "required",
+    //         "Plant" => "nullable",
+    //         "materialLocation" => "nullable",
+    //         "Quantity" => "required",
+    //         "StartDate" => "required",
+    //         "EndDate" => "required",
+    //         "Price" => "required",
+    //         'categoryId' => "required",
+    //         "participate_fee" => "required",
+    //         "paymentId" => "required",
+    //         // "uploadlotpicture" => "required|image|mimes:jpeg,png,jpg,gif|max:2048",
+    //     ]);
+
+    //     if ($request->hasFile('uploadlotpicture')) 
+    //     {
+    //         $file = $request->file('uploadlotpicture');
+    //         $name = $file->getClientOriginalName();
+    //         $extension = $file->getClientOriginalExtension();
+    //         $imagePath = $newName = time().'-'.$name;
+    //         $file->move(public_path('LotImages') , $newName );
+
+    //     } else 
+    //     {
+    //         $imagePath = null;
+    //     }
+
+    //     $input = $request->only([
+    //         'title',
+    //         'description',
+    //         "Seller",
+    //         "Plant",
+    //         "materialLocation",
+    //         "Quantity",
+    //         "StartDate",
+    //         "EndDate",
+    //         "Price",
+    //         "categoryId",
+    //         "participate_fee",
+    //         "uploadlotpicture",
+    //     ]);
+    //     $input['lot_status'] = 'Upcoming';
+    //     $input['uid'] = $userDetails->id;
+    //     $input['Payment_terms'] = $request->paymentId;
+    //     $input['uploadlotpicture'] = $imagePath;
+    //     $data = lots::create($input);
+
+    //     return redirect('/admin/addmaterialslots/' . $data->id);
+    // }
 
     public function store(Request $request)
     {
@@ -107,13 +213,25 @@ class LotsController extends Controller
             "Quantity" => "required",
             "StartDate" => "required",
             "EndDate" => "required",
-            // "material" => "required",
             "Price" => "required",
             'categoryId' => "required",
             "participate_fee" => "required",
-            // "Payment_terms" => "required"
-            "paymentId" => "required"
+            "paymentId" => "required",
         ]);
+
+        if ($request->hasFile('uploadlotpicture')) 
+        {
+            $file = $request->file('uploadlotpicture');
+            $name = $file->getClientOriginalName();
+            $newName = time() . '-' . $name;
+            $imagePath = $newName;
+            $file->move(public_path('LotImages'), $newName);
+        } 
+        else 
+        {
+            $imagePath = null;
+        }
+
         $input = $request->only([
             'title',
             'description',
@@ -123,21 +241,21 @@ class LotsController extends Controller
             "Quantity",
             "StartDate",
             "EndDate",
-            // "material",
             "Price",
             "categoryId",
             "participate_fee",
-            // "Payment_terms"
+            "uploadlotpicture",
         ]);
         $input['lot_status'] = 'Upcoming';
         $input['uid'] = $userDetails->id;
         $input['Payment_terms'] = $request->paymentId;
-            // dd( $input['Payment_terms']);
+        $input['uploadlotpicture'] = $imagePath;
         $data = lots::create($input);
-        // $data->materials()->attach(array_key_exists('material', $input) ? $input['material'] : []);
 
         return redirect('/admin/addmaterialslots/' . $data->id);
     }
+
+
 
     public function creatematerialslots(lots $lots)
     {
@@ -219,8 +337,8 @@ class LotsController extends Controller
         ]);
         // dd($data);
 
-        for ($index = 0; $index < $data['materialqnt']; $index++) {
-
+        for ($index = 0; $index < $data['materialqnt']; $index++) 
+        {
             $material['lotid'] = $data["lotid"];
             $material['id'] = $data["id"][$index];
             $material['Product'] = $data["Product"][$index];
@@ -377,11 +495,12 @@ class LotsController extends Controller
         $materialilist = new_maerials_2::where('lotid', $lots->id)->get();
         $payment_term = lotTerms::where('id',$lots->Payment_terms)->get();
         $payment_terms = lotTerms::all();
+        // $lots = lots::all();
         return view('admin.lots.show', compact('lots', 'materialilist', 'payment_terms'));
 
     }
 
-     public function edit(lots $lots)
+    public function edit(lots $lots)
     {
         $addForm = false;
         $materials = materials::all();
@@ -406,6 +525,7 @@ class LotsController extends Controller
 
 
 
+
     // public function update(Request $request, lots $lots)
     // {
     //     $userDetails = Auth::guard('admin')->user();
@@ -422,55 +542,47 @@ class LotsController extends Controller
     //         'categoryId' => "required",
     //         "Price" => "required",
     //         "participate_fee" => 'required',
-    //         'lot_status' =>'required',
+    //         'lot_status' => 'required',
     //     ]);
 
-
-    //     if ($lots !== null) {
-    //         $materials = $lots->materials();
-    //         // dd($materials);
-            
-    //         if ($materials !== null) {
-    //             $materials->sync(array_key_exists('material', $data) ? $data['material'] : []);
-    //         } else 
-    //         {
-    //             // Handle the case when $materials is null
-    //         }
-    //     } else {
-    //         // Handle the case when $lots is null
+    
+    //     // Update related materials using belongsToMany relationship
+    //     if ($lots !== null) 
+    //     {
+    //         $lots->materialss()->sync(array_key_exists('material', $data) ? $data['material'] : []);
     //     }
-        
-        
+
     //     $data['uid'] = $userDetails->id;
     //     $lots->update($data);
-
-    //     // $firebase = (new Factory)
-    //     //     ->withServiceAccount(__DIR__ . '/lotbids-7751a-firebase-adminsdk-2kxk6-5db00e2535.json')
-    //     //     ->withDatabaseUri('https://lotbids-7751a-default-rtdb.europe-west1.firebasedatabase.app/');
-    //     // $database = $firebase->createDatabase();
-
-
+    
+    //     // Update lot status and related logic
     //     if ($lots->lot_status == 'live') 
     //     {
-    //         $lots->ParticipateUsers = customerBalance::where([['lotId', $lots->id], ['status', '!=', '1']])->groupBy('customerId')->pluck('customerId')->toArray();;
-    //         // $database->getReference('TodaysLots/liveList/' . $lots->id)->set($lots);
-    //     } else if ($lots->lot_status == 'upcoming') 
+    //         $lots->ParticipateUsers = customerBalance::where([
+    //             ['lotId', $lots->id],
+    //             ['status', '!=', '1']
+    //         ])->groupBy('customerId')->pluck('customerId')->toArray();
+    //         // Update Firebase or other logic here
+    //     } else if ($lots->lot_status == 'Upcoming') 
     //     {
-    //         // $database->getReference('TodaysLots/upcoming/' . $lots->id)->set($lots);
+    //         // Update Firebase or other logic here
     //     }
 
+
+    
     //     $liveLots = DB::select("SELECT lots.* ,categories.title as categoriesTitle FROM `lots` 
-    //     LEFT JOIN categories on categories.id  = lots.categoryId
-    //     WHERE (date(lots.EndDate) = CURDATE()) and lots.id  > $lots->id");
-
+    //         LEFT JOIN categories on categories.id  = lots.categoryId
+    //         WHERE (date(lots.EndDate) = CURDATE()) and lots.id  > $lots->id");
+    
     //     foreach ($liveLots as $lot) {
-    //         // $lot = lots::where('id', $lot->id)->update(['EndDate' => Carbon::parse($lot->EndDate)->addMinutes(3)]);
-    //         $lot = lots::where('id', $lot->id)->update(['EndDate' => Carbon::parse($lot->EndDate)->addMinutes(3)]);
+    //         lots::where('id', $lot->id)->update(['EndDate' => Carbon::parse($lot->EndDate)->addMinutes(0)]);
     //     }
-    //     // Have to Brodcast with
-    //     // $response = ["sucess" => true, 'lots' => $$lot, "message"=>"Lot Details Updated"];
+    
+    //     // Update Firebase or other logic here
     //     LiveLotsController::pushonfirbase();
-    //     if ($request->live) {
+    
+    //     if ($request->live) 
+    //     {
     //         return redirect('/admin/live_lots_bids/' . $lots->id);
     //     } else {
     //         return redirect('/admin/lots/' . $lots->id);
@@ -479,67 +591,135 @@ class LotsController extends Controller
 
 
 
+    // public function update(Request $request, lots $lots)
+    // {
+    //     $userDetails = Auth::guard('admin')->user();
 
-    public function update(Request $request, lots $lots)
+    //     // Validation rules for the new image upload (if any)
+    //     $rules = [
+    //         'title' => 'required',
+    //         'description' => 'nullable',
+    //         "Seller" => "required",
+    //         "Plant" => "nullable",
+    //         "materialLocation" => "nullable",
+    //         "Quantity" => "required",
+    //         "StartDate" => "required",
+    //         "EndDate" => "required",
+    //         "material" => "nullable",
+    //         'categoryId' => "required",
+    //         "Price" => "required",
+    //         "participate_fee" => 'required',
+    //         'lot_status' => 'required',
+    //         // 'uploadlotpicture' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+    //     ];
+
+    //     $data = $request->validate($rules);
+
+    //     if ($request->hasFile('uploadlotpicture')) 
+    //     {
+    //         // Remove the old image (if it exists)
+    //         if (!empty($lots->uploadlotpicture)) {
+    //             // Get the path to the old image and delete it
+    //             $oldImagePath = public_path('productimages/' . $lots->uploadlotpicture);
+
+    //             if (file_exists($oldImagePath)) 
+    //             {
+    //                 unlink($oldImagePath);
+    //             }
+    //         }
+
+    //         // Upload the new image
+    //         $newImagePath = $request->file('uploadlotpicture')->store('productimages', 'public');
+    //         $data['uploadlotpicture'] = $newImagePath;
+    //     }
+
+    //     // Update related materials using belongsToMany relationship
+    //     if ($lots !== null) 
+    //     {
+    //         $lots->materialss()->sync(array_key_exists('material', $data) ? $data['material'] : []);
+    //     }
+
+    //     $data['uid'] = $userDetails->id;
+    //     $lots->update($data);
+
+    //     if ($request->live) 
+    //     {
+    //         return redirect('/admin/live_lots_bids/' . $lots->id);
+    //     } else 
+    //     {
+    //         return redirect('/admin/lots/' . $lots->id);
+    //     }
+    // }
+      
+
+public function update(Request $request, lots $lots)
+{
+    $userDetails = Auth::guard('admin')->user();
+
+    // Validation rules for the new image upload (if any)
+    $rules = [
+        'title' => 'required',
+        'description' => 'nullable',
+        "Seller" => "required",
+        "Plant" => "nullable",
+        "materialLocation" => "nullable",
+        "Quantity" => "required",
+        "StartDate" => "required",
+        "EndDate" => "required",
+        "material" => "nullable",
+        'categoryId' => "required",
+        "Price" => "required",
+        "participate_fee" => 'required',
+        'lot_status' => 'required',
+    ];
+
+    $data = $request->validate($rules);
+
+    if ($request->hasFile('uploadlotpicture')) 
     {
-        $userDetails = Auth::guard('admin')->user();
-        $data = $request->validate([
-            'title' => 'required',
-            'description' => 'nullable',
-            "Seller" => "required",
-            "Plant" => "nullable",
-            "materialLocation" => "nullable",
-            "Quantity" => "required",
-            "StartDate" => "required",
-            "EndDate" => "required",
-            "material" => "nullable",
-            'categoryId' => "required",
-            "Price" => "required",
-            "participate_fee" => 'required',
-            'lot_status' => 'required',
-        ]);
-
-    
-        // Update related materials using belongsToMany relationship
-        if ($lots !== null) 
+        if (!empty($lots->uploadlotpicture)) 
         {
-            $lots->materialss()->sync(array_key_exists('material', $data) ? $data['material'] : []);
+            $oldImagePath = public_path('LotImages/' . $lots->uploadlotpicture);
+    
+            if (file_exists($oldImagePath)) 
+            {
+                unlink($oldImagePath);
+            }
         }
 
-        $data['uid'] = $userDetails->id;
-        $lots->update($data);
-    
-        // Update lot status and related logic
-        if ($lots->lot_status == 'live') 
-        {
-            $lots->ParticipateUsers = customerBalance::where([
-                ['lotId', $lots->id],
-                ['status', '!=', '1']
-            ])->groupBy('customerId')->pluck('customerId')->toArray();
-            // Update Firebase or other logic here
-        } else if ($lots->lot_status == 'upcoming') {
-            // Update Firebase or other logic here
-        }
-
-
-    
-        $liveLots = DB::select("SELECT lots.* ,categories.title as categoriesTitle FROM `lots` 
-            LEFT JOIN categories on categories.id  = lots.categoryId
-            WHERE (date(lots.EndDate) = CURDATE()) and lots.id  > $lots->id");
-    
-        foreach ($liveLots as $lot) {
-            lots::where('id', $lot->id)->update(['EndDate' => Carbon::parse($lot->EndDate)->addMinutes(0)]);
-        }
-    
-        // Update Firebase or other logic here
-        LiveLotsController::pushonfirbase();
-    
-        if ($request->live) {
-            return redirect('/admin/live_lots_bids/' . $lots->id);
-        } else {
-            return redirect('/admin/lots/' . $lots->id);
-        }
+        $newImagePath = $request->file('uploadlotpicture')->move(public_path('LotImages'), $lots->uploadlotpicture);
+        $data['uploadlotpicture'] = $lots->uploadlotpicture;
     }
+    
+    
+    
+
+    // Update related materials using belongsToMany relationship
+    if ($lots !== null) 
+    {
+        $lots->materialss()->sync(array_key_exists('material', $data) ? $data['material'] : []);
+    }
+
+    $data['uid'] = $userDetails->id;
+    $lots->update($data);
+
+    if ($request->live) 
+    {
+        return redirect('/admin/live_lots_bids/' . $lots->id);
+    } 
+    else 
+    {
+        return redirect('/admin/lots/' . $lots->id);
+    }
+}
+
+
+
+
+
+
+    
+
     
     
 
@@ -557,7 +737,8 @@ class LotsController extends Controller
     {
         $livelots = DB::select("SELECT * FROM `lots` WHERE lot_status != 'live' ORDER by EndDate DESC;");
 
-        if ($request->ajax()) {
+        if ($request->ajax()) 
+        {
             return Datatables::of($livelots)
                 ->addIndexColumn()
                 ->rawColumns(['action'])

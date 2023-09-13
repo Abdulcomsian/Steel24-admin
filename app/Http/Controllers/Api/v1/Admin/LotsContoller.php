@@ -1826,12 +1826,10 @@ class LotsContoller extends Controller
     public function paymentexcelexport(Request $request)
     {
         try {
-            // Fetch dynamic data from your request input
+            
             $dynamicData = $request->input('data');
 
-            // Convert the dynamic data to a Laravel Collection
             $collection = collect($dynamicData);
-
 
             $export = new paymentexcelexportfile($collection);
 

@@ -43,7 +43,7 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <form method="POST" action="{{ url('admin/lots', $lots->id) }}" class="form-horizontal">
+                    <form method="POST" action="{{ url('admin/lots', $lots->id) }}" class="form-horizontal" enctype="multipart/form-data">
                         @csrf
                         @method('PATCH')
                         <div class="card">
@@ -161,6 +161,24 @@
                                             <option {{ $lots->lot_status === "Sold" ? 'selected' : '' }} value="Sold">Sold Lot</option>
                                         </select>
                                     </div>
+
+
+                                    <div class="col-sm-4">
+                                        <input type="file" class="form_customer" name="uploadlotpicture" placeholder="Upload Lot Image"
+                                            autocomplete="off" autofocus  accept="image/*">
+                                    </div>
+
+                                    {{-- <div class="col-sm-4">
+                                        <label for="new_uploadlotpicture">Upload New Lot Image</label>
+                                        <input type="file" name="uploadlotpicture" class="form_customer" accept="image/*">
+                                    </div> --}}
+
+
+                                    {{-- <div class="col-sm-4">
+                                        <label for="uploadlotpicture">Upload New Lot Image</label>
+                                        <input type="file" class="form-control" id="uploadlotpicture" name="uploadlotpicture" accept="image/*">
+                                    </div> --}}
+                                    
                                     
                 
                                      <!--Footer-->

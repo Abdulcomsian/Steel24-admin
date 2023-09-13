@@ -94,8 +94,10 @@ Route::get('/lots/import-csv/', [CsvImportController::class, 'showForm'])->name(
 // Route::post('/lots/import-csv', [CsvImportController::class, 'import'])->name('import.csv');
 
 Route::post('/newlots', [LotsController::class, 'store']);
+
 Route::get('/lots/{lots}', [LotsController::class, 'show']);
 Route::get('/lots/edit/{lots}', [LotsController::class, 'edit']);
+
 // Route::get('/lots/edit/{lots}/live', [LotsController::class, 'editLive']);
 Route::patch('/lots/{lots}', [LotsController::class, 'update']);
 Route::get('/lots/remove/{lots}', [LotsController::class, 'destroy']);
@@ -126,6 +128,7 @@ Route::post('/users-send-email', [UserController::class, 'sendEmail'])->name('se
 
 Route::get('/live_lots', [LiveLotsController::class, 'live_index'])->name('livelots');
 Route::get('/live_lots_bids/{lots}', [LiveLotsController::class, 'liveLotBids']);
+
 Route::get('/startlot/{id}', [LiveLotsController::class, 'startLots']);
 Route::get('/poselot/{id}', [LiveLotsController::class, 'poseLots']);
 Route::get('/endlot/{id}', [LiveLotsController::class, 'endlot']);

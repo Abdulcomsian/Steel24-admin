@@ -39,7 +39,8 @@ class lots extends Model
         'ReStartDate',
         'ReEndDate',
         'LiveSequenceNumber',
-        'status'
+        'status',
+        'uploadlotpicture'
     ];
 
    

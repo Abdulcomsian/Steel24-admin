@@ -202,7 +202,7 @@ class UpdateLotStatus extends Command
         info($currentDateTime);
         $upcomingLots = lots::where('StartDate' , '<=' ,$currentDateTime)
                                         ->where('EndDate' , '>=' ,$currentDateTime)
-                                        ->where('lot_status' , 'upcoming')
+                                        ->where('lot_status' , 'Upcoming')
                                         ->get();
 
         foreach($upcomingLots as $lot)
@@ -248,11 +248,5 @@ class UpdateLotStatus extends Command
                         event(new winLotsEvent('Bidding Has Been Won By The Customer', $lastBid, $latestBidCustomer, false));
                 }
             }
-
-
-
-
-
-
     }
 }

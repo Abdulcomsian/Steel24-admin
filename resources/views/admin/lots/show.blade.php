@@ -30,6 +30,12 @@
 
                                                 <div class="form-row justify-content-around mt-4">
                                                     <div class="col-md-5">
+                                                        {{-- <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                            <h6 >Title</h6>
+                                                            <h6>
+                                                            {{ $lots->title }}</h6>
+                                                        </div> --}}
+
                                                         <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
                                                             <h6 >Description</h6>
                                                             <h6>
@@ -89,6 +95,14 @@
                                                             <h6>
                                                             {{ $lots->Seller }}</h6>
                                                         </div>
+
+
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                            <h6>Lot Image</h6>
+                                                            <img src="{{ asset('LotImages/'.$lots->uploadlotpicture) }}" alt="Lot Image" width="150" height="100">
+                                                        </div>  
+                                                            
+
                                                     </div>
                                                     <div class="col-md-5">
                                                         <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">

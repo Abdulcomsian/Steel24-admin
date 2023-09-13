@@ -40,11 +40,12 @@ class LotMail implements ShouldQueue
 
         foreach($lotBids as $bid)
         {
-            if($this->lotWinner->id != $bid->customerId )
+            if($this->lotWinner->id != $bid->customerId)
             {
                 Mail::to($bid->customer->email)->send(new LotLoserNotification($this->lot->id, $bid->customer->name));
             }
-            else{
+            else
+            {
                 Mail::to($this->lotWinner->email)->send(new LotWinnerNotification($this->lotWinner->name));
             }
         }

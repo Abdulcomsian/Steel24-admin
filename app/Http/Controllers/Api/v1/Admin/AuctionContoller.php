@@ -1799,20 +1799,26 @@ class AuctionContoller extends Controller
                 ->where('autoBid', true)
                 ->first();
 
-            if ($request->autobid === false) {
+            if ($request->autobid === false) 
+            {
                 // If the customer wants to disable auto bid (autobid = 0), we will remove the auto bid record if it exists.
-                if ($autoBid) {
+                if ($autoBid) 
+                {
                     $autoBid->delete();
                 }
-            } else {
+            } else 
+            {
                 // If the customer wants to enable auto bid (autobid = 1), we will update the existing auto bid record or create a new one.
 
-                if ($autoBid) {
+                if ($autoBid) 
+                {
                     // If the auto bid record exists for the customer and lot, update the autobid status and amount
                     $autoBid->update([
                         'amount' => $autoBidAmount,
                     ]);
-                } else {
+                } 
+                else 
+                {
                     // If the auto bid record does not exist, create a new one for the customer and lot
                     BidsOfLots::create([
                         'customerId' => $customer->id,
@@ -1838,10 +1844,6 @@ class AuctionContoller extends Controller
 
             return response()->json($response);
         }
-
-
-
-
 
 
 
@@ -2378,16 +2380,19 @@ class AuctionContoller extends Controller
 
             $status = $lot->lot_status;
 
-            if (in_array($status, ['Sold', 'Expired'])) {
+            if (in_array($status, ['Sold', 'Expired'])) 
+            {
                 $msg = $status == 'Sold' ? "Lot Has Already Been Sold" : "Lot Has Been Expired";
                 return response()->json(["success" => false, "msg" => $msg]);
             }
 
-            if ($customer->isApproved) {
+            if ($customer->isApproved) 
+            {
                 $currentTime = now();
                 $endDate = Carbon::createFromFormat('Y-m-d H:i:s', $lot->EndDate);
 
-                if ($currentTime->lte($endDate)) {
+                if ($currentTime->lte($endDate)) 
+                {
                     // Calculate the time difference in seconds
                     $timeDifference = $endDate->diffInSeconds($currentTime);
 
@@ -2409,7 +2414,8 @@ class AuctionContoller extends Controller
 
                     // Return the bid response
                     return $bidResponse;
-                } else {
+                } else 
+                {
                     // If the current time is after the EndDate, disallow bidding
                     return response()->json(["success" => false, "msg" => "Bidding is no longer allowed for this lot."]);
                 }
