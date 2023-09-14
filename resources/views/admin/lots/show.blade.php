@@ -101,7 +101,8 @@
                                                             <h6>Lot Image</h6>
                                                             <img src="{{ asset('LotImages/'.$lots->uploadlotpicture) }}" alt="Lot Image" width="150" height="100">
                                                         </div>  
-                                                            
+
+                                                        
 
                                                     </div>
                                                     <div class="col-md-5">

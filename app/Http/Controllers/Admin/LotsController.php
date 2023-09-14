@@ -96,111 +96,6 @@ class LotsController extends Controller
     }
 
 
-
-    // public function store(Request $request)
-    // {
-    //     $userDetails = Auth::guard('admin')->user();
-    //     $this->validate($request, [
-    //         'title' => 'required',
-    //         'description' => 'nullable',
-    //         "Seller" => "required",
-    //         "Plant" => "nullable",
-    //         "materialLocation" => "nullable",
-    //         "Quantity" => "required",
-    //         "StartDate" => "required",
-    //         "EndDate" => "required",
-    //         // "material" => "required",
-    //         "Price" => "required",
-    //         'categoryId' => "required",
-    //         "participate_fee" => "required",
-    //         // "Payment_terms" => "required"
-    //         "paymentId" => "required",
-    //         "uploadlotpicture" => "required"
-    //     ]);
-    //     $input = $request->only([
-    //         'title',
-    //         'description',
-    //         "Seller",
-    //         "Plant",
-    //         "materialLocation",
-    //         "Quantity",
-    //         "StartDate",
-    //         "EndDate",
-    //         // "material",
-    //         "Price",
-    //         "categoryId",
-    //         "participate_fee",
-    //         // "Payment_terms"
-    //         "uploadlotpicture",
-    //     ]);
-    //     $input['lot_status'] = 'Upcoming';
-    //     $input['uid'] = $userDetails->id;
-    //     $input['Payment_terms'] = $request->paymentId;
-    //         // dd( $input['Payment_terms']);
-    //     $data = lots::create($input);
-    //     // $data->materials()->attach(array_key_exists('material', $input) ? $input['material'] : []);
-
-    //     return redirect('/admin/addmaterialslots/' . $data->id);
-    // }
-
-
-
-    // public function store(Request $request)
-    // {
-    //     // dd("abc");
-    //     $userDetails = Auth::guard('admin')->user();
-    //     $this->validate($request, [
-    //         'title' => 'required',
-    //         'description' => 'nullable',
-    //         "Seller" => "required",
-    //         "Plant" => "nullable",
-    //         "materialLocation" => "nullable",
-    //         "Quantity" => "required",
-    //         "StartDate" => "required",
-    //         "EndDate" => "required",
-    //         "Price" => "required",
-    //         'categoryId' => "required",
-    //         "participate_fee" => "required",
-    //         "paymentId" => "required",
-    //         // "uploadlotpicture" => "required|image|mimes:jpeg,png,jpg,gif|max:2048",
-    //     ]);
-
-    //     if ($request->hasFile('uploadlotpicture')) 
-    //     {
-    //         $file = $request->file('uploadlotpicture');
-    //         $name = $file->getClientOriginalName();
-    //         $extension = $file->getClientOriginalExtension();
-    //         $imagePath = $newName = time().'-'.$name;
-    //         $file->move(public_path('LotImages') , $newName );
-
-    //     } else 
-    //     {
-    //         $imagePath = null;
-    //     }
-
-    //     $input = $request->only([
-    //         'title',
-    //         'description',
-    //         "Seller",
-    //         "Plant",
-    //         "materialLocation",
-    //         "Quantity",
-    //         "StartDate",
-    //         "EndDate",
-    //         "Price",
-    //         "categoryId",
-    //         "participate_fee",
-    //         "uploadlotpicture",
-    //     ]);
-    //     $input['lot_status'] = 'Upcoming';
-    //     $input['uid'] = $userDetails->id;
-    //     $input['Payment_terms'] = $request->paymentId;
-    //     $input['uploadlotpicture'] = $imagePath;
-    //     $data = lots::create($input);
-
-    //     return redirect('/admin/addmaterialslots/' . $data->id);
-    // }
-
     public function store(Request $request)
     {
         $userDetails = Auth::guard('admin')->user();
@@ -254,8 +149,6 @@ class LotsController extends Controller
 
         return redirect('/admin/addmaterialslots/' . $data->id);
     }
-
-
 
     public function creatematerialslots(lots $lots)
     {
