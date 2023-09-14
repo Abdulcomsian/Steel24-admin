@@ -545,6 +545,67 @@ class LotsController extends Controller
     // }
       
 
+
+    // code working here 
+
+// public function update(Request $request, lots $lots)
+// {
+//     $userDetails = Auth::guard('admin')->user();
+
+//     // Validation rules for the new image upload (if any)
+//     $rules = [
+//         'title' => 'required',
+//         'description' => 'nullable',
+//         "Seller" => "required",
+//         "Plant" => "nullable",
+//         "materialLocation" => "nullable",
+//         "Quantity" => "required",
+//         "StartDate" => "required",
+//         "EndDate" => "required",
+//         "material" => "nullable",
+//         'categoryId' => "required",
+//         "Price" => "required",
+//         "participate_fee" => 'required',
+//         'lot_status' => 'required',
+//     ];
+
+//     $data = $request->validate($rules);
+
+//     if ($request->hasFile('uploadlotpicture')) 
+//     {
+//         if (!empty($lots->uploadlotpicture)) 
+//         {
+//             $oldImagePath = public_path('LotImages/' . $lots->uploadlotpicture);
+    
+//             if (file_exists($oldImagePath)) 
+//             {
+//                 unlink($oldImagePath);
+//             }
+//         }
+
+//         $newImagePath = $request->file('uploadlotpicture')->move(public_path('LotImages'), $lots->uploadlotpicture);
+//         $data['uploadlotpicture'] = $lots->uploadlotpicture;
+//     }
+
+//     // Update related materials using belongsToMany relationship
+//     if ($lots !== null) 
+//     {
+//         $lots->materialss()->sync(array_key_exists('material', $data) ? $data['material'] : []);
+//     }
+
+//     $data['uid'] = $userDetails->id;
+//     $lots->update($data);
+
+//     if ($request->live) 
+//     {
+//         return redirect('/admin/live_lots_bids/' . $lots->id);
+//     } 
+//     else 
+//     {
+//         return redirect('/admin/lots/' . $lots->id);
+//     }
+// }
+
 public function update(Request $request, lots $lots)
 {
     $userDetails = Auth::guard('admin')->user();
@@ -580,12 +641,13 @@ public function update(Request $request, lots $lots)
             }
         }
 
-        $newImagePath = $request->file('uploadlotpicture')->move(public_path('LotImages'), $lots->uploadlotpicture);
-        $data['uploadlotpicture'] = $lots->uploadlotpicture;
+        $newImage = $request->file('uploadlotpicture');
+        $newImageName = time() . '-' . $newImage->getClientOriginalName();
+        $newImage->move(public_path('LotImages'), $newImageName);
+        
+        // Update the database field with the new image path
+        $lots->update(['uploadlotpicture' => $newImageName]);
     }
-    
-    
-    
 
     // Update related materials using belongsToMany relationship
     if ($lots !== null) 
@@ -605,6 +667,10 @@ public function update(Request $request, lots $lots)
         return redirect('/admin/lots/' . $lots->id);
     }
 }
+
+
+
+
 
 
 
