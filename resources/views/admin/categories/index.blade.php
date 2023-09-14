@@ -32,6 +32,7 @@
                                             <thead class="text-primary text-center">
                                                 <th>ID</th>
                                                 <th>Title</th>
+                                                <th>Description</th>
                                                 <th>Actions</th>
                                             </thead>
                                             <tbody class="text-center">
@@ -75,9 +76,14 @@
                     name: 'title'
                 },
                 {
+                    data: 'description',
+                    name: 'description'
+                },
+                {
                 data: null,
                 sorting:false,
-                render: function(data, type, row) {
+                render: function(data, type, row) 
+                {
                     return(`<div><a href="{{ url('admin/categories/show/${data.id}') }}"class="btn btn-info btn-sm">Details</a>
                </div>
                     `);

@@ -20,22 +20,43 @@ class PaymentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function __construct()
     {
         $this->middleware('admin.auth:admin');
     }
+
     public function index(Request $request)
     {
 
-        $payments =  DB::select('SELECT payments.* ,lots.title as lotTitle,customers.name as custoemrName from payments LEFT JOIN lots on lots.id = payments.lotId LEFT JOIN customers on payments.customerId = customers.id GROUP by payments.lotId;');
+        // $payments =  DB::select('SELECT payments.* ,lots.title as lotTitle,customers.name as customerName from payments LEFT JOIN lots on lots.id = payments.lotId LEFT JOIN customers on payments.customerId = customers.id GROUP by payments.lotId;');
 
-        if ($request->ajax()) {
+        // if ($request->ajax()) {
+        //     return Datatables::of($payments)
+        //         ->addIndexColumn()
+        //         ->rawColumns(['action'])
+        //         ->make(true);
+        // }
+        // return view('admin.payments.index', compact('payments'));
+
+
+
+
+        $payments = DB::select('SELECT payments.*, lots.title as lotTitle, customers.name as customerName, payments.Date as paymentDate FROM payments LEFT JOIN lots on lots.id = payments.lotId LEFT JOIN customers on payments.customerId = customers.id GROUP by payments.lotId;');
+
+        if ($request->ajax()) 
+        {
             return Datatables::of($payments)
                 ->addIndexColumn()
+                ->addColumn('action', function($row) 
+                {
+                    return '<a href="'.url('admin/payments/'.$row->lotId).'" class="btn btn-info btn-sm">Details</a>';
+                })
                 ->rawColumns(['action'])
                 ->make(true);
         }
         return view('admin.payments.index', compact('payments'));
+
     }
 
     /**
@@ -43,6 +64,7 @@ class PaymentsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function create()
     {
         //
@@ -54,6 +76,7 @@ class PaymentsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
     public function store(Request $request)
     {
         //
@@ -65,6 +88,7 @@ class PaymentsController extends Controller
      * @param  \App\Models\payments  $payments
      * @return \Illuminate\Http\Response
      */
+
     public function show($payments)
     {
         $paymentDetails = DB::select('
@@ -83,6 +107,7 @@ class PaymentsController extends Controller
      * @param  \App\Models\payments  $payments
      * @return \Illuminate\Http\Response
      */
+
     public function edit(payments $payments)
     {
         //
@@ -95,6 +120,7 @@ class PaymentsController extends Controller
      * @param  \App\Models\payments  $payments
      * @return \Illuminate\Http\Response
      */
+
     public function update(Request $request, payments $payments)
     {
         //
@@ -106,6 +132,7 @@ class PaymentsController extends Controller
      * @param  \App\Models\payments  $payments
      * @return \Illuminate\Http\Response
      */
+
     public function destroy(payments $payments)
     {
         //
