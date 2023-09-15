@@ -39,7 +39,7 @@ var  lotid = <?php echo $lots->id?>
                                                 </div>
 
                                                 <div>
-                                                    <a href="/admin/lots/edit/{{ $lots->id }}/live"
+                                                    <a href="/admin/lots/{{ $lots->id }}"
                                                         class="btn btn-success btn-sm"> Lot Details
                                                     </a>
 
@@ -98,7 +98,7 @@ var  lotid = <?php echo $lots->id?>
                                         </div>
                                     </div>
 
-                                    @if ($lots->lot_status == 'sold' || $lots->lot_status == 'STA' || $lots->lot_status == 'expired')
+                                    @if ($lots->lot_status == 'Sold' || $lots->lot_status == 'STA' || $lots->lot_status == 'Expired')
                                         <div class="align-items-center d-flex justify-content-around w-100">
                                             @if ($lotbids && $lots->lot_status == 'STA')
                                                 @if (count($paymentRequest))
@@ -121,7 +121,7 @@ var  lotid = <?php echo $lots->id?>
                                                     </form>
                                                 @endif
                                             @endif
-                                            @if ($lots->lot_status == 'sold' || $lots->lot_status == 'STA' || $lots->lot_status == 'expired')
+                                            @if ($lots->lot_status == 'Sold' || $lots->lot_status == 'STA' || $lots->lot_status == 'Expired')
                                                 <div class="row w-50">
                                                     <form action="/admin/reStartExpirelot" class="col-12" method="POST">
                                                         @csrf
@@ -208,11 +208,11 @@ var  lotid = <?php echo $lots->id?>
                 var now = new Date().getTime();
                 var timeleft = null;
 
-                if (lotStatus == 'upcoming' && startTime <= now) {
+                if (lotStatus == 'Upcoming' && startTime <= now) {
 
                     document.getElementById('btnStartLot').click();
                     clearInterval(myfunc);
-                } else if (lotStatus != 'expired' && lotStatus != 'pause') {
+                } else if (lotStatus != 'Expired' && lotStatus != 'pause') {
                     if (lotStatus != 'live' && lotStatus != 'Restart') {
                         timeleft = startTime - now;
                     } else {
@@ -238,7 +238,7 @@ var  lotid = <?php echo $lots->id?>
                         document.getElementById('btnEndtLot').click();
                     }
 
-                    if ((minutes < 1 && hours < 1 && timeleft < 0) && lotStatus == 'upcoming') {
+                    if ((minutes < 1 && hours < 1 && timeleft < 0) && lotStatus == 'Upcoming') {
                         clearInterval(myfunc);
                         document.getElementById('btnStartLot').click();
                     }

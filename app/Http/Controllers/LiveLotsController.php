@@ -20,40 +20,46 @@ class LiveLotsController extends Controller
         $this->middleware('admin.auth:admin');
     }
 
-    // Live Lots List
+    // Live Lots List 
     public function live_index(Request $request)
     {
         // $livelots = DB::select("SELECT * FROM `lots` WHERE (date(StartDate) = CURDATE() or date(EndDate) = CURDATE() OR date(ReStartDate) = CURDATE() OR date(ReEndDate) = CURDATE()) and lot_status IN ('live','Upcoming','Restart') ORDER BY LiveSequenceNumber;");
         $livelots = DB::table('lots')
-        ->where(function ($query) {
-            $today = now()->toDateString();
-            $query->whereDate('StartDate', '<=', $today)
-                ->whereDate('EndDate', '>=', $today)
-                ->orWhereDate('ReStartDate', '<=', $today)
-                ->orWhereDate('ReEndDate', '>=', $today);
-        })
+        // ->where(function ($query) 
+        // {
+        //     $today = now()->toDateString();
+        //     $query->whereDate('StartDate', '<=', $today)
+
+        //         ->whereDate('EndDate', '>=', $today)
+
+        //         ->orWhereDate('ReStartDate', '<=', $today)
+
+        //         ->orWhereDate('ReEndDate', '>=', $today);
+        // })
         // ->where('lot_status', 'live')
         ->whereIn('lots.lot_status', ['live', 'Upcoming', 'Restart'])
+
         ->orderBy('LiveSequenceNumber')
+
         ->get();
+       
 
         // $categories = DB::select("SELECT categories.id, categories.title FROM categories LEFT JOIN lots on lots.categoryId = categories.id WHERE (date(lots.StartDate) = CURDATE() OR date(lots.ReStartDate) = CURDATE()) AND lots.lot_status IN ('live','Upcoming','Restart') GROUP by categories.id;");
         $categories = DB::table('categories')
         ->select('categories.id', 'categories.title')
         ->leftJoin('lots', 'categories.id', '=', 'lots.categoryId')
-        ->where(function ($query) 
-        {
-            $today = now()->toDateString();
-            $query->whereDate('lots.StartDate', '=', $today)
-                ->orWhereDate('lots.ReStartDate', '=', $today);
-        })
+        // ->where(function ($query) 
+        // {
+        //     $today = now()->toDateString();
+        //     $query->whereDate('lots.StartDate', '=', $today)
+        //         ->orWhereDate('lots.ReStartDate', '=', $today);
+        // })
         ->whereIn('lots.lot_status', ['live', 'Upcoming', 'Restart'])
         // ->where('lot_status', 'live') 
         ->groupBy('categories.id')
         ->get();
 
-
-
+        
 
         return view('admin.lots.liveIndex', compact('categories', 'livelots'));
     }
@@ -96,7 +102,7 @@ class LiveLotsController extends Controller
             $customers = DB::select("SELECT * from customer_balances WHERE lotid = " . $id . " and customerId !=" . $lastBid->customerId . " and status != 1 ;");
         } else {
             $customers = DB::select("SELECT * from customer_balances WHERE lotid = " . $id . " and status != 1; ");
-            lots::where('id', $id)->update(['lot_status' => 'expired']);
+            lots::where('id', $id)->update(['lot_status' => 'Expired']);
         }
         // dd($customers);
         $lotDetails = lots::where('id', $id)->get();
@@ -271,7 +277,7 @@ class LiveLotsController extends Controller
         
         $upcoming = DB::select("SELECT lots.* ,categories.title as categoriesTitle FROM `lots` 
         LEFT JOIN categories on categories.id  = lots.categoryId
-        WHERE  lot_status =  'upcoming';");
+        WHERE  lot_status =  'Upcoming';");
         $lotList = ['liveList' => $liveLotslist, 'upcoming' => $upcoming];
        
         // $firebase = (new Factory)
@@ -297,9 +303,22 @@ class LiveLotsController extends Controller
 
     public function categorieLots($id)
     {
-        $livelots = DB::select("SELECT * FROM `lots` WHERE (date(StartDate) = CURDATE() or date(EndDate) = CURDATE()) and lot_status IN ('live','upcoming','Restart') AND categoryId = $id ORDER BY LiveSequenceNumber;");
-        $categories = DB::select("SELECT categories.id, categories.title FROM categories LEFT JOIN lots on lots.categoryId = categories.id WHERE (date(lots.StartDate) = CURDATE() OR date(lots.ReStartDate) = CURDATE()) AND lots.lot_status IN ('live','upcoming','Restart') GROUP by categories.id;");
 
+        $livelots = DB::select("SELECT * FROM `lots` WHERE  lot_status IN ('live','Upcoming','Restart') AND categoryId = $id ORDER BY LiveSequenceNumber;");
+        // $categories = DB::select("SELECT categories.id, categories.title FROM categories LEFT JOIN lots on lots.categoryId = categories.id WHERE (date(lots.StartDate) = CURDATE() OR date(lots.ReStartDate) = CURDATE()) AND lots.lot_status IN ('live','Upcoming','Restart') GROUP by categories.id;");
+        $categories = DB::table('categories')
+        ->select('categories.id', 'categories.title')
+        ->leftJoin('lots', 'categories.id', '=', 'lots.categoryId')
+        // ->where(function ($query) 
+        // {
+        //     $today = now()->toDateString();
+        //     $query->whereDate('lots.StartDate', '=', $today)
+        //         ->orWhereDate('lots.ReStartDate', '=', $today);
+        // })
+        ->whereIn('lots.lot_status', ['live', 'Upcoming', 'Restart'])
+        // ->where('lot_status', 'live') 
+        ->groupBy('categories.id')
+        ->get();
 
         return view('admin.lots.liveIndex', compact('categories', 'livelots'));
     }

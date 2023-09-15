@@ -808,18 +808,20 @@ public function update(Request $request, lots $lots)
     {
         $liveLots = DB::select("SELECT lots.* ,categories.title as categoriesTitle FROM `lots` 
         LEFT JOIN categories on categories.id  = lots.categoryId
-        WHERE (date(lots.EndDate) = CURDATE()) and lots.lot_status IN ('live','Restart') and lots.id  >= $lotid");
+        WHERE lots.lot_status IN ('live','Restart') and lots.id  = $lotid");
 
-        $firebase = (new Factory)
-            ->withServiceAccount(__DIR__ . '/lotbids-7751a-firebase-adminsdk-2kxk6-5db00e2535.json')
-            ->withDatabaseUri('https://lotbids-7751a-default-rtdb.europe-west1.firebasedatabase.app/');
-        $database = $firebase->createDatabase();
 
-        foreach ($liveLots as $lot) {
+        // $firebase = (new Factory)
+        //     ->withServiceAccount(__DIR__ . '/lotbids-7751a-firebase-adminsdk-2kxk6-5db00e2535.json')
+        //     ->withDatabaseUri('https://lotbids-7751a-default-rtdb.europe-west1.firebasedatabase.app/');
+        // $database = $firebase->createDatabase();
+
+        foreach ($liveLots as $lot) 
+        {
             // $lot = lots::where('id', $lot->id)->update(['EndDate' => Carbon::parse($lot->EndDate)->addMinutes(3)]);
-            lots::where('id', $lot->id)->update(['EndDate' => Carbon::parse($lot->EndDate)->addMinutes($request->time)]);
+            lots::where('id', $lot->id)->update(['EndDate' => Carbon::parse($lot->EndDate)->addMinutes((int)$request->time)]);
             $EndDate = lots::where('id', $lot->id)->pluck('EndDate')->first();
-            $database->getReference('TodaysLots/liveList/' . $lot->id . '/EndDate')->set($EndDate);
+            // $database->getReference('TodaysLots/liveList/' . $lot->id . '/EndDate')->set($EndDate);
         }
 
         return back();

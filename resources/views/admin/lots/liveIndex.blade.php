@@ -28,6 +28,7 @@
                                     </form> --}}
 
                                     @foreach ($categories as $categorie)
+                                    
                                         <a href="{{ url("admin/live_lots/categorie/{$categorie->id}") }}"
                                             class="btn btn btn-info btn-sm">{{ $categorie->title }}</a>
                                     @endforeach
