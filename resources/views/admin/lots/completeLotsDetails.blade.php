@@ -55,9 +55,9 @@
                                             </h4>
                                         </div>
 
-                                        @if ($lots->lot_status == 'sold' || $lots->lot_status == 'STA' || $lots->lot_status == 'expired')
+                                        @if ($lots->lot_status == 'Sold' || $lots->lot_status == 'STA' || $lots->lot_status == 'Expired')
                                             <div class="align-items-center d-flex justify-content-around w-100">
-                                                @if (($lotbids && $lots->lot_status == 'STA') || $lots->lot_status == 'sold')
+                                                @if (($lotbids && $lots->lot_status == 'STA') || $lots->lot_status == 'Sold')
                                                     @if (count($lotbids) && count($paymentRequest))
                                                         <h4 class="font-weight-bold"> Payment request sent to
                                                             {{ $lotbids[0]->customerName }} for
@@ -81,7 +81,7 @@
                                                         @endif
                                                     @endif
                                                 @endif
-                                                @if ($lots->lot_status == 'sold' || $lots->lot_status == 'STA' || $lots->lot_status == 'expired')
+                                                @if ($lots->lot_status == 'Sold' || $lots->lot_status == 'STA' || $lots->lot_status == 'Expired')
                                                     <div class="row w-50">
                                                         <form action="/admin/reStartExpirelot" class="col-12"
                                                             method="POST">

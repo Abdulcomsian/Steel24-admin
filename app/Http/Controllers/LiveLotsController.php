@@ -37,7 +37,7 @@ class LiveLotsController extends Controller
         //         ->orWhereDate('ReEndDate', '>=', $today);
         // })
         // ->where('lot_status', 'live')
-        ->whereIn('lots.lot_status', ['live', 'Upcoming', 'Restart'])
+        ->whereIn('lots.lot_status', ['live', 'Upcoming', 'Restart', 'STA'])
 
         ->orderBy('LiveSequenceNumber')
 
@@ -54,7 +54,7 @@ class LiveLotsController extends Controller
         //     $query->whereDate('lots.StartDate', '=', $today)
         //         ->orWhereDate('lots.ReStartDate', '=', $today);
         // })
-        ->whereIn('lots.lot_status', ['live', 'Upcoming', 'Restart'])
+        ->whereIn('lots.lot_status', ['live', 'Upcoming', 'Restart','STA'])
         // ->where('lot_status', 'live') 
         ->groupBy('categories.id')
         ->get();
@@ -63,6 +63,29 @@ class LiveLotsController extends Controller
 
         return view('admin.lots.liveIndex', compact('categories', 'livelots'));
     }
+
+    public function sta_lots(Request $request)
+    {
+       $livelots = DB::table('lots')
+        ->whereIn('lots.lot_status', ['STA'])
+        ->orderBy('LiveSequenceNumber')
+        ->get();
+       
+
+        $categories = DB::table('categories')
+        ->select('categories.id', 'categories.title')
+        ->leftJoin('lots', 'categories.id', '=', 'lots.categoryId')
+        ->whereIn('lots.lot_status', ['live', 'Upcoming', 'Restart','STA'])
+        ->groupBy('categories.id')
+        ->get();
+
+        
+
+        return view('admin.lots.liveIndex', compact('categories', 'livelots'));
+    }
+
+    
+
 
     // Live Lots Details and Bids
     public function liveLotBids(lots $lots)
@@ -85,6 +108,7 @@ class LiveLotsController extends Controller
     public function startLots($id)
     {
         $lot = lots::where('id', $id)->update(['lot_status' => 'live']);
+        lots::where('id', $id)->update(['StartDate'=>Carbon::now()]);
         payments::where('lotId', $id)->delete();
         // zeshan commenting this 
         // $this->pushonfirbase();
@@ -157,10 +181,13 @@ class LiveLotsController extends Controller
         $lastBid = BidsOfLots::where('lotId', $id)->orderBy('id', 'desc')->first();
 
         $customers = DB::select("SELECT * from customer_balances WHERE lotid = " . $id . " and status != 1; ");
-        lots::where('id', $id)->update(['lot_status' => 'expired']);
+        lots::where('id', $id)->update(['lot_status' => 'Expired']);
         $lotDetails = lots::where('id', $id)->get();
+
         // dd($customers);
-        foreach ($customers as $customer) {
+
+        foreach ($customers as $customer) 
+        {
             customerBalance::where(['id' => $customer->id])->update(['status' => 1]);
             customerBalance::create([
                 'customerId' => $customer->customerId,
@@ -172,8 +199,12 @@ class LiveLotsController extends Controller
                 'status' => 1,
                 'date' => Carbon::today(),
             ]);
+
+            
         }
         customerBalance::where('lotid', $id)->update(['status' => 1]);
+
+       
 
 
         // $firebase = (new Factory)
@@ -197,6 +228,8 @@ class LiveLotsController extends Controller
         // zee commenting this
         // $this->pushonfirbase();
         return redirect('/admin/live_lots_bids/' . $id);
+
+        
     }
 
 
@@ -242,7 +275,8 @@ class LiveLotsController extends Controller
     {
         $livelots = DB::select("SELECT * FROM `lots` WHERE date(StartDate) = CURDATE() or date(EndDate) = CURDATE() OR date(ReStartDate) = CURDATE() OR date(ReEndDate) = CURDATE() ORDER BY LiveSequenceNumber;");
 
-        foreach ($livelots as $lot) {
+        foreach ($livelots as $lot) 
+        {
             lots::where('id', $lot->id)->update(['LiveSequenceNumber' => $request[$lot->id]]);
         }
         // zeshan commenting this because of firebase 

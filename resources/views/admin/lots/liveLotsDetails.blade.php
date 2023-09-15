@@ -101,6 +101,7 @@ var  lotid = <?php echo $lots->id?>
                                     @if ($lots->lot_status == 'Sold' || $lots->lot_status == 'STA' || $lots->lot_status == 'Expired')
                                         <div class="align-items-center d-flex justify-content-around w-100">
                                             @if ($lotbids && $lots->lot_status == 'STA')
+                                           
                                                 @if (count($paymentRequest))
                                                     <h4 class="font-weight-bold"> Payment request sent to
                                                         {{ $lotbids[0]->customerName }} for
@@ -233,7 +234,8 @@ var  lotid = <?php echo $lots->id?>
                     }
 
 
-                    if (minutes < 1 && hours < 1 && timeleft < 0 && (lotStatus == 'live' || lotStatus == 'Restart')) {
+                    if (minutes < 1 && hours < 1 && timeleft < 0 && (lotStatus == 'live' || lotStatus == 'Restart')) 
+                    {
                         clearInterval(myfunc);
                         document.getElementById('btnEndtLot').click();
                     }

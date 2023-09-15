@@ -32,6 +32,9 @@
                                         <a href="{{ url("admin/live_lots/categorie/{$categorie->id}") }}"
                                             class="btn btn btn-info btn-sm">{{ $categorie->title }}</a>
                                     @endforeach
+                                    
+                                    <a href="{{ url("admin/sta_lots") }}"
+                                    class="btn btn btn-info btn-sm">STA Lots</a>
                                     <a href="{{ url("admin/live_lots") }}"
                                         class="btn btn btn-info btn-sm">All Lots</a>
                                     <div class="table-responsive">

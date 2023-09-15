@@ -127,6 +127,7 @@ Route::post('/users-send-email', [UserController::class, 'sendEmail'])->name('se
 
 
 Route::get('/live_lots', [LiveLotsController::class, 'live_index'])->name('livelots');
+Route::get('/sta_lots', [LiveLotsController::class, 'sta_lots'])->name('stalots');
 Route::get('/live_lots_bids/{lots}', [LiveLotsController::class, 'liveLotBids']);
 
 Route::get('/startlot/{id}', [LiveLotsController::class, 'startLots']);
