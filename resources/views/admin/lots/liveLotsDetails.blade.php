@@ -310,4 +310,10 @@ var  lotid = <?php echo $lots->id?>
     <script type="module">
        
   </script>
+   <script>
+    var today = new Date();
+    var formattedToday = today.toISOString().slice(0, 16);
+    document.getElementById('ReStartDate').setAttribute('min', formattedToday);
+    document.getElementById('ReEndDate').setAttribute('min', formattedToday);
+</script>
 @endsection
