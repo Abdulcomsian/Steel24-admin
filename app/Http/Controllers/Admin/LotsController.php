@@ -767,8 +767,11 @@ public function update(Request $request, lots $lots)
         ]);
         $lastBid = BidsOfLots::where('lotId', $data['lotid'])->orderBy('id', 'desc')->first();
         $lotDetails = lots::where('id', $data['lotid'])->first();
+
+        // dd($data);
        
-        if ($lastBid) {
+        if ($lastBid) 
+        {
             payments::create([
                 'lotId' => $data['lotid'],
                 'customerId' => $lastBid->customerId,
