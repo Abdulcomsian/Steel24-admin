@@ -221,9 +221,12 @@ var  lotid = <?php echo $lots->id?>
                     }
 
                     var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
-                    var hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var hours = (days*24)+Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                     var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
                     var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
+
+                    // hours+=days*24
+
 
                     document.getElementById("remainingTime").innerHTML = ("Remaining : " + hours + " : " + minutes +
                         " : " + seconds);
@@ -310,4 +313,10 @@ var  lotid = <?php echo $lots->id?>
     <script type="module">
        
   </script>
+   <script>
+    var today = new Date();
+    var formattedToday = today.toISOString().slice(0, 16);
+    document.getElementById('ReStartDate').setAttribute('min', formattedToday);
+    document.getElementById('ReEndDate').setAttribute('min', formattedToday);
+</script>
 @endsection

@@ -244,7 +244,6 @@ class LiveLotsController extends Controller
     // Restart Expired Lots
     public function reStartExpirelot(Request $request)
     {
-        // dd($request);
 
         $requestData = $request->validate([
             'lotid' => 'required',
@@ -252,19 +251,38 @@ class LiveLotsController extends Controller
             'ReEndDate' => 'required',
 
         ]);
-        lots::where('id', $requestData['lotid'])->update(
-            [
-                'StartDate' => $requestData['ReStartDate'],
-                'EndDate' => $requestData['ReEndDate'],
-                'lot_status' => 'Restart'
-            ]
-            // [
-            //     'StartDate' => Carbon::now(),
-            //     'EndDate' => Carbon::now()->addHour()->toDateTimeString(),
-            //     'lot_status' => 'Restart'
-            // ]
+        if(Carbon::parse($requestData['ReStartDate'])->greaterThan(Carbon::now())){
+            lots::where('id', $requestData['lotid'])->update(
+                [
+                    'StartDate' => $requestData['ReStartDate'],
+                    'EndDate' => $requestData['ReEndDate'],
+                    'lot_status' => 'Upcoming'
+                ]
+            );
+        }
+        else
+        {
+            lots::where('id', $requestData['lotid'])->update(
+                [
+                    'StartDate' => $requestData['ReStartDate'],
+                    'EndDate' => $requestData['ReEndDate'],
+                    'lot_status' => 'live'
+                ]
+            );
+        }
+        // lots::where('id', $requestData['lotid'])->update(
+        //     [
+        //         'StartDate' => $requestData['ReStartDate'],
+        //         'EndDate' => $requestData['ReEndDate'],
+        //         'lot_status' => 'Restart'
+        //     ]
+        //     // [
+        //     //     'StartDate' => Carbon::now(),
+        //     //     'EndDate' => Carbon::now()->addHour()->toDateTimeString(),
+        //     //     'lot_status' => 'Restart'
+        //     // ]
 
-        );
+        // );
         payments::where('lotId',  $requestData['lotid'])->delete();
         // zee commenting this
         // $this->pushonfirbase();
