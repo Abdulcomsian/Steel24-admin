@@ -203,20 +203,25 @@ var  lotid = <?php echo $lots->id?>
     </div>
     <script>
         var lotStatus = document.getElementById("lotStatus").innerHTML;
-        var myfunc = setInterval(function() {
+        var myfunc = setInterval(function() 
+        {
                 var startTime = new Date(document.getElementById("lotstarttime").innerHTML).getTime();
                 var endTime = new Date(document.getElementById("lotendtime").innerHTML).getTime();
                 var now = new Date().getTime();
                 var timeleft = null;
 
-                if (lotStatus == 'Upcoming' && startTime <= now) {
+                if (lotStatus == 'Upcoming' && startTime <= now) 
+                {
 
                     document.getElementById('btnStartLot').click();
                     clearInterval(myfunc);
-                } else if (lotStatus != 'Expired' && lotStatus != 'pause') {
-                    if (lotStatus != 'live' && lotStatus != 'Restart') {
+                } else if (lotStatus != 'Expired' && lotStatus != 'pause') 
+                {
+                    if (lotStatus != 'live' && lotStatus != 'Restart') 
+                    {
                         timeleft = startTime - now;
-                    } else {
+                    } else 
+                    {
                         timeleft = endTime - now;
                     }
 
@@ -232,7 +237,8 @@ var  lotid = <?php echo $lots->id?>
                         " : " + seconds);
 
 
-                    if (minutes < 1 && hours < 1 && timeleft > 0) {
+                    if (minutes < 1 && hours < 1 && timeleft > 0) 
+                    {
                         document.getElementById("remainingTime").style.color = "red";
                     }
 
@@ -243,13 +249,15 @@ var  lotid = <?php echo $lots->id?>
                         document.getElementById('btnEndtLot').click();
                     }
 
-                    if ((minutes < 1 && hours < 1 && timeleft < 0) && lotStatus == 'Upcoming') {
+                    if ((minutes < 1 && hours < 1 && timeleft < 0) && lotStatus == 'Upcoming') 
+                    {
                         clearInterval(myfunc);
                         document.getElementById('btnStartLot').click();
                     }
 
 
-                    if (timeleft < 0) {
+                    if (timeleft < 0) 
+                    {
                         clearInterval(myfunc);
                         document.getElementById("remainingTime").innerHTML = "TIME UP!!";
                     }

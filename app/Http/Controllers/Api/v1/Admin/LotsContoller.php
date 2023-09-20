@@ -45,6 +45,7 @@ use App\Exports\paymentexcelexportfile;
 use App\Models\Excel_export_payment;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use App\Models\AdminNotification;
 
 
 
@@ -1103,6 +1104,33 @@ class LotsContoller extends Controller
         ]);
     }
 
+
+    // Show notification in Admin Side 
+
+    public function shownotificationadmin(Request $request)
+    {
+        $requestData = $request->validate([
+            'customerId' => 'required',
+            'lotId' => 'required',
+        ]);
+    
+        // Check if the customer exists
+        $customer = Customer::find($requestData['customerId']);
+    
+        if (!$customer) 
+        {
+            return response()->json(['message' => 'Customer not found'], 404);
+        }
+    
+        // Create a new admin notification record
+        AdminNotification::create([
+            'customername' => $customer->name,
+            'customerId' => $requestData['customerId'],
+            'lotId' => $requestData['lotId'],
+        ]);
+    
+        return response()->json(['message' => 'Notification saved successfully'], 200);
+    }
 
 
     // Start Show 4 APIs live, Upcoming, Sold and Expired

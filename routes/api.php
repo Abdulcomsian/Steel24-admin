@@ -167,6 +167,12 @@ Route::post('deleteFavorite', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@d
 Route::get('showFavorites/{customer_id}', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@showFavorites');
 
 
+// Show notification in Admin side LotId and CustomerId
+
+Route::post('shownotificationadmin', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@shownotificationadmin');
+
+
+
 
 // *********** Start 4 show API Fav API LIVE , Upcoming , Sold and Expired ************
 
