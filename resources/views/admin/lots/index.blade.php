@@ -7,9 +7,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-header card-header-primary">
+                                <!-- <div class="card-header card-header-primary">
                                     <h4 class="card-title">Lots</h4>
-                                </div>
+                                </div> -->
                                 <div class="card-body">
                                     @if (session('success'))
                                         <div class="alert alert-success" role="success">
@@ -17,14 +17,20 @@
                                         </div>
                                     @endif
                                     <div class="row">
-                                        <div class="col-12 text-right">
+                                        <div class="col-12 text-right header_customer">
+                                        <div>
+                                         <div >
+                                <h4 >Lots</h4>
+                            </div>
+                        </div>
 
-
+                                            <div>
                                             <a href="{{ url('admin/users-send-email') }}"
                                                 class="btn btn-info btn-sm send-email">Send Email</a>
                                             <a href="{{ url('admin/lots/create') }}" class="btn btn-sm btn-facebook">Add</a>
 
                                             <a href="{{ url('admin/lots/import-csv') }}" class="btn btn-sm btn-facebook">Import Lots</a>
+</div>
                                         </div>
                                         {{-- <select id='status' class="form-control" style="width: 200px">
                                             <option value="">--Select Status--</option>
@@ -89,6 +95,8 @@
                         d.search = $('input[type="search"]').val()
                 }
             },
+            lengthChange: false, // This disables the "Show [X] entries" dropdown
+        searching: false, 
             columns: [{
                     data: 'id',
                     name: 'id'

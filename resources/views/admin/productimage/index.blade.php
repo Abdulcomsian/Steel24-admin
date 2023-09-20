@@ -7,9 +7,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-header card-header-primary">
+                                <!-- <div class="card-header card-header-primary">
                                     <h4 class="card-title">Product Images</h4>
-                                </div>
+                                </div> -->
                                 <div class="card-body">
                                     @if (session('success'))
                                         <div class="alert alert-success" role="success">
@@ -17,9 +17,14 @@
                                         </div>
                                     @endif
                                     <div class="row">
-                                        <div class="col-12 text-right">
+                                        <div class="col-12 text-right header_customer">
+                                        <div>
+                                         <div >
+                                <h4 >Product Images</h4>
+                            </div>
+                        </div>
                                             <a href="{{ url('admin/productimages/create') }}"
-                                            class="btn btn-primary add_New_Button"
+                                            class="btn btn-outline-info add_New_Button"
                                            ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="mr-2"
                                                 fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                                                 <path fill-rule="evenodd"
@@ -105,7 +110,8 @@
         processing: true,
         serverSide: true,
         ajax: "{!! route('admin.productimages') !!}",
-
+        lengthChange: false, // This disables the "Show [X] entries" dropdown
+        searching: false, 
         columns: [
             {
                 data: 'id',

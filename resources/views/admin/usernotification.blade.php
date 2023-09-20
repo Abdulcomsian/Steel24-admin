@@ -125,16 +125,18 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-header card-header-primary">
-                                    <h4 class="card-title">Admin Notification</h4>
-                                </div>
                                 <div class="card-body">
                                     @if (session('success'))
                                         <div class="alert alert-success" role="success">
                                             {{ session('success') }}
                                         </div>
                                     @endif
-                                    <h4 class="card-title">Lot Sequence</h4>
+                                    <div>
+                                         <div >
+                                <h4 style="font-size: 22px;
+    font-weight: 500;">Admin Notification</h4>
+                            </div>
+                        </div>
                                     <div class="table-responsive">
                                         <table class="table data-table">
                                             <thead class="text-primary text-center">
