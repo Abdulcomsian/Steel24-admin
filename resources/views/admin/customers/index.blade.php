@@ -41,7 +41,7 @@
 }
 
 input:checked+.slider {
-    background-color: #2196F3;
+    background-color: #d567e8;
 }
 
 input:focus+.slider {
@@ -62,6 +62,16 @@ input:checked+.slider:before {
     border-radius: 50%;
 }
 
+.header_customer {
+    display:flex;
+    justify-content:space-between;
+    align-items: center;
+}
+.header_customer h4 {
+    font-size: 22px;
+    font-weight: 500;
+}
+
 </style>
 <div class="content">
     <div class="container-fluid">
@@ -70,9 +80,9 @@ input:checked+.slider:before {
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header card-header-primary">
+                            <!-- <div class="card-header card-header-primary">
                                 <h4 class="card-title">Customers</h4>
-                            </div>
+                            </div> -->
                             <div class="card-body">
                                 @if (session('success'))
                                 <div class="alert alert-success" role="success">
@@ -80,8 +90,13 @@ input:checked+.slider:before {
                                 </div>
                                 @endif
                                 <div class="row">
-                                    <div class="col-12 text-right">
-                                        <a href="{{ route('admin.customers.create') }}" class="btn btn-primary add_New_Button"
+                                    <div class="col-12 text-right header_customer">
+                                    <div>
+                                         <div >
+                                <h4 >Customers</h4>
+                            </div>
+                        </div>
+                                        <a href="{{ route('admin.customers.create') }}" class="btn btn-outline-info add_New_Button"
                                            >
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="mr-2"
                                                 fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
@@ -125,19 +140,21 @@ input:checked+.slider:before {
 <script type="text/javascript">
 $(document).ready(function() {
     var table = $('.data-table').DataTable({
-        
         processing: true,
         serverSide: true,
         ajax: "{!! route('admin.customers.index') !!}",
-
-        columns: [{
+        lengthChange: false, // This disables the "Show [X] entries" dropdown
+        searching: false, 
+        columns: [
+            {
                 data: 'id',
                 name: 'id'
             },
             {
                 data: 'name',
                 name: 'name'
-            }, {
+            },
+            {
                 data: 'email',
                 name: 'email'
             },
@@ -151,11 +168,11 @@ $(document).ready(function() {
                 render: function(o) {
                     var element = '<div class="btn-group">';
                     element += `
-                                    <label class="switch" for="flexSwitchCheckDefault_${o.id}">
-                                        <input ${o.isApproved == "1"?'checked':''} onchange="couponstatus(` + o.id + ` ,event )" type="checkbox" name="active-box" id="flexSwitchCheckDefault_${o.id}">
-                                        <span class="slider round"></span>
-                                       </label>
-                                `;
+                        <label class="switch" for="flexSwitchCheckDefault_${o.id}">
+                            <input ${o.isApproved == "1"?'checked':''} onchange="couponstatus(` + o.id + `, event )" type="checkbox" name="active-box" id="flexSwitchCheckDefault_${o.id}">
+                            <span class="slider round"></span>
+                        </label>
+                    `;
                     element += '</div>';
                     return element;
                 }
@@ -164,14 +181,14 @@ $(document).ready(function() {
                 data: null,
                 sorting: false,
                 render: function(data, type, row) {
-                    return (`<div><a href="{{ url('admin/customers/${data.id}') }}"class="btn btn-info btn-sm">Details</a>
-                    `);
+                    return (`<div><a href="{{ url('admin/customers/${data.id}') }}" class="btn btn-info btn-sm" style="font-weight:500">Details</a>`);
                 },
             }
         ]
     });
 });
 </script>
+
 <script>
 $(document).on('click', '.remove', function(e) {
     e.preventDefault();

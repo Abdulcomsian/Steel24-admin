@@ -8969,9 +8969,11 @@ a.text-dark:focus {
 
 .btn.btn-info {
   color: #fff;
-  background-color: #00bcd4;
+  background-color: #434b54;
   border-color: #00bcd4;
-  box-shadow: 0 2px 2px 0 rgba(0, 188, 212, 0.14), 0 3px 1px -2px rgba(0, 188, 212, 0.2), 0 1px 5px 0 rgba(0, 188, 212, 0.12);
+  /* box-shadow: 0 2px 2px 0 rgba(0, 188, 212, 0.14), 0 3px 1px -2px rgba(0, 188, 212, 0.2), 0 1px 5px 0 rgba(0, 188, 212, 0.12); */
+
+  
 }
 
 .btn.btn-info:hover {
@@ -10037,23 +10039,24 @@ fieldset[disabled][disabled] .btn-group-raised .btn,
 }
 
 .btn.btn-outline-info {
-  color: #00bcd4;
-  background-color: transparent;
-  border-color: #00bcd4;
+  color: white;
+  background-color: #9c27b0;
+  border-color: #9c27b0;
 }
 
 .btn.btn-outline-info:hover {
-  color: #00bcd4;
-  background-color: rgba(153, 153, 153, 0.2);
+  color: white;
+  background-color: #00bcd4;
   border-color: #00bcd4;
 }
 
 .btn.btn-outline-info:focus,
 .btn.btn-outline-info.focus,
 .btn.btn-outline-info:hover {
-  color: #00bcd4;
-  background-color: rgba(153, 153, 153, 0.2);
-  border-color: #00bcd4;
+  color: #9c27b0;
+  background-color: transparent;
+  border-color: #9c27b0;
+
 }
 
 .btn.btn-outline-info:active,
@@ -10624,7 +10627,7 @@ fieldset[disabled][disabled] .btn-group-raised .btn,
 .btn.btn-sm,
 .btn-group-sm>.btn,
 .btn-group-sm .btn {
-  padding: 0.40625rem 1.25rem;
+  padding: 0.70625rem 1.25rem;
   font-size: 0.6875rem;
   line-height: 1.5;
   border-radius: 0.2rem;
@@ -13763,7 +13766,8 @@ h2.title {
 }
 
 .text-primary {
-  color: #9c27b0 !important;
+  /* color: #9c27b0 !important; */
+  color: black !important;
 }
 
 .text-danger {
@@ -14479,14 +14483,25 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 }
 
 .sidebar {
-  position: fixed;
+  /* position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   z-index: 2;
   width: 260px;
   background: #fff;
-  box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2); */
+
+  bottom: 0;
+  height: 100%;
+  left: 0;
+  position: fixed;
+  top: 0;
+  width: 15%;
+  z-index: 2;
+  background-color: #212b36;
+  transition: margin .25s ease-out;
+  display: block;
 }
 
 .sidebar .caret {
@@ -14509,7 +14524,6 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   position: relative;
   height: calc(100vh - 75px);
   overflow: auto;
-  width: 260px;
   z-index: 4;
   padding-bottom: 30px;
 }
@@ -14594,6 +14608,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 .sidebar .nav li>a:focus {
   background-color: transparent;
   outline: none;
+  color: white;
 }
 
 .sidebar .nav li:first-child>a {
@@ -14638,11 +14653,19 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 .sidebar .nav p {
   margin: 0;
   line-height: 30px;
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 400;
   position: relative;
   display: block;
   height: auto;
   white-space: nowrap;
+  color: #919eab;
+}
+
+.sidebar[data-color="purple"] li.active>a> p {
+  font-size: 18px;
+  font-weight: 500;
+  color: white !important;
 }
 
 .sidebar .nav i {
@@ -14665,6 +14688,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   text-transform: capitalize;
   font-size: 13px;
   padding: 10px 15px;
+  color: #919eab;
 }
 
 .sidebar .sidebar-background {
@@ -14720,10 +14744,11 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   text-transform: uppercase;
   padding: 5px 0px;
   display: inline-block;
-  font-size: 18px;
-  color: #3C4858;
+  font-size: 25px;
+  /* color: #3C4858; */
+  color: white;
   white-space: nowrap;
-  font-weight: 400;
+  font-weight: 700;
   line-height: 30px;
   overflow: hidden;
   text-align: center;
@@ -14783,6 +14808,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 .sidebar[data-color="purple"] li.active>a {
   background-color: #9c27b0;
   box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);
+  
 }
 
 .sidebar[data-color="azure"] li.active>a {
@@ -14886,7 +14912,8 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 .main-panel {
   position: relative;
   float: right;
-  width: calc(100% - 260px);
+  /* width: calc(100% - 260px); */
+  width: 85%;
   transition: 0.33s, cubic-bezier(0.685, 0.0473, 0.346, 1);
 }
 
@@ -16130,7 +16157,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 .table>thead>tr>th {
   border-bottom-width: 1px;
   font-size: 1.0625rem;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 .table .form-check {
@@ -16173,7 +16200,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
 }
 
 .table thead tr th {
-  font-size: 1.063rem;
+  font-size: 1.23rem;
 }
 
 .table .th-description {
