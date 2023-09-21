@@ -27,7 +27,7 @@
                             </div>
                         </div>
                                     </div>
-                                    <div ><!-- remove class="table-responsive"-->
+                                    <div class="table-responsive"><!-- remove class="table-responsive"-->
                                         <table class="table data-table table-striped w-100">
                                             <thead class="text-primary text-center">
                                                 <th>Lot</th>

@@ -105,7 +105,7 @@ input:checked+.slider:before {
                                             </svg>New</a>
                                     </div>
                                 </div>
-                                <div class="">
+                                <div class="table-responsive">
                                     <table class="table data-table table-striped w-100">
                                         <thead class="text-primary text-center">
                                             <th>ID</th>

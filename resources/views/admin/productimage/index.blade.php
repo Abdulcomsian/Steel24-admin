@@ -32,7 +32,7 @@
                                             </svg>New</a>
                                         </div>
                                     </div>
-                                    <div>
+                                    <div class="table-responsive">
                                         <!-- remove class="table-responsive" -->
                                         <table class="table data-table table-striped w-100">
                                             <thead class="text-primary text-center">
