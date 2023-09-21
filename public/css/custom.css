@@ -2,7 +2,7 @@
     display: block;
     width: 100%;
     padding: 0.775rem 1rem;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     font-weight: 500;
     line-height: 1.5;
     background-clip: padding-box;
@@ -14,6 +14,11 @@
     color: black;
     transition: color 0.2s ease;
     margin-top: 2%;
+    border:1px solid gray
+}
+.form_customer:focus {
+    border-color: #9124a3;
+    outline: 0;
 }
 
 .card .card-body+.card-footer,
@@ -61,6 +66,7 @@
     padding: 0.775rem 1rem;
     height: auto;
     font-size: 1.1rem;
+    border:1px solid gray
 }
 .send_mail_button {
     display: inline-flex;
