@@ -48,9 +48,6 @@
 </div>
 
 <script>
-
-
-
 var mainContent = document.querySelector('.main-panel');
 var toggleButton = document.querySelector('.toggle-button');
 var sidebar = document.querySelector('.sidebar');
@@ -59,12 +56,21 @@ function handleResize() {
     var screenWidth = window.innerWidth;
     
     if (screenWidth >= 991) {
-      if (sidebar.classList.contains('show')) {
-        sidebar.style.width='15%';
-    }}
+        if (sidebar.classList.contains('show')) {
+              sidebar.style.width='15%';
+          }
+        else{
+          sidebar.style.width='0%';
+        }
+    }
     else
     {
-      sidebar.style.width='50%';
+      if (sidebar.classList.contains('show')) {
+              sidebar.style.width='50%';
+          }
+        else{
+          sidebar.style.width='0%';
+        }
     }
 }
 
