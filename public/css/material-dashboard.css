@@ -14498,8 +14498,10 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   width: 15%;
   z-index: 2;
   background-color: #212b36;
-  transition: margin .25s ease-out;
+  /* transition: margin .25s ease-out; */
   display: block;
+    overflow: hidden;
+    transition: width 0.3s ease;
 }
 
 .sidebar .caret {
@@ -18904,4 +18906,14 @@ td {
   overflow: hidden;
   text-overflow: ellipsis;
 
+}
+
+.sidebar_hide {
+  transform: translateX(-100%); /* Move the sidebar off-screen to the left */
+  transition: transform 0.70s cubic-bezier(0.685, 0.0473, 0.346, 1);
+}
+
+.sidebar.show {
+  width: 15%; /* Adjust the width as needed */
+  transition: width 0.3s ease;
 }
