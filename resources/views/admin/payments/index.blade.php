@@ -28,7 +28,7 @@
                         </div>
                                     </div>
                                     <div ><!-- remove class="table-responsive"-->
-                                        <table class="table data-table table-striped">
+                                        <table class="table data-table table-striped w-100">
                                             <thead class="text-primary text-center">
                                                 <th>Lot</th>
                                                 <th>Customer</th>

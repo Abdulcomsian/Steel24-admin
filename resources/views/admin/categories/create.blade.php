@@ -10,12 +10,17 @@
                         @csrf
                         <div class="card ">
                             <!--Header-->
-                            <div class="card-header card-header-primary m-0">
+                            <!-- <div class="card-header card-header-primary m-0">
                                 <h4 class="card-title">Categories</h4>
-                            </div>
+                            </div> -->
                             <!--End header-->
                             <!--Body-->
                             <div class="card-body">
+                            <div class="header_customer">
+                                         <div >
+                                <h4 >Categories</h4>
+                            </div>
+                        </div>
                                 <div class="form-row justify-content-center">
                               
                                     <!-- <label for="title" class="col-sm-2 col-form-label">Title</label> -->

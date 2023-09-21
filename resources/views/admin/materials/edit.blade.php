@@ -16,13 +16,17 @@
                                 @endforeach
                             </ul>
                             <!--Header-->
-                            <div class="card-header card-header-primary mx-0">
+                            <!-- <div class="card-header card-header-primary mx-0">
                                 <h4 class="card-title">Edit Materials</h4>
-                            </div>
+                            </div> -->
                             <!--End header-->
                             <!--Body-->
                             <div class="card-body">
-
+                            <div class="header_customer ">
+                                         <div >
+                                <h4 >Edit Materials</h4>
+                            </div>
+                        </div>
                                 <input type="hidden" class="form_customer" id="lotid" name="lotid"
                                     value="{{ $lots->id }}" />
 

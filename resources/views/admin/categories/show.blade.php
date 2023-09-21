@@ -7,12 +7,17 @@
                 <div class="col-md-12">
                     <div class="card">
                         <!--Header-->
-                        <div class="card-header card-header-primary">
+                        <!-- <div class="card-header card-header-primary">
                             <h4 class="card-title">Categories</h4>
-                        </div>
+                        </div> -->
                         <!--End header-->
                         <!--Body-->
                         <div class="card-body">
+                        <div class="header_customer ">
+                                         <div >
+                                <h4 >Categories Details</h4>
+                            </div>
+                        </div>
                             <div class="row">
                                 <!-- first -->
                                 <div class="col-md-12">
@@ -25,7 +30,7 @@
                                                 <div class="block block-three"></div>
                                                 <div class="block block-four"></div>
                                                 <a href="#">
-                                                    <h3 class="title mt-3 text-center">Categories Details</h3>
+                                                    <!-- <h3 class="title mt-3 text-center">Categories Details</h3> -->
                                                 </a>
                                                 <table class="table align-items-center mb-0">
                                                     <thead>

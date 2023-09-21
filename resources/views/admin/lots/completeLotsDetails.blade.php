@@ -10,9 +10,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-header card-header-primary">
+                                <!-- <div class="card-header card-header-primary">
                                     <h4 class="card-title">Live bids</h4>
-                                </div>
+                                </div> -->
                                 <div class="card-body">
                                     @if (session('success'))
                                         <div class="alert alert-success" role="success">
@@ -21,7 +21,11 @@
                                     @endif
 
                                     <div class="row">
-
+                                    <div class="header_customer px-4">
+                                         <div >
+                                <h4 >Live Bids</h4>
+                            </div>
+                        </div>
                                         <div class="col-12 ">
                                             <div class="d-flex justify-content-between">
                                                 <p class="h5 ">Title : {{ $lots->title }}</p>

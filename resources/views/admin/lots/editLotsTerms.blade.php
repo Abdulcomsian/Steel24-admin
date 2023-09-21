@@ -8,12 +8,17 @@
                 <div class="col-md-12">
                     <div class="card ">
                         <!--Header-->
-                        <div class="card-header card-header-primary">
+                        <!-- <div class="card-header card-header-primary">
                             <h4 class="card-title">Edit Lot Terms </h4>
-                        </div>
+                        </div> -->
                         <!--End header-->
                         <!--Body-->
                         <div class="card-body">
+                        <div class="header_customer ">
+                                         <div >
+                                <h4 >Edit Lot Terms</h4>
+                            </div>
+                        </div>
                             <form method="POST" action="{{ url('admin/lotsterms/' . $lots->id) }}" class="form-horizontal">
                                 @csrf
                                 @method('PATCH')

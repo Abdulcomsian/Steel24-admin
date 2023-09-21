@@ -106,7 +106,7 @@ input:checked+.slider:before {
                                     </div>
                                 </div>
                                 <div class="">
-                                    <table class="table data-table table-striped">
+                                    <table class="table data-table table-striped w-100">
                                         <thead class="text-primary text-center">
                                             <th>ID</th>
                                             <th>Name</th>

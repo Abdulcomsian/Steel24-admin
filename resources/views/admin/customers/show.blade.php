@@ -6,13 +6,18 @@
                 <div class="col-md-12">
                     <div class="card">
                         <!--Header-->
-                        <div class="card-header card-header-primary m-0">
+                        <!-- <div class="card-header card-header-primary m-0">
                             <h4 class="card-title">Customers</h4>
-                        </div>
+                        </div> -->
                         <!--End header-->
                         <!--Body-->
                         <div class="card-body">
                             <div class="row">
+                                        <div class="header_customer px-4">
+                                         <div >
+                                <h4 >Customers</h4>
+                            </div>
+                        </div>
                                 <!-- first -->
                                 <div class="col-md-12">
                                     <div class="card card-user">

@@ -8,12 +8,16 @@
                 <div class="col-md-12">
                     <div class="card ">
                         <!--Header-->
-                        <div class="card-header card-header-primary">
+                        <!-- <div class="card-header card-header-primary">
                             <h4 class="card-title">Lot Materials </h4>
-                        </div>
+                        </div> -->
                         <!--End header-->
                         <!--Body-->
-                        <div class="card-body">
+                        <div class="card-body"><div class="header_customer ">
+                                         <div >
+                                <h4 >Lot Meterials</h4>
+                            </div>
+                        </div>
                             @if ($material_keys && $materialilist)
                                 <h4>Materials</h4>
                                 <div class="col-12">
