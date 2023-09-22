@@ -124,7 +124,7 @@
             serverSide: true,
             ajax: "{!! route('admin.payments.index') !!}",
             lengthChange: false, // This disables the "Show [X] entries" dropdown
-        searching: false, 
+        searching: true, 
             columns: [
                 { data: 'lotTitle', name: 'lotTitle' },
                 { data: 'customerName', name: 'customerName' },

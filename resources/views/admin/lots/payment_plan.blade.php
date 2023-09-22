@@ -118,7 +118,7 @@
         lengthChange: false, // This disables the "Show [X] entries" dropdown
         searching: false, 
     paging: true, // Enable pagination
-      searching: false, // Enable search box
+      searching: true, // Enable search box
       // Add more options as needed
     });
   });

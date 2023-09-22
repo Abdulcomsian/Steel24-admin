@@ -83,7 +83,7 @@
             serverSide: true,
             ajax:"{!! route('admin.categories') !!}",
             lengthChange: false, // This disables the "Show [X] entries" dropdown
-        searching: false, 
+        searching: true, 
             columns: [
                 {
                     data: 'id',
