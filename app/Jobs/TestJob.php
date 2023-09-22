@@ -31,7 +31,6 @@ class TestJob implements ShouldQueue
      */
     public function handle()
     {
-
         Mail::raw('Hi, welcome user!', function ($message) {
             $message->to("mnoumanb@gmail.com")
               ->subject("hi man");
