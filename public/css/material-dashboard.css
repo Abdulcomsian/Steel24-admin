@@ -14918,7 +14918,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   position: relative;
   float: right;
   /* width: calc(100% - 260px); */
-  width: 85%;
+  width: 82%;
   transition: 0.33s, cubic-bezier(0.685, 0.0473, 0.346, 1);
 }
 
@@ -18919,6 +18919,6 @@ td {
 }
 
 .sidebar.show {
-  width: 15%; /* Adjust the width as needed */
+  width: 18%; /* Adjust the width as needed */
   transition: width 0.3s ease;
 }

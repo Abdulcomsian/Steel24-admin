@@ -57,7 +57,7 @@ function handleResize() {
     
     if (screenWidth >= 991) {
         if (sidebar.classList.contains('show')) {
-              sidebar.style.width='15%';
+              sidebar.style.width='18%';
           }
         else{
           sidebar.style.width='0%';
@@ -92,8 +92,8 @@ toggleButton.addEventListener('click', function() {
   }
   else{
     if (!sidebar.classList.contains('show')) {
-        mainContent.style.width = 'calc(100% - 15%)'; // Adjust the width accordingly
-        sidebar.style.width='15%'
+        mainContent.style.width = 'calc(100% - 18%)'; // Adjust the width accordingly
+        sidebar.style.width='18%'
         sidebar.classList.add('show');
     } else {
       sidebar.classList.remove('show');
