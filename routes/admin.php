@@ -11,6 +11,7 @@ use App\Http\Controllers\LiveLotsController;
 use App\Http\Controllers\Admin\AccountNotificationController;
 use App\Http\Controllers\CsvImportController;
 use App\Http\Controllers\Admin\ProductImageController;
+use App\Http\Controllers\Admin\PaymentPlanController;
 
 // Dashboard
 Route::get('/', 'HomeController@index')->name('home');
@@ -111,7 +112,20 @@ Route::patch('/materialslots/{lots}', [LotsController::class, 'updatematerialslo
 // Route::get('/payment_plan', [LotsController::class, 'createlotsterms']);
 // Route::post('/addlotsterms', [LotsController::class, 'storelotsterms']);
 // Route::get('/addlotsterms/{lots}', [LotsController::class, 'createlotsterms']);
-Route::get('/payment_plan', [LotsController::class, 'payment_plan']);
+
+
+// payment_plan Routes
+
+Route::get('/payment_plan', [PaymentPlanController::class, 'index'])->name('payment_plan');
+Route::get('/payment_plan/create', [PaymentPlanController::class, 'create']);
+Route::get('/payment_plan/show/{payment_plan}', [PaymentPlanController::class, 'show']);
+Route::post('/payment_plan/store', [PaymentPlanController::class, 'store']);
+Route::get('/payment_plan/{payment_plan}/edit', [PaymentPlanController::class, 'edit']);
+Route::post('/payment_plan/{payment_plan}', [PaymentPlanController::class, 'update']);
+Route::post('/payment_plan/destroy/{payment_plan}', [PaymentPlanController::class, 'destroy']);
+
+
+// Route::get('/payment_plan', [LotsController::class, 'payment_plan']);
 Route::get('/addpayment_plan', [LotsController::class, 'createLotTerms']);
 Route::post('/addpayment_plan', [LotsController::class, 'storepaymentplan']);
 
