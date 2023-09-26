@@ -107,6 +107,7 @@
                                                             <img src="{{ asset('LotImages/'.$lots->uploadlotpicture) }}" alt="Lot Image" width="150" height="100">
                                                         </div>  
 
+                                                       
                                                         
 
                                                     </div>
@@ -127,6 +128,12 @@
                                                                 <h6>
                                                                 {{ $lots->lot_status }}</h6>
                                                         </div>
+
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                            <h6>Made IN</h6>
+                                                                <h6>
+                                                                {{ $lots->make_in }}</h6>
+                                                            </div>
                                                        
                                                     </div>
                                                 </div>

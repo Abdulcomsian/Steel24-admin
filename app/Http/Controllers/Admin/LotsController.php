@@ -73,8 +73,6 @@ class LotsController extends Controller
             
     }
 
-
-
     public function analyzeUrl(Request $request)
     {
         // dd($request->url);
@@ -111,6 +109,7 @@ class LotsController extends Controller
             "Price" => "required",
             'categoryId' => "required",
             "participate_fee" => "required",
+            "make_in" => "required",
             "paymentId" => "required",
         ]);
 
@@ -139,6 +138,7 @@ class LotsController extends Controller
             "Price",
             "categoryId",
             "participate_fee",
+            "make_in",
             "uploadlotpicture",
         ]);
         $input['lot_status'] = 'Upcoming';
@@ -157,7 +157,6 @@ class LotsController extends Controller
 
     public function addmaterialslots(lots $lots, Request $request)
     {
-
 
         $data = $request->validate([
             "lotid" => 'required',
@@ -624,6 +623,7 @@ public function update(Request $request, lots $lots)
         'categoryId' => "required",
         "Price" => "required",
         "participate_fee" => 'required',
+        "make_in" => 'required',
         'lot_status' => 'required',
     ];
 
