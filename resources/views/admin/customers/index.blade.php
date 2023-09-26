@@ -105,8 +105,8 @@ input:checked+.slider:before {
                                             </svg>New</a>
                                     </div>
                                 </div>
-                                <div class="">
-                                    <table class="table data-table table-striped">
+                                <div class="table-responsive">
+                                    <table class="table data-table table-striped w-100">
                                         <thead class="text-primary text-center">
                                             <th>ID</th>
                                             <th>Name</th>
@@ -144,7 +144,7 @@ $(document).ready(function() {
         serverSide: true,
         ajax: "{!! route('admin.customers.index') !!}",
         lengthChange: false, // This disables the "Show [X] entries" dropdown
-        searching: false, 
+        searching: true, 
         columns: [
             {
                 data: 'id',

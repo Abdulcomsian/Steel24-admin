@@ -11,7 +11,7 @@
     </style>
 <div class="navbar">
     <div>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler toggle-button" id="myButton" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
         
             <span class="navbar-toggler-icon icon-bar"></span>
             <span class="navbar-toggler-icon icon-bar"></span>
@@ -48,5 +48,60 @@
 </div>
 
 <script>
+var mainContent = document.querySelector('.main-panel');
+var toggleButton = document.querySelector('.toggle-button');
+var sidebar = document.querySelector('.sidebar');
+
+function handleResize() {
+    var screenWidth = window.innerWidth;
     
+    if (screenWidth >= 991) {
+        if (sidebar.classList.contains('show')) {
+              sidebar.style.width='18%';
+          }
+        else{
+          sidebar.style.width='0%';
+        }
+    }
+    else
+    {
+      if (sidebar.classList.contains('show')) {
+              sidebar.style.width='50%';
+          }
+        else{
+          sidebar.style.width='0%';
+        }
+    }
+}
+
+window.addEventListener('resize', handleResize);
+
+var computedStyles = window.getComputedStyle(sidebar);
+
+toggleButton.addEventListener('click', function() {
+  if (window.innerWidth <= 991) {
+    if (computedStyles.getPropertyValue('transform')==='none') {
+      sidebar.style.transform = 'translate3d(260px, 0, 0)';
+      sidebar.style.width = '0%';
+    }
+    else{
+      sidebar.style.transform = 'none';
+      sidebar.style.width = '50%';
+    }
+   
+  }
+  else{
+    if (!sidebar.classList.contains('show')) {
+        mainContent.style.width = 'calc(100% - 18%)'; // Adjust the width accordingly
+        sidebar.style.width='18%'
+        sidebar.classList.add('show');
+    } else {
+      sidebar.classList.remove('show');
+        mainContent.style.width = '100%';
+        sidebar.style.width='0%'
+    }
+  }
+});
 </script>
+
+

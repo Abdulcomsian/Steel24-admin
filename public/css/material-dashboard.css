@@ -54,7 +54,7 @@ section {
 
 body {
   margin: 0;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+   font-family: "Fira Sans";
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -458,7 +458,8 @@ section {
 
 body {
   margin: 0;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  /* font-family: "Roboto", "Helvetica", "Arial", sans-serif; */
+  font-family: "Fira Sans";
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
@@ -2089,6 +2090,9 @@ pre code {
   .table-responsive-sm>.table-bordered {
     border: 0;
   }
+    .add_New_Button {
+        padding: 10px 15px !important;
+    }
 }
 
 @media (max-width: 767.98px) {
@@ -5645,7 +5649,7 @@ button.close {
   z-index: 1070;
   display: block;
   margin: 0;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+   font-family: "Fira Sans";
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -5770,7 +5774,7 @@ button.close {
   z-index: 1060;
   display: block;
   max-width: 276px;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+   font-family: "Fira Sans";
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -8972,8 +8976,6 @@ a.text-dark:focus {
   background-color: #434b54;
   border-color: #00bcd4;
   /* box-shadow: 0 2px 2px 0 rgba(0, 188, 212, 0.14), 0 3px 1px -2px rgba(0, 188, 212, 0.2), 0 1px 5px 0 rgba(0, 188, 212, 0.12); */
-
-  
 }
 
 .btn.btn-info:hover {
@@ -13685,7 +13687,8 @@ h6,
 .h2,
 .h3,
 .h4 {
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  /* font-family: "Roboto", "Helvetica", "Arial", sans-serif; */
+  font-family: "Fira Sans";
   font-weight: 300;
   line-height: 1.5em;
 }
@@ -14500,8 +14503,10 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   width: 15%;
   z-index: 2;
   background-color: #212b36;
-  transition: margin .25s ease-out;
+  /* transition: margin .25s ease-out; */
   display: block;
+    overflow: hidden;
+    transition: width 0.3s ease;
 }
 
 .sidebar .caret {
@@ -14913,7 +14918,7 @@ fieldset[disabled] .form-group.is-focused .togglebutton label {
   position: relative;
   float: right;
   /* width: calc(100% - 260px); */
-  width: 85%;
+  width: 82%;
   transition: 0.33s, cubic-bezier(0.685, 0.0473, 0.346, 1);
 }
 
@@ -18906,4 +18911,14 @@ td {
   overflow: hidden;
   text-overflow: ellipsis;
 
+}
+
+.sidebar_hide {
+  transform: translateX(-100%); /* Move the sidebar off-screen to the left */
+  transition: transform 0.70s cubic-bezier(0.685, 0.0473, 0.346, 1);
+}
+
+.sidebar.show {
+  width: 18%; /* Adjust the width as needed */
+  transition: width 0.3s ease;
 }

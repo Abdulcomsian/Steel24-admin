@@ -12,9 +12,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-header card-header-primary">
+                                <!-- <div class="card-header card-header-primary">
                                     <h4 class="card-title">Payment Plan</h4>
-                                </div>
+                                </div> -->
                                 <div class="card-body">
                                     @if (session('success'))
                                         <div class="alert alert-success" role="success">
@@ -23,7 +23,12 @@
                                     @endif
                                      <!--Footer-->
                                      <div class="row">
-                                        <div class="col-12 text-right">
+                                        <div class="col-12 text-right header_customer">
+                                        <div>
+                                         <div >
+                                <h4 >Payment Plan</h4>
+                            </div>
+                        </div>
                                      {{-- <div class="card-footer ml-auto mr-auto">
                                         <a href="{{ url('admin/lots') }}" class="btn btn-primary">Back</a> --}}
                                         <a href="{{ url('admin/addpayment_plan') }}" class="btn btn-primary add_New_Button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="mr-2" fill="currentColor" viewBox="0 0 16 16">
@@ -110,6 +115,8 @@
 <script>
   $(document).ready(function() {
     $('.data-table').DataTable({
+        lengthChange: false, // This disables the "Show [X] entries" dropdown
+        searching: false, 
     paging: true, // Enable pagination
       searching: true, // Enable search box
       // Add more options as needed

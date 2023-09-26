@@ -7,9 +7,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-header card-header-primary">
+                                <!-- <div class="card-header card-header-primary">
                                     <h4 class="card-title">Payments</h4>
-                                </div>
+                                </div> -->
                                 <div class="card-body">
                                     @if (session('success'))
                                         <div class="alert alert-success" role="success">
@@ -21,9 +21,14 @@
                                             <a href="{{ url('admin/payments/create') }}"
                                                 class="btn btn-sm btn-facebook">Add</a>
                                         </div> --}}
+                                        <div class="header_customer">
+                                         <div >
+                                <h4 >Payments</h4>
+                            </div>
+                        </div>
                                     </div>
-                                    <div ><!-- remove class="table-responsive"-->
-                                        <table class="table data-table table-striped">
+                                    <div class="table-responsive"><!-- remove class="table-responsive"-->
+                                        <table class="table data-table table-striped w-100">
                                             <thead class="text-primary text-center">
                                                 <th>Lot</th>
                                                 <th>Customer</th>
@@ -118,6 +123,8 @@
             processing: true,
             serverSide: true,
             ajax: "{!! route('admin.payments.index') !!}",
+            lengthChange: false, // This disables the "Show [X] entries" dropdown
+        searching: true, 
             columns: [
                 { data: 'lotTitle', name: 'lotTitle' },
                 { data: 'customerName', name: 'customerName' },

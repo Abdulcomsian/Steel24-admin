@@ -8,19 +8,24 @@
                 @csrf
 
                 <div class="card card-login card-hidden mb-3">
-                    <div class="card-header card-header-primary text-center">
+                    <!-- <div class="card-header card-header-primary text-center">
                         <h4 class="card-title"><strong>{{ __('Login') }}</strong></h4>
-                    </div>
+                    </div> -->
                     <div class="card-body">
+                    <div class="header_customer justify-content-center">
+                                         <div >
+                                <h4 ><strong>{{ __('Login') }}</strong></h4>
+                            </div>
+                        </div>
                         <p class="card-description text-center">{{ __('Enter your credentials ') }}</p>
                         <div class="bmd-form-group{{ $errors->has('email') ? ' has-danger' : '' }}">
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">
-                                        <i class="material-icons">email</i>
+                                        <!-- <i class="material-icons">email</i> -->
                                     </span>
                                 </div>
-                                <input type="email" name="email" class="form-control" placeholder="{{ __('Email...') }}"
+                                <input type="email" name="email" class="form_customer" placeholder="{{ __('Email...') }}"
                                     value="{{ old('email', null) }}" required autocomplete="email" autofocus>
                             </div>
                             @if ($errors->has('email'))
@@ -50,10 +55,10 @@
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text">
-                                        <i class="material-icons">lock_outline</i>
+                                        <!-- <i class="material-icons">lock_outline</i> -->
                                     </span>
                                 </div>
-                                <input type="password" name="password" id="password" class="form-control"
+                                <input type="password" name="password" id="password" class="form_customer"
                                     placeholder="{{ __('Password...') }}" required autocomplete="current-password">
                             </div>
                             @if ($errors->has('password'))
@@ -74,7 +79,7 @@
                         </div>
                     </div>
                     <div class="card-footer justify-content-center">
-                        <button type="submit" class="btn btn-primary btn-link btn-lg">{{ __('Log in') }}</button>
+                        <button type="submit" class="btn btn-primary ">{{ __('Log in') }}</button>
                     </div>
                 </div>
             </form>

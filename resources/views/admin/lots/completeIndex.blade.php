@@ -7,20 +7,24 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-header card-header-primary">
+                                <!-- <div class="card-header card-header-primary">
                                     <h4 class="card-title">Complete Lots</h4>
-                                </div>
+                                </div> -->
                                 <div class="card-body">
                                     @if (session('success'))
                                         <div class="alert alert-success" role="success">
                                             {{ session('success') }}
                                         </div>
                                     @endif
-
+                                    <div class="header_customer">
+                                         <div >
+                                <h4 >Complete Lots</h4>
+                            </div>
+                        </div>
                                
 
-                                    <div > <!-- remove class="table-responsive" -->
-                                        <table class="table data-table table-striped">
+                                    <div class="table-responsive"> <!-- remove class="table-responsive" -->
+                                        <table class="table data-table table-striped w-100">
                                             <thead class="text-primary text-center">
                                                 <th>ID</th>
                                                 <th>Title</th>
@@ -70,7 +74,8 @@
             processing: true,
             serverSide: true,
             ajax: "{!! route('admin.expirelots') !!}",
-
+            lengthChange: false, // This disables the "Show [X] entries" dropdown
+        searching: true, 
             columns: [{
                     data: 'id',
                     name: 'id'

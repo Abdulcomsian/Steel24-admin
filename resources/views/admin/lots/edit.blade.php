@@ -48,13 +48,18 @@
                         @method('PATCH')
                         <div class="card">
                             <!--Header-->
-                            <div class="card-header card-header-primary m-0">
+                            <!-- <div class="card-header card-header-primary m-0">
                                 <h4 class="card-title">Edit Lot</h4>
-                            </div>
+                            </div> -->
                             <!--End header-->
                             <!--Body-->
 
                             <div class="card-body">
+                            <div class="header_customer ">
+                                         <div >
+                                <h4 >Edit Lots</h4>
+                            </div>
+                        </div>
                                 <div class="form-row">
                                     <!-- <label for="title" class="col-sm-2 col-form-label">Title</label> -->
                                     <div class="col-sm-4">
@@ -136,10 +141,18 @@
                                             value="{{ $lots ? $lots->Price : '' }}" min="0" autocomplete="off" placeholder="Start Price"
                                             autofocus>
                                     </div>
+                                    
                                     <!-- <label for="participate_fee" class="col-sm-2 col-form-label">Participation Fee</label> -->
                                     <div class="col-sm-4">
                                         <input type="number" class="form_customer" step="0.01" id="participate_fee" placeholder="Participation Fee"
                                             min="0" name="participate_fee"
+                                            value="{{ $lots ? $lots->participate_fee : '' }}" autocomplete="off"
+                                            autofocus>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form_customer" step="0.01" id="Made_IN" placeholder="Made IN"
+                                            min="0" name="Made IN"
                                             value="{{ $lots ? $lots->participate_fee : '' }}" autocomplete="off"
                                             autofocus>
                                     </div>

@@ -1,5 +1,16 @@
 @extends('admin.layouts.main', ['activePage' => 'categories', 'titlePage' => 'Categories'])
 @section('content')
+<style>
+    .header_customer {
+    display:flex;
+    justify-content:space-between;
+    align-items: center;
+}
+.header_customer h4 {
+    font-size: 22px;
+    font-weight: 500;
+}
+    </style>
     <div class="content">
         <div class="container-fluid">
             <div class="row">
@@ -7,9 +18,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-header card-header-primary">
+                                <!-- <div class="card-header card-header-primary">
                                     <h4 class="card-title">Categories</h4>
-                                </div>
+                                </div> -->
                                 <div class="card-body">
                                     @if (session('success'))
                                         <div class="alert alert-success" role="success">
@@ -17,9 +28,15 @@
                                         </div>
                                     @endif
                                     <div class="row">
-                                        <div class="col-12 text-right">
+                                    
+                                        <div class="col-12 text-right header_customer">
+                                        <div>
+                                         <div >
+                                <h4 >Categories</h4>
+                            </div>
+                        </div>
                                             <a href="{{ url('admin/categories/create') }}"
-                                            class="btn btn-primary add_New_Button"
+                                            class="btn btn-outline-info add_New_Button"
                                            ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="mr-2"
                                                 fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
                                                 <path fill-rule="evenodd"
@@ -27,8 +44,8 @@
                                             </svg>New</a>
                                         </div>
                                     </div>
-                                    <div ><!-- remove class="table-responsive" -->
-                                        <table class="table data-table table-striped">
+                                    <div class="table-responsive"><!-- remove class="table-responsive" -->
+                                        <table class="table data-table table-striped w-100">
                                             <thead class="text-primary text-center">
                                                 <th>ID</th>
                                                 <th>Title</th>
@@ -65,7 +82,8 @@
             processing: true,
             serverSide: true,
             ajax:"{!! route('admin.categories') !!}",
-
+            lengthChange: false, // This disables the "Show [X] entries" dropdown
+        searching: true, 
             columns: [
                 {
                     data: 'id',

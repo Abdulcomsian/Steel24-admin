@@ -8,12 +8,17 @@
                 <div class="col-md-12">
                     <div class="card ">
                         <!--Header-->
-                        <div class="card-header card-header-primary">
+                        <!-- <div class="card-header card-header-primary">
                             <h4 class="card-title">Add Lot Material </h4>
-                        </div>
+                        </div> -->
                         <!--End header-->
                         <!--Body-->
                         <div class="card-body">
+                        <div class="header_customer ">
+                                         <div >
+                                <h4 >Add Lot Material</h4>
+                            </div>
+                        </div>
 
                             <div class="row" id="headerForm">
                                 <label for="participate_fee" class="col-2 col-form-label col-form-label">Add

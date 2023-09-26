@@ -6,13 +6,17 @@
                 <div class="col-md-12">
                     <div class="card">
                         <!--Header-->
-                        <div class="card-header card-header-primary">
+                        <!-- <div class="card-header card-header-primary">
                             <h4 class="card-title">Customer Balance History</h4>
-                        </div>
+                        </div> -->
                         <!--End header-->
                         <!--Body-->
                         <div class="card-body">
-
+                        <div class="header_customer">
+                                         <div >
+                                <h4  >Customer Balance History</h4>
+                            </div>
+                        </div>
                             <table  class="table data-table table-striped">
                             <thead class="text-primary text-center">
                                     <tr>

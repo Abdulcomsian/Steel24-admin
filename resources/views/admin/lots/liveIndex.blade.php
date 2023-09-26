@@ -7,18 +7,25 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-header card-header-primary">
+                                <!-- <div class="card-header card-header-primary">
                                     <h4 class="card-title">Live Lots</h4>
-                                </div>
+                                </div> -->
                                 <div class="card-body">
                                     @if (session('success'))
                                         <div class="alert alert-success" role="success">
                                             {{ session('success') }}
                                         </div>
                                     @endif
-                                    <div class="d-flex justify-content-end">
+                                    <div class="header_customer">
+                                    
+                                         <div >
+                                <h4 >Live Lots</h4>
+                            </div>
+                            <div class="d-flex justify-content-end">
                                         <a href="pushonfirbase" class="btn btn-primary add_New_Button">Start Lots</a>
                                     </div>
+                        </div>
+                                    
                                     {{-- <h4 class="card-title">Lot Sequence</h4> --}}
                                     {{-- <form method="post" action="livelotsequencechange">
                                         @csrf
@@ -126,6 +133,8 @@
     $('.data-table').DataTable({
       paging: true, // Enable pagination
       searching: true, // Enable search box
+      lengthChange: false, // This disables the "Show [X] entries" dropdown
+        searching: true, 
       // Add more options as needed
     });
   });

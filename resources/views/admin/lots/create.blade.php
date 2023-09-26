@@ -52,12 +52,16 @@
                         @csrf
                         <div class="card ">
                             <!--Header-->
-                            <div class="card-header card-header-primary m-0">
+                            <!-- <div class="card-header card-header-primary m-0">
                                 <h4 class="card-title">Lots</h4>
-                            </div>
+                            </div> -->
                             <!--End header-->
                             <!--Body-->
-                            <div class="card-body">
+                            <div class="card-body"><div class="header_customer ">
+                                         <div >
+                                <h4 >Lots</h4>
+                            </div>
+                        </div>
                             <div class="form-row " >
                                     <!-- <label for="title" class="col-sm-2 col-form-label">Title</label> -->
                                     <div class="col-sm-4">
@@ -138,6 +142,11 @@
                                     <div class="col-sm-4">
                                         <input type="number" class="form_customer" step="0.01" id="participate_fee" placeholder="Participation Fee"
                                             min="0" name="participate_fee" autocomplete="off" autofocus>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form_customer" step="0.01" id="Made_IN" placeholder="Made IN"
+                                            min="0" name="Made IN" autocomplete="off" autofocus>
                                     </div>
                             
                                     <!-- <label for="paymentId" class="col-sm-2 col-form-label">Payment Terms</label> -->

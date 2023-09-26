@@ -8,12 +8,17 @@
                 <div class="col-md-12">
                     <div class="card">
                         <!--Header-->
-                        <div class="card-header card-header-primary m-0">
+                        <!-- <div class="card-header card-header-primary m-0">
                             <h4 class="card-title">Add Lot Terms</h4>
-                        </div>
+                        </div> -->
                         <!--End header-->
                         <!--Body-->
                         <div class="card-body">
+                        <div class="header_customer ">
+                                         <div >
+                                <h4 >Add Lot terms</h4>
+                            </div>
+                        </div>
                             <form method="POST" action="{{ url('admin/addpayment_plan') }}" class="form-horizontal">
                                 @csrf
                                 <div class="form-row">

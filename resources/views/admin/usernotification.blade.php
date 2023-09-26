@@ -125,16 +125,18 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-header card-header-primary">
-                                    <h4 class="card-title">Admin Notification</h4>
-                                </div>
                                 <div class="card-body">
                                     @if (session('success'))
                                         <div class="alert alert-success" role="success">
                                             {{ session('success') }}
                                         </div>
                                     @endif
-                                    <h4 class="card-title">Lot Sequence</h4>
+                                    <div>
+                                         <div >
+                                <h4 style="font-size: 22px;
+    font-weight: 500;">Admin Notification</h4>
+                            </div>
+                        </div>
                                     <div class="table-responsive">
                                         <table class="table data-table">
                                             <thead class="text-primary text-center">
@@ -193,42 +195,14 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 <script type="text/javascript">
-    // $(document).ready(function() {
-    //     var table = $('.data-table').DataTable({
-    //         processing: true,
-    //         serverSide: true,
-    //         ajax: "{!! route('admin.livelots') !!}",
-
-    //         columns: [{
-    //                 data: 'id',
-    //                 name: 'id'
-    //             },
-    //             {
-    //                 data: 'title',
-    //                 name: 'title'
-    //             },
-    //             {
-    //                 data: 'StartDate',
-    //                 name: 'StartDate'
-    //             },
-
-    //             {
-    //                 data: 'EndDate',
-    //                 name: 'EndDate'
-    //             },
-    //             {
-    //                 data: 'lot_status',
-    //                 name: 'lot_status'
-    //             },
-    //             {
-    //                 data: null,
-    //                 render: function(data, type, row) {
-    //                     return (`<div><a href="{{ url('admin/live_lots_bids/${data.id}') }}"class="btn btn-info"><i class="material-icons">person</i></a>
-    //                 `);
-    //                 },
-    //             }
-    //         ]
-    //     });
-    // });
+$(document).ready(function() {
+    $('.data-table').DataTable({
+      paging: true, // Enable pagination
+      searching: true, // Enable search box
+      lengthChange: false, // This disables the "Show [X] entries" dropdown
+        searching: true, 
+      // Add more options as needed
+    });
+  });
 </script>
 

@@ -13,9 +13,9 @@ var  lotid = <?php echo $lots->id?>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card">
-                                <div class="card-header card-header-primary">
+                                <!-- <div class="card-header card-header-primary">
                                     <h4 class="card-title">Live Bids</h4>
-                                </div>
+                                </div> -->
                                 <div class="card-body">
                                     @if (session('success'))
                                         <div class="alert alert-success" role="success">
@@ -23,7 +23,11 @@ var  lotid = <?php echo $lots->id?>
                                         </div>
                                     @endif
                                     <div class="row">
-
+                                    <div class="header_customer px-4">
+                                         <div >
+                                <h4 >Live Bids</h4>
+                            </div>
+                        </div>
                                         <div class="col-12 ">
                                             <div class="d-flex justify-content-between">
                                                 <div>
