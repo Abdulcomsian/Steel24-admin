@@ -9,25 +9,32 @@
                         @csrf
                         <div class="card">
                             <!--Header-->
-                            <div class="card-header card-header-primary">
+                            <!-- <div class="card-header card-header-primary">
                                 <h4 class="card-title">Edit categories</h4>
-                            </div>
+                            </div> -->
                             <!--End header-->
                             <!--Body-->
                             <div class="card-body">
+                                <div class="header_customer ">
+                                         <div >
+                                <h4 >Edit categories</h4>
+                            </div>
+                        </div>
+                                <div>
                                 <div class="row">
-                                    <label for="title" class="col-sm-2 col-form-label">Title</label>
+                                    <!-- <label for="title" class="col-sm-2 col-form-label">Title</label> -->
                                     <div class="col-sm-7">
-                                        <input type="text" class="form-control" name="title" autocomplete="off"
+                                        <input type="text" class="form_customer" name="title" placeholder="Title" autocomplete="off"
                                             value="{{ $categories->title }}" autofocus>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <label for="description" class="col-sm-2 col-form-label">Description</label>
+                                    <!-- <label for="description" class="col-sm-2 col-form-label">Description</label> -->
                                     <div class="col-sm-7">
-                                        <textarea type="text" class="form-control" name="description" autocomplete="off" autofocus>{{ $categories->description }}</textarea>
+                                        <textarea type="text" class="form_customer" placeholder="Description" name="description" autocomplete="off" autofocus>{{ $categories->description }}</textarea>
                                     </div>
                                 </div>
+</div>
                                 {{-- <div class="row">
                                     <label for="categoryId" class="col-sm-2 col-form-label">Category</label>
                                     <div class="col-sm-7">
