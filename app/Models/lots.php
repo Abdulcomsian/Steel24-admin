@@ -36,6 +36,7 @@ class lots extends Model
         'lot_status',
         'customFields',
         'participate_fee',
+        'make_in',
         'ReStartDate',
         'ReEndDate',
         'LiveSequenceNumber',

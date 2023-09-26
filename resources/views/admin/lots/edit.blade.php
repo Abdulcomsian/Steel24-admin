@@ -34,7 +34,8 @@
             background: white !important;
         }
 
-        ..bootstrap-select>.dropdown-toggle.bs-placeholder:hover {
+        ..bootstrap-select>.dropdown-toggle.bs-placeholder:hover 
+        {
             color:
         }
     </style>
@@ -151,9 +152,9 @@
                                     </div>
 
                                     <div class="col-sm-4">
-                                        <input type="text" class="form_customer" step="0.01" id="Made_IN" placeholder="Made IN"
-                                            min="0" name="Made IN"
-                                            value="{{ $lots ? $lots->participate_fee : '' }}" autocomplete="off"
+                                        <input type="text" class="form_customer" step="0.01" id="make_in" placeholder="Made IN"
+                                            min="0" name="make_in"
+                                            value="{{ $lots ? $lots->make_in : '' }}" autocomplete="off"
                                             autofocus>
                                     </div>
 
