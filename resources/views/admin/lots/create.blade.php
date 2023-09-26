@@ -143,6 +143,11 @@
                                         <input type="number" class="form_customer" step="0.01" id="participate_fee" placeholder="Participation Fee"
                                             min="0" name="participate_fee" autocomplete="off" autofocus>
                                     </div>
+
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form_customer" step="0.01" id="Made_IN" placeholder="Made IN"
+                                            min="0" name="Made IN" autocomplete="off" autofocus>
+                                    </div>
                             
                                     <!-- <label for="paymentId" class="col-sm-2 col-form-label">Payment Terms</label> -->
                                     <div class="col-sm-4">
