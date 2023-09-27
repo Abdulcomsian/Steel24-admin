@@ -28,7 +28,7 @@
                                                         <th scope="row">{{ $bid->id }}</th>
                                                         <td>{{ $bid->customerName }}</td>
                                                         <td>{{ $bid->amount }}</td>
-                                                        <td>{{ $bid->bidTime }}</td>
+                                                        <td> @customDateFormat($bid->bidTime)</td>
                                                         <td>
                                                             <a
                                                                 href="/bid/{{ $bid->id }}"class="btn btn-primary btn-sm">

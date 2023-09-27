@@ -34,7 +34,7 @@
                                             <td>{{ $record->action }}</td>
                                             <td>{{ $record->actionAmount }}</td>
                                             <td>{{ $record->finalAmount }}</td>
-                                            <td>{{ $record->date }}</td>
+                                            <td>@customDateFormat($record->date)</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

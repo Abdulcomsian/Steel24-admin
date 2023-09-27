@@ -101,7 +101,8 @@
                                                                         <div
                                                                             class="d-flex flex-column justify-content-center">
                                                                             <h6 class="mb-0 text-sm">
-                                                                                {{ $payment->created_at }}</h6>
+                                                                                @customDateFormat($payment->created_at)
+                                                                            </h6>
                                                                         </div>
                                                                     </div>
                                                                 </td>

@@ -1,3 +1,5 @@
+{{-- {{ dd(date('M d, Y')); }} --}}
+
 @extends('admin.layouts.main', ['activePage' => 'lots', 'titlePage' => 'Lots'])
 @section('content')
     <div class="content">
@@ -107,7 +109,23 @@
                 },
                 {
                     data: 'StartDate',
-                    name: 'StartDate'
+                    "render": function (data, type, full, meta) {
+                   
+                    if (type === 'display') {
+                        var date = new Date(data);
+                        var day = date.getDate();
+                        var month = date.getMonth();
+                        var year = date.getFullYear();
+                        var hours = date.getHours();
+                        var minutes = date.getMinutes();
+                        
+                       
+                        var formattedDate = day + '-' + month + '-' + year + ' ' + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
+                        
+                        return formattedDate;
+                    }
+                    return data; 
+                }
                 },
                 {
                     data: 'Price',
@@ -128,6 +146,7 @@
             ]
         });
     });
+
 </script>
 <style>
     .sorting:before,

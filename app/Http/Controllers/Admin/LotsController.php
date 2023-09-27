@@ -704,6 +704,10 @@ public function update(Request $request, lots $lots)
                 ->make(true);
         }
 
+        foreach ($livelots as $item) {
+            $item->formattedStartDate = \Carbon\Carbon::parse($item->StartDate)->format('jS M, Y H:i');
+        }
+
         return view('admin.lots.completeIndex')->with('livelots', $livelots);
     }
 

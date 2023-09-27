@@ -8,8 +8,8 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <!-- <div class="card-header card-header-primary">
-                                    <h4 class="card-title">Complete Lots</h4>
-                                </div> -->
+                                            <h4 class="card-title">Complete Lots</h4>
+                                        </div> -->
                                 <div class="card-body">
                                     @if (session('success'))
                                         <div class="alert alert-success" role="success">
@@ -17,11 +17,11 @@
                                         </div>
                                     @endif
                                     <div class="header_customer">
-                                         <div >
-                                <h4 >Complete Lots</h4>
-                            </div>
-                        </div>
-                               
+                                        <div>
+                                            <h4>Complete Lots</h4>
+                                        </div>
+                                    </div>
+
 
                                     <div class="table-responsive"> <!-- remove class="table-responsive" -->
                                         <table class="table data-table table-striped w-100">
@@ -75,7 +75,7 @@
             serverSide: true,
             ajax: "{!! route('admin.expirelots') !!}",
             lengthChange: false, // This disables the "Show [X] entries" dropdown
-        searching: true, 
+            searching: true,
             columns: [{
                     data: 'id',
                     name: 'id'
@@ -86,12 +86,47 @@
                 },
                 {
                     data: 'StartDate',
-                    name: 'StartDate'
+                    "render": function(data, type, full, meta) {
+
+                        if (type === 'display') {
+                            var date = new Date(data);
+                            var day = date.getDate();
+                            var month = date.getMonth();
+                            var year = date.getFullYear();
+                            var hours = date.getHours();
+                            var minutes = date.getMinutes();
+
+
+                            var formattedDate = day + '-' + month + '-' +
+                                year + ' ' + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
+
+                            return formattedDate;
+                        }
+                        return data;
+                    }
+                    // name: 'StartDate'
                 },
 
                 {
                     data: 'EndDate',
-                    name: 'EndDate'
+                    "render": function(data, type, full, meta) {
+
+                        if (type === 'display') {
+                            var date = new Date(data);
+                            var day = date.getDate();
+                            var month = date.getMonth();
+                            var year = date.getFullYear();
+                            var hours = date.getHours();
+                            var minutes = date.getMinutes();
+
+
+                            var formattedDate = day + '-' + month + '-' +
+                                year + ' ' + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
+
+                            return formattedDate;
+                        }
+                        return data;
+                    }
                 },
                 {
                     data: 'lot_status',
@@ -107,4 +142,5 @@
             ]
         });
     });
+
 </script>

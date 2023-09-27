@@ -1,11 +1,11 @@
 @extends('admin.layouts.main', ['activePage' => 'bids', 'titlePage' => 'Live Lots'])
 @section('content')
-<script>
-var  lotid = <?php echo $lots->id?> 
-</script>
-    <script  type="module"   src="{{ asset('js/app.js') }}"></script>
-    <script  type="module"  src="{{ asset('js/customeJs.js') }}"></script>
-    
+    <script>
+        var lotid = <?php echo $lots->id; ?>
+    </script>
+    <script type="module" src="{{ asset('js/app.js') }}"></script>
+    <script type="module" src="{{ asset('js/customeJs.js') }}"></script>
+
     <div class="content">
         <div class="container-fluid">
             <div class="row">
@@ -14,8 +14,8 @@ var  lotid = <?php echo $lots->id?>
                         <div class="col-md-12">
                             <div class="card">
                                 <!-- <div class="card-header card-header-primary">
-                                    <h4 class="card-title">Live Bids</h4>
-                                </div> -->
+                                        <h4 class="card-title">Live Bids</h4>
+                                    </div> -->
                                 <div class="card-body">
                                     @if (session('success'))
                                         <div class="alert alert-success" role="success">
@@ -23,11 +23,11 @@ var  lotid = <?php echo $lots->id?>
                                         </div>
                                     @endif
                                     <div class="row">
-                                    <div class="header_customer px-4">
-                                         <div >
-                                <h4 >Live Bids</h4>
-                            </div>
-                        </div>
+                                        <div class="header_customer px-4">
+                                            <div>
+                                                <h4>Live Bids</h4>
+                                            </div>
+                                        </div>
                                         <div class="col-12 ">
                                             <div class="d-flex justify-content-between">
                                                 <div>
@@ -88,16 +88,13 @@ var  lotid = <?php echo $lots->id?>
                                         <br>
                                         <div class="col-12 ">
                                             <h4 class="d-flex justify-content-between">
-
-
-                                                <span> Started at : <span
-                                                        id="lotstarttime">{{ $lots->StartDate }}</span></span>
+                                                <span> Started at : <span id="lotstarttime"
+                                                       > {{ $lots->StartDate }}</span></span>
                                                 <span class="font-weight-bold ">
                                                     <span id="remainingTime"></span>
                                                 </span>
-                                                <span> End at : <span id="lotendtime">
-                                                        {{ $lots->EndDate }}</span></span>
-
+                                                <span> End at : <span id="lotendtime"
+                                                        >{{ $lots->EndDate }}</span></span>
                                             </h4>
                                         </div>
                                     </div>
@@ -105,7 +102,6 @@ var  lotid = <?php echo $lots->id?>
                                     @if ($lots->lot_status == 'Sold' || $lots->lot_status == 'STA' || $lots->lot_status == 'Expired')
                                         <div class="align-items-center d-flex justify-content-around w-100">
                                             @if ($lotbids && $lots->lot_status == 'STA')
-                                           
                                                 @if (count($paymentRequest))
                                                     <h4 class="font-weight-bold"> Payment request sent to
                                                         {{ $lotbids[0]->customerName }} for
@@ -173,7 +169,7 @@ var  lotid = <?php echo $lots->id?>
                                                         <th scope="row">0</th>
                                                         <td>Initial Price</td>
                                                         <td>{{ $lots->Price }}</td>
-                                                        <td>{{ $lots->StartDate }}</td>
+                                                        <td>@customDateFormat($lots->StartDate)</td>
 
                                                     </tr>
                                                 @endif
@@ -182,7 +178,7 @@ var  lotid = <?php echo $lots->id?>
                                                         <th scope="row">{{ $bid->id }}</th>
                                                         <td>{{ $bid->customerName }}</td>
                                                         <td>{{ $bid->amount }}</td>
-                                                        <td>{{ $bid->bidTime }}</td>
+                                                        <td> @customDateFormat($bid->bidTime)</td>
                                                         <td>
                                                             <a href="/admin/customers/{{ $bid->customerId }}"
                                                                 class="btn btn-primary btn-sm">
@@ -207,30 +203,27 @@ var  lotid = <?php echo $lots->id?>
     </div>
     <script>
         var lotStatus = document.getElementById("lotStatus").innerHTML;
-        var myfunc = setInterval(function() 
-        {
+        var myfunc = setInterval(function() {
                 var startTime = new Date(document.getElementById("lotstarttime").innerHTML).getTime();
+                // var startTime = new Date(document.getAttribute("lotstarttime")).getTime();
+                // console.log(startTime);
                 var endTime = new Date(document.getElementById("lotendtime").innerHTML).getTime();
                 var now = new Date().getTime();
                 var timeleft = null;
 
-                if (lotStatus == 'Upcoming' && startTime <= now) 
-                {
+                if (lotStatus == 'Upcoming' && startTime <= now) {
 
                     document.getElementById('btnStartLot').click();
                     clearInterval(myfunc);
-                } else if (lotStatus != 'Expired' && lotStatus != 'pause') 
-                {
-                    if (lotStatus != 'live' && lotStatus != 'Restart') 
-                    {
+                } else if (lotStatus != 'Expired' && lotStatus != 'pause') {
+                    if (lotStatus != 'live' && lotStatus != 'Restart') {
                         timeleft = startTime - now;
-                    } else 
-                    {
+                    } else {
                         timeleft = endTime - now;
                     }
 
                     var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
-                    var hours = (days*24)+Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    var hours = (days * 24) + Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                     var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
                     var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
 
@@ -241,27 +234,23 @@ var  lotid = <?php echo $lots->id?>
                         " : " + seconds);
 
 
-                    if (minutes < 1 && hours < 1 && timeleft > 0) 
-                    {
+                    if (minutes < 1 && hours < 1 && timeleft > 0) {
                         document.getElementById("remainingTime").style.color = "red";
                     }
 
 
-                    if (minutes < 1 && hours < 1 && timeleft < 0 && (lotStatus == 'live' || lotStatus == 'Restart')) 
-                    {
+                    if (minutes < 1 && hours < 1 && timeleft < 0 && (lotStatus == 'live' || lotStatus == 'Restart')) {
                         clearInterval(myfunc);
                         document.getElementById('btnEndtLot').click();
                     }
 
-                    if ((minutes < 1 && hours < 1 && timeleft < 0) && lotStatus == 'Upcoming') 
-                    {
+                    if ((minutes < 1 && hours < 1 && timeleft < 0) && lotStatus == 'Upcoming') {
                         clearInterval(myfunc);
                         document.getElementById('btnStartLot').click();
                     }
 
 
-                    if (timeleft < 0) 
-                    {
+                    if (timeleft < 0) {
                         clearInterval(myfunc);
                         document.getElementById("remainingTime").innerHTML = "TIME UP!!";
                     }
@@ -270,65 +259,65 @@ var  lotid = <?php echo $lots->id?>
             1000);
     </script>
 
-    // <script type="text/javascript">
-    //     var lastbidid = $('#msg').children('tr:first').children('th').text() || 0;
-    //     setInterval(function() {
-    //         if ($('#lotStatus').text() == 'live' || $('#lotStatus').text() == 'Restart') {
-    //             // debugger
-    //             var lotidval = $('#lotid').text();
-    //             $.ajax({
-    //                 type: 'GET',
-    //                 url: '/api/getlivebid',
-    //                 data: {
-    //                     lotid: lotidval,
-    //                     lastBid: lastbidid,
-    //                 },
-    //                 success: function(result) {
+    //
+    <script type="text/javascript">
+        //     var lastbidid = $('#msg').children('tr:first').children('th').text() || 0;
+        //     setInterval(function() {
+        //         if ($('#lotStatus').text() == 'live' || $('#lotStatus').text() == 'Restart') {
+        //             // debugger
+        //             var lotidval = $('#lotid').text();
+        //             $.ajax({
+        //                 type: 'GET',
+        //                 url: '/api/getlivebid',
+        //                 data: {
+        //                     lotid: lotidval,
+        //                     lastBid: lastbidid,
+        //                 },
+        //                 success: function(result) {
 
 
-    //                     result = JSON.parse(result);
-    //                     // console.log('result', result.sucess)
-    //                     if (result.sucess) {
+        //                     result = JSON.parse(result);
+        //                     // console.log('result', result.sucess)
+        //                     if (result.sucess) {
 
-    //                         if (lastbidid < result.newbid[0].id) {
+        //                         if (lastbidid < result.newbid[0].id) {
 
-    //                             var trhtml = "<tr>";
-    //                             trhtml += "<th scope='row'>" + result.newbid[0].id + "</th>";
-    //                             trhtml += "<td>" + result.newbid[0].customerName + "</td>";
-    //                             trhtml += "<td>" + result.newbid[0].amount + "</td>";
-    //                             trhtml += "<td>" + result.newbid[0].created_at + "</td>";
-    //                             trhtml += "<td>";
-    //                             trhtml +=
-    //                                 "<a href='/admin/customers/{{ '+result.newbid[0].customerId+' }}'";
-    //                             trhtml += "class='btn btn-primary btn-sm'>";
-    //                             trhtml += "Customer Details";
-    //                             trhtml += "</a>";
-    //                             trhtml += "</td>";
-    //                             trhtml += "</tr>";
-    //                             $('table > tbody > tr:first').before(trhtml);
-    //                             lastbidid = result.newbid[0].id;
+        //                             var trhtml = "<tr>";
+        //                             trhtml += "<th scope='row'>" + result.newbid[0].id + "</th>";
+        //                             trhtml += "<td>" + result.newbid[0].customerName + "</td>";
+        //                             trhtml += "<td>" + result.newbid[0].amount + "</td>";
+        //                             trhtml += "<td>" + result.newbid[0].created_at + "</td>";
+        //                             trhtml += "<td>";
+        //                             trhtml +=
+        //                                 "<a href='/admin/customers/'";
+        //                             trhtml += "class='btn btn-primary btn-sm'>";
+        //                             trhtml += "Customer Details";
+        //                             trhtml += "</a>";
+        //                             trhtml += "</td>";
+        //                             trhtml += "</tr>";
+        //                             $('table > tbody > tr:first').before(trhtml);
+        //                             lastbidid = result.newbid[0].id;
 
-    //                             // document.getElementById("lotendtime").innerHTML = (result.newbid[0]
-    //                             //     .lotEnd)
-    //                         }
-    //                     } else {
+        //                             // document.getElementById("lotendtime").innerHTML = (result.newbid[0]
+        //                             //     .lotEnd)
+        //                         }
+        //                     } else {
 
-    //                     }
-    //                     document.getElementById("lotendtime").innerHTML = (result.EndDate)
+        //                     }
+        //                     document.getElementById("lotendtime").innerHTML = (result.EndDate)
 
-    //                 }
-    //             });
-    //         }
-    //     }, 1000);
-    // </script>
+        //                 }
+        //             });
+        //         }
+        //     }, 1000);
+        // 
+    </script>
 
-    <script type="module">
-       
-  </script>
-   <script>
-    var today = new Date();
-    var formattedToday = today.toISOString().slice(0, 16);
-    document.getElementById('ReStartDate').setAttribute('min', formattedToday);
-    document.getElementById('ReEndDate').setAttribute('min', formattedToday);
-</script>
+    <script type="module"></script>
+    <script>
+        var today = new Date();
+        var formattedToday = today.toISOString().slice(0, 16);
+        document.getElementById('ReStartDate').setAttribute('min', formattedToday);
+        document.getElementById('ReEndDate').setAttribute('min', formattedToday);
+    </script>
 @endsection

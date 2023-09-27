@@ -76,12 +76,15 @@
                                                         <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
                                                         <h6>START DATE</h6>
                                                             <h6>
-                                                            {{ $lots->StartDate }}</h6>
+                                                                @customDateFormat($lots->StartDate)
+                                                           </h6>
                                                         </div>
                                                         <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
                                                         <h6>END DATE</h6>
                                                             <h6>
-                                                            {{ $lots->EndDate }}</h6>
+                                                                {{-- {{ $lots->EndDate }} --}}
+                                                                @customDateFormat($lots->EndDate)
+                                                            </h6>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-5">

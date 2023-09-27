@@ -100,7 +100,6 @@ return array(
     'GrahamCampbell\\ResultType\\' => array($vendorDir . '/graham-campbell/result-type/src'),
     'Google\\Cloud\\Storage\\' => array($vendorDir . '/google/cloud-storage/src'),
     'Google\\Cloud\\Core\\' => array($vendorDir . '/google/cloud-core/src'),
-    'Google\\CRC32\\' => array($vendorDir . '/google/crc32/src'),
     'Google\\Auth\\' => array($vendorDir . '/google/auth/src'),
     'Fruitcake\\Cors\\' => array($vendorDir . '/fruitcake/laravel-cors/src', $vendorDir . '/fruitcake/php-cors/src'),
     'Firebase\\JWT\\' => array($vendorDir . '/firebase/php-jwt/src'),

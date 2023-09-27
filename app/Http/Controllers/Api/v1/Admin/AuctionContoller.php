@@ -1193,7 +1193,8 @@ class AuctionContoller extends Controller
         $lastBid = BidsOfLots::where('lotId', $newBid['lotId'])->orderBy('id', 'DESC')->first();
 
         if ($lastBid != null) {
-            $lastBidTime = Carbon::createFromFormat('Y-m-d H:i:s', $lastBid->created_at);
+            // $lastBidTime = Carbon::createFromFormat('Y-m-d H:i:s', $lastBid->created_at);
+            $lastBidTime = Carbon::createFromFormat('Y-M-d H:i:s', $lastBid->created_at);
             $timeDifferenceInSeconds = $lastBidTime->diffInSeconds($currentTime);
 
             if ($timeDifferenceInSeconds <= 120) {

@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Blade;
+use Carbon\Carbon;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +26,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Blade::directive('customDateFormat', function ($expression) {
+            // return "<?php echo \Carbon\Carbon::parse($expression)->format('jS M, Y H:i'); ";
+            return "<?php echo Carbon\Carbon::parse($expression)->format('d-m-Y H:i'); ?>";
+        });
     }
 }
+

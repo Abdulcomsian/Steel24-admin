@@ -63,16 +63,20 @@
                                                         <td>{{ $lot->title }}</td>
                                                         <td>
                                                             @if ($lot->ReStartDate > $lot->StartDate)
-                                                                {{ $lot->ReStartDate }}
+                        
+                                                            @customDateFormat($lot->ReStartDate)
                                                             @else
-                                                                {{ $lot->StartDate }}
+                                                                
+                                                            @customDateFormat($lot->StartDate)
                                                             @endif
                                                         </td>
                                                         <td>
                                                             @if ($lot->ReEndDate > $lot->EndDate)
-                                                                {{ $lot->ReEndDate }}
+                                                                
+                                                            @customDateFormat($lot->ReEndDate)
                                                             @else
-                                                                {{ $lot->EndDate }}
+                                                            
+                                                            @customDateFormat($lot->EndDate)
                                                             @endif
 
                                                         </td>

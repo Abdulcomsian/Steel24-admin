@@ -39,7 +39,7 @@
 </div>
                                                     </div>
                                                     <h5 class="title mt-3">Registered at :
-                                                        <small>{{ $customer->created_at }}</small>
+                                                        <small>@customDateFormat($customer->created_at)</small>
                                                     </h5>
                                                     <div>
                                                         <a href="{{ url("admin/customers/balancehistory/{$customer->id}") }}">

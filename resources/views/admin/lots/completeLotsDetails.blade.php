@@ -50,12 +50,12 @@
                                         <div class="col-12 ">
                                             <h4 class="d-flex justify-content-between">
                                                 <span> Started at : <span
-                                                        id="lotstarttime">{{ $lots->StartDate }}</span></span>
+                                                        id="lotstarttime">@customDateFormat($lots->StartDate)</span></span>
                                                 <span class="font-weight-bold ">
                                                     {{-- <span id="remainingTime"></span> --}}
                                                 </span>
                                                 <span> End at : <span id="lotendtime">
-                                                        {{ $lots->EndDate }}</span></span>
+                                                    @customDateFormat($lots->EndDate)</span></span>
                                             </h4>
                                         </div>
 
@@ -136,7 +136,7 @@
                                                     <th scope="row">{{ $bid->id }}</th>
                                                     <td>{{ $bid->customerName }}</td>
                                                     <td>{{ $bid->amount }}</td>
-                                                    <td>{{ $bid->bidTime }}</td>
+                                                    <td>@customDateFormat($bid->bidTime)</td>
                                                     <td>
                                                         <a href="/admin/customers/{{ $bid->customerId }}"
                                                             class="btn btn-primary btn-sm">

@@ -14,7 +14,7 @@ class AddAutoBidColumnToBidsOfLotsTable extends Migration
     public function up()
     {
         Schema::table('bids_of_lots', function (Blueprint $table) {
-            $table->boolean('autoBid')->default(0);
+            $table->boolean('autoBids')->default(0);
         });
     }
 
