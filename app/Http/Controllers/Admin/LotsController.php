@@ -24,6 +24,7 @@ use Carbon\Carbon;
 use Faker\Provider\ar_EG\Payment;
 use Illuminate\Support\Carbon as SupportCarbon;
 use Illuminate\Support\Facades\DB;
+use App\Events\LotsStatusUpdated;
 // use App\Http\Controllers\Admin\Factory;
 
 // use Kreait\Firebase;
@@ -96,6 +97,7 @@ class LotsController extends Controller
         $lots = new Lots();
         $categorys = categories::all();
         $paymentTerms = lotTerms::all();
+         
         return view('admin.lots.create', compact('addForm', 'lots', 'categorys', 'paymentTerms'));
     }
 
@@ -155,6 +157,13 @@ class LotsController extends Controller
         $input['uploadlotpicture'] = $imagePath;
         $data = lots::create($input);
 
+         $message = 'Lot No:' . $data->id . ' Created Successfully';
+         event(new LotsStatusUpdated($message));
+
+        
+        // $message = 'Lot Created Successfully';
+        // event(new LotsStatusUpdated($message));
+        
         return redirect('/admin/addmaterialslots/' . $data->id);
     }
 
@@ -179,8 +188,8 @@ class LotsController extends Controller
             "materialqnt" => 'required',
         ]);
 
-        for ($index = 0; $index < $data['materialqnt']; $index++) {
-
+        for ($index = 0; $index < $data['materialqnt']; $index++) 
+        {
             $material['lotid'] = $data["lotid"];
             $material['Product'] = $data["Product"][$index];
             $material['Thickness'] = $data["Thickness"][$index];
@@ -216,6 +225,14 @@ class LotsController extends Controller
         //     array_push($data, ["lotid" => $lots->id, "materialid" => $index, "materialdata" => json_encode($material), "image" => $imgName]);
         // }
         // newMaterial::insert($data); // Eloquent
+
+        // $message = 'Materials Created Successfully';
+        // event(new LotsStatusUpdated($message));
+
+         // Include the lot number in the message
+         $message = 'Materials Added to Lot No:' . $lots->id . ' Successfully';
+         event(new LotsStatusUpdated($message));
+        
         return redirect('/admin/lots/' . $lots->id);
     }
 
@@ -278,6 +295,12 @@ class LotsController extends Controller
         // foreach ($data as $mtrl) {
         //     newMaterial::where([['lotid', $mtrl['lotid']], ['materialid', $mtrl['materialid']]])->update(['materialdata' => $mtrl['materialdata']]);
         // }
+
+           // Include the lot number in the message
+            $message = 'Materials Updated to Lot No:' . $lots->id . ' Successfully';
+            event(new LotsStatusUpdated($message));
+
+        
         return redirect('/admin/lots/' . $lots->id);
     }
 
@@ -640,6 +663,9 @@ public function update(Request $request, lots $lots)
         'lot_status' => 'required',
     ];
 
+        // $message = 'Lot Updated Successfully';
+        // event(new LotsStatusUpdated($message));
+
     $data = $request->validate($rules);
 
     if ($request->hasFile('uploadlotpicture')) 
@@ -671,6 +697,10 @@ public function update(Request $request, lots $lots)
     $data['uid'] = $userDetails->id;
     $lots->update($data);
 
+     // Include the updated lot number in the message
+     $message = 'Lot No:' . $lots->id . ' Updated Successfully';
+     event(new LotsStatusUpdated($message));
+
     if ($request->live) 
     {
         return redirect('/admin/live_lots_bids/' . $lots->id);
@@ -678,30 +708,20 @@ public function update(Request $request, lots $lots)
     else 
     {
         return redirect('/admin/lots/' . $lots->id);
-    }
+    }   
 }
-
-
-
-
-
-
-
-
-
-
-    
-
-    
-    
-
-
-
 
 
     public function destroy(lots $lots)
     {
         $lots->delete();
+
+        // $message = 'Lot Deleted Successfully';
+        // event(new LotsStatusUpdated($message));
+
+        $message = 'Lot No:' . $lots->id . ' Deleted Successfully';
+        event(new LotsStatusUpdated($message));
+        
         return redirect('admin/lots');
     }
 

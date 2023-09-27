@@ -22,8 +22,10 @@
                                     <tr>
                                         <th>Id</th>
                                         <th>Action</th>
-                                        <th>Action Amount</th>
-                                        <th>Final Amount</th>
+                                        {{-- <th>Action Amount</th> --}}
+                                        <th>Debit</th>
+                                        <th>Credit</th>
+                                        <th>Amount</th>
                                         <th>Date</th>
                                     </tr>
                                 </thead>
@@ -32,7 +34,13 @@
                                         <tr>
                                             <td>{{ $record->id }}</td>
                                             <td>{{ $record->action }}</td>
-                                            <td>{{ $record->actionAmount }}</td>
+
+                                            <td>
+                                                {{ $record->action==="Participate Fees" ? $record->actionAmount:"-"}}
+                                            </td>
+                                            <td>
+                                                {{ $record->action === "Participate Fees Back" || $record->action === "Return Participation Fee" || $record->action === "credit" ? $record->actionAmount:"-" }}
+                                            </td>
                                             <td>{{ $record->finalAmount }}</td>
                                             <td>{{ $record->date }}</td>
                                         </tr>

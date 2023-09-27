@@ -26,7 +26,6 @@ class LotsImport implements WithHeadingRow, SkipsOnFailure, ToCollection
                 if (is_numeric($row['lot_no']))
                 {
                     $lot = new lots();
-
                     $lot->description = $row['description'] ?? 'NULL';
                     $lot->title = $row['lot_no'] ?? 'NULL';
                     $lot->Seller = $row['seller'] ?? 'NULL';
@@ -41,13 +40,13 @@ class LotsImport implements WithHeadingRow, SkipsOnFailure, ToCollection
                     // Check if the category exists
                     $category = categories::where('title', $row['category'])->first();
 
-                    if (!$category) {
+                    if (!$category) 
+                    {
                         // Category does not exist, create a new one
                         $category = new categories();
                         $category->title = $row['category'];
                         // Set other category fields here
                         $category->save();
-                    
                     }
                     $lot->categoryId = $category->id;
 

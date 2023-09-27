@@ -33,4 +33,5 @@ class LotStatusUpdate implements ShouldBroadcast
     {
         return new Channel('lot-updated');
     }
+
 }

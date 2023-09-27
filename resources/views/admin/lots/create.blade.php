@@ -8,6 +8,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.min.css"
         rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
     <style>
         .bootstrap-select.btn-group.show-tick .dropdown-menu li.selected a span.check-mark 
@@ -182,6 +184,7 @@
                             <div class="card-footer ml-auto mr-auto col-sm-12">
                                 <a href="{{ url('admin/lots') }}" class="btn btn-primary mr-3 Back_btn_customer">Back</a>
                                 <button type="submit" class="btn btn-primary">Save And Add Material</button>
+                                {{-- <button type="button" class="btn btn-primary" id="saveAndAddMaterialBtn">Save And Add Material</button> --}}
                             </div>
                             <!--End footer-->
                                     </div>
@@ -209,3 +212,26 @@
 
     });
 </script>
+
+{{-- <script>
+    $(document).ready(function() {
+        // Attach a click event handler to the button
+        $('#saveAndAddMaterialBtn').click(function() {
+            // Make an AJAX request to dispatch the event
+            $.ajax({
+                type: 'POST', // Change to the appropriate HTTP method (e.g., POST, GET)
+                url: '/dispatch-lot-event', // Replace with the URL that triggers the event
+                data: { message: 'Lot Created Successfully' }, // Data to send with the request
+                success: function(response) {
+                    // Handle the response if needed
+                    console.log('Event dispatched successfully');
+                },
+                error: function(error) {
+                    // Handle errors if any
+                    console.error('Error dispatching event:', error);
+                }
+            });
+        });
+    });
+    </script> --}}
+    
