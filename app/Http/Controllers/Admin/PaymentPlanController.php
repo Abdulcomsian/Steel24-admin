@@ -82,9 +82,12 @@ class PaymentPlanController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function destroy(lotTerms $lotTerms)
+    public function destroy(Request $request)
     {
+        $lotTerms=lotTerms::find($request->id);
         $lotTerms->delete();
+        return redirect()->route('payment_plan');
     }
+
    
 }

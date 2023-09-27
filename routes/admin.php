@@ -122,7 +122,8 @@ Route::get('/payment_plan/show/{payment_plan}', [PaymentPlanController::class, '
 Route::post('/payment_plan/store', [PaymentPlanController::class, 'store']);
 Route::get('/payment_plan/{payment_plan}/edit', [PaymentPlanController::class, 'edit']);
 Route::post('/payment_plan/{payment_plan}', [PaymentPlanController::class, 'update']);
-Route::post('/payment_plan/destroy/{payment_plan}', [PaymentPlanController::class, 'destroy']);
+Route::delete('/payment_plan/destroy', [PaymentPlanController::class, 'destroy']);
+
 
 
 // Route::get('/payment_plan', [LotsController::class, 'payment_plan']);

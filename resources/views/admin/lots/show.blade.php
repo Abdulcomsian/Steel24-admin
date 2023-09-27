@@ -90,11 +90,11 @@
                                                             <h6>
                                                             {{ $lots->Price }}</h6>
                                                         </div>
-                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                        {{-- <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
                                                         <h6>LOT STATUS</h6>
                                                             <h6>
                                                             {{ $lots->lot_status }}</h6>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
                                                         <h6>SELLER</h6>
                                                             <h6>
@@ -107,9 +107,7 @@
                                                             <img src="{{ asset('LotImages/'.$lots->uploadlotpicture) }}" alt="Lot Image" width="150" height="100">
                                                         </div>  
 
-                                                       
-                                                        
-
+                                                    
                                                     </div>
                                                     <div class="col-md-5">
                                                         <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
@@ -128,6 +126,7 @@
                                                                 <h6>
                                                                 {{ $lots->lot_status }}</h6>
                                                         </div>
+                                                        
 
                                                         <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
                                                             <h6>Made IN</h6>

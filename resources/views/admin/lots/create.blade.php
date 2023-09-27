@@ -151,13 +151,14 @@
                                         <input type="text" class="form_customer" step="0.01" id="make_in" placeholder="Made IN"
                                             min="0" name="make_in" autocomplete="off" autofocus>
                                     </div>
+
                                     <div class="col-sm-4">
                                         <select class="custom-select" id="lotStatus" name="lot_status" style="margin-top: 10px;">
                                             <option value="">Select Lot Status</option>
                                             <option value="live">Live Lot</option>
-                                            <option  value="Expired">Expired Lot</option>
-                                            <option  value="Sold">Sold Lot</option>
-                                            <option  value="STA">STA</option>
+                                            <option value="Expired">Expired Lot</option>
+                                            <option value="Sold">Sold Lot</option>
+                                            <option value="STA">STA</option>
                                         </select>
                                     </div>
 

@@ -85,10 +85,16 @@ class LotsController extends Controller
 
     public function create()
     {
+        // $addForm = true;
+        // // $materials = materials::all();
+        // $lots = false;
+        // // $lots = lots::find($lots->id);
+        // $categorys =  categories::all();
+        // $paymentTerms = lotTerms::all();
+        // return view('admin.lots.create', compact('addForm', 'lots', 'categorys', 'paymentTerms'));
         $addForm = true;
-        // $materials = materials::all();
-        $lots = false;
-        $categorys =  categories::all();
+        $lots = new Lots();
+        $categorys = categories::all();
         $paymentTerms = lotTerms::all();
         return view('admin.lots.create', compact('addForm', 'lots', 'categorys', 'paymentTerms'));
     }
@@ -110,6 +116,7 @@ class LotsController extends Controller
             'categoryId' => "required",
             "participate_fee" => "required",
             "make_in" => "required",
+            "lot_status" => "required",
             "paymentId" => "required",
         ]);
 
@@ -139,9 +146,10 @@ class LotsController extends Controller
             "categoryId",
             "participate_fee",
             "make_in",
+            "lot_status",
             "uploadlotpicture",
         ]);
-        $input['lot_status'] = 'Upcoming';
+        // $input['lot_status'] = 'Upcoming';
         $input['uid'] = $userDetails->id;
         $input['Payment_terms'] = $request->paymentId;
         $input['uploadlotpicture'] = $imagePath;
@@ -371,8 +379,9 @@ class LotsController extends Controller
         return view('admin.lots.editLotsTerms', compact('lots', 'lotTerms'));
     }
 
-    public function show(lots $lots)
+    public function show(Request $request,$id)
     {
+        
         // $materialilist = [];
         // $material_keys = null;
         // $materialidata =  newMaterial::where("lotid", $lots->id)->get();
@@ -384,6 +393,10 @@ class LotsController extends Controller
         //     }
         //     $material_keys = array_keys((array) $materialilist[0][0]);
         // }
+
+        
+        
+        $lots = lots::find($id);
         $materialilist = new_maerials_2::where('lotid', $lots->id)->get();
         $payment_term = lotTerms::where('id',$lots->Payment_terms)->get();
         $payment_terms = lotTerms::all();
