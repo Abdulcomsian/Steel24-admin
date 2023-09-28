@@ -48,5 +48,10 @@ class LotsStatusUpdated implements ShouldBroadcast
         return 'lot-change';
     }
 
+    public function broadcastAs()
+    {
+        return 'lot.successful';
+    }
+
   
 }
