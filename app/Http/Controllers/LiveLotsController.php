@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
+use App\Events\LotsStatusUpdated;
 
 use Kreait\Firebase\Factory;
 
@@ -113,6 +114,9 @@ class LiveLotsController extends Controller
         // zeshan commenting this 
         // $this->pushonfirbase();
 
+        $message = 'Live Lot Starting Successfully';
+        event(new LotsStatusUpdated($message));
+
         return redirect('/admin/live_lots_bids/' . $id);
     }
 
@@ -172,6 +176,10 @@ class LiveLotsController extends Controller
         // $database->getReference('TodaysLots/liveList/' . $id)->remove();
 
         // $this->pushonfirbase();
+
+        $message = 'Live Lot Ended Successfully';
+        event(new LotsStatusUpdated($message));
+
         return redirect('/admin/live_lots_bids/' . $id);
     }
 
@@ -227,6 +235,10 @@ class LiveLotsController extends Controller
 
         // zee commenting this
         // $this->pushonfirbase();
+
+        $message = 'Live Lot Expired Successfully';
+        event(new LotsStatusUpdated($message));
+        
         return redirect('/admin/live_lots_bids/' . $id);
 
         
@@ -286,6 +298,12 @@ class LiveLotsController extends Controller
         payments::where('lotId',  $requestData['lotid'])->delete();
         // zee commenting this
         // $this->pushonfirbase();
+
+        $message = 'Live Lot Started Successfully';
+        event(new LotsStatusUpdated($message));
+
+
+        
         return redirect('admin/live_lots_bids/' . $requestData['lotid']);
     }
 

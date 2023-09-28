@@ -266,7 +266,8 @@ class LotsController extends Controller
             $material['Grade'] = $data["Grade"][$index];
             $material['Remark'] = $data["Remark"][$index];
             // dd($data['images']);
-            if (isset($data['images'][$index])) {
+            if (isset($data['images'][$index])) 
+            {
                 $imgName = time() . rand(1, 100) . '.' . $data['images'][$index]->extension();
                 $data['images'][$index]->move(public_path('files'), $imgName);
                 $material['images'] = $imgName;
@@ -424,6 +425,11 @@ class LotsController extends Controller
         $payment_term = lotTerms::where('id',$lots->Payment_terms)->get();
         $payment_terms = lotTerms::all();
         // $lots = lots::all();
+
+        // $message = 'Live Lot to Show Details of Lot Successfully';
+        // event(new LotsStatusUpdated($message));
+
+        
         return view('admin.lots.show', compact('lots', 'materialilist', 'payment_terms'));
 
     }
@@ -860,6 +866,9 @@ public function update(Request $request, lots $lots)
             $EndDate = lots::where('id', $lot->id)->pluck('EndDate')->first();
             // $database->getReference('TodaysLots/liveList/' . $lot->id . '/EndDate')->set($EndDate);
         }
+        
+        $message = 'Live Lot Added Time Successfully';
+        event(new LotsStatusUpdated($message));
 
         return back();
     }
