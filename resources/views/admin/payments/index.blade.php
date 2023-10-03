@@ -34,7 +34,7 @@
                                                 <th>Customer</th>
                                                 <th>Total Amount</th>
                                                 <th>Remaining Amount</th>
-                                                <th>Date</th>
+                                                {{-- <th>Date</th> --}}
                                                 <th>Action</th>
                                             </thead>
                                             <tbody class="text-center">
@@ -127,10 +127,10 @@
         searching: true, 
             columns: [
                 { data: 'lotTitle', name: 'lotTitle' },
-                { data: 'customerName', name: 'customerName' },
-                { data: 'total_amount', name: 'total_amount' },
-                { data: 'remaining_amount', name: 'remaining_amount' },
-                { data: 'paymentDate', name: 'paymentDate' },
+                { data: 'customerName', name: 'customerName'},
+                { data: 'total_amount', name: 'total_amount'},
+                { data: 'remaining_amount', name: 'remaining_amount'},
+                // { data: 'paymentDate', name: 'paymentDate'},
                 {
                     data: null,
                     sorting: false,

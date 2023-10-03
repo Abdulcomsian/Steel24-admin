@@ -60,8 +60,6 @@ class LiveLotsController extends Controller
         ->groupBy('categories.id')
         ->get();
 
-        
-
         return view('admin.lots.liveIndex', compact('categories', 'livelots'));
     }
 
@@ -79,17 +77,13 @@ class LiveLotsController extends Controller
         ->whereIn('lots.lot_status', ['live', 'Upcoming', 'Restart','STA'])
         ->groupBy('categories.id')
         ->get();
-
         
-
         return view('admin.lots.liveIndex', compact('categories', 'livelots'));
     }
 
-    
-
-
     // Live Lots Details and Bids
     public function liveLotBids(lots $lots)
+    
     {
         $lotbids = DB::select('
         SELECT bids_of_lots.id,bids_of_lots.amount,bids_of_lots.created_at as bidTime,

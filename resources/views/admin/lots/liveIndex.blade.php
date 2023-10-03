@@ -21,9 +21,9 @@
                                          <div >
                                 <h4 >Live Lots</h4>
                             </div>
-                            <div class="d-flex justify-content-end">
+                            {{-- <div class="d-flex justify-content-end">
                                         <a href="pushonfirbase" class="btn btn-primary add_New_Button">Start Lots</a>
-                                    </div>
+                            </div> --}}
                         </div>
                                     
                                     {{-- <h4 class="card-title">Lot Sequence</h4> --}}

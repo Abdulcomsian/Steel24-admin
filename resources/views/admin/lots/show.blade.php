@@ -115,11 +115,12 @@
                                                             <h6>
                                                             {{ $lots->Plant }}</h6>
                                                         </div>
-                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+
+                                                        {{-- <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
                                                         <h6>PARTICIPATION FEES</h6>
                                                             <h6>
                                                             {{ $lots->participate_fee }}</h6>
-                                                        </div>
+                                                        </div> --}}
 
                                                         <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
                                                             <h6>Lot Status</h6>

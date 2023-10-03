@@ -105,6 +105,7 @@ input:checked+.slider:before {
                                             </svg>New</a>
                                     </div>
                                 </div>
+
                                 <div class="table-responsive">
                                     <table class="table data-table table-striped w-100">
                                         <thead class="text-primary text-center">
@@ -118,6 +119,38 @@ input:checked+.slider:before {
                                         </tbody>
                                     </table>
                                 </div>
+
+                                {{-- <div class="table-responsive">
+                                <table class="table data-table table-striped w-100">
+                                    <thead class="text-primary text-center">
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Approved</th>
+                                        <th>User</th>
+                                    </thead>
+                                    <tbody class="text-center">
+                                        @php
+                                            $idCounter = 1;
+                                        @endphp
+                                        @foreach ($users as $user)
+                                            <tr>
+                                                <td>{{ $idCounter++ }}</td>
+                                                <td>{{ $user->name }}</td>
+                                                <td>{{ $user->email }}</td>
+                                                <td>{{ $user->isApproved == 1 ? 'Yes' : 'No' }}</td>
+                                                <td>
+                                                    <a href="{{ url('admin/customers/' . $user->id) }}" class="btn btn-info btn-sm"
+                                                    style="font-weight:500">Details</a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div> --}}
+
+                                
+
                             </div>
                             <div class="card-footer mr-auto">
                                 {{-- {{ $auctions->links() }} --}}
