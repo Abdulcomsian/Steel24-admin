@@ -49,13 +49,13 @@
                                         <br>
                                         <div class="col-12 ">
                                             <h4 class="d-flex justify-content-between">
-                                                <span> Started at : <span
-                                                        id="lotstarttime">{{ $lots->StartDate }}</span></span>
+                                                {{-- <span> Started at : <span id="lotstarttime">{{ $lots->StartDate }}</span></span> --}}
+                                                <span>Started at: <span id="lotstarttime">{{ \Carbon\Carbon::parse($lots->StartDate)->format('d-m-Y H:i:s') }}</span></span>
                                                 <span class="font-weight-bold ">
                                                     {{-- <span id="remainingTime"></span> --}}
                                                 </span>
-                                                <span> End at : <span id="lotendtime">
-                                                        {{ $lots->EndDate }}</span></span>
+                                                {{-- <span> End at : <span id="lotendtime">{{ $lots->EndDate }}</span></span> --}}
+                                                <span>End at: <span id="lotendtime">{{ \Carbon\Carbon::parse($lots->EndDate)->format('d-m-Y H:i:s') }}</span></span>
                                             </h4>
                                         </div>
 
@@ -136,7 +136,8 @@
                                                     <th scope="row">{{ $bid->id }}</th>
                                                     <td>{{ $bid->customerName }}</td>
                                                     <td>{{ $bid->amount }}</td>
-                                                    <td>{{ $bid->bidTime }}</td>
+                                                    {{-- <td>{{ $bid->bidTime }}</td> --}}
+                                                    <td>{{ \Carbon\Carbon::parse($bid->bidTime)->format('d-m-Y H:i:s') }}</td>
                                                     <td>
                                                         <a href="/admin/customers/{{ $bid->customerId }}"
                                                             class="btn btn-primary btn-sm">

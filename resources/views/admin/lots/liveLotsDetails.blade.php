@@ -74,12 +74,15 @@
                                     <br>
                                     <div class="col-12">
                                         <h4 class="d-flex justify-content-between">
-                                            <span> Started at : <span
-                                                    id="lotstarttime">{{ $lots->StartDate }}</span></span>
+                                            {{-- <span> Started at : <span
+                                                    id="lotstarttime">{{ $lots->StartDate }}</span>
+                                            </span> --}}
+                                            <span> Started at : <span id="lotstarttime">{{ \Carbon\Carbon::parse($lots->StartDate)->format('d-m-Y H:i:s') }}</span></span>
                                             <span class="font-weight-bold ">
                                                 <span id="remainingTime"></span>
                                             </span>
-                                            <span> End at : <span id="lotendtime">{{ $lots->EndDate }}</span></span>
+                                            {{-- <span> End at : <span id="lotendtime">{{ $lots->EndDate }}</span></span> --}}
+                                            <span> End at : <span id="lotendtime">{{ \Carbon\Carbon::parse($lots->EndDate)->format('d-m-Y H:i:s') }}</span></span>
                                         </h4>
                                     </div>
                                 </div>
@@ -109,6 +112,7 @@
                                             <div class="row w-50">
                                                 <form action="/admin/reStartExpirelot" class="col-12" method="POST">
                                                     @csrf
+
                                                     <h3>Restart lot</h3>
                                                     <div class="row ">
                                                         <label for="ReStartDate" class="col-sm-2 col-form-label">Start
@@ -118,6 +122,7 @@
                                                                 id="ReStartDate" name="ReStartDate" required>
                                                         </div>
                                                     </div>
+
                                                     <div class="row ">
                                                         <label for="ReEndDate" class="col-sm-2 col-form-label">End
                                                             time</label>
@@ -189,10 +194,13 @@
                                                     <td>Initial Price</td>
                                                     <td>{{ $lots->Price }}</td>
                                                     <td>{{ $lots->StartDate }}</td>
+                                                    {{-- <td>
+                                                        {{ \Carbon\Carbon::parse($lots->StartDate)->format('d-m-Y H:i:s') }}
+                                                    </td>                                                                                                        --}}
                                                 </tr>
                                             @else
                                                 @php
-                                                    // Sort the $lotbids array by 'id' attribute in descending order
+                            
                                                     $sortedBids = collect($lotbids)->sortByDesc('id');
                                                 @endphp
                                                 @foreach ($sortedBids as $bid)
@@ -200,7 +208,8 @@
                                                         <th scope="row">{{ $bid->id }}</th>
                                                         <td>{{ $bid->customerName }}</td>
                                                         <td>{{ $bid->amount }}</td>
-                                                        <td>{{ $bid->bidTime }}</td>
+                                                        {{-- <td>{{ $bid->bidTime }}</td> --}}
+                                                        <td>{{ \Carbon\Carbon::parse($bid->bidTime)->format('d-m-Y H:i:s') }}</td>
                                                         <td>
                                                             <a href="/admin/customers/{{ $bid->customerId }}" class="btn btn-primary btn-sm">
                                                                 Customer Details
@@ -280,7 +289,8 @@ function refreshTable() {
     })
     .then(response => response.json())
     .then(data => {
-        if (data.success) {
+        if (data.success) 
+        {
             const tableBody = document.getElementById('msg');
             tableBody.innerHTML = '';
 
@@ -323,9 +333,6 @@ function refreshTable() {
 //   console.log("Bid placed:", e.bid);
 //   refreshTable();
 // });
-
-
-
 
 
 
@@ -399,6 +406,22 @@ function refreshTable() {
     document.getElementById('ReStartDate').setAttribute('min', formattedToday);
     document.getElementById('ReEndDate').setAttribute('min', formattedToday);
 </script>
+
+{{-- <script>
+    var today = new Date();
+    var year = today.getFullYear();
+    var month = (today.getMonth() + 1).toString().padStart(2, '0');
+    var day = today.getDate().toString().padStart(2, '0');
+    var hours = today.getHours().toString().padStart(2, '0');
+    var minutes = today.getMinutes().toString().padStart(2, '0');
+    
+    var formattedToday = day + '/' + month + '/' + year + ' ' + hours + ':' + minutes;
+    
+    document.getElementById('ReStartDate').setAttribute('min', formattedToday);
+    document.getElementById('ReEndDate').setAttribute('min', formattedToday);
+</script> --}}
+
+
 
 <script src="{{asset('js/app.js')}}"></script>
 <script>

@@ -27,7 +27,8 @@
                                         </div>
                                     </div>
                                     </div>
-                                    <div class="table-responsive"><!-- remove class="table-responsive"-->
+
+                                    {{-- <div class="table-responsive"><!-- remove class="table-responsive"-->
                                         <table class="table data-table table-striped w-100">
                                             <thead class="text-primary text-center">
                                                 <th>ID</th>
@@ -40,6 +41,22 @@
                                             </thead>
                                             <tbody class="text-center">
 
+                                            </tbody>
+                                        </table>
+                                    </div> --}}
+                                    <div class="table-responsive">
+                                        <table class="table data-table table-striped w-100">
+                                            <thead class="text-primary text-center">
+                                                <th style="width: 10%;">ID</th>
+                                                <th style="width: 15%;">Lot</th>
+                                                <th style="width: 15%;">Customer</th>
+                                                <th style="width: 15%;">Total Amount</th>
+                                                <th style="width: 15%;">Remaining Amount</th>
+                                                <th style="width: 15%;">Date</th>
+                                                <th style="width: 15%;">Action</th>
+                                            </thead>
+                                            <tbody class="text-center">
+                                                <!-- Your table data goes here -->
                                             </tbody>
                                         </table>
                                     </div>
@@ -132,7 +149,22 @@
                 { data: 'customerName', name: 'customerName'},
                 { data: 'total_amount', name: 'total_amount'},
                 { data: 'remaining_amount', name: 'remaining_amount'},
-                { data: 'created_at', name: 'created_at'},
+                 // { data: 'created_at', name: 'created_at'},
+                 {
+                    data: 'created_at',
+                    name: 'created_at',
+                    render: function (data) 
+                    {
+                        var date = new Date(data);
+                        var day = date.getDate().toString().padStart(2, '0');
+                        var month = (date.getMonth() + 1).toString().padStart(2, '0');
+                        var year = date.getFullYear();
+                        var hours = date.getHours().toString().padStart(2, '0');
+                        var minutes = date.getMinutes().toString().padStart(2, '0');
+                        var seconds = date.getSeconds().toString().padStart(2, '0');
+                        return day + '-' + month + '-' + year + ' ' + hours + ':' + minutes + ':' + seconds;
+                    }
+                },
                 {data: 'action', name: 'action', orderable: false, searchable: false},
                 // { data: 'paymentDate', name: 'paymentDate'},
                 // {

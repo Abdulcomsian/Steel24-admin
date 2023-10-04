@@ -73,16 +73,32 @@
                                                             <h6>
                                                             {{ $lots->Quantity }}</h6>
                                                         </div>
-                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+
+                                                        {{-- <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
                                                         <h6>START DATE</h6>
                                                             <h6>
                                                             {{ $lots->StartDate }}</h6>
-                                                        </div>
+                                                        </div> --}}
                                                         <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                            <h6>START DATE</h6>
+                                                            <h6>
+                                                                {{ \Carbon\Carbon::parse($lots->StartDate)->format('d-m-Y H:i:s') }}
+                                                            </h6>
+                                                        </div>                                                        
+
+                                                        {{-- <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
                                                         <h6>END DATE</h6>
                                                             <h6>
                                                             {{ $lots->EndDate }}</h6>
-                                                        </div>
+                                                        </div> --}}
+                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                            <h6>END DATE</h6>
+                                                            <h6>
+                                                                {{ \Carbon\Carbon::parse($lots->EndDate)->format('d-m-Y H:i:s') }}
+                                                            </h6>
+                                                        </div>  
+                                                                                                              
+
                                                     </div>
                                                     <div class="col-md-5">
                                                         <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">

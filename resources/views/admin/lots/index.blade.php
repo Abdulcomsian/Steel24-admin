@@ -179,7 +179,24 @@ $(function () {
             columns: [
                 {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                 {data: 'title', name: 'title'},
-                {data: 'StartDate', name: 'StartDate'},
+                // {data: 'StartDate', name: 'StartDate'},
+                {
+                    data: 'StartDate',
+                    name: 'StartDate',
+                    render: function (data) 
+                    {
+                        // Assuming 'StartDate' is a date string in ISO format
+                        var date = new Date(data);
+                        var day = date.getDate().toString().padStart(2, '0');
+                        var month = (date.getMonth() + 1).toString().padStart(2, '0');
+                        var year = date.getFullYear();
+                        var hours = date.getHours().toString().padStart(2, '0');
+                        var minutes = date.getMinutes().toString().padStart(2, '0');
+                        var seconds = date.getSeconds().toString().padStart(2, '0');
+
+                        return day + '-' + month + '-' + year + ' ' + hours + ':' + minutes + ':' + seconds;
+                    }
+                },
                 {data: 'Price', name: 'Price'},
                 {data: 'lot_status', name: 'lot_status'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},

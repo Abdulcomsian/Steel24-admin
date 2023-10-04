@@ -83,7 +83,8 @@ class LotsController extends Controller
     {
         $lots = lots::query(); 
     
-        if ($request->ajax()) {
+        if ($request->ajax()) 
+        {
             $datatables = DataTables::of($lots)
                 ->addIndexColumn()   
                 ->addColumn('action', function ($row) 
