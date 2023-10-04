@@ -110,7 +110,8 @@
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
-<script>
+
+{{-- <script>
     $(document).on('click', '.remove', function(e) 
     {
         e.preventDefault();
@@ -125,7 +126,8 @@
             confirmButtonText: "Yes, Remove!",
             showLoaderOnConfirm: true,
             preConfirm: function() {
-                return new Promise(function(resolve, reject) {
+                return new Promise(function(resolve, reject) 
+                {
                     setTimeout(function() {
                         $.ajax({
                             url: "{{ url('/admin/categories/destroy') }}" +
@@ -151,4 +153,47 @@
             },
         });
     });
+</script> --}}
+
+<script>
+    $(document).on('click', '.remove', function(e) 
+    {
+        e.preventDefault();
+        var id = $(this).attr('id');
+        var token = $("meta[name='csrf-token']").attr("content");
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Once deleted, you will not be able to recover this Category!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes, Remove!",
+            showLoaderOnConfirm: true,
+            preConfirm: function() {
+                return new Promise(function(resolve, reject) 
+                {
+                    setTimeout(function() {
+                        $.ajax({
+                            url: "{{ url('/admin/categories/destroy') }}" + "/" + id,
+                            type: 'get', // Use GET request
+                            data: {
+                                "id": id,
+                                "_token": token,
+                            },
+                            success: function(data) 
+                            {
+                                Swal.fire("Success! Category has been deleted!", {
+                                    icon: "success",
+                                }).then(function() {
+                                    // Redirect to the desired page
+                                    window.location.href = "{{ url('admin/categories') }}";
+                                });
+                            }
+                        });
+                    }, 0);
+                });
+            },
+        });
+    });
 </script>
+

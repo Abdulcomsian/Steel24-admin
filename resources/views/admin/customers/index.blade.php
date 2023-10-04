@@ -170,28 +170,73 @@ input:checked+.slider:before {
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
 <script type="text/javascript">
-$(document).ready(function() {
-    var table = $('.data-table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: "{!! route('admin.customers.index') !!}",
-        lengthChange: false, // This disables the "Show [X] entries" dropdown
-        searching: true, 
-        columns: [
-            {
-                data: 'id',
-                name: 'id'
-            },
-            {
-                data: 'name',
-                name: 'name'
-            },
-            {
-                data: 'email',
-                name: 'email'
-            },
-            {
+
+// $(document).ready(function() {
+//     var table = $('.data-table').DataTable({
+//         processing: true,
+//         serverSide: true,
+//         ajax: "{!! route('admin.customers.index') !!}",
+//         lengthChange: false, // This disables the "Show [X] entries" dropdown
+//         searching: true, 
+//         columns: [
+//             {
+//                 data: 'id',
+//                 name: 'id'
+//             },
+//             {
+//                 data: 'name',
+//                 name: 'name'
+//             },
+//             {
+//                 data: 'email',
+//                 name: 'email'
+//             },
+//             {
+//                 data: null,
+//                 orderable: false,
+//                 searchable: false,
+//                 responsivePriority: 1,
+//                 targets: 0,
+//                 className: "text-center m2",
+//                 render: function(o) {
+//                     var element = '<div class="btn-group">';
+//                     element += `
+//                         <label class="switch" for="flexSwitchCheckDefault_${o.id}">
+//                             <input ${o.isApproved == "1"?'checked':''} onchange="couponstatus(` + o.id + `, event )" type="checkbox" name="active-box" id="flexSwitchCheckDefault_${o.id}">
+//                             <span class="slider round"></span>
+//                         </label>
+//                     `;
+//                     element += '</div>';
+//                     return element;
+//                 }
+//             },
+//             {
+//                 data: null,
+//                 sorting: false,
+//                 render: function(data, type, row) {
+//                     return (`<div><a href="{{ url('admin/customers/${data.id}') }}" class="btn btn-info btn-sm" style="font-weight:500">Details</a>`);
+//                 },
+//             }
+//         ]
+//     });
+// });
+
+
+$(document).ready(function() 
+        {
+        var table = $('.data-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{!! route('admin.customers.index') !!}",
+            lengthChange: false, 
+            searching: true, 
+            columns: [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                { data: 'name', name: 'name' },
+                { data: 'email', name: 'email'},
+                {
                 data: null,
                 orderable: false,
                 searchable: false,
@@ -210,16 +255,13 @@ $(document).ready(function() {
                     return element;
                 }
             },
-            {
-                data: null,
-                sorting: false,
-                render: function(data, type, row) {
-                    return (`<div><a href="{{ url('admin/customers/${data.id}') }}" class="btn btn-info btn-sm" style="font-weight:500">Details</a>`);
-                },
-            }
-        ]
+                {data: 'action', name: 'action', orderable: false, searchable: false},
+            ],
+        });
     });
-});
+
+
+
 </script>
 
 <script>

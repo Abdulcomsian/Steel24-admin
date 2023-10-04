@@ -21,20 +21,21 @@
                                             <a href="{{ url('admin/payments/create') }}"
                                                 class="btn btn-sm btn-facebook">Add</a>
                                         </div> --}}
-                                        <div class="header_customer">
-                                         <div >
-                                <h4 >Payments</h4>
-                            </div>
-                        </div>
+                                    <div class="header_customer">
+                                        <div>
+                                           <h4 >Payments</h4>
+                                        </div>
+                                    </div>
                                     </div>
                                     <div class="table-responsive"><!-- remove class="table-responsive"-->
                                         <table class="table data-table table-striped w-100">
                                             <thead class="text-primary text-center">
+                                                <th>ID</th>
                                                 <th>Lot</th>
                                                 <th>Customer</th>
                                                 <th>Total Amount</th>
                                                 <th>Remaining Amount</th>
-                                                {{-- <th>Date</th> --}}
+                                                <th>Date</th>
                                                 <th>Action</th>
                                             </thead>
                                             <tbody class="text-center">
@@ -126,19 +127,22 @@
             lengthChange: false, // This disables the "Show [X] entries" dropdown
         searching: true, 
             columns: [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                 { data: 'lotTitle', name: 'lotTitle' },
                 { data: 'customerName', name: 'customerName'},
                 { data: 'total_amount', name: 'total_amount'},
                 { data: 'remaining_amount', name: 'remaining_amount'},
+                { data: 'created_at', name: 'created_at'},
+                {data: 'action', name: 'action', orderable: false, searchable: false},
                 // { data: 'paymentDate', name: 'paymentDate'},
-                {
-                    data: null,
-                    sorting: false,
-                    render: function(data, type, row) 
-                    {
-                        return `<div><a href="{{ url('admin/payments/${data.lotId}') }}" class="btn btn-info btn-sm">Details</a></div>`;
-                    },
-                },
+                // {
+                //     data: null,
+                //     sorting: false,
+                //     render: function(data, type, row) 
+                //     {
+                //         return `<div><a href="{{ url('admin/payments/${data.lotId}') }}" class="btn btn-info btn-sm">Details</a></div>`;
+                //     },
+                // },
             ],
         });
     });

@@ -19,10 +19,10 @@
                                     <div class="row">
                                         <div class="col-12 text-right header_customer">
                                         <div>
-                                         <div >
-                                <h4 >Product Images</h4>
-                            </div>
-                        </div>
+                                            <div >
+                                                <h4 >Product Images</h4>
+                                            </div>
+                                        </div>
                                             <a href="{{ url('admin/productimages/create') }}"
                                             class="btn btn-outline-info add_New_Button"
                                            ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="mr-2"
@@ -68,85 +68,76 @@
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 <script type="text/javascript">
 
-    // $(document).ready(function() {
-    //     var table = $('.data-table').DataTable({
-    //         processing: true,
-    //         serverSide: true,
-    //         ajax:"{!! route('admin.productimages') !!}",
+//     $(document).ready(function() {
+//     var table = $('.data-table').DataTable({
+//         processing: true,
+//         serverSide: true,
+//         ajax: "{!! route('admin.productimages') !!}",
+//         lengthChange: false, // This disables the "Show [X] entries" dropdown
+//         searching: true, 
+//         columns: [
+//             {
+//                 data: 'id',
+//                 name: 'id'
+//             },
+//             {
+//                 data: 'title',
+//                 name: 'title'
+//             },
+//             {
+//                 data: 'description',
+//                 name: 'description'
+//             },
+//             {
+//                 data: 'image',
+//                 name: 'image',
+//                 render: function(data, type, row) 
+//                 {
+//                     // Use the asset() helper to generate the correct image URL
+//                     var imageUrl = "{{ asset("") }}" + data;
+//                     return `<img src="${imageUrl}" alt="Product Image" class="product-image">`;
+//                 }
+//             },
+//             {
+//                 data: null,
+//                 sorting: false,
+//                 render: function(data, type, row) 
+//                 {
+//                     return `<div><a href="{{ url('admin/productimages/show/${data.id}') }}" class="btn btn-info btn-sm">Details</a></div>`;
+//                 },
+//             }
+//         ]
+//     });
+// });
 
-    //         columns: [
-    //             {
-    //                 data: 'id',
-    //                 name: 'id'
-    //             },
-    //             {
-    //                 data: 'title',
-    //                 name: 'title'
-    //             },
-    //             {
-    //                 data: 'description',
-    //                 name: 'description'
-    //             },
-    //             {
-    //                 data: 'image',
-    //                 name: 'image'
-    //             },
-    //             {
-    //             data: null,
-    //             sorting:false,
-    //             render: function(data, type, row) 
-    //             {
-    //                 return(`<div><a href="{{ url('admin/productimages/show/${data.id}') }}"class="btn btn-info btn-sm">Details</a>
-    //            </div>
-    //                 `);
-    //             },
-    //         }
-    //         ]
-    //     });
-    // });
 
-    $(document).ready(function() {
-    var table = $('.data-table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: "{!! route('admin.productimages') !!}",
-        lengthChange: false, // This disables the "Show [X] entries" dropdown
-        searching: true, 
-        columns: [
-            {
-                data: 'id',
-                name: 'id'
-            },
-            {
-                data: 'title',
-                name: 'title'
-            },
-            {
-                data: 'description',
-                name: 'description'
-            },
-            {
-                data: 'image',
-                name: 'image',
-                render: function(data, type, row) 
+
+$(document).ready(function() 
+        {
+        var table = $('.data-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{!! route('admin.productimages') !!}",
+            lengthChange: false, 
+            searching: true, 
+            columns: [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                { data: 'title', name: 'title' },
+                { data: 'description', name: 'description'},
                 {
+                  data: 'image',
+                  name: 'image',
+                  render: function(data, type, row) 
+                 {
                     // Use the asset() helper to generate the correct image URL
                     var imageUrl = "{{ asset("") }}" + data;
                     return `<img src="${imageUrl}" alt="Product Image" class="product-image">`;
-                }
-            },
-            {
-                data: null,
-                sorting: false,
-                render: function(data, type, row) 
-                {
-                    return `<div><a href="{{ url('admin/productimages/show/${data.id}') }}" class="btn btn-info btn-sm">Details</a></div>`;
-                },
-            }
-        ]
+                 }
+               },
+                {data: 'action', name: 'action', orderable: false, searchable: false},
+            ],
+        });
     });
-});
-
 
 
 

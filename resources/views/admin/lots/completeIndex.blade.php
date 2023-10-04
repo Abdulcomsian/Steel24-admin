@@ -16,13 +16,11 @@
                                             {{ session('success') }}
                                         </div>
                                     @endif
-                                    <div class="header_customer">
-                                         <div >
-                                <h4 >Complete Lots</h4>
-                            </div>
-                        </div>
-                               
-
+                                <div class="header_customer">
+                                    <div >
+                                        <h4 >Complete Lots</h4>
+                                    </div>
+                                </div>
                                     <div class="table-responsive"> <!-- remove class="table-responsive" -->
                                         <table class="table data-table table-striped w-100">
                                             <thead class="text-primary text-center">
@@ -69,42 +67,65 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
-        var table = $('.data-table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: "{!! route('admin.expirelots') !!}",
-            lengthChange: false, // This disables the "Show [X] entries" dropdown
-        searching: true, 
-            columns: [{
-                    data: 'id',
-                    name: 'id'
-                },
-                {
-                    data: 'title',
-                    name: 'title'
-                },
-                {
-                    data: 'StartDate',
-                    name: 'StartDate'
-                },
 
-                {
-                    data: 'EndDate',
-                    name: 'EndDate'
-                },
-                {
-                    data: 'lot_status',
-                    name: 'lot_status'
-                },
-                {
-                    data: null,
-                    render: function(data, type, row) {
-                        return (`<div><a href="{{ url('admin/completelotbids/${data.id}') }}"class="btn btn-info" style="padding-top:20px"><i class="material-icons">person</i></a>
-                    `);
-                    },
-                }
-            ]
-        });
+    // $(document).ready(function() {
+    //     var table = $('.data-table').DataTable({
+    //         processing: true,
+    //         serverSide: true,
+    //         ajax: "{!! route('admin.expirelots') !!}",
+    //         lengthChange: false, // This disables the "Show [X] entries" dropdown
+    //     searching: true, 
+    //         columns: [{
+    //                 data: 'id',
+    //                 name: 'id'
+    //             },
+    //             {
+    //                 data: 'title',
+    //                 name: 'title'
+    //             },
+    //             {
+    //                 data: 'StartDate',
+    //                 name: 'StartDate'
+    //             },
+
+    //             {
+    //                 data: 'EndDate',
+    //                 name: 'EndDate'
+    //             },
+    //             {
+    //                 data: 'lot_status',
+    //                 name: 'lot_status'
+    //             },
+    //             {
+    //                 data: null,
+    //                 render: function(data, type, row) {
+    //                     return (`<div><a href="{{ url('admin/completelotbids/${data.id}') }}"class="btn btn-info" style="padding-top:20px"><i class="material-icons">person</i></a>
+    //                 `);
+    //                 },
+    //             }
+    //         ]
+    //     });
+    // });
+
+
+    $(function () 
+    {
+    
+    var table = $('.data-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{  route('admin.expirelots') }}",
+        columns: [
+            {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+            {data: 'title', name: 'title'},
+            {data: 'StartDate', name: 'StartDate'},
+            {data: 'EndDate', name: 'EndDate'},
+            {data: 'lot_status', name: 'lot_status'},
+            {data: 'action', name: 'action', orderable: false, searchable: false},
+        ]
     });
+    
+  });
+
+
 </script>

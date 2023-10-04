@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-
-
+use Illuminate\Support\Facades\DB;
 use App\Models\categories;
 use Illuminate\Http\Request;
 use DataTables;
+// use Yajra\DataTables\DataTables;
+
 
 class CategoriesController extends Controller
 {
@@ -15,15 +16,38 @@ class CategoriesController extends Controller
     {
         $this->middleware('admin.auth:admin');
     }
+    
+    // public function index(Request $request)
+    // {
+    //     $categories = categories::all();
+    //     if ($request->ajax()) {
+    //       return Datatables::of($categories)
+    //               ->addIndexColumn()
+    //               ->rawColumns(['action'])
+    //               ->make(true);
+    //   }
+    //     return view('admin.categories.index')
+    //         ->with('categories', $categories);
+    // }
+    
     public function index(Request $request)
     {
+        if ($request->ajax()) 
+        {
+            $categories = categories::all();
+             
+            return Datatables::of($categories)
+                ->addIndexColumn()
+                ->addColumn('action', function ($category) 
+                {
+                    return '<a href="' . url('admin/categories/show/' . $category->id) . '" class="btn btn-info btn-sm">Details</a>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
         $categories = categories::all();
-        if ($request->ajax()) {
-          return Datatables::of($categories)
-                  ->addIndexColumn()
-                  ->rawColumns(['action'])
-                  ->make(true);
-      }
+        
         return view('admin.categories.index')
             ->with('categories', $categories);
     }
@@ -72,9 +96,20 @@ class CategoriesController extends Controller
      * @param  \App\Models\categories  $categories
      * @return \Illuminate\Http\Response
      */
+//     public function destroy(categories $categories)
+//     {
+//         $categories->delete();
+//         // return redirect->back();
+//    }
+
     public function destroy(categories $categories)
     {
         $categories->delete();
-   }
+
+        // Redirect to the desired page (e.g., 'admin/categories')
+        return redirect('admin/categories')->with('success', 'Category has been deleted successfully');
+    }
+
+
    
 }

@@ -21,12 +21,26 @@ class CustomerController extends Controller
     public function index(Request $request)
     {
         $users = Customer::all();
-        if ($request->ajax()) {
+        
+        // if ($request->ajax()) {
+        //     return Datatables::of($users)
+        //         ->addIndexColumn()
+        //         ->rawColumns(['action'])
+        //         ->make(true);
+        // }
+
+        if ($request->ajax()) 
+        {
             return Datatables::of($users)
                 ->addIndexColumn()
+                ->addColumn('action', function($user) 
+                {
+                    return '<a href="'.url('admin/customers/'. $user->id) .'" class="btn btn-info btn-sm" style="font-weight:500">Details</a>';
+                })
                 ->rawColumns(['action'])
                 ->make(true);
         }
+        
         return view('admin.customers.index')
             ->with('users', $users);
     }
