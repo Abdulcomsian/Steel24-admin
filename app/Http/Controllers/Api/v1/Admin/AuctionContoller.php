@@ -27,6 +27,7 @@ use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 use App\Events\winLotsEvent;
 use App\Events\BidPlaced;
+use App\Events\NewBidPlaced;
 use App\Jobs\LotMail;
 use Pusher\Pusher;
 use Illuminate\Support\Facades\Mail;
@@ -2467,12 +2468,14 @@ class AuctionContoller extends Controller
             }
 
             // Check if the customer is approved
-            if ($customer->isApproved) {
+            if ($customer->isApproved) 
+            {
                 $currentTime = now();
                 $endDate = Carbon::createFromFormat('Y-m-d H:i:s', $lot->EndDate);
 
                 // Check if the current time is before the lot's end time
-                if ($currentTime->lte($endDate)) {
+                if ($currentTime->lte($endDate)) 
+                {
                     // Calculate the time difference in seconds
                     $timeDifference = $endDate->diffInSeconds($currentTime);
 
@@ -2492,21 +2495,9 @@ class AuctionContoller extends Controller
                     $bidResponse = $this->addNewBidding($customer, $amount, $lot, 0);
 
 
-                    // Return the updated lot bids in the API response
-                        $updatedLotBids = $lot->bids;
-
-                        $latestBid = BidsOfLots::where('lotId', $lot->id)->latest()->first();
-
-                        $response = [
-                            'success' => true,
-                            'msg' => 'Your Bid Added Successfully',
-                            'bid' => $latestBid,
-                            // 'updatedLotBids' => $updatedLotBids,
-                        ];
-
-                        return response()->json($response);
-
-                        event(new BidPlaced($manualBid));
+                        
+                    //    Return the bid response
+                         return $bidResponse;
 
                 } else {
                     // If the current time is after the EndDate, disallow bidding
@@ -2535,6 +2526,7 @@ class AuctionContoller extends Controller
 
         $manualBid = BidsOfLots::create([
             "customerId" => $customer->id,
+            "customerName"=>$customer->name,
             "amount" => $newPricing,
             "lotId" => $lot->id,
             "autoBid" => $bidType,
@@ -2545,7 +2537,7 @@ class AuctionContoller extends Controller
 
        event(new winLotsEvent('Good Luck! You placed a new bid.', $manualBid, $customer, true));
 
-       
+        event(new NewBidPlaced($manualBid , $customer));
        
        //checking wheather lot has auto bidders
         foreach($lot->autoBids as $autoBidder)

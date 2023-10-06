@@ -83,7 +83,6 @@ class LiveLotsController extends Controller
 
     // Live Lots Details and Bids
     public function liveLotBids(lots $lots)
-    
     {
         $lotbids = DB::select('
         SELECT bids_of_lots.id,bids_of_lots.amount,bids_of_lots.created_at as bidTime,

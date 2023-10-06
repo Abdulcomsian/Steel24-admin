@@ -3,8 +3,8 @@
 <script>
     var lotid = {{ $lots->id }};
 </script>
-<script type="module" src="{{ asset('js/app.js') }}"></script>
-<script type="module" src="{{ asset('js/customeJs.js') }}"></script>
+{{-- <script type="module" src="{{ asset('js/app.js') }}"></script>
+<script type="module" src="{{ asset('js/customeJs.js') }}"></script> --}}
 
 <div class="content">
     <div class="container-fluid">
@@ -74,15 +74,15 @@
                                     <br>
                                     <div class="col-12">
                                         <h4 class="d-flex justify-content-between">
-                                            {{-- <span> Started at : <span
+                                            <span> Started at : <span
                                                     id="lotstarttime">{{ $lots->StartDate }}</span>
-                                            </span> --}}
-                                            <span> Started at : <span id="lotstarttime">{{ \Carbon\Carbon::parse($lots->StartDate)->format('d-m-Y H:i:s') }}</span></span>
+                                            </span>
+                                            {{-- <span> Started at : <span id="lotstarttime">{{ \Carbon\Carbon::parse($lots->StartDate)->format('d-m-Y H:i:s') }}</span></span> --}}
                                             <span class="font-weight-bold ">
                                                 <span id="remainingTime"></span>
                                             </span>
-                                            {{-- <span> End at : <span id="lotendtime">{{ $lots->EndDate }}</span></span> --}}
-                                            <span> End at : <span id="lotendtime">{{ \Carbon\Carbon::parse($lots->EndDate)->format('d-m-Y H:i:s') }}</span></span>
+                                            <span> End at : <span id="lotendtime">{{ $lots->EndDate }}</span></span>
+                                            {{-- <span> End at : <span id="lotendtime">{{ \Carbon\Carbon::parse($lots->EndDate)->format('d-m-Y H:i:s') }}</span></span> --}}
                                         </h4>
                                     </div>
                                 </div>
@@ -179,7 +179,7 @@
                                 </div> --}}
 
                                 <div class="table-responsive">
-                                    <table class="table">
+                                    <table class="table" id="bidTable">
                                         <thead class="text-primary">
                                             <th>ID</th>
                                             <th>Last bid</th>
@@ -193,10 +193,7 @@
                                                     <th scope="row">0</th>
                                                     <td>Initial Price</td>
                                                     <td>{{ $lots->Price }}</td>
-                                                    <td>{{ $lots->StartDate }}</td>
-                                                    {{-- <td>
-                                                        {{ \Carbon\Carbon::parse($lots->StartDate)->format('d-m-Y H:i:s') }}
-                                                    </td>                                                                                                        --}}
+                                                    <td>{{ $lots->StartDate }}</td>                                                                                                    --}}
                                                 </tr>
                                             @else
                                                 @php
@@ -234,108 +231,29 @@
     </div>
 </div>
 
-
-
-{{-- <script>
-    function refreshTable() 
-    {
-
-        fetch('/customer-bid', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                const tableBody = document.getElementById('tableBody');
-                tableBody.innerHTML = '';
-
-                data.updatedLotBids.forEach(bid => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <th scope="row">${bid.id}</th>
-                        <td>${bid.customerName}</td>
-                        <td>${bid.amount}</td>
-                        <td>${bid.bidTime}</td>
-                        <td>
-                            <a href="/admin/customers/${bid.customerId}" class="btn btn-primary btn-sm">
-                                Customer Details
-                            </a>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            }
-            console.log(data.msg);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
-</script> --}}
+<script>
+function placeBid(data) 
+{
+        // alert("here")
+    var tableBody = document.getElementById('tableBody');
+    // var newRow = document.createElement('tr');
+    newRow= `<tr>
+        <th scope="row">${data.bid.id}</th>
+        <td>${data.customer.name}</td>
+        <td>${data.bid.amount}</td>
+        <td>${data.bid.created_at}</td>
+        <td>
+            <a href="/admin/customers/${data.customer.id}" class="btn btn-primary btn-sm">
+                Customer Details
+            </a>
+        </td></tr>
+    `;
+    tableBody.insertAdjacentHTML("afterbegin" , newRow);
+    // tableBody.appendChild(newRow);
+}
+</script>
 
 <script>
-
-function refreshTable() {
-    fetch('/customer-bid', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) 
-        {
-            const tableBody = document.getElementById('msg');
-            tableBody.innerHTML = '';
-
-            data.updatedLotBids.forEach(bid => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <th scope="row">${bid.id}</th>
-                    <td>${bid.customerName}</td>
-                    <td>${bid.amount}</td>
-                    <td>${bid.bidTime}</td>
-                    <td>
-                        <a href="/admin/customers/${bid.customerId}" class="btn btn-primary btn-sm">
-                            Customer Details
-                        </a>
-                    </td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-        console.log(data.msg);
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-}
-
-// import Echo from "laravel-echo";
-
-// window.Pusher = require("pusher-js");
-
-// window.Echo = new Echo({
-//   broadcaster: "pusher",
-//   key: process.env.MIX_PUSHER_APP_KEY,
-//   cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-//   forceTLS: true,
-// });
-
-
-// window.Echo.private("bid-placed." + lotId).listen("BidPlaced", (e) => {
-//   console.log("Bid placed:", e.bid);
-//   refreshTable();
-// });
-
-
-
     var lotStatus = document.getElementById("lotStatus").innerHTML;
     var myfunc = setInterval(function() 
     {
@@ -407,27 +325,21 @@ function refreshTable() {
     document.getElementById('ReEndDate').setAttribute('min', formattedToday);
 </script>
 
-{{-- <script>
-    var today = new Date();
-    var year = today.getFullYear();
-    var month = (today.getMonth() + 1).toString().padStart(2, '0');
-    var day = today.getDate().toString().padStart(2, '0');
-    var hours = today.getHours().toString().padStart(2, '0');
-    var minutes = today.getMinutes().toString().padStart(2, '0');
-    
-    var formattedToday = day + '/' + month + '/' + year + ' ' + hours + ':' + minutes;
-    
-    document.getElementById('ReStartDate').setAttribute('min', formattedToday);
-    document.getElementById('ReEndDate').setAttribute('min', formattedToday);
-</script> --}}
-
-
-
-<script src="{{asset('js/app.js')}}"></script>
-<script>
-    console.log(Echo)
-    
-</script>
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script>
+        // Enable pusher logging - don't include this in production
+        // Pusher.logToConsole = true;
+        var pusher = new Pusher('bacf91fa7936ec16edb7', {
+            cluster: 'ap2'
+        });
+        var channel = pusher.subscribe('bid-placed');
+        channel.bind('bid.placed', function(data) {
+            // alert("here");
+            // alert(JSON.stringify(data));
+            placeBid(data)
+            // console.log(data)
+        });
+  </script>
 
 
 @endsection

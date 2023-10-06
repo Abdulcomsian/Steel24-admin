@@ -3,22 +3,20 @@
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class BidPlaced implements ShouldBroadcast
+class NewBidPlaced implements ShouldBroadcast
 {
-    use Dispatchable, InteractsWithSockets, SerializesModels;
+    use SerializesModels;
 
     public $bid;
+    public $customer;
 
-    public function __construct($bid)
+    public function __construct($bid , $customer)
     {
         $this->bid = $bid;
+        $this->customer = $customer;
     }
 
     public function broadcastOn()
@@ -26,10 +24,8 @@ class BidPlaced implements ShouldBroadcast
         return new Channel('bid-placed');
     }
 
-
     public function broadcastAs()
     {
         return 'bid.placed';
     }
-
 }
