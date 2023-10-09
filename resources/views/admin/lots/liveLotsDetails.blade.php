@@ -75,13 +75,13 @@
                                     <div class="col-12">
                                         <h4 class="d-flex justify-content-between">
                                             <span> Started at : <span
-                                                    id="lotstarttime">{{ $lots->StartDate }}</span>
+                                                    id="lotstarttime">{{  \Carbon\Carbon::parse($lots->StartDate)->format('d-m-Y g:i:s A') }}</span>
                                             </span>
                                             {{-- <span> Started at : <span id="lotstarttime">{{ \Carbon\Carbon::parse($lots->StartDate)->format('d-m-Y H:i:s') }}</span></span> --}}
                                             <span class="font-weight-bold ">
                                                 <span id="remainingTime"></span>
                                             </span>
-                                            <span> End at : <span id="lotendtime">{{ $lots->EndDate }}</span></span>
+                                            <span> End at : <span id="lotendtime">{{  \Carbon\Carbon::parse($lots->EndDate)->format('d-m-Y g:i:s A')  }}</span></span>
                                             {{-- <span> End at : <span id="lotendtime">{{ \Carbon\Carbon::parse($lots->EndDate)->format('d-m-Y H:i:s') }}</span></span> --}}
                                         </h4>
                                     </div>
@@ -206,7 +206,7 @@
                                                         <td>{{ $bid->customerName }}</td>
                                                         <td>{{ $bid->amount }}</td>
                                                         {{-- <td>{{ $bid->bidTime }}</td> --}}
-                                                        <td>{{ \Carbon\Carbon::parse($bid->bidTime)->format('d-m-Y H:i:s') }}</td>
+                                                        <td>{{ \Carbon\Carbon::parse($bid->bidTime)->format('d-m-Y g:i:s A') }}</td>
                                                         <td>
                                                             <a href="/admin/customers/{{ $bid->customerId }}" class="btn btn-primary btn-sm">
                                                                 Customer Details
@@ -237,11 +237,20 @@ function placeBid(data)
         // alert("here")
     var tableBody = document.getElementById('tableBody');
     // var newRow = document.createElement('tr');
+    let date = new Date(data.bid.created_at)
+    let day = date.getDate() < 10 ? "0"+ date.getDate() : date.getDate();
+    let month = (date.getMonth() + 1) < 10 ? "0"+ (date.getMonth() + 1) : (date.getMonth() + 1); 
+    //find the am/pm
+    let timeIs = date.getHours() < 12 ? "AM" : "PM";
+    let dateHour = date.getHours() % 12; 
+    let minute = date.getMinutes() < 10 ? "0".date.getMinutes() : date.getMinutes();
+    //find am/pm code ends here
+    let bidDate =  day + "-" + month + "-" +  date.getFullYear()+ " " + dateHour + ":" + minute + ":" + date.getSeconds()+" "+ timeIs;
     newRow= `<tr>
         <th scope="row">${data.bid.id}</th>
         <td>${data.customer.name}</td>
         <td>${data.bid.amount}</td>
-        <td>${data.bid.created_at}</td>
+        <td>${bidDate}</td>
         <td>
             <a href="/admin/customers/${data.customer.id}" class="btn btn-primary btn-sm">
                 Customer Details
