@@ -47,17 +47,17 @@
                                         </div>
                                         <hr>
                                         <br>
-                                        <div class="col-12 ">
+
+                                        <div class="col-12">
                                             <h4 class="d-flex justify-content-between">
-                                                {{-- <span> Started at : <span id="lotstarttime">{{ $lots->StartDate }}</span></span> --}}
-                                                <span>Started at: <span id="lotstarttime">{{ \Carbon\Carbon::parse($lots->StartDate)->format('d-m-Y H:i:s') }}</span></span>
-                                                <span class="font-weight-bold ">
+                                                <span>Started at: <span id="lotstarttime">{{ \Carbon\Carbon::parse($lots->StartDate)->format('d-m-Y h:i:s A') }}</span></span>
+                                                <span class="font-weight-bold">
                                                     {{-- <span id="remainingTime"></span> --}}
                                                 </span>
-                                                {{-- <span> End at : <span id="lotendtime">{{ $lots->EndDate }}</span></span> --}}
-                                                <span>End at: <span id="lotendtime">{{ \Carbon\Carbon::parse($lots->EndDate)->format('d-m-Y H:i:s') }}</span></span>
+                                                <span>End at: <span id="lotendtime">{{ \Carbon\Carbon::parse($lots->EndDate)->format('d-m-Y h:i:s A') }}</span></span>
                                             </h4>
                                         </div>
+                                        
 
                                         @if ($lots->lot_status == 'Sold' || $lots->lot_status == 'STA' || $lots->lot_status == 'Expired')
                                             <div class="align-items-center d-flex justify-content-around w-100">
@@ -136,8 +136,8 @@
                                                     <th scope="row">{{ $bid->id }}</th>
                                                     <td>{{ $bid->customerName }}</td>
                                                     <td>{{ $bid->amount }}</td>
-                                                    {{-- <td>{{ $bid->bidTime }}</td> --}}
-                                                    <td>{{ \Carbon\Carbon::parse($bid->bidTime)->format('d-m-Y H:i:s') }}</td>
+                                                    {{-- <td>{{ \Carbon\Carbon::parse($bid->bidTime)->format('d-m-Y H:i:s') }}</td> --}}
+                                                    <td>{{ \Carbon\Carbon::parse($bid->bidTime)->format('d-m-Y h:i:s A') }}</td>
                                                     <td>
                                                         <a href="/admin/customers/{{ $bid->customerId }}"
                                                             class="btn btn-primary btn-sm">

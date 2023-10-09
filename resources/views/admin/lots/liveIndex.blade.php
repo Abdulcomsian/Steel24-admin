@@ -63,35 +63,34 @@
                                                         <td>{{ $lot->title }}</td>
 
                                                         {{-- <td>
-                                                            @if ($lot->ReStartDate > $lot->StartDate)
-                                                                {{ $lot->ReStartDate }}
-                                                            @else
-                                                                {{ $lot->StartDate }}
-                                                            @endif
-                                                        </td> --}}
-                                                        <td>
                                                             @php
                                                                 $startDate = \Carbon\Carbon::parse($lot->StartDate)->format('d-m-Y H:i:s');
                                                                 $reStartDate = \Carbon\Carbon::parse($lot->ReStartDate)->format('d-m-Y H:i:s');
                                                                 echo $lot->ReStartDate > $lot->StartDate ? $reStartDate : $startDate;
                                                             @endphp
-                                                        </td>
-                                                    
-                                                        {{-- <td>
-                                                            @if ($lot->ReEndDate > $lot->EndDate)
-                                                                {{ $lot->ReEndDate }}
-                                                            @else
-                                                                {{ $lot->EndDate }}
-                                                            @endif
-
                                                         </td> --}}
                                                         <td>
+                                                            @php
+                                                                $startDate = \Carbon\Carbon::parse($lot->StartDate)->format('d-m-Y h:i:s A');
+                                                                $reStartDate = \Carbon\Carbon::parse($lot->ReStartDate)->format('d-m-Y h:i:s A');
+                                                                echo $lot->ReStartDate > $lot->StartDate ? $reStartDate : $startDate;
+                                                            @endphp
+                                                        </td>
+
+                                                        {{-- <td>
                                                             @php
                                                                 $endDate = \Carbon\Carbon::parse($lot->EndDate)->format('d-m-Y H:i:s');
                                                                 $reEndDate = \Carbon\Carbon::parse($lot->ReEndDate)->format('d-m-Y H:i:s');
                                                                 echo $lot->ReEndDate > $lot->EndDate ? $reEndDate : $endDate;
                                                             @endphp
-                                                        </td>
+                                                        </td> --}}
+                                                        <td>
+                                                            @php
+                                                                $endDate = \Carbon\Carbon::parse($lot->EndDate)->format('d-m-Y h:i:s A');
+                                                                $reEndDate = \Carbon\Carbon::parse($lot->ReEndDate)->format('d-m-Y h:i:s A');
+                                                                echo $lot->ReEndDate > $lot->EndDate ? $reEndDate : $endDate;
+                                                            @endphp
+                                                        </td>                                                        
                                                         
 
                                                         <td>{{ $lot->lot_status }}</td>

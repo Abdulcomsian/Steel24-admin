@@ -167,7 +167,7 @@ class LotsController extends Controller
             "EndDate" => "required",
             "Price" => "required",
             'categoryId' => "required",
-            // "participate_fee" => "required",
+            "participate_fee" => "required",
             "make_in" => "required",
             "lot_status" => "required",
             "paymentId" => "required",
@@ -715,7 +715,7 @@ public function update(Request $request, lots $lots)
         "material" => "nullable",
         'categoryId' => "required",
         "Price" => "required",
-        // "participate_fee" => 'required',
+        "participate_fee" => 'required',
         "make_in" => 'required',
         'lot_status' => 'required',
     ];

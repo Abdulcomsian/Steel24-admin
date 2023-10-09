@@ -86,6 +86,7 @@ Route::post('/productimages/destroy/{productimage}', [ProductImageController::cl
 Route::get('/lots', [LotsController::class, 'index'])->name('lots');
 
 Route::get('/lots/create', [LotsController::class, 'create'])->name('create');
+
 // import lots
 Route::post('/lots/import-csv', [CsvImportController::class, 'import']);
 Route::get('/lots/import-csv/', [CsvImportController::class, 'showForm'])->name('import.showForm');

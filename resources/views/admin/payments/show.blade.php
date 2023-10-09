@@ -26,31 +26,22 @@
                                             <div class="author">
 
                                                 <table class="table align-items-center mb-0">
+
                                                     <thead>
                                                         <tr>
-                                                            <th
-                                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                                Lot</th>
-                                                            <th
-                                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                                Customer</th>
-                                                            <th
-                                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                                Total Amount</th>
-                                                            <th
-                                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                                Paid Amount</th>
-                                                            <th
-                                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                                Remaining Amount</th>
-                                                            <th
-                                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                                                                Date</th>
+                                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Lot</th>
+                                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Customer</th>
+                                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Total Amount</th>
+                                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Paid Amount</th>
+                                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Remaining Amount</th>
+                                                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date</th>
                                                         </tr>
                                                     </thead>
+                                                    
                                                     <tbody>
                                                         @foreach ($paymentDetails as $payment)
-                                                            <tr>
+
+                                                            {{-- <tr>
                                                                 <td>
                                                                     <div class="d-flex px-2 py-1">
                                                                         <div
@@ -96,16 +87,25 @@
                                                                         </div>
                                                                     </div>
                                                                 </td>
+
                                                                 <td>
                                                                     <div class="d-flex px-2 py-1">
-                                                                        <div
-                                                                            class="d-flex flex-column justify-content-center">
+                                                                        <div class="d-flex flex-column justify-content-center">
                                                                             <h6 class="mb-0 text-sm">
-                                                                                {{ $payment->created_at }}</h6>
+                                                                                {{ \Carbon\Carbon::parse($payment->created_at)->format('d-m-Y h:i:s A') }}
+                                                                            </h6>
                                                                         </div>
                                                                     </div>
                                                                 </td>
-
+                                                                
+                                                            </tr> --}}
+                                                            <tr>
+                                                                <td style="width: 110px;">{{ $payment->title }}</td>
+                                                                <td style="width: 100px;">{{ $payment->name }}</td>
+                                                                <td style="width: 100px;">{{ $payment->total_amount }}</td>
+                                                                <td style="width: 100px;">{{ $payment->paid_amount }}</td>
+                                                                <td style="width: 100px;">{{ $payment->remaining_amount }}</td>
+                                                                <td style="width: 100px;">{{ \Carbon\Carbon::parse($payment->created_at)->format('d-m-Y h:i:s A') }}</td>
                                                             </tr>
                                                         @endforeach
 

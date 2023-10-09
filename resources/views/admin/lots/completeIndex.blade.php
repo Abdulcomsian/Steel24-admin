@@ -128,14 +128,36 @@
                     var day = date.getDate().toString().padStart(2, '0');
                     var month = (date.getMonth() + 1).toString().padStart(2, '0');
                     var year = date.getFullYear();
-                    var hours = date.getHours().toString().padStart(2, '0');
+                    var hours = date.getHours();
                     var minutes = date.getMinutes().toString().padStart(2, '0');
                     var seconds = date.getSeconds().toString().padStart(2, '0');
-                    return day + '-' + month + '-' + year + ' ' + hours + ':' + minutes + ':' + seconds;
+                    var ampm = hours >= 12 ? 'PM' : 'AM';
+
+                    // Convert 24-hour time to 12-hour time format
+                    hours = hours % 12;
+                    hours = hours ? hours : 12;
+
+                    return day + '-' + month + '-' + year + ' ' + hours + ':' + minutes + ':' + seconds + ' ' + ampm;
                 }
             },
 
+
             // {data: 'EndDate', name: 'EndDate'},
+            // {
+            //     data: 'EndDate',
+            //     name: 'EndDate',
+            //     render: function (data) 
+            //     {
+            //         var date = new Date(data);
+            //         var day = date.getDate().toString().padStart(2, '0');
+            //         var month = (date.getMonth() + 1).toString().padStart(2, '0');
+            //         var year = date.getFullYear();
+            //         var hours = date.getHours().toString().padStart(2, '0');
+            //         var minutes = date.getMinutes().toString().padStart(2, '0');
+            //         var seconds = date.getSeconds().toString().padStart(2, '0');
+            //         return day + '-' + month + '-' + year + ' ' + hours + ':' + minutes + ':' + seconds;
+            //     }
+            // },
             {
                 data: 'EndDate',
                 name: 'EndDate',
@@ -145,12 +167,20 @@
                     var day = date.getDate().toString().padStart(2, '0');
                     var month = (date.getMonth() + 1).toString().padStart(2, '0');
                     var year = date.getFullYear();
-                    var hours = date.getHours().toString().padStart(2, '0');
+                    var hours = date.getHours();
                     var minutes = date.getMinutes().toString().padStart(2, '0');
                     var seconds = date.getSeconds().toString().padStart(2, '0');
-                    return day + '-' + month + '-' + year + ' ' + hours + ':' + minutes + ':' + seconds;
+                    var ampm = hours >= 12 ? 'PM' : 'AM';
+
+                    // Convert 24-hour time to 12-hour time format
+                    hours = hours % 12;
+                    hours = hours ? hours : 12;
+
+                    return day + '-' + month + '-' + year + ' ' + hours + ':' + minutes + ':' + seconds + ' ' + ampm;
                 }
             },
+
+
             {data: 'lot_status', name: 'lot_status'},
             {data: 'action', name: 'action', orderable: false, searchable: false},
         ]
