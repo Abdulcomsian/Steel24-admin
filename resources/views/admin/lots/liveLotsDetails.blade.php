@@ -58,7 +58,7 @@ var  lotid = <?php echo $lots->id?>
                                                     </a>
                                                     <div>
                                                         <form action="{{ url('admin/addtimeinlive/' . $lots->id) }}">
-                                                            <select id="time" name="time" class="selectpicker w-25"
+                                                            <!-- <select id="time" name="time" class="selectpicker w-25"
                                                                 title="time">
                                                                 <option value="1">1</option>
                                                                 <option value="2">2</option>
@@ -71,8 +71,11 @@ var  lotid = <?php echo $lots->id?>
                                                                 <option value="9">9</option>
                                                                 <option value="10">10</option>
 
-                                                            </select>
+                                                            </select> -->
+                                                            <div class="d-flex justify-content-center align-items-center">
+                                                            <input type="number" class=" col-md-6 mr-2" name="time" placeholder="Time" autocomplete="off" autofocus>
                                                             <button class="btn btn-success btn-sm ">Add Time</button>
+                                                            </div>
                                                         </form>
                                                     </div>
                                                     {{-- <a href="{{ url("/admin/poselot/{$lots->id}") }}"
