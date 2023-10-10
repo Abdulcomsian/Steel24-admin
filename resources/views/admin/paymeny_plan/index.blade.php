@@ -79,53 +79,74 @@
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
 <script type="text/javascript">
-    $(document).ready(function() 
+    // $(document).ready(function() 
+    // {
+    //     var table = $('.data-table').DataTable({
+    //         processing: true,
+    //         serverSide: true,
+    //         ajax:"{!! route('admin.payment_plan') !!}",
+    //         lengthChange: false, // This disables the "Show [X] entries" dropdown
+    //     searching: true, 
+    //         columns: [
+    //             {
+    //                 data: 'id',
+    //                 name: 'id'
+    //             },
+    //             {
+    //                 data: 'Payment_Terms',
+    //                 name: 'Payment_Terms'
+    //             },
+    //             {
+    //                 data: 'Price_Bases',
+    //                 name: 'Price_Bases'
+    //             },
+    //             {
+    //                 data: 'Texes_and_Duties',
+    //                 name: 'Texes_and_Duties'
+    //             },
+    //             {
+    //                 data: 'Commercial_Terms',
+    //                 name: 'Commercial_Terms'
+    //             },
+    //             {
+    //                 data: 'Test_Certificate',
+    //                 name: 'Test_Certificate'
+    //             },
+    //             {
+    //             data: null,
+    //             sorting:false,
+    //             render: function(data, type, row) 
+    //             {
+    //                 return(`<div><a href="{{ url('admin/payment_plan/show/${data.id}') }}"class="btn btn-info btn-sm">Details</a>
+    //            </div>
+    //                 `);
+    //             },
+    //         }
+    //         ]
+    //     });
+    // });
+
+    $(function () 
     {
-        var table = $('.data-table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax:"{!! route('admin.payment_plan') !!}",
-            lengthChange: false, // This disables the "Show [X] entries" dropdown
-        searching: true, 
-            columns: [
-                {
-                    data: 'id',
-                    name: 'id'
-                },
-                {
-                    data: 'Payment_Terms',
-                    name: 'Payment_Terms'
-                },
-                {
-                    data: 'Price_Bases',
-                    name: 'Price_Bases'
-                },
-                {
-                    data: 'Texes_and_Duties',
-                    name: 'Texes_and_Duties'
-                },
-                {
-                    data: 'Commercial_Terms',
-                    name: 'Commercial_Terms'
-                },
-                {
-                    data: 'Test_Certificate',
-                    name: 'Test_Certificate'
-                },
-                {
-                data: null,
-                sorting:false,
-                render: function(data, type, row) 
-                {
-                    return(`<div><a href="{{ url('admin/payment_plan/show/${data.id}') }}"class="btn btn-info btn-sm">Details</a>
-               </div>
-                    `);
-                },
-            }
-            ]
-        });
+    
+    var table = $('.data-table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: "{{  route('admin.payment_plan') }}",
+        columns: [
+            {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+            {data: 'Payment_Terms', name: 'Payment_Terms'},
+            {data: 'Price_Bases', name: 'Price_Bases'},
+            {data: 'Texes_and_Duties', name: 'Texes_and_Duties'},
+            {data: 'Commercial_Terms', name: 'Commercial_Terms'},
+            {data: 'Test_Certificate', name: 'Test_Certificate'},
+            {data: 'action', name: 'action', orderable: false, searchable: false},
+        ]
     });
+    
+  });
 </script>
 <style>
     .sorting:before,

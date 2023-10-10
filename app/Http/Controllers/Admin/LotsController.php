@@ -19,17 +19,16 @@ use App\Models\newMaterial;
 use App\Models\payments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Yajra\DataTables\DataTables;
+// use Yajra\DataTables\DataTables;
+use DataTables;
 use Carbon\Carbon;
 use Faker\Provider\ar_EG\Payment;
 use Illuminate\Support\Carbon as SupportCarbon;
 use Illuminate\Support\Facades\DB;
 use App\Events\LotsStatusUpdated;
 // use App\Http\Controllers\Admin\Factory;
-
 // use Kreait\Firebase;
-// use Kreait\Firebase\Factory;
-
+// use Kreait\Firebase\Factory
 use function PHPSTORM_META\elementType;
 
 class LotsController extends Controller
@@ -40,39 +39,91 @@ class LotsController extends Controller
         $this->middleware('admin.auth:admin');
     }
 
+    // public function index(Request $request)
+    // {
+    //     // $lots = lots::select(['id', 'title', 'StartDate','Price','lot_status']);
+    //     $lots = lots::all();
+    //     if ($request->ajax()) 
+    //     {
+    //         return Datatables::of($lots)
+    //             ->addIndexColumn()
+    //             // ->rawColumns(['action'])
+    //             ->addColumn('action', function ($row) 
+    //             {
+    //                 if ($row->status) {
+    //                     return '<span class="badge badge-primary">Active</span>';
+    //                 } else {
+    //                     return '<span class="badge badge-danger">Deactive</span>';
+    //                 }
+    //             })
+    //             ->filter(function ($instance) use ($request) 
+    //             {
+    //                 if ($request->get('status') == '0' || $request->get('status') == '1') 
+    //                 {
+    //                     $instance->where('status', $request->get('status'));
+    //                 }
+    //                 if (!empty($request->get('search'))) {
+    //                     $instance->where(function ($w) use ($request) 
+    //                     {
+    //                         $search = $request->get('search');
+    //                         $w->orWhere('name', 'LIKE', "%$search%")
+    //                             ->orWhere('email', 'LIKE', "%$search%");
+    //                     });
+    //                 }
+    //             })
+    //             ->rawColumns(['status'])
+    //             ->make(true);
+    //     }
+    //     $lots = lots::all();
+    //     return view('admin.lots.index')
+    //         ->with('lots', $lots);     
+    // }
+
     public function index(Request $request)
     {
-        $lots = lots::all();
-        if ($request->ajax()) {
-            return Datatables::of($lots)
-                ->addIndexColumn()
-                ->rawColumns(['action'])
-                ->addColumn('status', function ($row) {
-                    if ($row->status) {
-                        return '<span class="badge badge-primary">Active</span>';
-                    } else {
-                        return '<span class="badge badge-danger">Deactive</span>';
-                    }
-                })
-                ->filter(function ($instance) use ($request) {
-                    if ($request->get('status') == '0' || $request->get('status') == '1') {
-                        $instance->where('status', $request->get('status'));
-                    }
-                    if (!empty($request->get('search'))) {
-                        $instance->where(function ($w) use ($request) {
-                            $search = $request->get('search');
-                            $w->orWhere('name', 'LIKE', "%$search%")
-                                ->orWhere('email', 'LIKE', "%$search%");
-                        });
-                    }
-                })
-                ->make(true);
+        $lots = lots::query(); 
+    
+        if ($request->ajax()) 
+        {
+            $datatables = DataTables::of($lots)
+                ->addIndexColumn()   
+                ->addColumn('action', function ($row) 
+                {
+                    // if ($row->status === 'active') {
+                    //     return '<span class="badge badge-primary">Active</span>';
+                    // } else{
+                    //     return '<span class="badge badge-danger">Deactive</span>';
+                    // } 
+                    
+                    return '<a href="' . url('admin/lots/'  . $row->id) .   '" class="btn btn-info btn-sm">Details</a>';
+                })                             
+                // ->filter(function ($instance) use ($request) {
+                //     if ($request->get('status') == 'deactive' || $request->get('status') == 'active') {
+                //         $instance->where('status', $request->get('status'));
+                //     }
+                //     if (!empty($request->get('search'))) {
+                //         $instance->where(function ($w) use ($request) 
+                //         {
+                //             $search = $request->get('search');
+                //             $w->orWhere('name', 'LIKE', "%$search%")
+                //             ->orWhere('email', 'LIKE', "%$search%");
+                //         });
+                //     }
+                // })
+                ->rawColumns(['action']);
+    
+            return $datatables->make(true);
         }
+    
+        // Load all records for non-AJAX requests
+        $lots = $lots->get();
+    
         return view('admin.lots.index')
             ->with('lots', $lots);
-
-            
     }
+    
+
+
 
     public function analyzeUrl(Request $request)
     {
@@ -266,7 +317,8 @@ class LotsController extends Controller
             $material['Grade'] = $data["Grade"][$index];
             $material['Remark'] = $data["Remark"][$index];
             // dd($data['images']);
-            if (isset($data['images'][$index])) {
+            if (isset($data['images'][$index])) 
+            {
                 $imgName = time() . rand(1, 100) . '.' . $data['images'][$index]->extension();
                 $data['images'][$index]->move(public_path('files'), $imgName);
                 $material['images'] = $imgName;
@@ -424,6 +476,11 @@ class LotsController extends Controller
         $payment_term = lotTerms::where('id',$lots->Payment_terms)->get();
         $payment_terms = lotTerms::all();
         // $lots = lots::all();
+
+        // $message = 'Live Lot to Show Details of Lot Successfully';
+        // event(new LotsStatusUpdated($message));
+
+        
         return view('admin.lots.show', compact('lots', 'materialilist', 'payment_terms'));
 
     }
@@ -729,10 +786,22 @@ public function update(Request $request, lots $lots)
     {
         $livelots = DB::select("SELECT * FROM `lots` WHERE lot_status != 'live' ORDER by EndDate DESC;");
 
+        // if ($request->ajax()) 
+        // {
+        //     return Datatables::of($livelots)
+        //         ->addIndexColumn()
+        //         ->rawColumns(['action'])
+        //         ->make(true);
+        // }
+
         if ($request->ajax()) 
         {
             return Datatables::of($livelots)
                 ->addIndexColumn()
+                ->addColumn('action', function ($complete_lot) 
+                {
+                    return '<a href="' . url('admin/completelotbids/' . $complete_lot->id) . '"class="btn btn-info" style="padding-top:20px"><i class="material-icons">person</i></a>';
+                })
                 ->rawColumns(['action'])
                 ->make(true);
         }
@@ -860,6 +929,9 @@ public function update(Request $request, lots $lots)
             $EndDate = lots::where('id', $lot->id)->pluck('EndDate')->first();
             // $database->getReference('TodaysLots/liveList/' . $lot->id . '/EndDate')->set($EndDate);
         }
+        
+        $message = 'Live Lot Added Time Successfully';
+        event(new LotsStatusUpdated($message));
 
         return back();
     }

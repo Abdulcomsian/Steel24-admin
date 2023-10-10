@@ -20,12 +20,27 @@ class ProductImageController extends Controller
     public function index(Request $request)
     {
         $productimage = productimage::all();
-        if ($request->ajax()) {
-          return Datatables::of($productimage)
-                  ->addIndexColumn()
-                  ->rawColumns(['action'])
-                  ->make(true);
-      }
+        
+    //     if ($request->ajax()) 
+    //     {
+    //       return Datatables::of($productimage)
+    //               ->addIndexColumn()
+    //               ->rawColumns(['action'])
+    //               ->make(true);
+    //    }
+
+    if ($request->ajax()) 
+        {
+            return Datatables::of($productimage)
+                ->addIndexColumn()
+                ->addColumn('action', function($product_image) 
+                {
+                    return '<a href="'.url('admin/productimages/show/'.$product_image->id).'" class="btn btn-info btn-sm">Details</a>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
         return view('admin.productimage.index')
             ->with('productimage', $productimage);
     }
@@ -35,44 +50,6 @@ class ProductImageController extends Controller
         $productimage  = productimage::all();
         return view('admin.productimage.create', compact('productimage'));
     }
-
-    // public function store(Request $request)
-    // {
-    //     productimage::create($request->validate([
-    //         'title' => 'required',
-    //         "description" => "nullable",
-    //     ]));
-    //     return redirect('admin/productimage');
-    // }
-
-
-
-
-
-    //     public function store(Request $request)
-    // {
-    //     $validatedData = $request->validate([
-    //         'title' => 'required',
-    //         'description' => 'nullable',
-    //         'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-    //     ]);
-
-    //     if ($request->hasFile('image')) 
-    //     {
-    //         $image = $request->file('image');
-    //         $imageName = time() . '_' . $image->getClientOriginalName();
-            
-    //         $image->storeAs('public/productimages', $imageName);
-
-
-    //         $validatedData['image'] = 'productimages/' . $imageName;
-    //     }
-
-    //     // Create a new product image record with the validated data
-    //     productimage::create($validatedData);
-
-    //     return redirect('admin/productimage');
-    // }
 
     public function store(Request $request)
     {

@@ -36,11 +36,13 @@
                                                         <p class="text-xs text-secondary mb-0 ml-4 font-weight-Bold" style="color:black !important">{{ $customer->name }}</p>
                                                         <p class="text-xs text-secondary mb-0 ml-4 ">
                                                                     {{ $customer->email }}</p>
-</div>
+                                                      </div>
                                                     </div>
-                                                    <h5 class="title mt-3">Registered at :
-                                                        <small>{{ $customer->created_at }}</small>
-                                                    </h5>
+
+                                                    <h5 class="title mt-3">Registered at:
+                                                        <small>{{ $customer->created_at->format('d-m-Y H:i:s') }}</small>
+                                                    </h5>                                                    
+                                                    
                                                     <div>
                                                         <a href="{{ url("admin/customers/balancehistory/{$customer->id}") }}">
                                                             <button class="btn btn-primary btn-sm">

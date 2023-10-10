@@ -144,6 +144,7 @@
                                     </div>
                                     
                                     <!-- <label for="participate_fee" class="col-sm-2 col-form-label">Participation Fee</label> -->
+
                                     <div class="col-sm-4">
                                         <input type="number" class="form_customer" step="0.01" id="participate_fee" placeholder="Participation Fee"
                                             min="0" name="participate_fee"
@@ -173,6 +174,7 @@
                                             <option {{ $lots->lot_status === "live" ? 'selected' : '' }} value="live">Live Lot</option>
                                             <option {{ $lots->lot_status === "Expired" ? 'selected' : '' }} value="Expired">Expired Lot</option>
                                             <option {{ $lots->lot_status === "Sold" ? 'selected' : '' }} value="Sold">Sold Lot</option>
+                                            <option {{ $lots->lot_status === "Upcoming" ? 'selected' : '' }} value="Upcoming">Upcoming Lot</option>
                                             <option {{ $lots->lot_status === "STA" ? 'selected' : '' }} value="STA">STA</option>
                                         </select>
                                     </div>

@@ -10,31 +10,26 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-
-class LotsStatusUpdated implements ShouldBroadcast
-
+class BidPlaced implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message;
+    public $bid;
 
-    public function __construct($message)
-    
+    public function __construct($bid)
     {
-        $this->message = $message;
+        $this->bid = $bid;
     }
 
     public function broadcastOn()
-    
     {
-        return 'lot-change';
+        return new Channel('bid-placed');
     }
 
+
     public function broadcastAs()
-    
     {
-        return 'lot.successful';
+        return 'bid.placed';
     }
-    
 
 }

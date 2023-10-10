@@ -21,15 +21,17 @@
                                             <a href="{{ url('admin/payments/create') }}"
                                                 class="btn btn-sm btn-facebook">Add</a>
                                         </div> --}}
-                                        <div class="header_customer">
-                                         <div >
-                                <h4 >Payments</h4>
-                            </div>
-                        </div>
+                                    <div class="header_customer">
+                                        <div>
+                                           <h4 >Payments</h4>
+                                        </div>
                                     </div>
-                                    <div class="table-responsive"><!-- remove class="table-responsive"-->
+                                    </div>
+
+                                    {{-- <div class="table-responsive"><!-- remove class="table-responsive"-->
                                         <table class="table data-table table-striped w-100">
                                             <thead class="text-primary text-center">
+                                                <th>ID</th>
                                                 <th>Lot</th>
                                                 <th>Customer</th>
                                                 <th>Total Amount</th>
@@ -39,6 +41,23 @@
                                             </thead>
                                             <tbody class="text-center">
 
+                                            </tbody>
+                                        </table>
+                                    </div> --}}
+
+                                    <div class="table-responsive">
+                                        <table class="table data-table table-striped w-100">
+                                            <thead class="text-primary text-center">
+                                                <th style="width: 10%;">ID</th>
+                                                <th style="width: 15%;">Lot</th>
+                                                <th style="width: 15%;">Customer</th>
+                                                <th style="width: 15%;">Total Amount</th>
+                                                <th style="width: 15%;">Remaining Amount</th>
+                                                <th style="width: 15%;">Date</th>
+                                                <th style="width: 15%;">Action</th>
+                                            </thead>
+                                            <tbody class="text-center">
+                                                <!-- Your table data goes here -->
                                             </tbody>
                                         </table>
                                     </div>
@@ -126,19 +145,46 @@
             lengthChange: false, // This disables the "Show [X] entries" dropdown
         searching: true, 
             columns: [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                 { data: 'lotTitle', name: 'lotTitle' },
-                { data: 'customerName', name: 'customerName' },
-                { data: 'total_amount', name: 'total_amount' },
-                { data: 'remaining_amount', name: 'remaining_amount' },
-                { data: 'paymentDate', name: 'paymentDate' },
+                { data: 'customerName', name: 'customerName'},
+                { data: 'total_amount', name: 'total_amount'},
+                { data: 'remaining_amount', name: 'remaining_amount'},
+                 // { data: 'created_at', name: 'created_at'},
                 {
-                    data: null,
-                    sorting: false,
-                    render: function(data, type, row) 
+                    data: 'created_at',
+                    name: 'created_at',
+                    render: function (data) 
                     {
-                        return `<div><a href="{{ url('admin/payments/${data.lotId}') }}" class="btn btn-info btn-sm">Details</a></div>`;
-                    },
+                        var date = new Date(data);
+                        var day = date.getDate().toString().padStart(2, '0');
+                        var month = (date.getMonth() + 1).toString().padStart(2, '0');
+                        var year = date.getFullYear();
+                        var hours = date.getHours();
+                        var minutes = date.getMinutes().toString().padStart(2, '0');
+                        var seconds = date.getSeconds().toString().padStart(2, '0');
+                        var ampm = hours >= 12 ? 'PM' : 'AM';
+
+                        // Convert 24-hour time to 12-hour time format
+                        hours = hours % 12;
+                        hours = hours ? hours : 12; // 0 should be displayed as 12 in AM/PM format
+
+                        return day + '-' + month + '-' + year + ' ' + hours + ':' + minutes + ':' + seconds + ' ' + ampm;
+                    }
                 },
+
+
+
+                {data: 'action', name: 'action', orderable: false, searchable: false},
+                // { data: 'paymentDate', name: 'paymentDate'},
+                // {
+                //     data: null,
+                //     sorting: false,
+                //     render: function(data, type, row) 
+                //     {
+                //         return `<div><a href="{{ url('admin/payments/${data.lotId}') }}" class="btn btn-info btn-sm">Details</a></div>`;
+                //     },
+                // },
             ],
         });
     });

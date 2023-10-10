@@ -29,19 +29,6 @@ class PaymentsController extends Controller
     public function index(Request $request)
     {
 
-        // $payments =  DB::select('SELECT payments.* ,lots.title as lotTitle,customers.name as customerName from payments LEFT JOIN lots on lots.id = payments.lotId LEFT JOIN customers on payments.customerId = customers.id GROUP by payments.lotId;');
-
-        // if ($request->ajax()) {
-        //     return Datatables::of($payments)
-        //         ->addIndexColumn()
-        //         ->rawColumns(['action'])
-        //         ->make(true);
-        // }
-        // return view('admin.payments.index', compact('payments'));
-
-
-
-
         $payments = DB::select('SELECT payments.*, lots.title as lotTitle, customers.name as customerName, payments.Date as paymentDate FROM payments LEFT JOIN lots on lots.id = payments.lotId LEFT JOIN customers on payments.customerId = customers.id GROUP by payments.lotId;');
 
         if ($request->ajax()) 

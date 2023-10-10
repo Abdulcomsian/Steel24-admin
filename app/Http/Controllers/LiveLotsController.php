@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
+use App\Events\LotsStatusUpdated;
 
 use Kreait\Firebase\Factory;
 
@@ -59,8 +60,6 @@ class LiveLotsController extends Controller
         ->groupBy('categories.id')
         ->get();
 
-        
-
         return view('admin.lots.liveIndex', compact('categories', 'livelots'));
     }
 
@@ -78,14 +77,9 @@ class LiveLotsController extends Controller
         ->whereIn('lots.lot_status', ['live', 'Upcoming', 'Restart','STA'])
         ->groupBy('categories.id')
         ->get();
-
         
-
         return view('admin.lots.liveIndex', compact('categories', 'livelots'));
     }
-
-    
-
 
     // Live Lots Details and Bids
     public function liveLotBids(lots $lots)
@@ -112,6 +106,9 @@ class LiveLotsController extends Controller
         payments::where('lotId', $id)->delete();
         // zeshan commenting this 
         // $this->pushonfirbase();
+
+        $message = 'Live Lot Starting Successfully';
+        event(new LotsStatusUpdated($message));
 
         return redirect('/admin/live_lots_bids/' . $id);
     }
@@ -172,6 +169,10 @@ class LiveLotsController extends Controller
         // $database->getReference('TodaysLots/liveList/' . $id)->remove();
 
         // $this->pushonfirbase();
+
+        $message = 'Live Lot Ended Successfully';
+        event(new LotsStatusUpdated($message));
+
         return redirect('/admin/live_lots_bids/' . $id);
     }
 
@@ -227,6 +228,10 @@ class LiveLotsController extends Controller
 
         // zee commenting this
         // $this->pushonfirbase();
+
+        $message = 'Live Lot Expired Successfully';
+        event(new LotsStatusUpdated($message));
+        
         return redirect('/admin/live_lots_bids/' . $id);
 
         
@@ -286,6 +291,12 @@ class LiveLotsController extends Controller
         payments::where('lotId',  $requestData['lotid'])->delete();
         // zee commenting this
         // $this->pushonfirbase();
+
+        $message = 'Live Lot Started Successfully';
+        event(new LotsStatusUpdated($message));
+
+
+        
         return redirect('admin/live_lots_bids/' . $requestData['lotid']);
     }
 

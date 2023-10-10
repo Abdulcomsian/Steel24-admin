@@ -105,6 +105,7 @@ input:checked+.slider:before {
                                             </svg>New</a>
                                     </div>
                                 </div>
+
                                 <div class="table-responsive">
                                     <table class="table data-table table-striped w-100">
                                         <thead class="text-primary text-center">
@@ -118,6 +119,38 @@ input:checked+.slider:before {
                                         </tbody>
                                     </table>
                                 </div>
+
+                                {{-- <div class="table-responsive">
+                                <table class="table data-table table-striped w-100">
+                                    <thead class="text-primary text-center">
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Approved</th>
+                                        <th>User</th>
+                                    </thead>
+                                    <tbody class="text-center">
+                                        @php
+                                            $idCounter = 1;
+                                        @endphp
+                                        @foreach ($users as $user)
+                                            <tr>
+                                                <td>{{ $idCounter++ }}</td>
+                                                <td>{{ $user->name }}</td>
+                                                <td>{{ $user->email }}</td>
+                                                <td>{{ $user->isApproved == 1 ? 'Yes' : 'No' }}</td>
+                                                <td>
+                                                    <a href="{{ url('admin/customers/' . $user->id) }}" class="btn btn-info btn-sm"
+                                                    style="font-weight:500">Details</a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div> --}}
+
+                                
+
                             </div>
                             <div class="card-footer mr-auto">
                                 {{-- {{ $auctions->links() }} --}}
@@ -137,28 +170,73 @@ input:checked+.slider:before {
 <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
 <script type="text/javascript">
-$(document).ready(function() {
-    var table = $('.data-table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: "{!! route('admin.customers.index') !!}",
-        lengthChange: false, // This disables the "Show [X] entries" dropdown
-        searching: true, 
-        columns: [
-            {
-                data: 'id',
-                name: 'id'
-            },
-            {
-                data: 'name',
-                name: 'name'
-            },
-            {
-                data: 'email',
-                name: 'email'
-            },
-            {
+
+// $(document).ready(function() {
+//     var table = $('.data-table').DataTable({
+//         processing: true,
+//         serverSide: true,
+//         ajax: "{!! route('admin.customers.index') !!}",
+//         lengthChange: false, // This disables the "Show [X] entries" dropdown
+//         searching: true, 
+//         columns: [
+//             {
+//                 data: 'id',
+//                 name: 'id'
+//             },
+//             {
+//                 data: 'name',
+//                 name: 'name'
+//             },
+//             {
+//                 data: 'email',
+//                 name: 'email'
+//             },
+//             {
+//                 data: null,
+//                 orderable: false,
+//                 searchable: false,
+//                 responsivePriority: 1,
+//                 targets: 0,
+//                 className: "text-center m2",
+//                 render: function(o) {
+//                     var element = '<div class="btn-group">';
+//                     element += `
+//                         <label class="switch" for="flexSwitchCheckDefault_${o.id}">
+//                             <input ${o.isApproved == "1"?'checked':''} onchange="couponstatus(` + o.id + `, event )" type="checkbox" name="active-box" id="flexSwitchCheckDefault_${o.id}">
+//                             <span class="slider round"></span>
+//                         </label>
+//                     `;
+//                     element += '</div>';
+//                     return element;
+//                 }
+//             },
+//             {
+//                 data: null,
+//                 sorting: false,
+//                 render: function(data, type, row) {
+//                     return (`<div><a href="{{ url('admin/customers/${data.id}') }}" class="btn btn-info btn-sm" style="font-weight:500">Details</a>`);
+//                 },
+//             }
+//         ]
+//     });
+// });
+
+
+$(document).ready(function() 
+        {
+        var table = $('.data-table').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: "{!! route('admin.customers.index') !!}",
+            lengthChange: false, 
+            searching: true, 
+            columns: [
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                { data: 'name', name: 'name' },
+                { data: 'email', name: 'email'},
+                {
                 data: null,
                 orderable: false,
                 searchable: false,
@@ -177,16 +255,13 @@ $(document).ready(function() {
                     return element;
                 }
             },
-            {
-                data: null,
-                sorting: false,
-                render: function(data, type, row) {
-                    return (`<div><a href="{{ url('admin/customers/${data.id}') }}" class="btn btn-info btn-sm" style="font-weight:500">Details</a>`);
-                },
-            }
-        ]
+                {data: 'action', name: 'action', orderable: false, searchable: false},
+            ],
+        });
     });
-});
+
+
+
 </script>
 
 <script>

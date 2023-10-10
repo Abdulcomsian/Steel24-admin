@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\lotTerms;
 use DataTables;
+
+
 class PaymentPlanController extends Controller
 {
     public function __construct()
@@ -16,13 +18,19 @@ class PaymentPlanController extends Controller
     public function index(Request $request)
     {
         $payment_plan = lotTerms::all();
-        if ($request->ajax()) 
-        {
-          return DataTables::of($payment_plan)
-                  ->addIndexColumn()
-                  ->rawColumns(['action'])
-                  ->make(true);
+
+       if ($request->ajax()) 
+       {
+           return Datatables::of($payment_plan)
+               ->addIndexColumn()
+               ->addColumn('action', function ($payment_plan) 
+               {
+                   return '<a href="' . url('admin/payment_plan/show/' . $payment_plan->id) . '" class="btn btn-info btn-sm">Details</a>';
+               })
+               ->rawColumns(['action'])
+               ->make(true);
        }
+       
         return view('admin.paymeny_plan.index')
             ->with('payment_plan', $payment_plan);
     }
@@ -69,10 +77,6 @@ class PaymentPlanController extends Controller
             'Test_Certificate' => 'required',
         ]));
         return redirect('admin/payment_plan/show/'. $request->lotid);
-// dd($lotTerms->id);
-        // return redirect("admin/payment_plan/show/.$lotTerms->id");
-
-     
     }
 
     /**

@@ -45,6 +45,7 @@
                                             <th> Grade</th>
                                             <th> Remark</th>
                                             <th> images</th>
+                                            {{-- <th> Action </th> --}}
 
                                         </tr>
                                     </thead>
