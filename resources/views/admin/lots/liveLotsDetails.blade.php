@@ -73,7 +73,7 @@ var  lotid = <?php echo $lots->id?>
 
                                                             </select> -->
                                                             <div class="d-flex justify-content-center align-items-center">
-                                                            <input type="number" class=" col-md-6 mr-2" name="time" placeholder="Time" autocomplete="off" autofocus>
+                                                            <input type="number" class=" col-md-6 mr-2" name="time" placeholder="Minute" autocomplete="off" autofocus> <!-- for add time  -->
                                                             <button class="btn btn-success btn-sm ">Add Time</button>
                                                             </div>
                                                         </form>
