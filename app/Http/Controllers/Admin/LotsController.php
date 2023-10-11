@@ -26,6 +26,7 @@ use Faker\Provider\ar_EG\Payment;
 use Illuminate\Support\Carbon as SupportCarbon;
 use Illuminate\Support\Facades\DB;
 use App\Events\LotsStatusUpdated;
+use App\Events\AddTimeInLiveBid;
 // use App\Http\Controllers\Admin\Factory;
 // use Kreait\Firebase;
 // use Kreait\Firebase\Factory
@@ -943,7 +944,7 @@ public function update(Request $request, lots $lots)
         
         $message = 'Live Lot Added Time Successfully';
         event(new LotsStatusUpdated($message));
-
+        event(new AddTimeInLiveBid($request->time));
         return back();
     }
 }

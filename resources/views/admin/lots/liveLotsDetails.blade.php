@@ -264,19 +264,36 @@ function placeBid(data)
     // tableBody.appendChild(newRow);
 }
 </script>
-
+<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 <script>
     window.onload = function(){
-        // let newStartTime  = "{{\Carbon\Carbon::parse($lots->StartDate)->format('Y-m-d H:i:s')}}";
-        // let newEndTime  = "{{\Carbon\Carbon::parse($lots->EndDate)->format('Y-m-d H:i:s') }}";
-        // alert(newStartTime)
-        // console.log(newStartTime);
-        // console.log(newEndTime);
-        var lotStatus = document.getElementById("lotStatus").innerHTML;
-    var myfunc = setInterval(function() 
-    {
+        var myfunc = null;
+        (function(){
             var startTime = new Date("{{\Carbon\Carbon::parse($lots->StartDate)->format('Y-m-d H:i:s')}}").getTime();
             var endTime = new Date("{{\Carbon\Carbon::parse($lots->EndDate)->format('Y-m-d H:i:s') }}").getTime();
+            var now = new Date().getTime();
+            var timeleft = null;
+            setRemainingClock(startTime , endTime , now);
+        })()
+
+
+        var lotStatus = document.getElementById("lotStatus").innerHTML;
+        
+
+
+        function setRemainingClock(startTime , endTime ){
+            clearInterval(myfunc);
+            myfunc = setInterval(function() 
+                        {
+                            setRemainingTime(startTime, endTime);
+                        },
+                        1000);
+        }
+
+
+        function setRemainingTime(startTime , endTime){
+            // var startTime = new Date("{{\Carbon\Carbon::parse($lots->StartDate)->format('Y-m-d H:i:s')}}").getTime();
+            // var endTime = new Date("{{\Carbon\Carbon::parse($lots->EndDate)->format('Y-m-d H:i:s') }}").getTime();
             var now = new Date().getTime();
             var timeleft = null;
 
@@ -332,22 +349,10 @@ function placeBid(data)
                     document.getElementById("remainingTime").innerHTML = "TIME UP!!";
                 }
             }
-        },
-        1000);
+        }
 
 
 
-
-
-
-    }
-
-
-
-   
-</script>
-
-<script>
     var today = new Date();
     var formattedToday = today.toISOString().slice(0, 16);
     if(document.getElementById('ReStartDate')){
@@ -356,24 +361,97 @@ function placeBid(data)
     if(document.getElementById('ReEndDate')){
         document.getElementById('ReEndDate').setAttribute('min', formattedToday);
     }
-        
-</script>
 
-<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
-    <script>
-        // Enable pusher logging - don't include this in production
-        // Pusher.logToConsole = true;
+
+
+    
+    function setEndTime(addTime){
+            let endTimeSpan = document.getElementById("lotendtime");
+            let endDateTime = endTimeSpan.innerHTML;
+            let actualDateTime = createDateTimeFormat(endDateTime)
+            let timeInSecondsWithAddedTime = actualDateTime.getTime() + (addTime * (60 * 1000));
+            let endDate = formatDate(timeInSecondsWithAddedTime)
+            endTimeSpan.innerHTML = endDate;
+            for (let i = 1; i <= 5; i++) {
+                setTimeout(function() {
+                    $(endTimeSpan).fadeOut();
+                    $(endTimeSpan).fadeIn();
+                }, 100);
+            }
+
+
+            calculateRemainingTime();
+
+        }
+
+        function calculateRemainingTime(){
+            let startDateTime = createDateTimeFormat(document.getElementById("lotstarttime").innerText);
+            let endDateTime = createDateTimeFormat(document.getElementById("lotendtime").innerText);
+            setRemainingClock(startDateTime , endDateTime)
+        }
+
+        function createDateTimeFormat(givenDateTime){
+            let [date , time , clockFormat ] = givenDateTime.trim().split(" ");
+            let actualDate = date.trim().split("-").reverse().join("-");
+            let splitTime = time.trim().split(":");
+
+            if(clockFormat === "PM")  splitTime[0] = parseInt(splitTime[0]) + 12;
+            let actualTime = splitTime.join(":");
+            let actualDateTime = new Date(actualDate+" "+actualTime);
+            return actualDateTime;
+        }
+
+
+        function formatDate(timestamp){
+            const date = new Date(timestamp);
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours() % 12 || 12).padStart(2, '0'); // Convert to 12-hour format
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            const seconds = String(date.getSeconds()).padStart(2, '0');
+            const ampm = date.getHours() < 12 ? 'AM' : 'PM';
+
+            return`${day}-${month}-${year} ${hours}:${minutes}:${seconds} ${ampm}`;
+        }
+
+
+
+
+
         var pusher = new Pusher('bacf91fa7936ec16edb7', {
             cluster: 'ap2'
         });
         var channel = pusher.subscribe('bid-placed');
         channel.bind('bid.placed', function(data) {
-            // alert("here");
-            // alert(JSON.stringify(data));
             placeBid(data)
             // console.log(data)
         });
-  </script>
+
+        let channel2 = pusher.subscribe('add-time-in-bid');
+        channel2.bind('add.time' , function(data){
+           let lotStatus = document.getElementById("lotStatus").innerText;
+           console.log(data);
+           console.log(lotStatus);
+           if(lotStatus === "LIVE"){
+               setEndTime(data.time);
+           }
+        });
+
+
+
+
+
+}
+
+
+
+   
+</script>
+
+
+
+
 
 
 @endsection
