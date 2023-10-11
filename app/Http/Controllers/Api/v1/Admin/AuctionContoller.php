@@ -1161,7 +1161,7 @@ class AuctionContoller extends Controller
       
 
     public function addnewbidtolot(Request $request)
-{
+    {
     $newBid = $request->validate([
         'customerId' => 'required',
         'amount' => 'required',
@@ -1175,6 +1175,12 @@ class AuctionContoller extends Controller
     if (!$lotDetails) {
         // Lot with the provided ID does not exist
         return response()->json(['message' => 'Sorry, you entered an invalid lot ID.', 'success' => true], 200);
+    }
+
+    $similarAmountBid = BidsOfLots::where('lotId' , $request->lotId)->where('amount' , $request->amount)->count();
+    
+    if($similarAmountBid){
+        return response()->json(["message" => "Bid with same amount has already been placed" , 'success' => true ] , 200 );
     }
 
     if ($customer && $customer->isApproved == 1) {
