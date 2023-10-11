@@ -51,4 +51,6 @@ composer.lock
 /resources/views/react/studySpace/index.blade.php
 vendor/autoload.php
 /*zip
-
+storage/logs/
+/public/files
+/env

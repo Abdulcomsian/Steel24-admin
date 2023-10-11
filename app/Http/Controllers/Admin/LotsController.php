@@ -912,9 +912,20 @@ public function update(Request $request, lots $lots)
 
     public function addTimeInLive(Request $request, $lotid)
     {
-        $liveLots = DB::select("SELECT lots.* ,categories.title as categoriesTitle FROM `lots` 
-        LEFT JOIN categories on categories.id  = lots.categoryId
-        WHERE lots.lot_status IN ('live','Restart') and lots.id  = $lotid");
+        // $liveLots = DB::select("SELECT lots.* ,categories.title as categoriesTitle FROM `lots` 
+        // LEFT JOIN categories on categories.id  = lots.categoryId
+        // WHERE lots.lot_status IN ('live','Restart') and lots.id  = $lotid");
+
+
+        $liveLots = lots::where('lot_status' , 'live')->get();
+        
+        
+        foreach($liveLots as $lot){
+            $lot->EndDate = Carbon::parse($lot->EndDate)->addMinutes((int)$request->time);
+            $lot->save();
+        }
+
+        //dd($request->all() , $lotid);
 
 
         // $firebase = (new Factory)
@@ -922,13 +933,13 @@ public function update(Request $request, lots $lots)
         //     ->withDatabaseUri('https://lotbids-7751a-default-rtdb.europe-west1.firebasedatabase.app/');
         // $database = $firebase->createDatabase();
 
-        foreach ($liveLots as $lot) 
-        {
-            // $lot = lots::where('id', $lot->id)->update(['EndDate' => Carbon::parse($lot->EndDate)->addMinutes(3)]);
-            lots::where('id', $lot->id)->update(['EndDate' => Carbon::parse($lot->EndDate)->addMinutes((int)$request->time)]);
-            $EndDate = lots::where('id', $lot->id)->pluck('EndDate')->first();
-            // $database->getReference('TodaysLots/liveList/' . $lot->id . '/EndDate')->set($EndDate);
-        }
+        // foreach ($liveLots as $lot) 
+        // {
+        //     // // $lot = lots::where('id', $lot->id)->update(['EndDate' => Carbon::parse($lot->EndDate)->addMinutes(3)]);
+        //     // lots::where('id', $lot->id)->update(['EndDate' => Carbon::parse($lot->EndDate)->addMinutes((int)$request->time)]);
+        //     // $EndDate = lots::where('id', $lot->id)->pluck('EndDate')->first();
+        //     // // $database->getReference('TodaysLots/liveList/' . $lot->id . '/EndDate')->set($EndDate);
+        // }
         
         $message = 'Live Lot Added Time Successfully';
         event(new LotsStatusUpdated($message));
