@@ -49,45 +49,25 @@
                                                     class="btn btn-danger btn-sm"> Expire Lot
                                                 </a>
                                                 <div>
-
-                                                    <a href="/admin/lots/{{ $lots->id }}"
-                                                        class="btn btn-success btn-sm"> Lot Details
-                                                    </a>
-
-                                                    <a href="{{ url("/admin/startlot/{$lots->id}") }}" {{-- onclick="return confirm('Are you sure to make this Lote
-                                                        live?')" --}}
-                                                        class="btn btn-success btn-sm" id='btnStartLot'>Start</a>
-                                                    <a href="{{ url("/admin/endlot/{$lots->id}") }}" {{-- onclick="return
-                                                            confirm('Are you sure to stop this Lot?')" --}}
-                                                        class="btn btn-danger btn-sm"id='btnEndtLot'>Stop</a>
-                                                    <a href="/admin/expireLot/{{ $lots->id }}"
-                                                        class="btn btn-danger btn-sm"> Expire Lot
-                                                    </a>
-                                                    <div>
-                                                        <form action="{{ url('admin/addtimeinlive/' . $lots->id) }}">
+                                                    <form action="{{ url('admin/addtimeinlive/' . $lots->id) }}">
                                                             <!-- <select id="time" name="time" class="selectpicker w-25"
-                                                                title="time">
-                                                                <option value="1">1</option>
-                                                                <option value="2">2</option>
-                                                                <option value="3">3</option>
-                                                                <option value="4">4</option>
-                                                                <option value="5">5</option>
-                                                                <option value="6">6</option>
-                                                                <option value="7">7</option>
-                                                                <option value="8">8</option>
-                                                                <option value="9">9</option>
-                                                                <option value="10">10</option>
-
+                                                            title="time">
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                            <option value="6">6</option>
+                                                            <option value="7">7</option>
+                                                            <option value="8">8</option>
+                                                            <option value="9">9</option>
+                                                            <option value="10">10</option>
                                                             </select> -->
                                                             <div class="d-flex justify-content-center align-items-center">
-                                                            <input type="number" class=" col-md-6 mr-2" name="time" placeholder="Time" autocomplete="off" autofocus>
-                                                            <button class="btn btn-success btn-sm ">Add Time</button>
+                                                            <input type="number" class=" col-md-6 mr-2" name="time" placeholder="Minute" autocomplete="off" autofocus> <!-- for add time  -->
+                                                        <button class="btn btn-success btn-sm">Add Time</button>
                                                             </div>
-                                                        </form>
-                                                    </div>
-                                                    {{-- <a href="{{ url("/admin/poselot/{$lots->id}") }}"
-                                                        onclick="return confirm('Are you sure to Pause this Lot?')"
-                                                        class="btn btn-primary btn-sm">Pause</a> --}}
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
@@ -216,7 +196,7 @@
                                                     <th scope="row">0</th>
                                                     <td>Initial Price</td>
                                                     <td>{{ $lots->Price }}</td>
-                                                    <td>{{ $lots->StartDate }}</td>                                                                                                    --}}
+                                                    <td>{{ $lots->StartDate }}</td>
                                                 </tr>
                                             @else
                                                 @php
@@ -266,7 +246,7 @@ function placeBid(data)
     //find the am/pm
     let timeIs = date.getHours() < 12 ? "AM" : "PM";
     let dateHour = date.getHours() % 12; 
-    let minute = date.getMinutes() < 10 ? "0".date.getMinutes() : date.getMinutes();
+    let minute = date.getMinutes() < 10 ? "0"+ date.getMinutes() : date.getMinutes();
     //find am/pm code ends here
     let bidDate =  day + "-" + month + "-" +  date.getFullYear()+ " " + dateHour + ":" + minute + ":" + date.getSeconds()+" "+ timeIs;
     newRow= `<tr>
@@ -286,11 +266,17 @@ function placeBid(data)
 </script>
 
 <script>
-    var lotStatus = document.getElementById("lotStatus").innerHTML;
+    window.onload = function(){
+        // let newStartTime  = "{{\Carbon\Carbon::parse($lots->StartDate)->format('Y-m-d H:i:s')}}";
+        // let newEndTime  = "{{\Carbon\Carbon::parse($lots->EndDate)->format('Y-m-d H:i:s') }}";
+        // alert(newStartTime)
+        // console.log(newStartTime);
+        // console.log(newEndTime);
+        var lotStatus = document.getElementById("lotStatus").innerHTML;
     var myfunc = setInterval(function() 
     {
-            var startTime = new Date(document.getElementById("lotstarttime").innerHTML).getTime();
-            var endTime = new Date(document.getElementById("lotendtime").innerHTML).getTime();
+            var startTime = new Date("{{\Carbon\Carbon::parse($lots->StartDate)->format('Y-m-d H:i:s')}}").getTime();
+            var endTime = new Date("{{\Carbon\Carbon::parse($lots->EndDate)->format('Y-m-d H:i:s') }}").getTime();
             var now = new Date().getTime();
             var timeleft = null;
 
@@ -348,13 +334,29 @@ function placeBid(data)
             }
         },
         1000);
+
+
+
+
+
+
+    }
+
+
+
+   
 </script>
 
 <script>
     var today = new Date();
     var formattedToday = today.toISOString().slice(0, 16);
-    document.getElementById('ReStartDate').setAttribute('min', formattedToday);
-    document.getElementById('ReEndDate').setAttribute('min', formattedToday);
+    if(document.getElementById('ReStartDate')){
+        document.getElementById('ReStartDate').setAttribute('min', formattedToday);
+    }
+    if(document.getElementById('ReEndDate')){
+        document.getElementById('ReEndDate').setAttribute('min', formattedToday);
+    }
+        
 </script>
 
 <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
