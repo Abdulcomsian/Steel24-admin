@@ -88,8 +88,6 @@
                                                     {{-- <a href="{{ url("/admin/poselot/{$lots->id}") }}"
                                                         onclick="return confirm('Are you sure to Pause this Lot?')"
                                                         class="btn btn-primary btn-sm">Pause</a> --}}
-
->>>>>>> b23185000f42c93e342b388650bc8de703d17588
                                                 </div>
                                             </div>
                                         </div>
