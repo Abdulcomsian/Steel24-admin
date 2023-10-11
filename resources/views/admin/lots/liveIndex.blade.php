@@ -33,17 +33,24 @@
                                         </div>
                                         <input type="submit" class="btn btn-primary btn-sm" value="Change" />
                                     </form> --}}
-
-                                    @foreach ($categories as $categorie)
-                                    
-                                        <a href="{{ url("admin/live_lots/categorie/{$categorie->id}") }}"
-                                            class="btn btn btn-info btn-sm">{{ $categorie->title }}</a>
-                                    @endforeach
-                                    
-                                    <a href="{{ url("admin/sta_lots") }}"
-                                    class="btn btn btn-info btn-sm">STA Lots</a>
-                                    <a href="{{ url("admin/live_lots") }}"
-                                        class="btn btn btn-info btn-sm">All Lots</a>
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                        @foreach ($categories as $categorie)
+                                        
+                                            <a href="{{ url("admin/live_lots/categorie/{$categorie->id}") }}"
+                                                class="btn btn btn-info btn-sm">{{ $categorie->title }}</a>
+                                        @endforeach
+                                        </div>
+                                        <div>
+                                            <a href="{{ url("admin/sta_lots") }}"
+                                        class="btn btn btn-info btn-sm">STA Lots</a>
+                                        <a href="{{ url("admin/all_live_lots") }}"
+                                        class="btn btn btn-info btn-sm">Live Lots</a>
+                                        <a href="{{ url("admin/live_lots") }}"
+                                            class="btn btn btn-info btn-sm">All Lots</a>
+                                        </div>
+                                    </div>
+                                   
                                     <div class="table-responsive">
                                         <table class="table data-table">
                                             <thead class="text-primary text-center">

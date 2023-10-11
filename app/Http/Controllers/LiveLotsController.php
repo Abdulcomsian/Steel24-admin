@@ -81,6 +81,25 @@ class LiveLotsController extends Controller
         return view('admin.lots.liveIndex', compact('categories', 'livelots'));
     }
 
+
+    public function all_live_lots(Request $request)
+    {
+       $livelots = DB::table('lots')
+        ->whereIn('lots.lot_status', ['live'])
+        ->orderBy('LiveSequenceNumber')
+        ->get();
+       
+
+        $categories = DB::table('categories')
+        ->select('categories.id', 'categories.title')
+        ->leftJoin('lots', 'categories.id', '=', 'lots.categoryId')
+        ->whereIn('lots.lot_status', ['live', 'Upcoming', 'Restart','STA'])
+        ->groupBy('categories.id')
+        ->get();
+        
+        return view('admin.lots.liveIndex', compact('categories', 'livelots'));
+    }
+
     // Live Lots Details and Bids
     public function liveLotBids(lots $lots)
     {
