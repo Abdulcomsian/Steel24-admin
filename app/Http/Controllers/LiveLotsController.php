@@ -397,7 +397,7 @@ class LiveLotsController extends Controller
         //     $query->whereDate('lots.StartDate', '=', $today)
         //         ->orWhereDate('lots.ReStartDate', '=', $today);
         // })
-        ->whereIn('lots.lot_status', ['live', 'Upcoming', 'Restart'])
+        ->whereIn('lots.lot_status', ['live', 'Upcoming', 'Restart', 'STA'])
         // ->where('lot_status', 'live') 
         ->groupBy('categories.id')
         ->get();
