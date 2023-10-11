@@ -41,7 +41,7 @@ use App\Models\AutoBid;
 use App\Models\CustomerLot;
 use App\Jobs\{ LotWinnerMail , LotMail as LotJob};
 use App\Models\LotParticipant;
-
+use App\Events\{AddTimeInLiveBid , LotsStatusUpdated};
 
 
 class AuctionContoller extends Controller
@@ -1178,7 +1178,7 @@ class AuctionContoller extends Controller
     }
 
     $similarAmountBid = BidsOfLots::where('lotId' , $request->lotId)->where('amount' , $request->amount)->count();
-    
+
     if($similarAmountBid){
         return response()->json(["message" => "Bid with same amount has already been placed" , 'success' => true ] , 200 );
     }
@@ -2461,6 +2461,12 @@ class AuctionContoller extends Controller
             // Fetch the lot details
             $lot = lots::with('autoBids', 'bids.customer', 'participant')->where('id', $lotId)->first();
 
+            $similarAmountBid = BidsOfLots::where('lotId' , $request->lotId)->where('amount' , $request->amount)->count();
+
+            if($similarAmountBid){
+                return response()->json(["message" => "Bid with same amount has already been placed" , 'success' => true ] , 200 );
+            }
+
             // Fetch the customer
             $customer = Customer::find($customerId);
 
@@ -2495,6 +2501,18 @@ class AuctionContoller extends Controller
 
                         // Save the updated end date
                         $lot->save();
+
+                        //new code start here
+                        $liveLots = lots::where('lotId' , "!=" , $lotId )->where('lot_status' , 'live')->get();
+
+                        foreach($liveLots as $currentLot){
+                            $currentLot->EndDate = Carbon::createFromFormat('Y-m-d H:i:s', $lot->EndDate)->addMinute(1);
+                            $currentLot->save();
+                        }
+
+                        event(new AddTimeInLiveBid(1));
+                        event(new LotsStatusUpdated("A Minute Has Been Added In Live Lots"));
+                        //new code ends here
                     }
 
                     // Place the customer's bid
