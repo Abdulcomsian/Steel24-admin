@@ -49,22 +49,47 @@
                                                     class="btn btn-danger btn-sm"> Expire Lot
                                                 </a>
                                                 <div>
-                                                    <form action="{{ url('admin/addtimeinlive/' . $lots->id) }}">
-                                                        <select id="time" name="time" class="selectpicker w-25"
-                                                            title="time">
-                                                            <option value="1">1</option>
-                                                            <option value="2">2</option>
-                                                            <option value="3">3</option>
-                                                            <option value="4">4</option>
-                                                            <option value="5">5</option>
-                                                            <option value="6">6</option>
-                                                            <option value="7">7</option>
-                                                            <option value="8">8</option>
-                                                            <option value="9">9</option>
-                                                            <option value="10">10</option>
-                                                        </select>
-                                                        <button class="btn btn-success btn-sm">Add Time</button>
-                                                    </form>
+
+                                                    <a href="/admin/lots/{{ $lots->id }}"
+                                                        class="btn btn-success btn-sm"> Lot Details
+                                                    </a>
+
+                                                    <a href="{{ url("/admin/startlot/{$lots->id}") }}" {{-- onclick="return confirm('Are you sure to make this Lote
+                                                        live?')" --}}
+                                                        class="btn btn-success btn-sm" id='btnStartLot'>Start</a>
+                                                    <a href="{{ url("/admin/endlot/{$lots->id}") }}" {{-- onclick="return
+                                                            confirm('Are you sure to stop this Lot?')" --}}
+                                                        class="btn btn-danger btn-sm"id='btnEndtLot'>Stop</a>
+                                                    <a href="/admin/expireLot/{{ $lots->id }}"
+                                                        class="btn btn-danger btn-sm"> Expire Lot
+                                                    </a>
+                                                    <div>
+                                                        <form action="{{ url('admin/addtimeinlive/' . $lots->id) }}">
+                                                            <!-- <select id="time" name="time" class="selectpicker w-25"
+                                                                title="time">
+                                                                <option value="1">1</option>
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                                <option value="4">4</option>
+                                                                <option value="5">5</option>
+                                                                <option value="6">6</option>
+                                                                <option value="7">7</option>
+                                                                <option value="8">8</option>
+                                                                <option value="9">9</option>
+                                                                <option value="10">10</option>
+
+                                                            </select> -->
+                                                            <div class="d-flex justify-content-center align-items-center">
+                                                            <input type="number" class=" col-md-6 mr-2" name="time" placeholder="Time" autocomplete="off" autofocus>
+                                                            <button class="btn btn-success btn-sm ">Add Time</button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    {{-- <a href="{{ url("/admin/poselot/{$lots->id}") }}"
+                                                        onclick="return confirm('Are you sure to Pause this Lot?')"
+                                                        class="btn btn-primary btn-sm">Pause</a> --}}
+
+>>>>>>> b23185000f42c93e342b388650bc8de703d17588
                                                 </div>
                                             </div>
                                         </div>
