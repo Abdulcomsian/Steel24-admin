@@ -158,9 +158,8 @@ class AuctionContoller extends Controller
 
         $previousNotification = AdminNotification::where('customerId' , auth()->user()->id)
                                     ->where('lotId' , $lotId)
-                                    ->where('notification_status' , "!=" , 'approved')
+                                    ->whereNull('notification_status' , "!=" , 'approved')
                                     ->count();
-
         
             
             
@@ -2472,7 +2471,8 @@ class AuctionContoller extends Controller
             $similarAmountBid = BidsOfLots::where('lotId' , $request->lotId)->where('amount' , $request->amount)->count();
 
             if($similarAmountBid){
-                return response()->json(["message" => "Bid with same amount has already been placed" , 'success' => true ] , 200 );
+                $maxBidAmount = BidsOfLots::where('lotId' , $request->lotId)->max('amount');
+                return response()->json(["message" => "Bid with same amount has already been placed" , 'success' => true , "maxAmount" => $maxBidAmount , "setButton" => true ] , 200 );
             }
 
             // Fetch the customer
