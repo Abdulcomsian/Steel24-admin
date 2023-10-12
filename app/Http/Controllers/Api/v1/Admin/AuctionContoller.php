@@ -158,7 +158,7 @@ class AuctionContoller extends Controller
 
         $previousNotification = AdminNotification::where('customerId' , auth()->user()->id)
                                     ->where('lotId' , $lotId)
-                                    ->whereNull('notification_status' , "!=" , 'approved')
+                                    ->whereNull('notification_status')
                                     ->count();
         
             

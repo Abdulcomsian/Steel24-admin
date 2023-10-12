@@ -1122,6 +1122,17 @@ class LotsContoller extends Controller
         {
             return response()->json(['message' => 'Customer not found'], 404);
         }
+
+        $previousNotificationCount = AdminNotification::where('customerId' , $request->customerId)
+                                                        ->where('lotId' , $request->lotId)
+                                                        ->whereNull('notification_status')
+                                                        ->count();
+
+        if($previousNotificationCount){
+            return response()->json(['message' => 'Already Your Notication Has Been Send To Admin'], 200);
+        }
+
+
     
         // Create a new admin notification record
         AdminNotification::create([
