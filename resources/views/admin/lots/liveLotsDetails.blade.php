@@ -285,6 +285,8 @@ function placeBid(data)
             clearInterval(myfunc);
             myfunc = setInterval(function() 
                         {
+                            console.log(startTime)
+                            console.log(endTime)
                             setRemainingTime(startTime, endTime);
                         },
                         1000);
