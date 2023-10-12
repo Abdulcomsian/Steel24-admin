@@ -273,6 +273,8 @@ function placeBid(data)
             var endTime = new Date("{{\Carbon\Carbon::parse($lots->EndDate)->format('Y-m-d H:i:s') }}").getTime();
             var now = new Date().getTime();
             var timeleft = null;
+            console.log(startTime)
+            console.log(endTime)
             setRemainingClock(startTime , endTime , now);
         })()
 
@@ -285,8 +287,7 @@ function placeBid(data)
             clearInterval(myfunc);
             myfunc = setInterval(function() 
                         {
-                            console.log(startTime)
-                            console.log(endTime)
+                           
                             setRemainingTime(startTime, endTime);
                         },
                         1000);
