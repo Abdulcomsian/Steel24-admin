@@ -2503,7 +2503,7 @@ class AuctionContoller extends Controller
                         $lot->save();
 
                         //new code start here
-                        $liveLots = lots::where('lotId' , "!=" , $lotId )->where('lot_status' , 'live')->get();
+                        $liveLots = lots::where('id' , "!=" , $lotId )->where('lot_status' , 'live')->get();
 
                         foreach($liveLots as $currentLot){
                             $currentLot->EndDate = Carbon::createFromFormat('Y-m-d H:i:s', $lot->EndDate)->addMinute(1);
