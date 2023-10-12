@@ -1107,12 +1107,13 @@ class LotsContoller extends Controller
 
     // Show notification in Admin Side 
 
-    public function shownotificationadmin(Request $request)
+    public function resetLotRequest(Request $request)
     {
         $requestData = $request->validate([
             'customerId' => 'required',
             'lotId' => 'required',
         ]);
+
     
         // Check if the customer exists
         $customer = Customer::find($requestData['customerId']);

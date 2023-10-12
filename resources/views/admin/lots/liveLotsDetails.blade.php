@@ -115,7 +115,7 @@
                                             <div class="row w-50">
                                                 <form action="/admin/reStartExpirelot" class="col-12" method="POST">
                                                     @csrf
-
+                                                    <input type="hidden" name="customerId" value="{{$customerId}}">
                                                     <h3>Restart lot</h3>
                                                     <div class="row ">
                                                         <label for="ReStartDate" class="col-sm-2 col-form-label">Start
@@ -425,6 +425,7 @@ function placeBid(data)
         var pusher = new Pusher('bacf91fa7936ec16edb7', {
             cluster: 'ap2'
         });
+        Pusher.logToConsole = true;
         var channel = pusher.subscribe('bid-placed');
         channel.bind('bid.placed', function(data) {
             placeBid(data)

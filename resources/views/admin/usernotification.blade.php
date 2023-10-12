@@ -155,7 +155,7 @@
                                                             <td>{{ $notification->lotId }}</td>
                                                             <td>{{ $notification->customerId }}</td>
                                                             <td>
-                                                                <a href="{{ url("admin/live_lots_bids/{$notification->id}") }}"
+                                                                <a href="{{ url("admin/live_lots_bids/{$notification->id}/{$notification->customerId}") }}"
                                                                     class="btn btn-info btn-sm">Approved</a>
                                                             </td>
                                                         </tr>

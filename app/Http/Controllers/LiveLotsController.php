@@ -6,6 +6,7 @@ use App\Models\BidsOfLots;
 use App\Models\customerBalance;
 use App\Models\lots;
 use App\Models\payments;
+use App\Models\AdminNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -101,8 +102,9 @@ class LiveLotsController extends Controller
     }
 
     // Live Lots Details and Bids
-    public function liveLotBids(lots $lots)
+    public function liveLotBids(lots $lots , Request $request)
     {
+        $customerId = $request->customerId;
         $lotbids = DB::select('
         SELECT bids_of_lots.id,bids_of_lots.amount,bids_of_lots.created_at as bidTime,
         lots.title as lotTitle,lots.description as lotdescription,lots.Price as lotstartAmount,lots.StartDate as lotStartDate,
@@ -114,7 +116,7 @@ class LiveLotsController extends Controller
 
         $paymentRequest = payments::where('lotId', $lots->id)->get();
 
-        return (view('admin.lots.liveLotsDetails', compact('lots', 'lotbids', 'paymentRequest')));
+        return (view('admin.lots.liveLotsDetails', compact('lots', 'lotbids', 'paymentRequest' , 'customerId')));
     }
 
     // Start Lot Make status Live
@@ -275,6 +277,7 @@ class LiveLotsController extends Controller
             'ReEndDate' => 'required',
 
         ]);
+
         if(Carbon::parse($requestData['ReStartDate'])->greaterThan(Carbon::now())){
             lots::where('id', $requestData['lotid'])->update(
                 [
@@ -307,6 +310,15 @@ class LiveLotsController extends Controller
         //     // ]
 
         // );
+        $customerId = $request->customerId;
+        if(isset($customerId) && !is_null($customerId)){
+            $notifications = AdminNotification::where('lotId' , $request->lotid)->where('customerId' , $customerId)->get();
+            foreach($notifications as $notification){
+                $notification->notification_status = 'approved';
+                $notification->save();
+            }
+        }
+
         payments::where('lotId',  $requestData['lotid'])->delete();
         // zee commenting this
         // $this->pushonfirbase();

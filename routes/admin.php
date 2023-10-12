@@ -145,7 +145,7 @@ Route::post('/users-send-email', [UserController::class, 'sendEmail'])->name('se
 Route::get('/live_lots', [LiveLotsController::class, 'live_index'])->name('livelots');
 Route::get('/sta_lots', [LiveLotsController::class, 'sta_lots'])->name('stalots');
 Route::get('/all_live_lots', [LiveLotsController::class, 'all_live_lots'])->name('alllivelots');
-Route::get('/live_lots_bids/{lots}', [LiveLotsController::class, 'liveLotBids']);
+Route::get('/live_lots_bids/{lots}/{customerId?}', [LiveLotsController::class, 'liveLotBids']);
 
 Route::get('/startlot/{id}', [LiveLotsController::class, 'startLots']);
 Route::get('/poselot/{id}', [LiveLotsController::class, 'poseLots']);
@@ -155,7 +155,6 @@ Route::get('/pushonfirbase', [LiveLotsController::class, 'pushonfirbase']);
 Route::post('/livelotsequencechange', [LiveLotsController::class, 'LiveLotSequenceChange']);
 Route::get('/live_lots/categorie/{id}', [LiveLotsController::class, 'categorieLots']);
 Route::get('/expireLot/{id}', [LiveLotsController::class, 'expireLot']);
-
 Route::get('/completelotbids/{lots}', [LotsController::class, 'completelotbids']);
 Route::get('/addtimeinlive/{lots}', [LotsController::class, 'addTimeInLive']);
 Route::get('/notification', [AccountNotificationController::class, 'index']);
