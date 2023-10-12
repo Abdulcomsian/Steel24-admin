@@ -42,7 +42,7 @@ use App\Models\CustomerLot;
 use App\Jobs\{ LotWinnerMail , LotMail as LotJob};
 use App\Models\LotParticipant;
 use App\Events\{AddTimeInLiveBid , LotsStatusUpdated};
-
+use App\Models\AdminNotification;
 
 class AuctionContoller extends Controller
 {
@@ -155,6 +155,12 @@ class AuctionContoller extends Controller
         $lotDetails = DB::select('SELECT lots.* ,bids_of_lots.amount as lastBidAmount from bids_of_lots RIGHT JOIN lots ON  lots.id = bids_of_lots.lotId 
             WHERE lots.id  = ' . $lotId . ' 
             ORDER by bids_of_lots.amount DESC LIMIT 1;');
+
+        $previousNotification = AdminNotification::where('customerId' , auth()->user()->id)
+                                    ->where('lotId' , $lotId)
+                                    ->where('notification_status' , "!=" , 'approved')
+                                    ->count();
+
         
             
             
@@ -166,6 +172,7 @@ class AuctionContoller extends Controller
             'lotTerms' => $lotTerms,
             'maxbid' => $maxbid,
             'lot' => $lot,
+            'unanswerPerviousRequest' => $previousNotification > 0 ? true : false,
             'success' => true,
         ]);
 
@@ -1180,7 +1187,8 @@ class AuctionContoller extends Controller
     $similarAmountBid = BidsOfLots::where('lotId' , $request->lotId)->where('amount' , $request->amount)->count();
 
     if($similarAmountBid){
-        return response()->json(["message" => "Bid with same amount has already been placed" , 'success' => true ] , 200 );
+        $maxBidAmount = BidsOfLots::where('lotId' , $request->lotId)->max('amount');
+        return response()->json(["message" => "Bid with same amount has already been placed" , 'success' => true , "maxAmount" => $maxBidAmount , "setButton" => true ] , 200 );
     }
 
     if ($customer && $customer->isApproved == 1) {

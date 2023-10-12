@@ -169,7 +169,7 @@ Route::get('showFavorites/{customer_id}', 'App\Http\Controllers\Api\v1\Admin\Lot
 
 // Show notification in Admin side LotId and CustomerId
 
-Route::post('shownotificationadmin', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@shownotificationadmin');
+Route::post('resetLotRequest', 'App\Http\Controllers\Api\v1\Admin\LotsContoller@resetLotRequest');
 
 
 
