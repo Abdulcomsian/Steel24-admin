@@ -432,7 +432,7 @@ function placeBid(data)
             // console.log(data)
         });
 
-        let channel2 = pusher.subscribe('add-time-in-bid');
+        let channel2 = pusher.subscribe('add-time-in-bid'); //channel name
         channel2.bind('add.time' , function(data){
            let lotStatus = document.getElementById("lotStatus").innerText;
            console.log(data);
@@ -441,6 +441,14 @@ function placeBid(data)
                setEndTime(data.time);
            }
         });
+
+        let channel3 = pusher.subscribe('restart-lot');
+        channel3.bind('restart.lot' , function(data){
+            alert("restarting lot");
+            if(lotid === parseInt(data.lotId)){
+                window.location.reload();
+            }
+        })
 
 
 

@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
-use App\Events\LotsStatusUpdated;
+use App\Events\{ LotsStatusUpdated , RestartLotEvent};
 
 use Kreait\Firebase\Factory;
 
@@ -270,7 +270,6 @@ class LiveLotsController extends Controller
     // Restart Expired Lots
     public function reStartExpirelot(Request $request)
     {
-
         $requestData = $request->validate([
             'lotid' => 'required',
             'ReStartDate' => 'required',
@@ -325,6 +324,7 @@ class LiveLotsController extends Controller
 
         $message = 'Live Lot Started Successfully';
         event(new LotsStatusUpdated($message));
+        event(new RestartLotEvent($request->lotid));
 
 
         
