@@ -307,12 +307,15 @@ function placeBid(data)
                 clearInterval(myfunc);
             } else if (lotStatus != 'Expired' && lotStatus != 'pause') 
             {
+                console.log("---------------------------------")
                 if (lotStatus != 'live' && lotStatus != 'Restart') 
                 {
                     timeleft = startTime - now;
+                    console.log("inside start time")
                 } else 
                 {
                     timeleft = endTime - now;
+                    console.log("inside end time")
                 }
 
                 var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
