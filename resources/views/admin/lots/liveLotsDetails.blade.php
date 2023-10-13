@@ -33,10 +33,9 @@
                                                 <p class="h5">Title : {{ $lots->title }}</p>
                                             </div>
                                             <div>
-                                                <h1>{{ $lots->lot_status }}</h1>
-                                                <p class="btn btn-info btn-sm">Lot Status :<span
-                                                        id='lotStatus'>{{ $lots->lot_status }}</span>
-                                                </p>
+                                            <p class="btn btn-info btn-sm">Lot Status :<span
+                                                id='lotStatus'>{{ $lots->lot_status }}</span>
+                                            </p>
                                             </div>
                                             <div>
                                                 <a href="/admin/lots/{{ $lots->id }}"
@@ -49,27 +48,17 @@
                                                 <a href="/admin/expireLot/{{ $lots->id }}"
                                                     class="btn btn-danger btn-sm"> Expire Lot
                                                 </a>
+                                                @if(in_array($lots->lot_status , ['live' , 'Upcoming']))
                                                 <div>
                                                     <form action="{{ url('admin/addtimeinlive/' . $lots->id) }}">
-                                                            <!-- <select id="time" name="time" class="selectpicker w-25"
-                                                            title="time">
-                                                            <option value="1">1</option>
-                                                            <option value="2">2</option>
-                                                            <option value="3">3</option>
-                                                            <option value="4">4</option>
-                                                            <option value="5">5</option>
-                                                            <option value="6">6</option>
-                                                            <option value="7">7</option>
-                                                            <option value="8">8</option>
-                                                            <option value="9">9</option>
-                                                            <option value="10">10</option>
-                                                            </select> -->
+                                                          
                                                             <div class="d-flex justify-content-center align-items-center">
                                                             <input type="number" class=" col-md-6 mr-2" name="time" placeholder="Minute" autocomplete="off" autofocus> <!-- for add time  -->
                                                         <button class="btn btn-success btn-sm">Add Time</button>
                                                             </div>
                                                     </form>
                                                 </div>
+                                                @endif
                                             </div>
                                         </div>
                                         <p class="h6">Description : {{ $lots->description }}</p>
