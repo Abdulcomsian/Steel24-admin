@@ -271,7 +271,7 @@ function placeBid(data)
         (function(){
             var startTime = new Date("{{\Carbon\Carbon::parse($lots->StartDate)->format('Y-m-d H:i:s')}}").getTime();
             var endTime = new Date("{{\Carbon\Carbon::parse($lots->EndDate)->format('Y-m-d H:i:s') }}").getTime();
-            var now = new Date().getTime();
+            var now = new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Kolkata"})).getTime();
             var timeleft = null;
             console.log(startTime)
             console.log(endTime)
@@ -425,7 +425,7 @@ function placeBid(data)
         var pusher = new Pusher('bacf91fa7936ec16edb7', {
             cluster: 'ap2'
         });
-        Pusher.logToConsole = true;
+        // Pusher.logToConsole = true;
         var channel = pusher.subscribe('bid-placed');
         channel.bind('bid.placed', function(data) {
             placeBid(data)
