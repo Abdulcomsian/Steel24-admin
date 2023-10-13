@@ -307,15 +307,14 @@ function placeBid(data)
                 clearInterval(myfunc);
             } else if (lotStatus != 'Expired' && lotStatus != 'pause') 
             {
-                // if (lotStatus != 'live' && lotStatus != 'Restart') 
-                // {
-                //     timeleft = startTime - now;
-                // } else 
-                // {
-                //     timeleft = endTime - now;
-                // }
+                if (lotStatus != 'live' && lotStatus != 'Restart') 
+                {
+                    timeleft = startTime - now;
+                } else 
+                {
+                    timeleft = endTime - now;
+                }
 
-                timeleft = endTime - now
                 var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
                 var hours = (days*24)+Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
