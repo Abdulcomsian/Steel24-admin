@@ -315,11 +315,11 @@ function placeBid(data)
                 //     timeleft = endTime - now;
                 // }
 
+                timeleft = endTime - now
                 var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
                 var hours = (days*24)+Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
                 var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
-                let timeleft = endTime - now
 
                 console.log(`seconds: ${seconds}`)
                 console.log(`timeLeft:  ${timeleft}`)
