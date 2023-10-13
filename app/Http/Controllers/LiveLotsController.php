@@ -274,8 +274,12 @@ class LiveLotsController extends Controller
             'lotid' => 'required',
             'ReStartDate' => 'required',
             'ReEndDate' => 'required',
-
         ]);
+
+        if(Carbon::parse($request->ReStartDate)->greaterThan(Carbon::parse($request->ReEndDate)) ||  Carbon::parse($request->ReStartDate)->equalTo(Carbon::parse($request->ReEndDate))){
+            return redirect()->back()->with(['date_error' => true  , 'error_msg' => "Start date must be less then end date"]);
+        }
+
 
         if(Carbon::parse($requestData['ReStartDate'])->greaterThan(Carbon::now())){
             lots::where('id', $requestData['lotid'])->update(

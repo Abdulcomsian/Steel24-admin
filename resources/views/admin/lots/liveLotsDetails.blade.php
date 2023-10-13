@@ -33,6 +33,7 @@
                                                 <p class="h5">Title : {{ $lots->title }}</p>
                                             </div>
                                             <div>
+                                                <h1>{{ $lots->lot_status }}</h1>
                                                 <p class="btn btn-info btn-sm">Lot Status :<span
                                                         id='lotStatus'>{{ $lots->lot_status }}</span>
                                                 </p>
@@ -117,6 +118,15 @@
                                                     @csrf
                                                     <input type="hidden" name="customerId" value="{{$customerId}}">
                                                     <h3>Restart lot</h3>
+                                                   
+                                                    @if(Session::has('date_error') && Session::get('date_error'))
+                                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                        <strong>Error! </strong> {{Session::get('error_msg')}}
+                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                          <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                      </div>
+                                                    @endif
                                                     <div class="row ">
                                                         <label for="ReStartDate" class="col-sm-2 col-form-label">Start
                                                             time</label>
