@@ -311,6 +311,7 @@ function placeBid(data)
                 if (lotStatus != 'live' && lotStatus != 'Restart') 
                 {
                     timeleft = startTime - now;
+                    console.log(lotStatus);
                     console.log("inside start time")
                 } else 
                 {
