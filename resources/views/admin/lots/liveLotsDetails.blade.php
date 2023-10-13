@@ -33,6 +33,7 @@
                                                 <p class="h5">Title : {{ $lots->title }}</p>
                                             </div>
                                             <div>
+                                                <h1>{{ $lots->lot_status }}</h1>
                                                 <p class="btn btn-info btn-sm">Lot Status :<span
                                                         id='lotStatus'>{{ $lots->lot_status }}</span>
                                                 </p>
@@ -117,6 +118,15 @@
                                                     @csrf
                                                     <input type="hidden" name="customerId" value="{{$customerId}}">
                                                     <h3>Restart lot</h3>
+                                                   
+                                                    @if(Session::has('date_error') && Session::get('date_error'))
+                                                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                        <strong>Error! </strong> {{Session::get('error_msg')}}
+                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                          <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                      </div>
+                                                    @endif
                                                     <div class="row ">
                                                         <label for="ReStartDate" class="col-sm-2 col-form-label">Start
                                                             time</label>
@@ -271,7 +281,7 @@ function placeBid(data)
         (function(){
             var startTime = new Date("{{\Carbon\Carbon::parse($lots->StartDate)->format('Y-m-d H:i:s')}}").getTime();
             var endTime = new Date("{{\Carbon\Carbon::parse($lots->EndDate)->format('Y-m-d H:i:s') }}").getTime();
-            var now = new Date().getTime();
+            var now = new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Kolkata"})).getTime();
             var timeleft = null;
             console.log(startTime)
             console.log(endTime)
@@ -307,18 +317,26 @@ function placeBid(data)
                 clearInterval(myfunc);
             } else if (lotStatus != 'Expired' && lotStatus != 'pause') 
             {
+                console.log("---------------------------------")
                 if (lotStatus != 'live' && lotStatus != 'Restart') 
                 {
                     timeleft = startTime - now;
+                    console.log(lotStatus);
+                    console.log("inside start time")
                 } else 
                 {
                     timeleft = endTime - now;
+                    console.log("inside end time")
                 }
 
                 var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
                 var hours = (days*24)+Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
                 var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
+
+                console.log(`seconds: ${seconds}`)
+                console.log(`timeLeft:  ${timeleft}`)
+                console.log(`now: ${now}`)
 
                 // hours+=days*24
 
@@ -425,7 +443,7 @@ function placeBid(data)
         var pusher = new Pusher('bacf91fa7936ec16edb7', {
             cluster: 'ap2'
         });
-        Pusher.logToConsole = true;
+        // Pusher.logToConsole = true;
         var channel = pusher.subscribe('bid-placed');
         channel.bind('bid.placed', function(data) {
             placeBid(data)
@@ -444,7 +462,7 @@ function placeBid(data)
 
         let channel3 = pusher.subscribe('restart-lot');
         channel3.bind('restart.lot' , function(data){
-            alert("restarting lot");
+            // alert("restarting lot");
             if(lotid === parseInt(data.lotId)){
                 window.location.reload();
             }
