@@ -448,7 +448,7 @@ function placeBid(data)
 
         let channel3 = pusher.subscribe('restart-lot');
         channel3.bind('restart.lot' , function(data){
-            alert("restarting lot");
+            // alert("restarting lot");
             if(lotid === parseInt(data.lotId)){
                 window.location.reload();
             }
