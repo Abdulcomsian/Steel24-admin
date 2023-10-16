@@ -1254,13 +1254,14 @@ class LotsContoller extends Controller
             ->get();
     
         $result = [];
-        $currentDate = now()->toDateString();
+        // $currentDate = now()->toDateString();
+        $currentDate = \Carbon\Carbon::now();
     
         foreach ($favoriteLots as $favoriteLot) 
         {
             $lot = $favoriteLot->lot;
     
-            if ($lot && ($lot->lot_status === 'live' || $lot->lot_status === 'Live') && $lot->StartDate <= $currentDate && $lot->EndDate >= $currentDate) 
+            if ($lot && ($lot->lot_status === 'live' || $lot->lot_status === 'Live')) 
             {
                 // Retrieve the maximum bid for the lot
                 $maxBid = BidsOfLots::where('lotId', $lot->id)
