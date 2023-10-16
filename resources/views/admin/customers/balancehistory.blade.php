@@ -42,7 +42,7 @@
                                                 {{ $record->action === "Participate Fees Back" || $record->action === "Return Participation Fee" || $record->action === "credit" ? $record->actionAmount:"-" }}
                                             </td>
                                             <td>{{ $record->finalAmount }}</td>
-                                            <td>{{ $record->date }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($record->date)->format('d-m-Y h:i:s A') }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
