@@ -1613,7 +1613,6 @@ class LotsContoller extends Controller
 
         elseif($status === 'live' || $status === 'Live')
         {
-            dd("here boss maan");
             // Retrieve lots based on the live status and date comparison
             $lots = lots::with([
                 'customers' => function ($query) use ($customerId) 
