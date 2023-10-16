@@ -1262,7 +1262,6 @@ class LotsContoller extends Controller
     
             if ($lot && ($lot->lot_status === 'live' || $lot->lot_status === 'Live') && $lot->StartDate <= $currentDate && $lot->EndDate >= $currentDate) 
             {
-                dd("here");
                 // Retrieve the maximum bid for the lot
                 $maxBid = BidsOfLots::where('lotId', $lot->id)
                     ->orderBy('amount', 'desc')
@@ -1614,6 +1613,7 @@ class LotsContoller extends Controller
 
         elseif($status === 'live' || $status === 'Live')
         {
+            dd("here boss maan");
             // Retrieve lots based on the live status and date comparison
             $lots = lots::with([
                 'customers' => function ($query) use ($customerId) 
