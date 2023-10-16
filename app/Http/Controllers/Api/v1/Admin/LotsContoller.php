@@ -1628,8 +1628,8 @@ class LotsContoller extends Controller
             ])
                 ->where('categoryId', $categoryId)
                 ->whereIn('lot_status', ['live' , 'Live'])
-                ->where('StartDate', '<=', $currentDate)
-                ->where('EndDate', '>=', $currentDate) 
+                // ->where('StartDate', '<=', $currentDate)
+                // ->where('EndDate', '>=', $currentDate) 
                 ->orderBy('StartDate', 'asc')
                 ->get();
         }
