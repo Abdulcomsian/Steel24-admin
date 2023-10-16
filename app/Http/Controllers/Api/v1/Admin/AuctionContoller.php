@@ -2470,10 +2470,10 @@ class AuctionContoller extends Controller
 
             $similarAmountBid = BidsOfLots::where('lotId' , $request->lotId)->where('amount' , $request->amount)->count();
 
-            if($similarAmountBid){
-                $maxBidAmount = BidsOfLots::where('lotId' , $request->lotId)->max('amount');
-                return response()->json(["message" => "Bid with same amount has already been placed" , 'success' => true , "maxAmount" => $maxBidAmount , "setButton" => true ] , 200 );
-            }
+            // if($similarAmountBid){
+            //     $maxBidAmount = BidsOfLots::where('lotId' , $request->lotId)->max('amount');
+            //     return response()->json(["message" => "Bid with same amount has already been placed" , 'success' => true , "maxAmount" => $maxBidAmount , "setButton" => true ] , 200 );
+            // }
 
             // Fetch the customer
             $customer = Customer::find($customerId);
@@ -2556,16 +2556,24 @@ class AuctionContoller extends Controller
         // $newPricing = $currentPricing + $amount;
         $newPricing = $amount;
 
-        $manualBid = BidsOfLots::create([
-            "customerId" => $customer->id,
-            "customerName"=>$customer->name,
-            "amount" => $newPricing,
-            "lotId" => $lot->id,
-            "autoBid" => $bidType,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
-            
-       ]);
+        try{
+            $manualBid = BidsOfLots::create([
+                "customerId" => $customer->id,
+                "customerName"=>$customer->name,
+                "amount" => $newPricing,
+                "lotId" => $lot->id,
+                "autoBid" => $bidType,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+                
+           ]);
+
+        }catch(\Illuminate\Database\QueryException $e){
+
+            $maxBidAmount = BidsOfLots::where('lotId' , $lot->id)->max('amount');
+            return response()->json(['success' => true , "message" => "Bid with same amount has already been placed" ,  "maxAmount" => $maxBidAmount , "setButton" => true  , 'error' => $e->getMessage()] , 200 );
+        }
+
 
        event(new winLotsEvent('Good Luck! You placed a new bid.', $manualBid, $customer, true));
 
