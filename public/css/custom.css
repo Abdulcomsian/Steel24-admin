@@ -94,3 +94,28 @@
     font-size: 22px;
     font-weight: 500;
 }
+
+span.notification-blink {
+    position: absolute;
+    right: 0;
+    background: white;
+    width: 25px;
+    border-radius: 50%;
+    text-align: center;
+    color : #212B36;
+    font-size: 14px;
+    font-weight: bolder;
+    height: 24px;
+    line-height: 25px;
+    animation: blinker 1s linear infinite;
+}
+
+span.notification-blink.active{
+    color: #9C27B0;
+}
+  
+  @keyframes blinker {
+    50% {
+      opacity: 0;
+    }
+  }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\AppConst;
 use App\Http\Controllers\Controller;
 use App\Models\{accountNotification , AdminNotification};
 use Illuminate\Http\Request;
@@ -31,8 +32,23 @@ class AccountNotificationController extends Controller
         // -- WHERE account_notifications.reviewStatus = 0 
         // GROUP BY admin_notifications.customername ORDER BY admin_notifications.id asc;");
 
-        $notifications = AdminNotification::get();
+        $notifications = AdminNotification::where(function($query){
+                            $query->where('notification_status' , AppConst::NOTIFICATION_PENDING)->orWhereNull('notification_status');
+                        })->get();
         
         return view('admin.usernotification', compact('notifications'));
     }
+
+
+    public function rejectNotification(Request $request){
+        $id = $request->notificationId;
+
+       $notification = AdminNotification::find($id);
+       $notification->notification_status = AppConst::NOTIFICATION_REJECTED;
+       $notification->save();
+
+       return redirect()->back()->with(['success' => true , 'notification_status' => 'Notification Rejected Successfully']);
+
+    }
+
 }

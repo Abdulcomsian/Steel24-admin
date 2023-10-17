@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use App\Events\{ LotsStatusUpdated , RestartLotEvent};
-
+use App\Http\AppConst;
 use Kreait\Firebase\Factory;
 
 class LiveLotsController extends Controller
@@ -315,11 +315,31 @@ class LiveLotsController extends Controller
         // );
         $customerId = $request->customerId;
         if(isset($customerId) && !is_null($customerId)){
-            $notifications = AdminNotification::where('lotId' , $request->lotid)->where('customerId' , $customerId)->get();
-            foreach($notifications as $notification){
-                $notification->notification_status = 'approved';
-                $notification->save();
-            }
+
+               AdminNotification::where('lotId' , $request->lotid)
+                                ->where('customerId' , '!=' , $customerId)
+                                ->where( function($query){ 
+                                    $query->where('notification_status' , AppConst::NOTIFICATION_PENDING)
+                                        ->orWhereNull('notification_status');   
+                                })->update(['notification_status' => AppConst::NOTIFICATION_REJECTED]);
+
+
+                AdminNotification::where('lotId' , $request->lotid)
+                                ->where('customerId' , $customerId)
+                                ->where( function($query){ 
+                                    $query->where('notification_status' , AppConst::NOTIFICATION_PENDING)
+                                        ->orWhereNull('notification_status');   
+                                })->update(['notification_status' => AppConst::NOTIFICATION_APPROVED]);
+
+                $maxBidPrice = BidsOfLots::where('lotId' , $request->lotid)->max('amount');
+                $maxBidPrice = $maxBidPrice ? $maxBidPrice : lots::find($request->lotid)->Price;
+
+                BidsOfLots::create([
+                    'customerId' => $customerId,
+                    'amount' => ($maxBidPrice + 100),
+                    'lotId' => $request->lotid,
+                    'autoBid' => 0
+                ]);
         }
 
         payments::where('lotId',  $requestData['lotid'])->delete();

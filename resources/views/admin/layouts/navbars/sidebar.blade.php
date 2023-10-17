@@ -26,8 +26,11 @@
             </li> --}}
             <li class="nav-item{{ $activePage == 'Notification' ? ' active' : '' }}">
                 <a class="nav-link" href="{{ url('admin/notification') }}">
+                    @php 
+                        $unreadNotification = App\Helper\NotificationHelper::countNotification();
+                    @endphp 
                     <i class="material-icons">notifications</i>
-                    <p>{{ __('Notification') }}</p>
+                    <p class="notification-link">{{ __('Notification') }}   @if($unreadNotification > 0) <span class="notification-blink @if(request()->is('admin/notification')) active @endif">{{$unreadNotification}}</span> @endif </p>
                 </a>
             </li>
             {{-- @dd($activePage ) --}}

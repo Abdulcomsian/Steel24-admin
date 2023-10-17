@@ -154,14 +154,14 @@
 <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
 <script type="text/javascript">
       $(document).ready(function() {
-    $('.data-table').DataTable({
-      paging: true, // Enable pagination
-      searching: true, // Enable search box
-      lengthChange: false, // This disables the "Show [X] entries" dropdown
-        searching: true, 
-      // Add more options as needed
+            $('.data-table').DataTable({
+            paging: true, // Enable pagination
+            searching: true, // Enable search box
+            lengthChange: false, // This disables the "Show [X] entries" dropdown
+                searching: true, 
+            // Add more options as needed
+            });
     });
-  });
     // $(document).ready(function() {
     //     var table = $('.data-table').DataTable({
     //         processing: true,

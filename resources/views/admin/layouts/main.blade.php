@@ -54,6 +54,15 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/jquery.perfect-scrollbar/1.5.5/css/perfect-scrollbar.css"
     integrity="sha512-2xznCEl5y5T5huJ2hCmwhvVtIGVF1j/aNUEJwi/BzpWPKEzsZPGpwnP1JrIMmjPpQaVicWOYVu8QvAIg9hwv9w=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script>
+        var pusher = new Pusher('bacf91fa7936ec16edb7', {
+            cluster: 'ap2'
+        });
+        //  Pusher.logToConsole = true;
+    </script>
     @stack('styles')
     @yield("styles")
 </head>
@@ -78,6 +87,30 @@
 
     @stack('js')
     @yield("js")
+
+
+    <script>
+        let notificationChannel = pusher.subscribe('notify-admin');
+        notificationChannel.bind('notify.admin' , function(data){
+            let customerId = data.customerId;
+            toastr.info(`Customer with id:${customerId} has added new notification`);
+            blinkBox = document.querySelector(".notification-blink");
+            if(blinkBox){
+              let totalNotification =   parseInt(blinkBox.innerText);
+              totalNotification += 1 ;
+              blinkBox.innerText = totalNotification;
+            }else{
+               let check = parseInt("{{request()->is('admin/notification') ? 1 : 0}}");
+               let html = null;
+               if(check){
+                   html =  `<span class="notification-blink active">1</span>`;
+               }else{
+                   html = `<span class="notification-blink">1</span>`;
+               }
+               document.querySelector(".notification-link").insertAdjacentHTML('beforeend' , html);
+            }
+        })
+    </script>
 </body>
 
 </html>

@@ -25,7 +25,7 @@ use App\Models\customerBalance;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Carbon\Carbon;
-use App\Events\winLotsEvent;
+use App\Events\{ winLotsEvent , NotificationEvent };
 use Pusher\Pusher;
 use App\Exports\LotsExport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -42,10 +42,12 @@ use App\Exports\ExcelCategoryofLot;
 use App\Exports\favLotsExcelExport;
 use App\Models\favlotsexcel_export;
 use App\Exports\paymentexcelexportfile;
+use App\Http\AppConst;
 use App\Models\Excel_export_payment;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
 use App\Models\AdminNotification;
+
 
 
 
@@ -1139,7 +1141,10 @@ class LotsContoller extends Controller
             'customername' => $customer->name,
             'customerId' => $requestData['customerId'],
             'lotId' => $requestData['lotId'],
+            'notification_status' => AppConst::NOTIFICATION_PENDING
         ]);
+
+        event(new NotificationEvent($request->customerId));
     
         return response()->json(['message' => 'Notification saved successfully'], 200);
     }

@@ -241,7 +241,8 @@ return [
         'account_name' => env('ACCOUNT_NAME', null),
         'currency' => env('INR', null),
         'seceret_key' => env('SECRET_KEY', null),
-        'Excel' => Maatwebsite\Excel\Facades\Excel::class
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'AppConst' => App\Http\AppConst::class,
     ],
 
 ];

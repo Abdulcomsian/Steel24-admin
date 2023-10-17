@@ -264,7 +264,7 @@ function placeBid(data)
     // tableBody.appendChild(newRow);
 }
 </script>
-<script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+
 <script>
     window.onload = function(){
         var myfunc = null;
@@ -430,10 +430,8 @@ function placeBid(data)
 
 
 
-        var pusher = new Pusher('bacf91fa7936ec16edb7', {
-            cluster: 'ap2'
-        });
-        // Pusher.logToConsole = true;
+        
+       
         var channel = pusher.subscribe('bid-placed');
         channel.bind('bid.placed', function(data) {
             placeBid(data)

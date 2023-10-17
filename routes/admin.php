@@ -158,6 +158,7 @@ Route::get('/expireLot/{id}', [LiveLotsController::class, 'expireLot']);
 Route::get('/completelotbids/{lots}', [LotsController::class, 'completelotbids']);
 Route::get('/addtimeinlive/{lots}', [LotsController::class, 'addTimeInLive']);
 Route::get('/notification', [AccountNotificationController::class, 'index']);
+Route::get('/reject-notification/{notificationId}' , [AccountNotificationController::class , 'rejectNotification']);
 
 
 Route::post('/analyze-url', [LotsController::class, 'analyzeUrl'])->name('analyze-url');

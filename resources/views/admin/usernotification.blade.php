@@ -126,11 +126,19 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-body">
-                                    @if (session('success'))
+                                    @if(Session::has('success') && Session::has('notification_status') && Session::get('success'))
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        {{Session::get('notification_status')}}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    @endif
+                                    {{-- @if (session('success'))
                                         <div class="alert alert-success" role="success">
                                             {{ session('success') }}
                                         </div>
-                                    @endif
+                                    @endif --}}
                                     <div>
                                          <div >
                                 <h4 style="font-size: 22px;
@@ -155,8 +163,8 @@
                                                             <td>{{ $notification->lotId }}</td>
                                                             <td>{{ $notification->customerId }}</td>
                                                             <td>
-                                                                <a href="{{ url("admin/live_lots_bids/{$notification->id}/{$notification->customerId}") }}"
-                                                                    class="btn btn-info btn-sm">Approved</a>
+                                                                <a href="{{ url("admin/live_lots_bids/{$notification->lotId}/{$notification->customerId}") }}" class="btn btn-info btn-sm">Approved</a>
+                                                                <a href="{{ url("admin/reject-notification/{$notification->id}") }}" class="btn btn-danger btn-sm">Reject</a>
                                                             </td>
                                                         </tr>
                                                 @endforeach
