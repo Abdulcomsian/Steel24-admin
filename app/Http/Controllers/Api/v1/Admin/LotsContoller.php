@@ -1107,12 +1107,13 @@ class LotsContoller extends Controller
 
     // Show notification in Admin Side 
 
-    public function shownotificationadmin(Request $request)
+    public function resetLotRequest(Request $request)
     {
         $requestData = $request->validate([
             'customerId' => 'required',
             'lotId' => 'required',
         ]);
+
     
         // Check if the customer exists
         $customer = Customer::find($requestData['customerId']);
@@ -1121,6 +1122,17 @@ class LotsContoller extends Controller
         {
             return response()->json(['message' => 'Customer not found'], 404);
         }
+
+        $previousNotificationCount = AdminNotification::where('customerId' , $request->customerId)
+                                                        ->where('lotId' , $request->lotId)
+                                                        ->whereNull('notification_status')
+                                                        ->count();
+
+        if($previousNotificationCount){
+            return response()->json(['message' => 'Already Your Notication Has Been Send To Admin'], 200);
+        }
+
+
     
         // Create a new admin notification record
         AdminNotification::create([
@@ -1242,13 +1254,14 @@ class LotsContoller extends Controller
             ->get();
     
         $result = [];
-        $currentDate = now()->toDateString();
+        // $currentDate = now()->toDateString();
+        $currentDate = \Carbon\Carbon::now();
     
         foreach ($favoriteLots as $favoriteLot) 
         {
             $lot = $favoriteLot->lot;
     
-            if ($lot && $lot->lot_status === 'live' && $lot->StartDate <= $currentDate && $lot->EndDate >= $currentDate) 
+            if ($lot && ($lot->lot_status === 'live' || $lot->lot_status === 'Live')) 
             {
                 // Retrieve the maximum bid for the lot
                 $maxBid = BidsOfLots::where('lotId', $lot->id)
@@ -1599,7 +1612,7 @@ class LotsContoller extends Controller
                 ->get();
         } 
 
-        elseif($status === 'live')
+        elseif($status === 'live' || $status === 'Live')
         {
             // Retrieve lots based on the live status and date comparison
             $lots = lots::with([
@@ -1614,9 +1627,9 @@ class LotsContoller extends Controller
                 }
             ])
                 ->where('categoryId', $categoryId)
-                ->where('lot_status', $status)
-                ->where('StartDate', '<=', $currentDate)
-                ->where('EndDate', '>=', $currentDate) 
+                ->whereIn('lot_status', ['live' , 'Live'])
+                // ->where('StartDate', '<=', $currentDate)
+                // ->where('EndDate', '>=', $currentDate) 
                 ->orderBy('StartDate', 'asc')
                 ->get();
         }

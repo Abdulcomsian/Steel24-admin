@@ -11,7 +11,8 @@ class AdminNotification extends Model
     protected $fillable = [
         'customername', 
         'lotId', 
-        'customerId'
+        'customerId',
+        'notification_status'
     ];
 
 }

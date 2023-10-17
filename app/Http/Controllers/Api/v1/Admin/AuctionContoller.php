@@ -41,8 +41,8 @@ use App\Models\AutoBid;
 use App\Models\CustomerLot;
 use App\Jobs\{ LotWinnerMail , LotMail as LotJob};
 use App\Models\LotParticipant;
-
-
+use App\Events\{AddTimeInLiveBid , LotsStatusUpdated};
+use App\Models\AdminNotification;
 
 class AuctionContoller extends Controller
 {
@@ -155,6 +155,11 @@ class AuctionContoller extends Controller
         $lotDetails = DB::select('SELECT lots.* ,bids_of_lots.amount as lastBidAmount from bids_of_lots RIGHT JOIN lots ON  lots.id = bids_of_lots.lotId 
             WHERE lots.id  = ' . $lotId . ' 
             ORDER by bids_of_lots.amount DESC LIMIT 1;');
+
+        $previousNotification = AdminNotification::where('customerId' , auth()->user()->id)
+                                    ->where('lotId' , $lotId)
+                                    ->whereNull('notification_status')
+                                    ->count();
         
             
             
@@ -166,6 +171,7 @@ class AuctionContoller extends Controller
             'lotTerms' => $lotTerms,
             'maxbid' => $maxbid,
             'lot' => $lot,
+            'unanswerPerviousRequest' => $previousNotification > 0 ? true : false,
             'success' => true,
         ]);
 
@@ -1178,9 +1184,10 @@ class AuctionContoller extends Controller
     }
 
     $similarAmountBid = BidsOfLots::where('lotId' , $request->lotId)->where('amount' , $request->amount)->count();
-    
+
     if($similarAmountBid){
-        return response()->json(["message" => "Bid with same amount has already been placed" , 'success' => true ] , 200 );
+        $maxBidAmount = BidsOfLots::where('lotId' , $request->lotId)->max('amount');
+        return response()->json(["message" => "Bid with same amount has already been placed" , 'success' => true , "maxAmount" => $maxBidAmount , "setButton" => true ] , 200 );
     }
 
     if ($customer && $customer->isApproved == 1) {
@@ -2461,6 +2468,13 @@ class AuctionContoller extends Controller
             // Fetch the lot details
             $lot = lots::with('autoBids', 'bids.customer', 'participant')->where('id', $lotId)->first();
 
+            $similarAmountBid = BidsOfLots::where('lotId' , $request->lotId)->where('amount' , $request->amount)->count();
+
+            // if($similarAmountBid){
+            //     $maxBidAmount = BidsOfLots::where('lotId' , $request->lotId)->max('amount');
+            //     return response()->json(["message" => "Bid with same amount has already been placed" , 'success' => true , "maxAmount" => $maxBidAmount , "setButton" => true ] , 200 );
+            // }
+
             // Fetch the customer
             $customer = Customer::find($customerId);
 
@@ -2495,6 +2509,18 @@ class AuctionContoller extends Controller
 
                         // Save the updated end date
                         $lot->save();
+
+                        //new code start here
+                        $liveLots = lots::where('id' , "!=" , $lotId )->where('lot_status' , 'live')->get();
+
+                        foreach($liveLots as $currentLot){
+                            $currentLot->EndDate = Carbon::createFromFormat('Y-m-d H:i:s', $lot->EndDate)->addMinute(1);
+                            $currentLot->save();
+                        }
+
+                        event(new AddTimeInLiveBid(1));
+                        event(new LotsStatusUpdated("A Minute Has Been Added In Live Lots"));
+                        //new code ends here
                     }
 
                     // Place the customer's bid
@@ -2530,16 +2556,24 @@ class AuctionContoller extends Controller
         // $newPricing = $currentPricing + $amount;
         $newPricing = $amount;
 
-        $manualBid = BidsOfLots::create([
-            "customerId" => $customer->id,
-            "customerName"=>$customer->name,
-            "amount" => $newPricing,
-            "lotId" => $lot->id,
-            "autoBid" => $bidType,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
-            
-       ]);
+        try{
+            $manualBid = BidsOfLots::create([
+                "customerId" => $customer->id,
+                "customerName"=>$customer->name,
+                "amount" => $newPricing,
+                "lotId" => $lot->id,
+                "autoBid" => $bidType,
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+                
+           ]);
+
+        }catch(\Illuminate\Database\QueryException $e){
+
+            $maxBidAmount = BidsOfLots::where('lotId' , $lot->id)->max('amount');
+            return response()->json(['success' => true , "message" => "Bid with same amount has already been placed" ,  "maxAmount" => $maxBidAmount , "setButton" => true  , 'error' => $e->getMessage()] , 200 );
+        }
+
 
        event(new winLotsEvent('Good Luck! You placed a new bid.', $manualBid, $customer, true));
 

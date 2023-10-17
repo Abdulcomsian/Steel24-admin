@@ -21,6 +21,7 @@ class UpdateLotStatus extends Command
 
     public function handle()
     {
+        info("inside cron job");
         //Two minute code starts here 
         //new code starts here
         // $lots = lots::with('bids.customer','autobids.customer' , 'participant')->whereNotIn('lot_status' ,  ['Sold' , 'Expired'])->get();        
@@ -199,6 +200,7 @@ class UpdateLotStatus extends Command
         //Two minute code ends here
         info("update lot status running");
         $currentDateTime = Carbon::now()->format('Y-m-d H:i:s');
+        $currentDateTimeInSeconds = Carbon::now()->timestamp;
         info($currentDateTime);
         $upcomingLots = lots::where('StartDate' , '<=' ,$currentDateTime)
                                         ->where('EndDate' , '>=' ,$currentDateTime)
@@ -240,12 +242,18 @@ class UpdateLotStatus extends Command
                                         ['lot_id' => $lot->id  , 'customer_id' => $latestBidCustomer->id , 'created_at' => date('Y-m-d H:i:s')]
                                     );
                 if( $customerLot ){
-                        $lot->lot_status = "STA";
-                        $lot->save();
-                        
-                        dispatch(new LotMail($lot , $latestBidCustomer));
-                        //sending winner bidders email  
-                        event(new winLotsEvent('Bidding Has Been Won By The Customer', $lastBid, $latestBidCustomer, false));
+                    $lotTimeInSeconds = Carbon::parse($lot->EndDate)->timestamp;
+                    info($currentDateTimeInSeconds);
+                    info($lotTimeInSeconds);
+                        if($currentDateTimeInSeconds >= $lotTimeInSeconds){
+                            $lot->lot_status = "STA";
+                            $lot->save();
+                            info("lot with id $lot->id has been changed to status STA");
+                            
+                            dispatch(new LotMail($lot , $latestBidCustomer));
+                            //sending winner bidders email  
+                            event(new winLotsEvent('Bidding Has Been Won By The Customer', $lastBid, $latestBidCustomer, false));
+                        }
                 }
             }
     }
