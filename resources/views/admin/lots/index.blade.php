@@ -220,7 +220,11 @@ $(function () {
                     }
                 },
 
-                {data: 'Price', name: 'Price'},
+                {data: 'Price', name: 'Price', render: function (data) {
+                    {
+                        return  parseInt(data).toLocaleString('hi-IN'); //data.toFixed(2);
+                    }
+                }},
                 {data: 'lot_status', name: 'lot_status'},
                 {data: 'action', name: 'action', orderable: false, searchable: false},
             ]

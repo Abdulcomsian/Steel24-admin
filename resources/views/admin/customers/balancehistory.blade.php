@@ -36,12 +36,13 @@
                                             <td>{{ $record->action }}</td>
 
                                             <td>
-                                                {{ $record->action==="Participate Fees" ? $record->actionAmount:"-"}}
+                                                {{ $record->action==="Participate Fees" ? number_format($record->actionAmount, 0, ',') :"-"}}
                                             </td>
                                             <td>
-                                                {{ $record->action === "Participate Fees Back" || $record->action === "Return Participation Fee" || $record->action === "credit" ? $record->actionAmount:"-" }}
+                                                {{ $record->action === "Participate Fees Back" || $record->action === "Return Participation Fee" || $record->action === "credit" ? number_format($record->actionAmount, 0, ',') :"-" }}
                                             </td>
-                                            <td>{{ $record->finalAmount }}</td>
+                                            <!-- <td>{{ $record->finalAmount }}</td> -->
+                                            <td>{{ number_format($record->finalAmount, 0, ',') }}</td>
                                             <td>{{ \Carbon\Carbon::parse($record->date)->format('d-m-Y h:i:s A') }}</td>
                                         </tr>
                                     @endforeach

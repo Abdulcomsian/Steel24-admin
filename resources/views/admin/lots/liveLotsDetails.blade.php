@@ -167,7 +167,7 @@
                                                 <tr>
                                                     <th scope="row">{{ $bid->id }}</th>
                                                     <td>{{ $bid->customerName }}</td>
-                                                    <td>{{ $bid->amount }}</td>
+                                                    <td>{{ number_format($bid->amount, 0, ',') }}</td>
                                                     <td>{{ $bid->bidTime }}</td>
                                                     <td>
                                                         <a href="/admin/customers/{{ $bid->customerId }}"
@@ -207,7 +207,8 @@
                                                     <tr>
                                                         <th scope="row">{{ $bid->id }}</th>
                                                         <td>{{ $bid->customerName }}</td>
-                                                        <td>{{ $bid->amount }}</td>
+                                                        <!-- <td>{{ $bid->amount }}</td> -->
+                                                        <td>{{ number_format($bid->amount, 0, ',') }}</td>
                                                         {{-- <td>{{ $bid->bidTime }}</td> --}}
                                                         <td>{{ \Carbon\Carbon::parse($bid->bidTime)->format('d-m-Y g:i:s A') }}</td>
                                                         <td>
