@@ -2151,7 +2151,7 @@ class LotsContoller extends Controller
         $winningLots = $customerLots->get();
 
     
-        if ($customerLots->isEmpty()) {
+        if ($winningLots->isEmpty()) {
             $message = 'Sorry, No Win lots against this Customer.';
         } else {
             $message = 'Win Lot Retrieved Successfully.';
