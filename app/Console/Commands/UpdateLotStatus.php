@@ -209,9 +209,10 @@ class UpdateLotStatus extends Command
 
         foreach($upcomingLots as $lot)
         {
-            event(new LotStatusUpdate($lot));
+            info($lot);
             $lot->lot_status = 'live';
             $lot->save();
+            event(new LotStatusUpdate($lot));
             // ->update(['lot_status' => 'live']);
         }
         
