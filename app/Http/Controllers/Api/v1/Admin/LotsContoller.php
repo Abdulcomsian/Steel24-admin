@@ -2134,7 +2134,7 @@ class LotsContoller extends Controller
         $customerLots->with('lotDetail.materials');
 
         $customerLots->whereHas('lotDetail' , function($query){
-            $query->whereIn('lot_status' , ['Sold' , 'sold'] );
+            $query->whereIn('lot_status' , ['Sold' , 'sold' , 'sta', 'STA'] );
         });
 
         $customerLots->when(isset($startDate) && !is_null($startDate) , function($query) use ($startDate){
