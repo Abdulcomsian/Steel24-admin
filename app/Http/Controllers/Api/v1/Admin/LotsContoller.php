@@ -2149,7 +2149,7 @@ class LotsContoller extends Controller
 
         $customerLots->where('customer_id' , $customerId);
 
-        $winningLots = $customerLots->get();
+        $winningLots = $customerLots->orderBy('id' , 'desc')->get();
 
     
         if ($winningLots->isEmpty()) {
