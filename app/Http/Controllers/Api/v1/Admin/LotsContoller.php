@@ -2124,6 +2124,7 @@ class LotsContoller extends Controller
         $endDate = $request->input('end_date');
         $customerId = $request->input('customer_id');
 
+        dd($startDate , $endDate , $customerId );
     
         // $customerLots = CustomerLot::with(['lotDetail.materials', 'lot.materials'])
         //     ->whereBetween(DB::raw('Date(customer_lots.created_at)'), [$startDate, $endDate])
@@ -2139,11 +2140,11 @@ class LotsContoller extends Controller
         });
 
         $customerLots->when(isset($startDate) && !is_null($startDate) , function($query) use ($startDate){
-            $query->where(DB::raw('Date(created_at)') , '<=' , $startDate);
+            $query->where(DB::raw('DATE(created_at)') , '<=' , $startDate);
         });
 
         $customerLots->when(isset($endDate) && !is_null($endDate) , function($query) use ($endDate){
-            $query->where(DB::raw('Date(created_at)') , '>=' , $endDate);
+            $query->where(DB::raw('DATE(created_at)') , '>=' , $endDate);
         });
 
         $customerLots->where('customer_id' , $customerId);
