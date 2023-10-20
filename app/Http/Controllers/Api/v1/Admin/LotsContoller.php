@@ -2123,11 +2123,33 @@ class LotsContoller extends Controller
         $startDate = $request->input('start_date');
         $endDate = $request->input('end_date');
         $customerId = $request->input('customer_id');
+
     
-        $customerLots = CustomerLot::with(['lotDetail.materials', 'lot.materials'])
-            ->whereBetween(DB::raw('Date(customer_lots.created_at)'), [$startDate, $endDate])
-            ->where('customer_id', $customerId)
-            ->get();
+        // $customerLots = CustomerLot::with(['lotDetail.materials', 'lot.materials'])
+        //     ->whereBetween(DB::raw('Date(customer_lots.created_at)'), [$startDate, $endDate])
+        //     ->where('customer_id', $customerId)
+        //     ->get();
+
+        $customerLots = CustomerLot::query();
+
+        $customerLots->with('lotDetail.materials');
+
+        $customerLots->wherHas('lotDetail' , function($query){
+            $query->whereIn('lot_status' , ['Sold' , 'sold'] );
+        });
+
+        $customerLots->when(isset($startDate) && !is_null($startDate) , function($query) use ($startDate){
+            $query->where(DB::raw('Date(created_at)') , '<=' , $startDate);
+        });
+
+        $customerLots->when(isset($endDate) && !is_null($endDate) , function($query) use ($endDate){
+            $query->where(DB::raw('Date(created_at)') , '>=' , $endDate);
+        });
+
+        $customerLots->where('customer_id' , $customerId);
+
+        $winningLots = $customerLots->get();
+
     
         if ($customerLots->isEmpty()) {
             $message = 'Sorry, No Win lots against this Customer.';
@@ -2135,24 +2157,24 @@ class LotsContoller extends Controller
             $message = 'Win Lot Retrieved Successfully.';
         }
     
-        $winningLots = [];
+        // $winningLots = [];
     
-        foreach ($customerLots as $customerLot) 
-        {
-            $lot = $customerLot->lotDetail;
+        // foreach ($customerLots as $customerLot) 
+        // {
+        //     $lot = $customerLot->lotDetail;
     
-            if ($lot->lot_status === 'Sold') 
-            {
-                $winningLots[] = [
-                    'id' => $customerLot->id,
-                    'customer_id' => $customerLot->customer_id,
-                    'lot_id' => $customerLot->lot_id,
-                    'created_at' => $customerLot->created_at,
-                    'updated_at' => $customerLot->updated_at,
-                    'lot_details' => $lot,
-                ];
-            }
-        }
+        //     if ($lot->lot_status === 'Sold') 
+        //     {
+        //         $winningLots[] = [
+        //             'id' => $customerLot->id,
+        //             'customer_id' => $customerLot->customer_id,
+        //             'lot_id' => $customerLot->lot_id,
+        //             'created_at' => $customerLot->created_at,
+        //             'updated_at' => $customerLot->updated_at,
+        //             'lot_details' => $lot,
+        //         ];
+        //     }
+        // }
     
         $response = [
             'message' => $message,
