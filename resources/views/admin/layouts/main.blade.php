@@ -58,7 +58,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
     <script>
-        var pusher = new Pusher('bacf91fa7936ec16edb7', {
+        var pusher = new Pusher('83e05b6b18d8f8b33808', {
             cluster: 'ap2'
         });
         //  Pusher.logToConsole = true;

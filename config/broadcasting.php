@@ -34,9 +34,12 @@ return [
 
     'pusher' => [
         'driver' => 'pusher',
-        'key' => 'bacf91fa7936ec16edb7',
-        'secret' => '85cde5bd8090bba5709b',
-        'app_id' => '1638523',
+        // 'key' => 'bacf91fa7936ec16edb7',
+        // 'secret' => '85cde5bd8090bba5709b',
+        // 'app_id' => '1638523',
+        'key' => '83e05b6b18d8f8b33808',
+        'secret' => '55abaafdfbf766b9b831',
+        'app_id' => '1691703',
         'options' => [
             'cluster' => 'ap2',
             'useTLS' => true,
