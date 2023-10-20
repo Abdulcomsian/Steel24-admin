@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 use Carbon\Carbon;
 use App\Models\lots;
 use Symfony\Component\HttpFoundation\Response;
-use App\Events\{winLotsEvent , LotStatusUpdate};
+use App\Events\{winLotsEvent , LotsStatusUpdated};
 use Pusher\Pusher;
 use App\Jobs\LotMail;
 use App\Models\{BidsOfLots , CustomerLot , customerBalance , LotParticipant};
@@ -212,7 +212,7 @@ class UpdateLotStatus extends Command
             info($lot);
             $lot->lot_status = 'live';
             $lot->save();
-            event(new LotStatusUpdate($lot));
+            event(new LotsStatusUpdated($lot));
             // ->update(['lot_status' => 'live']);
         }
         

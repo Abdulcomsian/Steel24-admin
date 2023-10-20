@@ -16643,3 +16643,116 @@ Did you mean one of these?
 #63 C:\\wamp64\\www\\bidding\\server.php(21): require_once('C:\\\\wamp64\\\\www\\\\b...')
 #64 {main}
 "} 
+[2023-10-20 10:25:19] local.ERROR: There are no commands defined in the "command" namespace. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\NamespaceNotFoundException(code: 0): There are no commands defined in the \"command\" namespace. at C:\\wamp64\\www\\bidding\\vendor\\symfony\\console\\Application.php:650)
+[stacktrace]
+#0 C:\\wamp64\\www\\bidding\\vendor\\symfony\\console\\Application.php(701): Symfony\\Component\\Console\\Application->findNamespace('command')
+#1 C:\\wamp64\\www\\bidding\\vendor\\symfony\\console\\Application.php(259): Symfony\\Component\\Console\\Application->find('command:work')
+#2 C:\\wamp64\\www\\bidding\\vendor\\symfony\\console\\Application.php(171): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Console\\Application.php(94): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 C:\\wamp64\\www\\bidding\\vendor\\laravel\\framework\\src\\Illuminate\\Foundation\\Console\\Kernel.php(129): Illuminate\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#5 C:\\wamp64\\www\\bidding\\artisan(37): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#6 {main}
+"} 
+[2023-10-20 10:26:14] local.INFO: inside cron job  
+[2023-10-20 10:26:14] local.INFO: update lot status running  
+[2023-10-20 10:26:14] local.INFO: 2023-10-20 10:26:14  
+[2023-10-20 10:26:14] local.INFO: 1697777774  
+[2023-10-20 10:26:14] local.INFO: 1697203860  
+[2023-10-20 10:26:14] local.INFO: lot with id 4 has been changed to status STA  
+[2023-10-20 10:26:16] local.INFO: 1697777774  
+[2023-10-20 10:26:16] local.INFO: 1697708520  
+[2023-10-20 10:26:16] local.INFO: lot with id 103 has been changed to status STA  
+[2023-10-20 10:36:22] local.INFO: inside cron job  
+[2023-10-20 10:36:22] local.INFO: update lot status running  
+[2023-10-20 10:36:22] local.INFO: 2023-10-20 10:36:22  
+[2023-10-20 10:36:22] local.INFO: {"id":1,"title":"HR SIDE SLIT Thk:1.8mm, Wid:327mm Grade: PRIME","description":"HR SIDE SLIT Thk:1.8mm, Wid:327mm Grade: PRIME","categoryId":8,"uid":3,"Seller":"ZUMAX","Plant":"JSW","materialLocation":"PUNE","Quantity":"2500","StartDate":"2023-10-20 10:36:00","EndDate":"2023-10-20T06:25:00.000000Z","Price":"50000","lot_status":"Upcoming","auction_status":0,"customFields":"","created_at":"2023-02-21T10:21:53.000000Z","updated_at":"2023-10-20T05:05:24.000000Z","participate_fee":5000,"ReStartDate":"0000-00-00 00:00:00","ReEndDate":"0000-00-00 00:00:00","LiveSequenceNumber":null,"Payment_terms":null,"status":"active","uploadlotpicture":"1694679160-cr_baby_coil.jpg","make_in":"unon"}  
+[2023-10-20 11:21:19] local.INFO: inside cron job  
+[2023-10-20 11:21:19] local.INFO: update lot status running  
+[2023-10-20 11:21:19] local.INFO: 2023-10-20 11:21:19  
+[2023-10-20 11:22:01] local.INFO: inside cron job  
+[2023-10-20 11:22:01] local.INFO: update lot status running  
+[2023-10-20 11:22:01] local.INFO: 2023-10-20 11:22:01  
+[2023-10-20 11:23:01] local.INFO: inside cron job  
+[2023-10-20 11:23:01] local.INFO: update lot status running  
+[2023-10-20 11:23:01] local.INFO: 2023-10-20 11:23:01  
+[2023-10-20 11:24:01] local.INFO: inside cron job  
+[2023-10-20 11:24:01] local.INFO: update lot status running  
+[2023-10-20 11:24:01] local.INFO: 2023-10-20 11:24:01  
+[2023-10-20 11:25:01] local.INFO: inside cron job  
+[2023-10-20 11:25:01] local.INFO: update lot status running  
+[2023-10-20 11:25:01] local.INFO: 2023-10-20 11:25:01  
+[2023-10-20 11:26:01] local.INFO: inside cron job  
+[2023-10-20 11:26:01] local.INFO: update lot status running  
+[2023-10-20 11:26:01] local.INFO: 2023-10-20 11:26:01  
+[2023-10-20 11:27:01] local.INFO: inside cron job  
+[2023-10-20 11:27:01] local.INFO: update lot status running  
+[2023-10-20 11:27:01] local.INFO: 2023-10-20 11:27:01  
+[2023-10-20 11:28:01] local.INFO: inside cron job  
+[2023-10-20 11:28:01] local.INFO: update lot status running  
+[2023-10-20 11:28:01] local.INFO: 2023-10-20 11:28:01  
+[2023-10-20 11:29:01] local.INFO: inside cron job  
+[2023-10-20 11:29:01] local.INFO: update lot status running  
+[2023-10-20 11:29:01] local.INFO: 2023-10-20 11:29:01  
+[2023-10-20 11:30:01] local.INFO: inside cron job  
+[2023-10-20 11:30:01] local.INFO: update lot status running  
+[2023-10-20 11:30:01] local.INFO: 2023-10-20 11:30:01  
+[2023-10-20 11:31:01] local.INFO: inside cron job  
+[2023-10-20 11:31:01] local.INFO: update lot status running  
+[2023-10-20 11:31:01] local.INFO: 2023-10-20 11:31:01  
+[2023-10-20 11:32:01] local.INFO: inside cron job  
+[2023-10-20 11:32:01] local.INFO: update lot status running  
+[2023-10-20 11:32:01] local.INFO: 2023-10-20 11:32:01  
+[2023-10-20 11:33:01] local.INFO: inside cron job  
+[2023-10-20 11:33:01] local.INFO: update lot status running  
+[2023-10-20 11:33:01] local.INFO: 2023-10-20 11:33:01  
+[2023-10-20 11:34:01] local.INFO: inside cron job  
+[2023-10-20 11:34:01] local.INFO: update lot status running  
+[2023-10-20 11:34:01] local.INFO: 2023-10-20 11:34:01  
+[2023-10-20 11:35:01] local.INFO: inside cron job  
+[2023-10-20 11:35:01] local.INFO: update lot status running  
+[2023-10-20 11:35:01] local.INFO: 2023-10-20 11:35:01  
+[2023-10-20 11:36:01] local.INFO: inside cron job  
+[2023-10-20 11:36:01] local.INFO: update lot status running  
+[2023-10-20 11:36:01] local.INFO: 2023-10-20 11:36:01  
+[2023-10-20 11:37:00] local.INFO: inside cron job  
+[2023-10-20 11:37:00] local.INFO: update lot status running  
+[2023-10-20 11:37:00] local.INFO: 2023-10-20 11:37:00  
+[2023-10-20 11:38:01] local.INFO: inside cron job  
+[2023-10-20 11:38:01] local.INFO: update lot status running  
+[2023-10-20 11:38:01] local.INFO: 2023-10-20 11:38:01  
+[2023-10-20 11:39:01] local.INFO: inside cron job  
+[2023-10-20 11:39:01] local.INFO: update lot status running  
+[2023-10-20 11:39:01] local.INFO: 2023-10-20 11:39:01  
+[2023-10-20 11:40:01] local.INFO: inside cron job  
+[2023-10-20 11:40:01] local.INFO: update lot status running  
+[2023-10-20 11:40:01] local.INFO: 2023-10-20 11:40:01  
+[2023-10-20 11:41:00] local.INFO: inside cron job  
+[2023-10-20 11:41:00] local.INFO: update lot status running  
+[2023-10-20 11:41:00] local.INFO: 2023-10-20 11:41:00  
+[2023-10-20 11:42:01] local.INFO: inside cron job  
+[2023-10-20 11:42:01] local.INFO: update lot status running  
+[2023-10-20 11:42:01] local.INFO: 2023-10-20 11:42:01  
+[2023-10-20 11:43:01] local.INFO: inside cron job  
+[2023-10-20 11:43:01] local.INFO: update lot status running  
+[2023-10-20 11:43:01] local.INFO: 2023-10-20 11:43:01  
+[2023-10-20 11:44:01] local.INFO: inside cron job  
+[2023-10-20 11:44:01] local.INFO: update lot status running  
+[2023-10-20 11:44:01] local.INFO: 2023-10-20 11:44:01  
+[2023-10-20 11:45:01] local.INFO: inside cron job  
+[2023-10-20 11:45:01] local.INFO: update lot status running  
+[2023-10-20 11:45:01] local.INFO: 2023-10-20 11:45:01  
+[2023-10-20 11:46:01] local.INFO: inside cron job  
+[2023-10-20 11:46:01] local.INFO: update lot status running  
+[2023-10-20 11:46:01] local.INFO: 2023-10-20 11:46:01  
+[2023-10-20 11:47:00] local.INFO: inside cron job  
+[2023-10-20 11:47:00] local.INFO: update lot status running  
+[2023-10-20 11:47:00] local.INFO: 2023-10-20 11:47:00  
+[2023-10-20 11:48:01] local.INFO: inside cron job  
+[2023-10-20 11:48:01] local.INFO: update lot status running  
+[2023-10-20 11:48:01] local.INFO: 2023-10-20 11:48:01  
+[2023-10-20 11:49:01] local.INFO: inside cron job  
+[2023-10-20 11:49:01] local.INFO: update lot status running  
+[2023-10-20 11:49:01] local.INFO: 2023-10-20 11:49:01  
+[2023-10-20 11:50:01] local.INFO: inside cron job  
+[2023-10-20 11:50:01] local.INFO: update lot status running  
+[2023-10-20 11:50:01] local.INFO: 2023-10-20 11:50:01  
