@@ -344,7 +344,7 @@ function placeBid(data)
                 if (minutes < 1 && hours < 1 && timeleft < 0 && (lotStatus == 'live' || lotStatus == 'Restart')) 
                 {
                     clearInterval(myfunc);
-                    document.getElementById('btnEndtLot').click();
+                    // document.getElementById('btnEndtLot').click();
                 }
 
                 if ((minutes < 1 && hours < 1 && timeleft < 0) && lotStatus == 'Upcoming') 
