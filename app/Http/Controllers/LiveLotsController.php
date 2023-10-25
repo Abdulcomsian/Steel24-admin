@@ -356,7 +356,7 @@ class LiveLotsController extends Controller
         // zee commenting this
         // $this->pushonfirbase();
 
-        $lot = lots::where('id' , $request->$request->lotid)->first();
+        $lot = lots::where('id' , $request->lotid)->first();
         // $message = 'Live Lot Started Successfully';
         event(new LotsStatusUpdated($lot));
         event(new RestartLotEvent($request->lotid));
