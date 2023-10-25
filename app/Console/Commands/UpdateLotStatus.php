@@ -250,10 +250,10 @@ class UpdateLotStatus extends Command
                             $lot->lot_status = "STA";
                             $lot->save();
                             info("lot with id $lot->id has been changed to status STA");
+                            event(new winLotsEvent('Bidding Has Been Won By The Customer', $lastBid, $latestBidCustomer, false));
                             
                             dispatch(new LotMail($lot , $latestBidCustomer));
                             //sending winner bidders email  
-                            event(new winLotsEvent('Bidding Has Been Won By The Customer', $lastBid, $latestBidCustomer, false));
                         }
                 }
             }

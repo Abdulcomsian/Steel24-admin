@@ -307,16 +307,12 @@ function placeBid(data)
                 clearInterval(myfunc);
             } else if (lotStatus != 'Expired' && lotStatus != 'pause') 
             {
-                console.log("---------------------------------")
                 if (lotStatus != 'live' && lotStatus != 'Restart') 
                 {
                     timeleft = startTime - now;
-                    console.log(lotStatus);
-                    console.log("inside start time")
                 } else 
                 {
                     timeleft = endTime - now;
-                    console.log("inside end time")
                 }
 
                 var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
@@ -324,9 +320,9 @@ function placeBid(data)
                 var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
                 var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
 
-                console.log(`seconds: ${seconds}`)
-                console.log(`timeLeft:  ${timeleft}`)
-                console.log(`now: ${now}`)
+                // console.log(`seconds: ${seconds}`)
+                // console.log(`timeLeft:  ${timeleft}`)
+                // console.log(`now: ${now}`)
 
                 // hours+=days*24
 
@@ -452,6 +448,15 @@ function placeBid(data)
         channel3.bind('restart.lot' , function(data){
             // alert("restarting lot");
             if(lotid === parseInt(data.lotId)){
+                window.location.reload();
+            }
+        })
+
+        let channel4 = pusher.subscribe('steel24');
+        channel4.bind('win-lots checking' , function(data){
+            // alert("restarting lot");
+            console.log(data);
+            if(lotid === parseInt(data.detail.lotId)){
                 window.location.reload();
             }
         })
