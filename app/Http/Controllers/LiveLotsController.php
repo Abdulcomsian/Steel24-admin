@@ -122,14 +122,17 @@ class LiveLotsController extends Controller
     // Start Lot Make status Live
     public function startLots($id)
     {
-        $lot = lots::where('id', $id)->update(['lot_status' => 'live']);
-        lots::where('id', $id)->update(['StartDate'=>Carbon::now()]);
+        $lot = lots::where('id', $id)->first();
+        $lot->StartDate = Carbon::now();
+        $lot->lot_status = 'live';
+        $lot->save();
+        
         payments::where('lotId', $id)->delete();
         // zeshan commenting this 
         // $this->pushonfirbase();
 
-        $message = 'Live Lot Starting Successfully';
-        event(new LotsStatusUpdated($message));
+        // $message = 'Live Lot Starting Successfully';
+        event(new LotsStatusUpdated($lot));
 
         return redirect('/admin/live_lots_bids/' . $id);
     }
@@ -137,7 +140,11 @@ class LiveLotsController extends Controller
     // End Lot Make status end Or Expire
     public function endlot($id)
     {
-        lots::where('id', $id)->update(['lot_status' => 'STA']);
+        $lot = lots::where('id', $id)->first();
+        $lot->EndDate = Carbon::now();
+        $lot->lot_status = 'STA';
+        $lot->save();
+
         $lastBid = BidsOfLots::where('lotId', $id)->orderBy('id', 'desc')->first();
         $customers = [];
         if ($lastBid) {
@@ -191,8 +198,8 @@ class LiveLotsController extends Controller
 
         // $this->pushonfirbase();
 
-        $message = 'Live Lot Ended Successfully';
-        event(new LotsStatusUpdated($message));
+        // $message = 'Live Lot Ended Successfully';
+        event(new LotsStatusUpdated($lot));
 
         return redirect('/admin/live_lots_bids/' . $id);
     }
@@ -203,7 +210,10 @@ class LiveLotsController extends Controller
         $lastBid = BidsOfLots::where('lotId', $id)->orderBy('id', 'desc')->first();
 
         $customers = DB::select("SELECT * from customer_balances WHERE lotid = " . $id . " and status != 1; ");
-        lots::where('id', $id)->update(['lot_status' => 'Expired']);
+        $lot = lots::where('id', $id)->first();
+        $lot->EndDate = Carbon::now();
+        $lot->lot_status = 'Expired';
+        $lot->save();
         $lotDetails = lots::where('id', $id)->get();
 
         // dd($customers);
@@ -250,8 +260,8 @@ class LiveLotsController extends Controller
         // zee commenting this
         // $this->pushonfirbase();
 
-        $message = 'Live Lot Expired Successfully';
-        event(new LotsStatusUpdated($message));
+        // $message = 'Live Lot Expired Successfully';
+        event(new LotsStatusUpdated($lot));
         
         return redirect('/admin/live_lots_bids/' . $id);
 
@@ -346,8 +356,9 @@ class LiveLotsController extends Controller
         // zee commenting this
         // $this->pushonfirbase();
 
-        $message = 'Live Lot Started Successfully';
-        event(new LotsStatusUpdated($message));
+        $lot = lots::where('id' , $request->$request->lotid)->first();
+        // $message = 'Live Lot Started Successfully';
+        event(new LotsStatusUpdated($lot));
         event(new RestartLotEvent($request->lotid));
 
 
