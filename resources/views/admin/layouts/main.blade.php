@@ -61,7 +61,7 @@
         var pusher = new Pusher('83e05b6b18d8f8b33808', {
             cluster: 'ap2'
         });
-        //Pusher.logToConsole = true;
+        Pusher.logToConsole = true;
     </script>
     @stack('styles')
     @yield("styles")
