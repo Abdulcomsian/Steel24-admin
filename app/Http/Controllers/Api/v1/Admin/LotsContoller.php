@@ -2482,4 +2482,5 @@ class LotsContoller extends Controller
 
     }
     
+   
 }

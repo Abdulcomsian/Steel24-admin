@@ -163,7 +163,7 @@ class AuctionContoller extends Controller
         
             
             
-        $lot = lots::with('participant')->where('id' , $lotId)->first();
+        $lot = lots::with('participant' , 'lotWinner.customer')->where('id' , $lotId)->first();
         // Return the response in JSON format using response()->json()
         return response()->json([
             'lotDetails' => $lotDetails[0], // Assuming $lotDetails is not empty, get the first element

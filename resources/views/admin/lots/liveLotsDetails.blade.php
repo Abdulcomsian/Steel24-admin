@@ -94,7 +94,7 @@
                                                     <input type="hidden" id="lotid" name="lotid"
                                                         value="{{ $lots->id }}">
                                                     <input type="checkbox" id="customerVisible" name="customerVisible"
-                                                        checked>
+                                                        @if($lots->show_winner_name) checked @endif>
                                                     <label for="customerVisible"> Show Customer Name.</label><br>
                                                     <button type="submit" class="btn btn-primary btn-sm">Get
                                                         Payment.</button>
@@ -462,6 +462,29 @@ function placeBid(data)
         })
 
 
+        $(document).on("change" , "#customerVisible" , function(e){
+            let lotId = parseInt("{{$lots->id}}");
+            let showWinnerName = this.checked == true ? 1 : 0;
+            // console.log("{{url('update-customer-visibility')}}");
+            // return;
+            $.ajax({
+                type : "POST",
+                url : "{{url('admin/update-customer-visibility')}}",
+                data : {
+                    _token : "{{csrf_token()}}",
+                    lotId : lotId,
+                    showWinnerName : showWinnerName
+                },
+                success : function(res){
+                    if(res.status){
+                        toastr.success(res.msg);
+                    }else{
+                        res.error(res.msg);
+                        console.log(res.error);
+                    }
+                }
+            })
+        })
 
 
 

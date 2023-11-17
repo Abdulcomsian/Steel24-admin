@@ -31,6 +31,7 @@ use App\Events\AddTimeInLiveBid;
 // use Kreait\Firebase;
 // use Kreait\Firebase\Factory
 use function PHPSTORM_META\elementType;
+use Illuminate\Support\Facades\Validator;
 
 class LotsController extends Controller
 {
@@ -946,5 +947,27 @@ public function update(Request $request, lots $lots)
         event(new LotsStatusUpdated($message));
         event(new AddTimeInLiveBid($request->time));
         return back();
+    }
+
+    public function updateCustomerVisibility(Request $request){
+        // dd($request->all());
+        $validator = Validator::make($request->all() ,[
+            'lotId' => 'required|numeric',
+            'showWinnerName' => 'required|numeric'
+        ]);
+
+        if($validator->fails()){
+            return response()->json(["status" => false , "msg" => "Something Went Wrong" , 'error' => $validator->getMessageBag() ]);
+        }
+
+        try{
+            $lot = lots::where('id' , $request->lotId)->first();
+            $lot->show_winner_name = $request->showWinnerName;
+            $lot->save();
+
+            return response()->json(["status" => true , "msg" => "Lot Winner Visibility Changed Successfully"]);
+        }catch(\Exception $e){
+            return response()->json(["status" => false , "msg" => "Something Went Wrong" , 'error' => $e->getMessage() ]);
+        }
     }
 }

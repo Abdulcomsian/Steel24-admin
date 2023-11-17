@@ -34,6 +34,7 @@ class lots extends Model
         'Price',
         'auction_status',
         'lot_status',
+        'show_winner_name',
         'customFields',
         'participate_fee',
         'make_in',
@@ -130,6 +131,10 @@ class lots extends Model
     public function lotDetails()
     {
         return $this->hasOne(CustomerLot::class, 'lot_id');
+    }
+
+    public function lotWinner(){
+        return $this->hasOne(BidsOfLots::class, 'lotId', 'id')->latestOfMany();
     }
 
 }
