@@ -145,7 +145,7 @@ class AuctionContoller extends Controller
 
         $materialidata = newMaterial::where("lotid", $lotId)->get();
         $materialilist = new_maerials_2::where('lotid', $lotId)->get();
-        $lotTerms = lotTerms::where('lotid', $lotId)->first();
+        // $lotTerms = lotTerms::where('lotid', $lotId)->first();
         $maxbid = DB::table('bids_of_lots')
         ->select('customerId', 'amount', 'lotId', 'created_at')
         ->where('lotId',$lotId )
@@ -163,12 +163,11 @@ class AuctionContoller extends Controller
         
             
             
-        $lot = lots::with('participant' , 'lotWinner.customer')->where('id' , $lotId)->first();
+        $lot = lots::with('lotTerms' , 'participant' , 'lotWinner.customer')->where('id' , $lotId)->first();
         // Return the response in JSON format using response()->json()
         return response()->json([
             'lotDetails' => $lotDetails[0], // Assuming $lotDetails is not empty, get the first element
             'materialList' => $materialilist,
-            'lotTerms' => $lotTerms,
             'maxbid' => $maxbid,
             'lot' => $lot,
             'unanswerPerviousRequest' => $previousNotification > 0 ? true : false,
