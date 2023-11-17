@@ -70,7 +70,7 @@ class lots extends Model
 
     public function lotTerms()
     {
-        return $this->hasOne(lotTerms::class, 'lotid');
+        return $this->belongsTo(lotTerms::class, 'Payment_terms' , 'id');
     }
 
       public function new_maerials_2()
