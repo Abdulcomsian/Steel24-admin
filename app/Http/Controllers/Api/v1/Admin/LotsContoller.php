@@ -85,7 +85,7 @@ class LotsContoller extends Controller
         $customerId = $request->customer_id;
     
         $lots = lots::with(['customerBalance' => function ($query) use ($customerId) 
-        {
+            {
                 $query->where('customerId', $customerId);
             }])
             ->with(['customers' => function ($query) use ($customerId) 
@@ -96,6 +96,7 @@ class LotsContoller extends Controller
             {
                 $query->orderBy('created_at', 'desc')->take(1);
             }])
+            ->with('lotTerms')
             ->where('lot_status', 'LIKE', '%live%')
 
             ->orderBy('StartDate', 'asc') 
