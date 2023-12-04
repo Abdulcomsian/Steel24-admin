@@ -92,7 +92,6 @@ class LotsExport implements FromCollection, WithHeadings, WithCustomStartCell
             $data->push(['']); // Empty row
         }
 
-        dd("last zone");
         return $data;
     }
 
