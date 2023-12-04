@@ -2089,6 +2089,7 @@ class LotsContoller extends Controller
             $fileName = 'lots_' . $timestamp . '.xlsx';
             $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
 
+            dd("hi there boss");
             // Generate and store the Excel file on the local filesystem
             Excel::store($export, $fileName, 'ExcelLots');
 
