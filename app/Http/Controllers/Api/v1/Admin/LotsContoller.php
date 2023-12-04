@@ -2090,8 +2090,8 @@ class LotsContoller extends Controller
             $filePath = public_path('ExcelLots') . DIRECTORY_SEPARATOR . $fileName;
 
             // Generate and store the Excel file on the local filesystem
+            dd("hi there boss1111111111");
             Excel::store($export, $fileName, 'ExcelLots');
-            dd("hi there boss");
 
             // Full local file path
             $localFilePath = $filePath;
