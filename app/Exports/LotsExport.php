@@ -28,7 +28,6 @@ class LotsExport implements FromCollection, WithHeadings, WithCustomStartCell
 
     public function collection()
     {
-        dd("hi boss123");
         $data = new Collection();
 
         $data->push(['Steel24 Auction List']);
@@ -92,7 +91,7 @@ class LotsExport implements FromCollection, WithHeadings, WithCustomStartCell
 
             $data->push(['']); // Empty row
         }
-
+dd("before return");
         return $data;
     }
 
