@@ -91,7 +91,6 @@ class LotsExport implements FromCollection, WithHeadings, WithCustomStartCell
 
             $data->push(['']); // Empty row
         }
-dd("before return");
         return $data;
     }
 
