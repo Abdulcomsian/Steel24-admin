@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 
 
-class LotsExport implements FromCollection, WithHeadings
+class LotsExport implements FromCollection, WithHeadings, WithCustomStartCell
 {
     use Exportable;
 
@@ -100,8 +100,8 @@ class LotsExport implements FromCollection, WithHeadings
         return [];
     }
 
-    // public function startCell(): string
-    // {
-    //     return 'A1';
-    // }
+    public function startCell(): string
+    {
+        return 'A1';
+    }
 }
