@@ -15,7 +15,7 @@ use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\WithCustomStartCell;
 
 
-class LotsExport implements FromCollection, WithHeadings, WithCustomStartCell
+class LotsExport implements FromCollection, WithHeadings
 {
     use Exportable;
 
