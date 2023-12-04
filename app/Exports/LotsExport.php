@@ -100,8 +100,8 @@ class LotsExport implements FromCollection, WithHeadings, WithCustomStartCell
         return [];
     }
 
-    public function startCell(): string
-    {
-        return 'A1';
-    }
+    // public function startCell(): string
+    // {
+    //     return 'A1';
+    // }
 }
