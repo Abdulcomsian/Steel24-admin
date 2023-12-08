@@ -54,3 +54,4 @@ vendor/autoload.php
 storage/logs/
 /public/files
 /env
+storage/logs/laravel.log

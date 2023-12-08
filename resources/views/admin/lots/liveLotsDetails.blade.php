@@ -101,6 +101,7 @@
                                                 </form>
                                             @endif
                                         @endif
+
                                         @if ($lots->lot_status == 'Sold' || $lots->lot_status == 'STA' || $lots->lot_status == 'Expired')
                                             <div class="row w-50">
                                                 <form action="/admin/reStartExpirelot" class="col-12" method="POST">
@@ -120,8 +121,10 @@
                                                         <label for="ReStartDate" class="col-sm-2 col-form-label">Start
                                                             time</label>
                                                         <div class="col-sm-7">
-                                                            <input type="datetime-local" class="form-control"
-                                                                id="ReStartDate" name="ReStartDate" required>
+                                                            <input type="datetime-local" class="form-control" id="ReStartDate" name="ReStartDate" required>
+                                                            @error('ReStartDate')
+                                                                <span class="text-danger"><strong>{{$message}}</strong></span>
+                                                            @enderror
                                                         </div>
                                                     </div>
 
@@ -129,8 +132,13 @@
                                                         <label for="ReEndDate" class="col-sm-2 col-form-label">End
                                                             time</label>
                                                         <div class="col-sm-7">
-                                                            <input type="datetime-local" class="form-control"
-                                                                id="ReEndDate" name="ReEndDate" required>
+                                                            <input type="datetime-local" class="form-control" id="ReEndDate" name="ReEndDate" required>
+                                                            @error('ReEndDate')
+                                                                <span class="text-danger"><strong>End Date Must Be Greater Then Start Date</strong></span>
+                                                            @enderror
+                                                            @if(Session::has('status') && !Session::get('status'))
+                                                                <span class="text-danger"><strong>{{Session::get('errorMsg')}}</strong></span>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                     <input type="hidden" id="lotid" name="lotid"

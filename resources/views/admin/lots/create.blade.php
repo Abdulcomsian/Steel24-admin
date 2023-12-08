@@ -49,6 +49,15 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
+                    
+                    @if(Session::has('status') && !Session::get('status'))
+                        <div class="alert alert-danger alert-dismissible fade show my-4" role="alert">
+                            <strong>Error!</strong> {{Session::get('errorMsg')}}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
                     {{-- <form method="POST" action="{{ url('admin/newlots') }}" class="form-horizontal"> --}}
                     <form method="POST" action="{{ url('admin/newlots') }}" class="form-horizontal" enctype="multipart/form-data">
                         @csrf
@@ -68,10 +77,16 @@
                                     <!-- <label for="title" class="col-sm-2 col-form-label">Title</label> -->
                                     <div class="col-sm-4">
                                         <input type="text" class="form_customer" id="title" name="title" placeholder="Title" required>
+                                        @error("title")
+                                            <span class="text-danger"><strong>{{$message}}</strong></span>
+                                        @enderror
                                     </div>
                                     <!-- <label for="description" class="col-sm-2 col-form-label">Description</label> -->
                                     <div class="col-sm-4">
                                             <textarea class="form_customer" id="description" name="description" placeholder="Description"></textarea>
+                                            @error("description")
+                                            <span class="text-danger"><strong>{{$message}}</strong></span>
+                                        @enderror
                                     </div>                                                                                                                                                                                                     
                                     <!-- <label for="categoryId" class="col-sm-2 col-form-label">Category</label> -->
                                     <div class="col-sm-4">
@@ -82,38 +97,54 @@
                                                 </option>
                                             @endforeach
                                         </select>
+                                        @error("categoryId")
+                                            <span class="text-danger"><strong>Please Select Category</strong></span>
+                                        @enderror
                                     </div>
 
                                     <!-- <label for="seller" class="col-sm-2 col-form-label">Seller</label> -->
                                     <div class="col-sm-4">
                                         <input type="text" class="form_customer" id="seller" name="Seller" placeholder="Seller" required>
+                                        @error("Seller")
+                                            <span class="text-danger"><strong>{{$message}}</strong></span>
+                                        @enderror
                                     </div>
                                     <!-- <label for="plant" class="col-sm-2 col-form-label">Plant</label> -->
                                     <div class="col-sm-4">
                                         <input type="text" class="form_customer" id="plant" name="Plant" placeholder="Plant" required>
+                                        @error("Plant")
+                                            <span class="text-danger"><strong>{{$message}}</strong></span>
+                                        @enderror
                                     </div>
                                     <!-- <label for="materialLocation" class="col-sm-2 col-form-label">Material Location</label> -->
                                     <div class="col-sm-4">
-                                        <input type="text" class="form_customer" id="materialLocation"
-                                            name="materialLocation" placeholder="Material Location" required>
+                                        <input type="text" class="form_customer" id="materialLocation" name="materialLocation" placeholder="Material Location" required>
+                                        @error("materialLocation")
+                                            <span class="text-danger"><strong>{{$message}}</strong></span>
+                                        @enderror
                                     </div>
                                     <!-- <label for="quantity" class="col-sm-2 col-form-label">Quantity</label> -->
                                     <div class="col-sm-4">
                                         <input type="text" class="form_customer" id="quantity" name="Quantity" placeholder="Quantity" required>
+                                        @error("Quantity")
+                                            <span class="text-danger"><strong>{{$message}}</strong></span>
+                                        @enderror
                                     </div>
 
                                     <!-- <label for="startDate" class="col-sm-2 col-form-label">Start Date</label> -->
                                     <div class="col-sm-4">
-                                        <input type="text" class="form_customer" id="startDate" name="StartDate"  placeholder="Start Date"
-                                          onfocus="(this.type='datetime-local')" onblur="(this.type='text')"
-                                            required>
+                                        <input type="text" class="form_customer" id="startDate" name="StartDate"  placeholder="Start Date" onfocus="(this.type='datetime-local')" onblur="(this.type='text')" required>
+                                        @error("StartDate")
+                                            <span class="text-danger"><strong>{{$message}}</strong></span>
+                                        @enderror
                                     </div>
                                     <!-- <label for="endDate" class="col-sm-2 col-form-label">End Date</label> -->
 
                                     <div class="col-sm-4">
-                                        <input type="text" class="form_customer" id="endDate" name="EndDate" placeholder="End Date"
-                                           onfocus="(this.type='datetime-local')" onblur="(this.type='text')"
-                                            required>
+                                        <input type="text" class="form_customer" id="endDate" name="EndDate" placeholder="End Date" onfocus="(this.type='datetime-local')" onblur="(this.type='text')" required>
+                                        @error("EndDate")
+                                            <span class="text-danger"><strong>{{$message}}</strong></span>
+                                        @enderror
                                     </div>
                                     
 
@@ -137,8 +168,10 @@
 
                                     <!-- <label for="startPrice" class="col-sm-2 col-form-label">Start Price</label> -->
                                     <div class="col-sm-4">
-                                        <input type="number" class="form_customer" id="startPrice" name="Price" placeholder="Start Price"
-                                            min="0" autocomplete="off" autofocus>
+                                        <input type="number" class="form_customer" id="startPrice" name="Price" placeholder="Start Price" min="0" autocomplete="off" autofocus>
+                                        @error("Price")
+                                            <span class="text-danger"><strong>{{$message}}</strong></span>
+                                        @enderror
                                     </div>
                                     <!-- <label for="participate_fee" class="col-sm-2 col-form-label">Participation Fee</label> -->
 
@@ -146,14 +179,18 @@
 
                                     
                                     <div class="col-sm-4">
-                                        <input type="number" class="form_customer" step="0.01" id="participate_fee" placeholder="Participation Fee"
-                                            min="0" name="participate_fee" autocomplete="off" autofocus>
+                                        <input type="number" class="form_customer" step="0.01" id="participate_fee" placeholder="Participation Fee" min="0" name="participate_fee" autocomplete="off" autofocus>
+                                        @error("participate_fee")
+                                            <span class="text-danger"><strong>{{$message}}</strong></span>
+                                        @enderror
                                     </div>
 
 
                                     <div class="col-sm-4">
-                                        <input type="text" class="form_customer" step="0.01" id="make_in" placeholder="Made IN"
-                                            min="0" name="make_in" autocomplete="off" autofocus>
+                                        <input type="text" class="form_customer" step="0.01" id="make_in" placeholder="Made IN" min="0" name="make_in" autocomplete="off" autofocus>
+                                        @error("make_in")
+                                            <span class="text-danger"><strong>{{$message}}</strong></span>
+                                        @enderror
                                     </div>
 
                                     <div class="col-sm-4">
@@ -165,6 +202,9 @@
                                             <option value="Upcoming">Upcoming</option>
                                             <option value="STA">STA</option>
                                         </select>
+                                        @error("lot_status")
+                                            <span class="text-danger"><strong>Select Lot Status</strong></span>
+                                        @enderror
                                     </div>
 
                             
@@ -176,11 +216,13 @@
                                                 <option value="{{ $payment->id }}">{{ $payment->Payment_Terms }}</option>
                                             @endforeach
                                         </select>
+                                        @error("paymentId")
+                                            <span class="text-danger"><strong>Select Payment Terms</strong></span>
+                                        @enderror
                                     </div>
 
                                     <div class="col-sm-4">
-                                        <input type="file" class="form_customer" name="uploadlotpicture" placeholder="Upload Lot Image"
-                                            autocomplete="off" autofocus>
+                                        <input type="file" class="form_customer" name="uploadlotpicture" placeholder="Upload Lot Image" autocomplete="off" autofocus>
                                     </div>
                                     
                                      <!--Footer-->

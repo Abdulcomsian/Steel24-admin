@@ -282,9 +282,17 @@ class LiveLotsController extends Controller
     {
         $requestData = $request->validate([
             'lotid' => 'required',
-            'ReStartDate' => 'required',
-            'ReEndDate' => 'required',
+            'ReStartDate' => 'required|date',
+            'ReEndDate' => 'required|date|after:ReStartDate',
         ]);
+
+        $countLots = lots::whereIn('lot_status' , ['live', 'Live'])
+                            ->where('EndDate' , $request->ReEndDate)
+                            ->count();
+
+        if($countLots){
+            return redirect()->back()->with(['status' => false , 'errorMsg' => 'There is already a lot with the same end time.']);
+        }
 
         if(Carbon::parse($request->ReStartDate)->greaterThan(Carbon::parse($request->ReEndDate)) ||  Carbon::parse($request->ReStartDate)->equalTo(Carbon::parse($request->ReEndDate))){
             return redirect()->back()->with(['date_error' => true  , 'error_msg' => "Start date must be less then end date"]);

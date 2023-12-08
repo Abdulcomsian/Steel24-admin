@@ -165,8 +165,8 @@ class LotsController extends Controller
             "Plant" => "nullable",
             "materialLocation" => "nullable",
             "Quantity" => "required",
-            "StartDate" => "required",
-            "EndDate" => "required",
+            "StartDate" => "required|date",
+            "EndDate" => "required|date|after:StartDate",
             "Price" => "required",
             'categoryId' => "required",
             "participate_fee" => "required",
@@ -174,6 +174,15 @@ class LotsController extends Controller
             "lot_status" => "required",
             "paymentId" => "required",
         ]);
+
+        $countLots = lots::whereIn('lot_status' , ['live', 'Live'])
+                            ->where('EndDate' , $request->EndDate)
+                            ->count();
+
+        if($countLots){
+            return redirect()->back()->with(['status' => false , 'errorMsg' => 'There is already a lot with the same end time.']);
+        }
+        
 
         if ($request->hasFile('uploadlotpicture')) 
         {
