@@ -137,4 +137,8 @@ class lots extends Model
         return $this->hasOne(BidsOfLots::class, 'lotId', 'id')->latestOfMany();
     }
 
+    public function lastBid(){
+        return $this->hasOne(BidsOfLots::class, 'lotId', 'id')->latestOfMany();
+    }
+
 }
