@@ -7,6 +7,7 @@ use App\Models\lots;
 use Exception;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Validator;
 
 class CsvImportController extends Controller
 {
@@ -17,6 +18,10 @@ class CsvImportController extends Controller
 
     public function import(Request $request)
     {
+       $request->validate([
+        "csv_file" => "required|mimes:csv"
+       ]);
+
         try {
             $importResult = Excel::import(new LotsImport(), $request->file('csv_file'));
             

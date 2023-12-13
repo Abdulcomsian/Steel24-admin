@@ -72,67 +72,7 @@ class LotsImport implements WithHeadingRow, SkipsOnFailure, ToCollection
                     continue;
                 }
 
-                    // $lot->title = $row['lot_no'] ?? '';
-                    // $lot->description = $row['description'] ?? '';
-                    // $lot->materialLocation = $row['material_location'] ?? '';
-                    // $lot->Price = $row['start_price'] ?? '';
-                    // $lot->Seller = $row['seller'] ?? '';
-
-                
-
-                    // previous code ither dev
-                    // if($row['lot_no']=='Batch No')
-                    // {
-                    //     continue;
-                    // }
-                    // if($row['lot_no'] == "Lot No")
-                    // {
-                    //     continue;
-                    // }
-                    // if(is_numeric($row['lot_no']))
-                    // {
-                    //     continue;
-                        
-                    // }
-                    // if(is_null($row['lot_no']))
-                    // {
-                    //     continue;
-                    // }
-
-
-                    // $material = new materials();
-                    // $material->width = $row['product'] ?? '';
-                    // $material->plantNo = $row['16'] ?? '';
-                    // $material->qty = $row['end_date'] ?? '';
-                    // $material->grade = $row['quantity'] ?? '';
-                    // $material->JSWgrade = $row['description'] ?? '';
-                    // $material->coilLength = $row['category'] ?? '';
-                    // $material->tinTemper = $row['material'] ?? '';
-                    // $material->passivation = $row['14'] ?? '';
-                    // $material->coldTreatment = $row['15'] ?? '';
-                    // $material->storageLocation = $row['17'] ?? '';
-                    // $material->plantLotNo = $row['18'] ?? '';
-                    // $material->lot_id = $lot->id;
-                    // $material->save();
-
-                    // Updated code with indexes 
                     
-                    // $material = new materials();
-                    // $material->width = $row['4'] ?? '';
-                    // $material->coilLength = $row['5'] ?? '';
-                    // $material->JSWgrade = $row['6'] ?? '';
-                    // $material->grade = $row['7'] ?? '';
-                    // $material->qty = $row['8'] ?? '';
-                    // $material->tinTemper = $row['11'] ?? '';
-                    // $material->passivation = $row['14'] ?? '';
-                    // $material->coldTreatment = $row['15'] ?? '';
-                    // $material->plantNo = $row['16'] ?? '';
-                    // $material->storageLocation = $row['17'] ?? '';
-                    // $material->plantLotNo = $row['18'] ?? '';
-                    // $material->lot_id = $lot->id;
-                    // $material->save();   
-
-                // }
 
                 $material = new materials();
                 $material->title = $row['seller'] ?? 'NULL';

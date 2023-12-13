@@ -193,7 +193,7 @@ class AuctionContoller extends Controller
             $custoemrDetais = Customer::where('id', $request['customerId'])->first();
 
             // $api = new Api('rzp_test_8PGJWSObrIzWmn', 'u6ruIsAKiggwDMKQ2fyv3dPr');
-            $api = new Api('rzp_test_jdWsBL5Qasj2Aj', 'ZbGL8L88FRh5gxtXudRyGE2F');
+            $api = new Api('rzp_live_vbnXOK5uVRzlvD	', 'mMNRZpzEZxExxc2al17N97w1');
             $orderDetails =  $api->order->create(array('receipt' => '', 'amount' =>  $lotdata->remaining_amount * 100, 'currency' => 'INR'));
 
             return response()->json([
@@ -257,7 +257,7 @@ class AuctionContoller extends Controller
         $custoemrDetais = Customer::where('id', $request->customerId)->first();
 
         // $api = new Api('rzp_test_8PGJWSObrIzWmn', 'u6ruIsAKiggwDMKQ2fyv3dPr');
-        $api = new Api('rzp_test_jdWsBL5Qasj2Aj', 'ZbGL8L88FRh5gxtXudRyGE2F');
+        $api = new Api('rzp_live_vbnXOK5uVRzlvD', 'mMNRZpzEZxExxc2al17N97w1');
         $orderDetails =  $api->order->create(array('receipt' => '', 'amount' =>  $request->amount * 100, 'currency' => 'INR'));
         // dd($orderDetails);
 

@@ -4,6 +4,11 @@
 <html>
 <head>
     <title>CSV Import and Data</title>
+    <style>
+        .text-danger{
+            color: red;
+        }
+    </style>
 </head>
 <body>
     <h1>CSV Import</h1>
@@ -11,6 +16,9 @@
     <form action="{{ url('admin/lots/import-csv') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <input type="file" name="csv_file">
+        @error("csv_file")
+            <span class="text-danger"><strong>{{$message}}</strong></span>
+        @enderror
         <button type="submit">Import</button>
     </form>
 
