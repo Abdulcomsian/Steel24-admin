@@ -467,7 +467,6 @@ class LotsController extends Controller
 
     public function show(Request $request,$id)
     {
-        
         // $materialilist = [];
         // $material_keys = null;
         // $materialidata =  newMaterial::where("lotid", $lots->id)->get();

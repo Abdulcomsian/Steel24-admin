@@ -18,8 +18,6 @@ use App\Http\Controllers\Api\v1\Admin\LotsController;
 |
 */
 
-
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) 
 {
     return $request->user();

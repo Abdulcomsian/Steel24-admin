@@ -72,9 +72,9 @@
                                     <input type="hidden" name="expire" value="{{ $expire }}">
                                 @endisset
                                     <!-- <label for="description" class="col-sm-2 col-form-label">Description</label> -->
-                                    <div class="col-sm-4">
+                                    {{-- <div class="col-sm-4">
                                         <textarea class="form_customer" id="description" name="description" placeholder="Description"> {{ $lots ? $lots->description : '' }} </textarea>
-                                    </div>
+                                    </div> --}}
                                     <!-- <label for="categoryId" class="col-sm-2 col-form-label">Category</label> -->
                                     <div class="col-sm-4">
                                         <select class="form-select custom-select" id="categoryId" name="categoryId" placeholder="Category">
@@ -93,10 +93,10 @@
                                     </div>
 
                                     <!-- <label for="plant" class="col-sm-2 col-form-label">Plant</label> -->
-                                    <div class="col-sm-4">
+                                    {{-- <div class="col-sm-4">
                                         <input type="text" class="form_customer" id="plant" name="Plant" placeholder="Plant"
                                             value="{{ $lots ? $lots->Plant : '' }}" required>
-                                    </div>
+                                    </div> --}}
                                     <!-- <label for="materialLocation" class="col-sm-2 col-form-label">Material Location</label> -->
                                     <div class="col-sm-4">
                                         <input type="text" class="form_customer" id="materialLocation"

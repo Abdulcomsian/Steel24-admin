@@ -41,11 +41,11 @@
                                                             {{ $lots->title }}</h6>
                                                         </div> --}}
 
-                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                        {{-- <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
                                                             <h6 >Description</h6>
                                                             <h6>
                                                             {{ $lots->description }}</h6>
-                                                        </div>
+                                                        </div> --}}
                                                         {{-- <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
                                                         <h6>Category</h6>
                                                             <h6>
@@ -130,11 +130,11 @@
                                                     
                                                     </div>
                                                     <div class="col-md-5">
-                                                        <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
+                                                        {{-- <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
                                                             <h6 >PLANT</h6>
                                                             <h6>
                                                             {{ $lots->Plant }}</h6>
-                                                        </div>
+                                                        </div> --}}
 
                                                         <div class="d-flex justify-content-between mt-3" style="border-bottom:1px solid #c5b8b8;">
                                                         <h6>PARTICIPATION FEES</h6>

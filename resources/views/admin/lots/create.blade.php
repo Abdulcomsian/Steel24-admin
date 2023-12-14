@@ -81,13 +81,12 @@
                                             <span class="text-danger"><strong>{{$message}}</strong></span>
                                         @enderror
                                     </div>
-                                    <!-- <label for="description" class="col-sm-2 col-form-label">Description</label> -->
-                                    <div class="col-sm-4">
+                                    {{-- <div class="col-sm-4">
                                             <textarea class="form_customer" id="description" name="description" placeholder="Description"></textarea>
                                             @error("description")
                                             <span class="text-danger"><strong>{{$message}}</strong></span>
                                         @enderror
-                                    </div>                                                                                                                                                                                                     
+                                    </div>                                                                                                                                                                                                      --}}
                                     <!-- <label for="categoryId" class="col-sm-2 col-form-label">Category</label> -->
                                     <div class="col-sm-4">
                                         <select class="custom-select" id="categoryId" name="categoryId" 
@@ -109,13 +108,13 @@
                                             <span class="text-danger"><strong>{{$message}}</strong></span>
                                         @enderror
                                     </div>
-                                    <!-- <label for="plant" class="col-sm-2 col-form-label">Plant</label> -->
-                                    <div class="col-sm-4">
+                                   
+                                    {{-- <div class="col-sm-4">
                                         <input type="text" class="form_customer" id="plant" name="Plant" placeholder="Plant" required>
                                         @error("Plant")
                                             <span class="text-danger"><strong>{{$message}}</strong></span>
                                         @enderror
-                                    </div>
+                                    </div> --}}
                                     <!-- <label for="materialLocation" class="col-sm-2 col-form-label">Material Location</label> -->
                                     <div class="col-sm-4">
                                         <input type="text" class="form_customer" id="materialLocation" name="materialLocation" placeholder="Material Location" required>

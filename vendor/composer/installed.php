@@ -3,7 +3,7 @@
         'name' => 'laravel/laravel',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'ee393d331adb22e06e201064f733641b1d1c07c8',
+        'reference' => '81fba47ae6af29af5fb20700bc8b96afeaa7a04c',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -103,12 +103,39 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'doctrine/cache' => array(
+            'pretty_version' => '2.2.0',
+            'version' => '2.2.0.0',
+            'reference' => '1ca8f21980e770095a31456042471a57bc4c68fb',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../doctrine/cache',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'doctrine/dbal' => array(
+            'pretty_version' => '3.7.2',
+            'version' => '3.7.2.0',
+            'reference' => '0ac3c270590e54910715e9a1a044cc368df282b2',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../doctrine/dbal',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'doctrine/deprecations' => array(
             'pretty_version' => 'v1.1.1',
             'version' => '1.1.1.0',
             'reference' => '612a3ee5ab0d5dd97b7cf3874a6efe24325efac3',
             'type' => 'library',
             'install_path' => __DIR__ . '/../doctrine/deprecations',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'doctrine/event-manager' => array(
+            'pretty_version' => '2.0.0',
+            'version' => '2.0.0.0',
+            'reference' => '750671534e0241a7c50ea5b43f67e23eb5c96f32',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../doctrine/event-manager',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -559,15 +586,7 @@
         'laravel/laravel' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-// <<<<<<< Updated upstream
-// <<<<<<< Updated upstream
-            'reference' => '84cad6622c379fcf001a139c4758c7edaf0e2d2e',
-// =======
-//             'reference' => 'ee393d331adb22e06e201064f733641b1d1c07c8',
-// >>>>>>> Stashed changes
-// =======
-//             'reference' => 'ee393d331adb22e06e201064f733641b1d1c07c8',
-// >>>>>>> Stashed changes
+            'reference' => '81fba47ae6af29af5fb20700bc8b96afeaa7a04c',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
