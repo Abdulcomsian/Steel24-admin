@@ -2086,7 +2086,7 @@ class LotsContoller extends Controller
 
             // Generate and store the Excel file on the local filesystem
             Excel::store($export, $fileName, 'ExcelLots');
-            dd("afterexcel");
+            
             // Full local file path
             $localFilePath = $filePath;
 
