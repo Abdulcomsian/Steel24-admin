@@ -145,6 +145,7 @@ class LiveLotsController extends Controller
         $lot->lot_status = 'STA';
         $lot->save();
 
+
         $lastBid = BidsOfLots::where('lotId', $id)->orderBy('id', 'desc')->first();
         $customers = [];
         if ($lastBid) {

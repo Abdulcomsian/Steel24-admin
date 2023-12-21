@@ -893,7 +893,7 @@ public function update(Request $request, lots $lots)
                 'customerVisible' => isset($data['customerVisible']) ?  1 : 0,
             ]);
 
-            lots::where('id', $data['lotid'])->update(['lot_status' => 'sold']);
+            lots::where('id', $data['lotid'])->update(['lot_status' => 'sold' ,'EndDate' => date("Y-m-d H:i:s")]);
 
             // $otherCustomers = DB::select("SELECT * from customer_balances WHERE lotid = " . $data['lotid'] . " and customerId !=" . $lastBid->customerId . "; ");
             // // dd($otherCustomers);

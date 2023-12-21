@@ -307,13 +307,15 @@ function placeBid(data)
             // var endTime = new Date("{{\Carbon\Carbon::parse($lots->EndDate)->format('Y-m-d H:i:s') }}").getTime();
             var now = new Date().getTime();
             var timeleft = null;
+            // let status = ['Expired', 'pause', 'STA']
 
             if (lotStatus == 'Upcoming' && startTime <= now) 
             {
 
                 document.getElementById('btnStartLot').click();
                 clearInterval(myfunc);
-            } else if (lotStatus != 'Expired' && lotStatus != 'pause') 
+            } 
+            else if (lotStatus != 'Expired' && lotStatus != 'pause' && lotStatus != 'STA') 
             {
                 if (lotStatus != 'live' && lotStatus != 'Restart') 
                 {
