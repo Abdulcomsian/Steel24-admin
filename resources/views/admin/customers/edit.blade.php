@@ -42,7 +42,7 @@
                                     </div>
                                     <!-- <label for="title" class="col-sm-2 col-form-label">GST no.</label> -->
                                     <div class="col-sm-4">
-                                        <input type="number" class="form_customer" name="GSTNo" min="0" placeholder="GST no."
+                                        <input type="text" class="form_customer" name="GSTNo" min="0" placeholder="GST no."
                                             value="{{ old('GSTNo', $customer->GSTNo) }}" autocomplete="off" autofocus>
                                     </div>
                                     <!-- <label for="title" class="col-sm-2 col-form-label">PAN no.</label> -->
