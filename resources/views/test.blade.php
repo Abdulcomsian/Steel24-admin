@@ -20,7 +20,7 @@
     <script>
 
         // Enable pusher logging - don't include this in production
-        Pusher.logToConsole = true;
+        // Pusher.logToConsole = true;
 
         var pusher = new Pusher('ad6209c0096cf25b141f', {
             cluster: 'ap2'

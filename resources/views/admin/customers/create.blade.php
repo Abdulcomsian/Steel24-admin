@@ -44,7 +44,7 @@
                                     </div>
                                     <div class="col-md-4  ">
                                     <!-- <label for="validationTooltip01">GST no.</label> -->
-                                    <input type="number" class="form_customer" name="GSTNo" min="0" placeholder="GST no."
+                                    <input type="text" class="form_customer" name="GSTNo" placeholder="GST no."
                                             autocomplete="off" autofocus>
                                     </div>
                                     <div class="col-md-4  ">
@@ -185,4 +185,19 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function(){
+
+            let gstInput = document.querySelector("input[name='GSTNo']");
+
+            gstInput.addEventListener("keydown" , function(e){
+                key = e.key;
+                let regex = /^[A-Za-z0-9]*$/;
+                if(!regex.test(key)){
+                    e.preventDefault();
+                }
+            })
+
+        })
+    </script>
 @endsection

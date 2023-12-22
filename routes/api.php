@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\Admin\AuctionController;
 use App\Http\Controllers\Api\v1\Admin\LotsController;
+use App\Http\Controllers\Admin\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -95,7 +96,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request)
         // Define the route to manually process the return of the participation fee
        Route::post('returnParticipationFee/{bidId}', 'AuctionContoller@returnParticipationFee');
 
-        //nouman route starts here
         Route::post('customer-bid' ,  'AuctionContoller@customerBidding' );
 
         Route::post('set-customer-autobid' , 'AuctionContoller@setCustomerAutobid');
@@ -103,7 +103,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request)
         Route::post('check-customer-autobid' , 'AuctionContoller@checkCustomerAutobid');
 
         Route::post('stop-customer-autobid' , 'AuctionContoller@stopAutoBid');
-        //nouman route ends here
+
+        // Route::post('contact' , )
     });
 
     Route::get('getlivebid', 'App\Http\Controllers\Api\v1\Admin\AuctionContoller@getlivebid');
@@ -114,7 +115,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request)
     // });
 });
 
-
+Route::post('contactUs' , [UserController::class , 'contactUs']);
 // new APIS's by zeshan rabnawaz
 
 // Get Categorys API

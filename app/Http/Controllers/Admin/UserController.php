@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use DataTables;
+use Illuminate\Support\Facades\{ Mail , Validator};
 
 
 class UserController extends Controller
@@ -105,5 +106,31 @@ class UserController extends Controller
     {
         $user->delete();
         return redirect('/admin/users');
+    }
+
+    public function contactUs(Request $request){
+        $validator = Validator::make($request->all(),[
+            'username' => 'required|string',
+            'email' => 'required|email',
+            'message' => 'required|string'
+        ]);
+        
+        if($validator->fails()){
+            return response()->json(['status' => false , 'msg' => $validator->getMessageBag()]);
+        }
+        
+        try{
+
+            $username = $request->username;
+            $email = $request->email;
+            $msg = $request->message;
+
+            Mail::to('sales.steel24@gmail.com')->send(new \App\Mail\ContactMail($username , $email , $msg));
+
+            return response()->json(['status' => true , 'msg' => 'Mail Send Successfully']);
+
+        }catch(\Exception $e){
+            return response()->json(['status' => false , 'msg' => $e->getMessage()]);
+        }
     }
 }
