@@ -177,7 +177,7 @@ $(function () {
             serverSide: true,
             ajax: "{{ route('admin.lots') }}",
             columns: [
-                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                {data: 'id', name: 'id', orderable: false, searchable: false},
                 {data: 'title', name: 'title'},
                 // {data: 'StartDate', name: 'StartDate'},
                 // {

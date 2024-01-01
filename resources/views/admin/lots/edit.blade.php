@@ -114,9 +114,10 @@
                                             value="{{ $lots ? $lots->StartDate : '' }}" required>
                                     </div>
                                     <!-- <label for="endDate" class="col-sm-2 col-form-label">End Date</label> -->
+                                
                                     <div class="col-sm-4">
                                         <input type="datetime-local" class="form_customer" id="endDate" name="EndDate" placeholder="End Date"
-                                            value="{{ $lots ? $lots->EndDate : '' }}" required>
+                                            value="{{ $lots ? $lots->EndDate->format("Y-m-d H:i"): '' }}" required>
                                     </div>
 
                                 {{--

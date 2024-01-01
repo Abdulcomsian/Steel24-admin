@@ -15,7 +15,7 @@
 
     <form action="{{ url('admin/lots/import-csv') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <input type="file" name="csv_file">
+        <input type="file" name="csv_file" accept=".csv">
         @error("csv_file")
             <span class="text-danger"><strong>{{$message}}</strong></span>
         @enderror

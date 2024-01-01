@@ -88,7 +88,7 @@ class LotsController extends Controller
         if ($request->ajax()) 
         {
             $datatables = DataTables::of($lots)
-                ->addIndexColumn()   
+                // ->addIndexColumn()   
                 ->addColumn('action', function ($row) 
                 {
                     // if ($row->status === 'active') {
@@ -300,6 +300,7 @@ class LotsController extends Controller
 
     public function updatematerialslots(lots $lots, Request $request)
     {
+        // dd($request->all());
 
         $data = $request->validate([
             "lotid" => 'required',
@@ -335,8 +336,12 @@ class LotsController extends Controller
                 $material['images'] = $imgName;
             }
             // dd($$material['id']);
-            new_maerials_2::updateOrCreate(['id' => $material["id"]], $material);
-            new_maerials_2::where('id', $material['id'])->update($material);
+            if(is_null($material['id'])){
+                new_maerials_2::create($material);
+            }else{
+                new_maerials_2::updateOrCreate(['id' => $material["id"]], $material);
+                new_maerials_2::where('id', $material['id'])->update($material);
+            }
         }
         // $data = [];
         // $requestindex = (int)$request->materialqnt;

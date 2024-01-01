@@ -94,6 +94,9 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                <button type="button" class="btn-sm btn btn-primary" onclick="newmaterial()">Add
+                                    Material
+                                </button>
                                 {{-- <button type="button" class="btn-sm btn btn-primary" onclick="newmaterial()">Add
                                     Material</button> --}}
                                 <div>
@@ -125,7 +128,7 @@
         function newmaterial() {
 
             tbody =
-                "<td><input type='text' class='form-control' id='Product' name='Product[]' autocomplete='off' autofocus required/></td>";
+                "<input type='hidden' class='form-control' id='id' name='id[]'' value=''><td><input type='text' class='form-control' id='Product' name='Product[]' autocomplete='off' autofocus required/></td>";
             tbody +=
                 "<td><input type='text' class='form-control' id='thick' name='Thickness[]' autocomplete='off' autofocus required/></td>";
             tbody +=
