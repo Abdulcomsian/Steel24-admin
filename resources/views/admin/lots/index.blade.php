@@ -40,7 +40,8 @@
                                     <div class="table-responsive"><!-- remove class="table-responsive" -->
                                         <table class="table data-table table-striped w-100">
                                             <thead class="text-primary text-center">
-                                                <th>ID</th>
+                                                <th>#</th>
+                                                <th>Lot ID</th>
                                                 <th>Title</th>
                                                 <th>Start Date</th>
                                                 <th>Amount</th>
@@ -177,7 +178,8 @@ $(function () {
             serverSide: true,
             ajax: "{{ route('admin.lots') }}",
             columns: [
-                {data: 'id', name: 'id', orderable: false, searchable: false},
+                {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                {data: 'id', name: 'id', orderable: true},
                 {data: 'title', name: 'title'},
                 // {data: 'StartDate', name: 'StartDate'},
                 // {

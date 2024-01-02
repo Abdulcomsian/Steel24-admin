@@ -88,30 +88,11 @@ class LotsController extends Controller
         if ($request->ajax()) 
         {
             $datatables = DataTables::of($lots)
-                // ->addIndexColumn()   
+                ->addIndexColumn()   
                 ->addColumn('action', function ($row) 
                 {
-                    // if ($row->status === 'active') {
-                    //     return '<span class="badge badge-primary">Active</span>';
-                    // } else{
-                    //     return '<span class="badge badge-danger">Deactive</span>';
-                    // } 
-                    
                     return '<a href="' . url('admin/lots/'  . $row->id) .   '" class="btn btn-info btn-sm">Details</a>';
-                })                             
-                // ->filter(function ($instance) use ($request) {
-                //     if ($request->get('status') == 'deactive' || $request->get('status') == 'active') {
-                //         $instance->where('status', $request->get('status'));
-                //     }
-                //     if (!empty($request->get('search'))) {
-                //         $instance->where(function ($w) use ($request) 
-                //         {
-                //             $search = $request->get('search');
-                //             $w->orWhere('name', 'LIKE', "%$search%")
-                //             ->orWhere('email', 'LIKE', "%$search%");
-                //         });
-                //     }
-                // })
+                })   
                 ->rawColumns(['action']);
     
             return $datatables->make(true);
